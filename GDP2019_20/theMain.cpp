@@ -60,6 +60,7 @@ int main(void)
 	glfwSetKeyCallback(window, key_callback);
 	glfwMakeContextCurrent(window);
 
+
 //	gladLoadGL(glfwGetProcAddress);
 	gladLoadGL();
 
