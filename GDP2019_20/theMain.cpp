@@ -2889,16 +2889,54 @@ static const char* fragment_shader_text =
 "{\n"
 "    gl_FragColor = vec4(color, 1.0);\n"
 "}\n";
+
+
+glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
+glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
+
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	// Move the camera (A & D for left and right, along the x axis)
+	if (key == GLFW_KEY_A)
+	{
+		cameraEye.x -= 0.1f;		// Move the camera -0.01f units
+	}
+	if (key == GLFW_KEY_D)
+	{
+		cameraEye.x += 0.1f;		// Move the camera +0.01f units
+	}
+
+	// Move the camera (Q & E for up and down, along the y axis)
+	if (key == GLFW_KEY_Q)
+	{
+		cameraEye.y -= 0.1f;		// Move the camera -0.01f units
+	}
+	if (key == GLFW_KEY_E)
+	{
+		cameraEye.y += 0.1f;		// Move the camera +0.01f units
+	}
+
+	// Move the camera (W & S for towards and away, along the z axis)
+	if (key == GLFW_KEY_W)
+	{
+		cameraEye.z -= 0.1f;		// Move the camera -0.01f units
+	}
+	if (key == GLFW_KEY_S)
+	{
+		cameraEye.z += 0.1f;		// Move the camera +0.01f units
+	}
+
+
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+
+}
+
 static void error_callback(int error, const char* description)
 {
 	fprintf(stderr, "Error: %s\n", description);
 }
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
-}
-
 
 int main(void)
 {
@@ -3012,9 +3050,9 @@ int main(void)
 
 		v = glm::mat4(1.0f);
 
-		glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
-		glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
+		//glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
+		//glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+		//glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
 		v = glm::lookAt(cameraEye,
 			cameraTarget,
