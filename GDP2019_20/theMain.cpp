@@ -2866,16 +2866,21 @@ static /*const*/ struct
 { -0.0424621, 0.0343144,  1.0f, 1.0f, 1.0f },
 { -0.0342325, 0.033759,  1.0f, 1.0f, 1.0f }
 };
+
+//float x, y;			// Position
+//float r, g, b;	
+
 static const char* vertex_shader_text =
 "#version 110\n"
 "uniform mat4 MVP;\n"
-"attribute vec3 vCol;\n"
-"attribute vec2 vPos;\n"
+"attribute vec3 vColour;\n"
+"attribute vec2 vPosition;\n"
 "varying vec3 color;\n"
 "void main()\n"
 "{\n"
-"    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
-"    color = vCol;\n"
+"    vec2 vertPosition = vPosition;\n"
+"    gl_Position = MVP * vec4(vertPosition, 0.0, 1.0);\n"
+"    color = vColour;\n"
 "}\n";
 static const char* fragment_shader_text =
 "#version 110\n"
@@ -2949,8 +2954,8 @@ int main(void)
 	glLinkProgram(program);
 
 	mvp_location = glGetUniformLocation(program, "MVP");
-	vpos_location = glGetAttribLocation(program, "vPos");
-	vcol_location = glGetAttribLocation(program, "vCol");
+	vpos_location = glGetAttribLocation(program, "vPosition");
+	vcol_location = glGetAttribLocation(program, "vColour");
 
 	glEnableVertexAttribArray(vpos_location);
 	glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
@@ -2988,6 +2993,17 @@ int main(void)
 
 		m = m * rotateZ;
 
+		// Move it to the +ve x
+		glm::mat4 matTrans = glm::translate( glm::mat4(1.0f),
+			                                 glm::vec3(0.0f, -1.0f, 0.0f));
+		m = m * matTrans;
+
+		// Scale
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f),
+			                         glm::vec3(6.0f, 6.0f, 6.0f));
+		m = m * scale;
+
+
 		//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 		p = glm::perspective(0.6f,		// FOV
 			ratio,			// Aspect ratio
@@ -3018,7 +3034,7 @@ int main(void)
 		//  GL_FILL is solid 
 		//  GL_LINE is "wireframe"
 		//glPointSize(15.0f);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 		glDrawArrays(GL_TRIANGLES, 0, 2844);
