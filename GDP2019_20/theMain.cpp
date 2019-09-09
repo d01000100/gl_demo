@@ -9,22 +9,29 @@
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <stdlib.h>		// c libs
+#include <stdio.h>		// c libs
+
+#include <iostream>		// C++ IO standard stuff
+
+#include "cModelLoader.h"				
 
 struct sVertex
 {
-	float x, y, z;
-	float r, g, b;
+	float x, y, z;			// 32 bit 4 bytes  12
+	float r, g, b;			// 12 bytes
 };
 
-
-
-//sVertex vertices[2844] =
+//sVertex vertices[5000];		//	on the stack
+//sVertex* pVertices = new sVertex[5000];			// On the heap
+////sVertex vertices[1] =
 //{
 //	{ -0.0248608, 0.122913, 0.0245429,  1.0f, 1.0f, 1.0f },
 //
 //};
+//sVertex vertices[5000];		//	on the stack
+//sVertex* pVertices = new sVertex[5000];			// On the heap
+sVertex* pVertices = NULL;
 
 //float x, y;			// Position
 //float r, g, b;	
@@ -102,6 +109,9 @@ static void error_callback(int error, const char* description)
 
 int main(void)
 {
+
+
+
 	GLFWwindow* window;
 	GLuint vertex_buffer, vertex_shader, fragment_shader, program;
 	GLint mvp_location, vpos_location, vcol_location;
@@ -128,17 +138,80 @@ int main(void)
 	glfwSwapInterval(1);
 
 
-	//float scaleFactor = 4.0f;
-	//for (unsigned int index = 0; index != 2844; index++)
-	//{
-	//	vertices[index].x *= scaleFactor;
-	//	vertices[index].y *= scaleFactor;
-	//}
+	// OpenGL and GLFW are good to go, so load the model
+	//cModelLoader theModelLoader;   // Stack
+	//theModelLoader.LoadPlyModel();
+
+
+	cModelLoader* pTheModelLoader = new cModelLoader();	// Heap
+
+	cMesh bunnyMesh;		// This is stack based
+	//if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_res4_XYZ.ply", bunnyMesh) )
+	if ( ! pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", bunnyMesh) )
+	{
+		std::cout << "Didn't find the file" << std::endl;
+	}
+
+	// Copy the mesh into a local array to go to the GPU
+	//sVertex* pVertices = NULL;
+
+	unsigned int numberOfVertsOnGPU = bunnyMesh.vecTriangles.size() * 3;
+	// Dynamic allocation of memory...
+	pVertices = new sVertex[numberOfVertsOnGPU];
+
+	// Copy the data from the cMesh format to the sVertex array format
+	// { -0.0248608, 0.122913,  3.0f,  1.0f, 1.0f, 1.0f },
+
+	unsigned int triIndex = 0;	// Index into the cMesh triangle array
+	unsigned int vertIndex = 0;	// Index into the vertex array 
+	for (; triIndex != bunnyMesh.vecTriangles.size(); triIndex++, vertIndex += 3)
+	{
+		// Make a copy (so that the next line is not crazy long)
+		sPlyTriangle tempVert = bunnyMesh.vecTriangles[triIndex];
+
+		// The one for the GPU (vertex buffer)
+		pVertices[vertIndex + 0].x = bunnyMesh.vecVertices[tempVert.vert_index_1].x;
+		pVertices[vertIndex + 0].y = bunnyMesh.vecVertices[tempVert.vert_index_1].y;
+		pVertices[vertIndex + 0].z = bunnyMesh.vecVertices[tempVert.vert_index_1].z;
+		pVertices[vertIndex + 0].r = 1.0f;
+		pVertices[vertIndex + 0].g = 1.0f;
+		pVertices[vertIndex + 0].b = 1.0f;
+
+		pVertices[vertIndex + 1].x = bunnyMesh.vecVertices[tempVert.vert_index_2].x;
+		pVertices[vertIndex + 1].y = bunnyMesh.vecVertices[tempVert.vert_index_2].y;
+		pVertices[vertIndex + 1].z = bunnyMesh.vecVertices[tempVert.vert_index_2].z;
+		pVertices[vertIndex + 1].r = 1.0f;
+		pVertices[vertIndex + 1].g = 1.0f;
+		pVertices[vertIndex + 1].b = 1.0f;
+
+		pVertices[vertIndex + 2].x = bunnyMesh.vecVertices[tempVert.vert_index_3].x;
+		pVertices[vertIndex + 2].y = bunnyMesh.vecVertices[tempVert.vert_index_3].y;
+		pVertices[vertIndex + 2].z = bunnyMesh.vecVertices[tempVert.vert_index_3].z;
+		pVertices[vertIndex + 2].r = 1.0f;
+		pVertices[vertIndex + 2].g = 1.0f;
+		pVertices[vertIndex + 2].b = 1.0f;
+
+
+
+	}// for (; triIndex !=
+
 
 	// NOTE: OpenGL error checks have been omitted for brevity
 	glGenBuffers(1, &vertex_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	unsigned int sizeOfVertexBufferInBytes = 
+		numberOfVertsOnGPU * sizeof(sVertex);
+
+	// Copies the data into the CURRENT buffer
+	glBufferData(GL_ARRAY_BUFFER, 
+				 sizeOfVertexBufferInBytes, // sizeof(vertices), 
+				 pVertices,					//void*  vertices, 
+				 GL_STATIC_DRAW);
+
+	//sVertex* pVertices = NULL;
+	//sVertex vertices[4822] = {....}
+	
 
 	vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
@@ -161,12 +234,19 @@ int main(void)
 	vcol_location = glGetAttribLocation(program, "vColour");
 
 	glEnableVertexAttribArray(vpos_location);
-	glVertexAttribPointer(vpos_location, 3, GL_FLOAT, GL_FALSE,
-		sizeof(vertices[0]), (void*)0);
+	glVertexAttribPointer(vpos_location, 
+						  3, 
+						  GL_FLOAT, 
+						  GL_FALSE,
+						  sizeof(sVertex),	// sizeof(vertices[0]),
+						  (void*)0);
 
 	glEnableVertexAttribArray(vcol_location);
-	glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
-		sizeof(vertices[0]), (void*)(sizeof(float) * 3));
+	glVertexAttribPointer(vcol_location, 3, 
+						  GL_FLOAT, 
+						  GL_FALSE,
+						  sizeof(sVertex),	// sizeof(vertices[0]),
+						  (void*)(sizeof(float) * 3));
 
 
 
@@ -184,7 +264,7 @@ int main(void)
 		glfwGetFramebufferSize(window, &width, &height);
 		ratio = width / (float)height;
 
-//		glViewport(0, 0, 640, 480);
+		glViewport(0, 0, width, height);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//         mat4x4_identity(m);
@@ -197,6 +277,18 @@ int main(void)
 
 		m = m * rotateZ;
 
+		glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
+			(float)glfwGetTime(),					// Angle 
+			glm::vec3(0.0f, 1.0f, 0.0f));
+
+		m = m * rotateY;
+
+		glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
+			glm::radians(0.0f),	// (float)glfwGetTime(),					// Angle 
+			glm::vec3(1.0f, 0.0f, 0.0f));
+
+		m = m * rotateX;
+
 		// Move it to the +ve x
 		glm::mat4 matTrans = glm::translate( glm::mat4(1.0f),
 			                                 glm::vec3(0.0f, -1.0f, 0.0f));
@@ -204,7 +296,7 @@ int main(void)
 
 		// Scale
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f),
-			                         glm::vec3(6.0f, 6.0f, 6.0f));
+			                         glm::vec3(1.0f, 1.0f, 1.0f));
 		m = m * scale;
 
 
@@ -241,11 +333,22 @@ int main(void)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-		glDrawArrays(GL_TRIANGLES, 0, 2844);
+//		glDrawArrays(GL_TRIANGLES, 0, 2844);
+		glDrawArrays(GL_TRIANGLES, 0, numberOfVertsOnGPU);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 	glfwDestroyWindow(window);
 	glfwTerminate();
+
+
+	// Delete everything
+	delete pTheModelLoader;
+
+	// Watch out!!
+	// sVertex* pVertices = new sVertex[numberOfVertsOnGPU];
+	delete [] pVertices;		// If it's an array, also use [] bracket
+
 	exit(EXIT_SUCCESS);
 }

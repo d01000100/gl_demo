@@ -14,7 +14,7 @@ public:
 	// Takes the filename to load
 	// Returns by ref the mesh
 	bool LoadPlyModel(std::string filename,
-		              cMesh theMesh);
+		              cMesh &theMesh);		// Note the & (by reference)
 
 };
 

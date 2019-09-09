@@ -24,7 +24,7 @@ public:
 	~cMesh() {};		// Empty d'tor
 	// Store the vertices
 	std::vector<sPlyVertexXYZ> vecVertices;
-	int x;
+
 	// Store the triangles
 	std::vector<sPlyTriangle> vecTriangles;
 
