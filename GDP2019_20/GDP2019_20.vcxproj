@@ -145,6 +145,10 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="theMain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cMesh.h" />
+    <ClInclude Include="cModelLoader.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
