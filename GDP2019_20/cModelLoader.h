@@ -13,8 +13,9 @@ public:
 
 	// Takes the filename to load
 	// Returns by ref the mesh
-	bool LoadPlyModel( std::string filename, 
-	                   cMesh theMesh);
+	bool LoadPlyModel(std::string filename,
+		              cMesh theMesh);
+
 };
 
 #endif //_cModelLoader_HG_2019_09_09_

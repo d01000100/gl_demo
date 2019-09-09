@@ -20,8 +20,8 @@ struct sPlyTriangle
 class cMesh
 {
 public:
-	cMesh();
-	~cMesh();
+	cMesh() {};			// Empty c'tor
+	~cMesh() {};		// Empty d'tor
 	// Store the vertices
 	std::vector<sPlyVertexXYZ> vecVertices;
 	int x;
