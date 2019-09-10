@@ -24,12 +24,21 @@
     <ClCompile Include="cModelLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cVAOManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cVAOManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

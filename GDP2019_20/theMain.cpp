@@ -1,5 +1,7 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "GLCommon.h"
+//#include <glad/glad.h>
+//#include <GLFW/glfw3.h>
+
 //#include "linmath.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp> // glm::vec3
@@ -14,13 +16,15 @@
 
 #include <iostream>		// C++ IO standard stuff
 
-#include "cModelLoader.h"				
+#include "cModelLoader.h"			
+#include "cVAOManager.h"		// NEW
 
-struct sVertex
-{
-	float x, y, z;			// 32 bit 4 bytes  12
-	float r, g, b;			// 12 bytes
-};
+// Is already inside the cVAOManager.h file
+//struct sVertex
+//{
+//	float x, y, z;			// 32 bit 4 bytes  12
+//	float r, g, b;			// 12 bytes
+//};
 
 //sVertex vertices[5000];		//	on the stack
 //sVertex* pVertices = new sVertex[5000];			// On the heap
@@ -146,71 +150,76 @@ int main(void)
 	cModelLoader* pTheModelLoader = new cModelLoader();	// Heap
 
 	cMesh bunnyMesh;		// This is stack based
-	//if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_res4_XYZ.ply", bunnyMesh) )
-	if ( ! pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", bunnyMesh) )
+//	if ( ! pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", bunnyMesh) )
+	if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_res4_XYZ.ply", bunnyMesh) )
 	{
 		std::cout << "Didn't find the file" << std::endl;
 	}
 
+	// **
+	// At this point, our model is loaded and stored into a cMesh object.
+	// Pass this cMesh object into the VAOManager to put onto the GPU
+	// **
+//
 	// Copy the mesh into a local array to go to the GPU
 	//sVertex* pVertices = NULL;
-
-	unsigned int numberOfVertsOnGPU = bunnyMesh.vecTriangles.size() * 3;
-	// Dynamic allocation of memory...
-	pVertices = new sVertex[numberOfVertsOnGPU];
-
-	// Copy the data from the cMesh format to the sVertex array format
-	// { -0.0248608, 0.122913,  3.0f,  1.0f, 1.0f, 1.0f },
-
-	unsigned int triIndex = 0;	// Index into the cMesh triangle array
-	unsigned int vertIndex = 0;	// Index into the vertex array 
-	for (; triIndex != bunnyMesh.vecTriangles.size(); triIndex++, vertIndex += 3)
-	{
-		// Make a copy (so that the next line is not crazy long)
-		sPlyTriangle tempVert = bunnyMesh.vecTriangles[triIndex];
-
-		// The one for the GPU (vertex buffer)
-		pVertices[vertIndex + 0].x = bunnyMesh.vecVertices[tempVert.vert_index_1].x;
-		pVertices[vertIndex + 0].y = bunnyMesh.vecVertices[tempVert.vert_index_1].y;
-		pVertices[vertIndex + 0].z = bunnyMesh.vecVertices[tempVert.vert_index_1].z;
-		pVertices[vertIndex + 0].r = 1.0f;
-		pVertices[vertIndex + 0].g = 1.0f;
-		pVertices[vertIndex + 0].b = 1.0f;
-
-		pVertices[vertIndex + 1].x = bunnyMesh.vecVertices[tempVert.vert_index_2].x;
-		pVertices[vertIndex + 1].y = bunnyMesh.vecVertices[tempVert.vert_index_2].y;
-		pVertices[vertIndex + 1].z = bunnyMesh.vecVertices[tempVert.vert_index_2].z;
-		pVertices[vertIndex + 1].r = 1.0f;
-		pVertices[vertIndex + 1].g = 1.0f;
-		pVertices[vertIndex + 1].b = 1.0f;
-
-		pVertices[vertIndex + 2].x = bunnyMesh.vecVertices[tempVert.vert_index_3].x;
-		pVertices[vertIndex + 2].y = bunnyMesh.vecVertices[tempVert.vert_index_3].y;
-		pVertices[vertIndex + 2].z = bunnyMesh.vecVertices[tempVert.vert_index_3].z;
-		pVertices[vertIndex + 2].r = 1.0f;
-		pVertices[vertIndex + 2].g = 1.0f;
-		pVertices[vertIndex + 2].b = 1.0f;
-
-
-
-	}// for (; triIndex !=
-
-
-	// NOTE: OpenGL error checks have been omitted for brevity
-	glGenBuffers(1, &vertex_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-
-	unsigned int sizeOfVertexBufferInBytes = 
-		numberOfVertsOnGPU * sizeof(sVertex);
-
-	// Copies the data into the CURRENT buffer
-	glBufferData(GL_ARRAY_BUFFER, 
-				 sizeOfVertexBufferInBytes, // sizeof(vertices), 
-				 pVertices,					//void*  vertices, 
-				 GL_STATIC_DRAW);
-
-	//sVertex* pVertices = NULL;
-	//sVertex vertices[4822] = {....}
+//
+	//unsigned int numberOfVertsOnGPU = bunnyMesh.vecTriangles.size() * 3;
+	//// Dynamic allocation of memory...
+	//pVertices = new sVertex[numberOfVertsOnGPU];
+//
+	//// Copy the data from the cMesh format to the sVertex array format
+	//// { -0.0248608, 0.122913,  3.0f,  1.0f, 1.0f, 1.0f },
+//
+	//unsigned int triIndex = 0;	// Index into the cMesh triangle array
+	//unsigned int vertIndex = 0;	// Index into the vertex array 
+	//for (; triIndex != bunnyMesh.vecTriangles.size(); triIndex++, vertIndex += 3)
+	//{
+	//	// Make a copy (so that the next line is not crazy long)
+	//	sPlyTriangle tempVert = bunnyMesh.vecTriangles[triIndex];
+//
+	//	// The one for the GPU (vertex buffer)
+	//	pVertices[vertIndex + 0].x = bunnyMesh.vecVertices[tempVert.vert_index_1].x;
+	//	pVertices[vertIndex + 0].y = bunnyMesh.vecVertices[tempVert.vert_index_1].y;
+	//	pVertices[vertIndex + 0].z = bunnyMesh.vecVertices[tempVert.vert_index_1].z;
+	//	pVertices[vertIndex + 0].r = 1.0f;
+	//	pVertices[vertIndex + 0].g = 1.0f;
+	//	pVertices[vertIndex + 0].b = 1.0f;
+//
+	//	pVertices[vertIndex + 1].x = bunnyMesh.vecVertices[tempVert.vert_index_2].x;
+	//	pVertices[vertIndex + 1].y = bunnyMesh.vecVertices[tempVert.vert_index_2].y;
+	//	pVertices[vertIndex + 1].z = bunnyMesh.vecVertices[tempVert.vert_index_2].z;
+	//	pVertices[vertIndex + 1].r = 1.0f;
+	//	pVertices[vertIndex + 1].g = 1.0f;
+	//	pVertices[vertIndex + 1].b = 1.0f;
+//
+	//	pVertices[vertIndex + 2].x = bunnyMesh.vecVertices[tempVert.vert_index_3].x;
+	//	pVertices[vertIndex + 2].y = bunnyMesh.vecVertices[tempVert.vert_index_3].y;
+	//	pVertices[vertIndex + 2].z = bunnyMesh.vecVertices[tempVert.vert_index_3].z;
+	//	pVertices[vertIndex + 2].r = 1.0f;
+	//	pVertices[vertIndex + 2].g = 1.0f;
+	//	pVertices[vertIndex + 2].b = 1.0f;
+//
+//
+//
+	//}// for (; triIndex !=
+//
+//
+	//// NOTE: OpenGL error checks have been omitted for brevity
+	//glGenBuffers(1, &vertex_buffer);
+	//glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+//
+	//unsigned int sizeOfVertexBufferInBytes = 
+	//	numberOfVertsOnGPU * sizeof(sVertex);
+//
+	//// Copies the data into the CURRENT buffer
+	//glBufferData(GL_ARRAY_BUFFER, 
+	//			 sizeOfVertexBufferInBytes, // sizeof(vertices), 
+	//			 pVertices,					//void*  vertices, 
+	//			 GL_STATIC_DRAW);
+//
+	////sVertex* pVertices = NULL;
+	////sVertex vertices[4822] = {....}
 	
 
 	vertex_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -220,6 +229,7 @@ int main(void)
 	fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragment_shader, 1, &fragment_shader_text, NULL);
 	glCompileShader(fragment_shader);
+
 	program = glCreateProgram();
 
 	glAttachShader(program, vertex_shader);
@@ -228,30 +238,40 @@ int main(void)
 
 	//	float x, y, z;		vPosition			"attribute vec3 vPosition;\n"
 	//	float r, g, b;		vColour				"attribute vec3 vColour;\n"
-	
-	mvp_location = glGetUniformLocation(program, "MVP");
-	vpos_location = glGetAttribLocation(program, "vPosition");
-	vcol_location = glGetAttribLocation(program, "vColour");
-
-	glEnableVertexAttribArray(vpos_location);
-	glVertexAttribPointer(vpos_location, 
-						  3, 
-						  GL_FLOAT, 
-						  GL_FALSE,
-						  sizeof(sVertex),	// sizeof(vertices[0]),
-						  (void*)0);
-
-	glEnableVertexAttribArray(vcol_location);
-	glVertexAttribPointer(vcol_location, 3, 
-						  GL_FLOAT, 
-						  GL_FALSE,
-						  sizeof(sVertex),	// sizeof(vertices[0]),
-						  (void*)(sizeof(float) * 3));
-
-
+//	
+	//mvp_location = glGetUniformLocation(program, "MVP");
+	//vpos_location = glGetAttribLocation(program, "vPosition");
+	//vcol_location = glGetAttribLocation(program, "vColour");
+//
+	//glEnableVertexAttribArray(vpos_location);
+	//glVertexAttribPointer(vpos_location, 
+	//					  3, 
+	//					  GL_FLOAT, 
+	//					  GL_FALSE,
+	//					  sizeof(sVertex),	// sizeof(vertices[0]),
+	//					  (void*)0);
+//
+	//glEnableVertexAttribArray(vcol_location);
+	//glVertexAttribPointer(vcol_location, 3, 
+	//					  GL_FLOAT, 
+	//					  GL_FALSE,
+	//					  sizeof(sVertex),	// sizeof(vertices[0]),
+	//					  (void*)(sizeof(float) * 3));
 
 
+	// Create a VAO Manager...
+	// #include "cVAOManager.h"  (at the top of your file)
+	cVAOManager* pTheVAOManager = new cVAOManager();
 
+	// Note, the "filename" here is really the "model name" 
+	//  that we can look up later (i.e. it doesn't have to be the file name)
+	sModelDrawInfo drawInfo;
+	pTheVAOManager->LoadModelIntoVAO("bunny", 
+									 bunnyMesh, 
+									 drawInfo, 
+									 program);
+
+	// At this point, the model is loaded into the GPU
 
 
 	while (!glfwWindowShouldClose(window))
@@ -334,7 +354,7 @@ int main(void)
 
 
 //		glDrawArrays(GL_TRIANGLES, 0, 2844);
-		glDrawArrays(GL_TRIANGLES, 0, numberOfVertsOnGPU);
+//		glDrawArrays(GL_TRIANGLES, 0, numberOfVertsOnGPU);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -345,6 +365,7 @@ int main(void)
 
 	// Delete everything
 	delete pTheModelLoader;
+	delete pTheVAOManager;
 
 	// Watch out!!
 	// sVertex* pVertices = new sVertex[numberOfVertsOnGPU];

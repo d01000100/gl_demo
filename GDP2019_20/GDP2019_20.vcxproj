@@ -143,12 +143,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cModelLoader.cpp" />
+    <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="theMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cModelLoader.h" />
+    <ClInclude Include="cVAOManager.h" />
+    <ClInclude Include="GLCommon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
