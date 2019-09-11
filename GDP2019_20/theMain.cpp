@@ -35,7 +35,7 @@
 //};
 //sVertex vertices[5000];		//	on the stack
 //sVertex* pVertices = new sVertex[5000];			// On the heap
-sVertex* pVertices = NULL;
+//sVertex* pVertices = NULL;
 
 //float x, y;			// Position
 //float r, g, b;	
@@ -239,7 +239,7 @@ int main(void)
 	//	float x, y, z;		vPosition			"attribute vec3 vPosition;\n"
 	//	float r, g, b;		vColour				"attribute vec3 vColour;\n"
 //	
-	//mvp_location = glGetUniformLocation(program, "MVP");
+	mvp_location = glGetUniformLocation(program, "MVP");
 	//vpos_location = glGetAttribLocation(program, "vPosition");
 	//vcol_location = glGetAttribLocation(program, "vColour");
 //
@@ -356,6 +356,17 @@ int main(void)
 //		glDrawArrays(GL_TRIANGLES, 0, 2844);
 //		glDrawArrays(GL_TRIANGLES, 0, numberOfVertsOnGPU);
 
+		sModelDrawInfo drawInfo;
+		if (pTheVAOManager->FindDrawInfoByModelName("bunny", drawInfo))
+		{
+			glBindVertexArray(drawInfo.VAO_ID);
+			glDrawElements(GL_TRIANGLES,
+						   drawInfo.numberOfIndices,
+						   GL_UNSIGNED_INT,
+						   0);			
+			glBindVertexArray(0);
+		}
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
@@ -365,11 +376,11 @@ int main(void)
 
 	// Delete everything
 	delete pTheModelLoader;
-	delete pTheVAOManager;
+//	delete pTheVAOManager;
 
 	// Watch out!!
 	// sVertex* pVertices = new sVertex[numberOfVertsOnGPU];
-	delete [] pVertices;		// If it's an array, also use [] bracket
+//	delete [] pVertices;		// If it's an array, also use [] bracket
 
 	exit(EXIT_SUCCESS);
 }
