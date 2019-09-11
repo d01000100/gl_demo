@@ -156,6 +156,10 @@ int main(void)
 		std::cout << "Didn't find the file" << std::endl;
 	}
 
+	cMesh pirateMesh;
+	pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", pirateMesh);
+
+
 	// **
 	// At this point, our model is loaded and stored into a cMesh object.
 	// Pass this cMesh object into the VAOManager to put onto the GPU
@@ -271,6 +275,12 @@ int main(void)
 									 drawInfo, 
 									 program);
 
+	sModelDrawInfo drawInfoPirate;
+	pTheVAOManager->LoadModelIntoVAO("pirate", 
+									 pirateMesh,
+									 drawInfoPirate, 
+									 program);
+
 	// At this point, the model is loaded into the GPU
 
 
@@ -357,7 +367,7 @@ int main(void)
 //		glDrawArrays(GL_TRIANGLES, 0, numberOfVertsOnGPU);
 
 		sModelDrawInfo drawInfo;
-		if (pTheVAOManager->FindDrawInfoByModelName("bunny", drawInfo))
+		if (pTheVAOManager->FindDrawInfoByModelName("pirate", drawInfo))
 		{
 			glBindVertexArray(drawInfo.VAO_ID);
 			glDrawElements(GL_TRIANGLES,

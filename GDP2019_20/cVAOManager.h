@@ -40,7 +40,7 @@ struct sModelDrawInfo
 	// The "local" (i.e. "CPU side" temporary array)
 	sVertex* pVertices;	//  = 0;
 	// The index buffer (CPU side)
-	unsigned int* pIndices;
+	unsigned int* pIndices;		
 };
 
 
