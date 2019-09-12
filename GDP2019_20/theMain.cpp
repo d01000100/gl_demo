@@ -18,6 +18,7 @@
 
 #include "cModelLoader.h"			
 #include "cVAOManager.h"		// NEW
+#include "cGameObject.h"
 
 // Is already inside the cVAOManager.h file
 //struct sVertex
@@ -284,6 +285,26 @@ int main(void)
 	// At this point, the model is loaded into the GPU
 
 
+	// Load up my "scene" 
+	std::vector<cGameObject> vecGameObjects;
+
+	cGameObject pirate;
+	pirate.meshName = "pirate";
+	pirate.positionXYZ = glm::vec3(2.0f,0.0f,0.0f);
+	pirate.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
+	pirate.scale = 0.1f;
+
+	cGameObject bunny;
+	bunny.meshName = "bunny";
+	bunny.positionXYZ = glm::vec3(-2.0f,0.0f,0.0f);
+	bunny.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
+	bunny.scale = 5.0f;
+
+	vecGameObjects.push_back(pirate);
+	vecGameObjects.push_back(bunny);
+
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 		float ratio;
@@ -297,85 +318,119 @@ int main(void)
 		glViewport(0, 0, width, height);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//         mat4x4_identity(m);
-		m = glm::mat4(1.0f);
 
-		//mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-		glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-			glm::radians(0.0f),	// (float)glfwGetTime(),					// Angle 
-			glm::vec3(0.0f, 0.0f, 1.0f));
-
-		m = m * rotateZ;
-
-		glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
-			(float)glfwGetTime(),					// Angle 
-			glm::vec3(0.0f, 1.0f, 0.0f));
-
-		m = m * rotateY;
-
-		glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
-			glm::radians(0.0f),	// (float)glfwGetTime(),					// Angle 
-			glm::vec3(1.0f, 0.0f, 0.0f));
-
-		m = m * rotateX;
-
-		// Move it to the +ve x
-		glm::mat4 matTrans = glm::translate( glm::mat4(1.0f),
-			                                 glm::vec3(0.0f, -1.0f, 0.0f));
-		m = m * matTrans;
-
-		// Scale
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f),
-			                         glm::vec3(1.0f, 1.0f, 1.0f));
-		m = m * scale;
+		// 
+		vecGameObjects[0].positionXYZ.x -= 0.001f;
+		vecGameObjects[1].rotationXYZ.y += 0.001f;
+		vecGameObjects[1].scale += 0.01f;
 
 
-		//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		p = glm::perspective(0.6f,		// FOV
-			ratio,			// Aspect ratio
-			0.1f,			// Near clipping plane
-			1000.0f);		// Far clipping plane
-
-		v = glm::mat4(1.0f);
-
-		//glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
-		//glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-		//glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
-
-		v = glm::lookAt(cameraEye,
-			cameraTarget,
-			upVector);
-
-		//mat4x4_mul(mvp, p, m);
-		mvp = p * v * m;
-
-
-		glUseProgram(program);
-
-
-		//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
-		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
-
-		// This will change the fill mode to something 
-		//  GL_FILL is solid 
-		//  GL_LINE is "wireframe"
-		//glPointSize(15.0f);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
-//		glDrawArrays(GL_TRIANGLES, 0, 2844);
-//		glDrawArrays(GL_TRIANGLES, 0, numberOfVertsOnGPU);
-
-		sModelDrawInfo drawInfo;
-		if (pTheVAOManager->FindDrawInfoByModelName("pirate", drawInfo))
+		// **************************************************
+		// **************************************************
+		// Loop to draw everything in the scene
+		for (int index = 0; index != vecGameObjects.size(); index++)
 		{
-			glBindVertexArray(drawInfo.VAO_ID);
-			glDrawElements(GL_TRIANGLES,
-						   drawInfo.numberOfIndices,
-						   GL_UNSIGNED_INT,
-						   0);			
-			glBindVertexArray(0);
-		}
+
+			//         mat4x4_identity(m);
+			m = glm::mat4(1.0f);
+
+
+
+			// ******* TRANSLATION TRANSFORM *********
+			glm::mat4 matTrans 
+				= glm::translate(glm::mat4(1.0f),
+								 glm::vec3(vecGameObjects[index].positionXYZ.x,
+										   vecGameObjects[index].positionXYZ.y,
+										   vecGameObjects[index].positionXYZ.z));
+			m = m * matTrans;
+			// ******* TRANSLATION TRANSFORM *********
+
+
+
+			// ******* ROTATION TRANSFORM *********
+			//mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+			glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
+				vecGameObjects[index].rotationXYZ.z,					// Angle 
+				glm::vec3(0.0f, 0.0f, 1.0f));
+			m = m * rotateZ;
+
+			glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
+				vecGameObjects[index].rotationXYZ.y,	//(float)glfwGetTime(),					// Angle 
+				glm::vec3(0.0f, 1.0f, 0.0f));
+			m = m * rotateY;
+
+			glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
+				vecGameObjects[index].rotationXYZ.x,	// (float)glfwGetTime(),					// Angle 
+				glm::vec3(1.0f, 0.0f, 0.0f));
+			m = m * rotateX;
+			// ******* ROTATION TRANSFORM *********
+
+
+
+			// ******* SCALE TRANSFORM *********
+			glm::mat4 scale = glm::scale(glm::mat4(1.0f),
+										 glm::vec3(vecGameObjects[index].scale, 
+												   vecGameObjects[index].scale,
+												   vecGameObjects[index].scale));
+			m = m * scale;
+			// ******* SCALE TRANSFORM *********
+
+
+			//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+			p = glm::perspective(0.6f,		// FOV
+				ratio,			// Aspect ratio
+				0.1f,			// Near clipping plane
+				1000.0f);		// Far clipping plane
+
+			v = glm::mat4(1.0f);
+
+			//glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
+			//glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+			//glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
+
+			v = glm::lookAt(cameraEye,
+				cameraTarget,
+				upVector);
+
+			//mat4x4_mul(mvp, p, m);
+			mvp = p * v * m;
+
+
+			glUseProgram(program);
+
+
+			//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
+			glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
+
+			// This will change the fill mode to something 
+			//  GL_FILL is solid 
+			//  GL_LINE is "wireframe"
+			//glPointSize(15.0f);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+	//		glDrawArrays(GL_TRIANGLES, 0, 2844);
+	//		glDrawArrays(GL_TRIANGLES, 0, numberOfVertsOnGPU);
+
+			sModelDrawInfo drawInfo;
+			//if (pTheVAOManager->FindDrawInfoByModelName("bunny", drawInfo))
+			if (pTheVAOManager->FindDrawInfoByModelName(vecGameObjects[index].meshName, drawInfo))
+			{
+				glBindVertexArray(drawInfo.VAO_ID);
+				glDrawElements(GL_TRIANGLES,
+							   drawInfo.numberOfIndices,
+							   GL_UNSIGNED_INT,
+							   0);			
+				glBindVertexArray(0);
+			}
+
+		}//for (int index...
+
+		 // **************************************************
+		// **************************************************
+
+
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

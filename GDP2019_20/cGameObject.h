@@ -1,0 +1,23 @@
+#ifndef _cGameObject_HG_
+#define _cGameObject_HG_
+
+#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
+#include <string>
+
+class cGameObject
+{
+public:
+	cGameObject()
+	{
+		scale = 0.0f;
+	}
+	std::string meshName;			//"Pirate"
+	glm::vec3  positionXYZ;
+	glm::vec3  rotationXYZ;
+	float scale;
+};
+
+#endif
+
+

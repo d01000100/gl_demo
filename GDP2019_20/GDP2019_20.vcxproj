@@ -148,6 +148,7 @@
     <ClCompile Include="theMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cGameObject.h" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cModelLoader.h" />
     <ClInclude Include="cVAOManager.h" />
