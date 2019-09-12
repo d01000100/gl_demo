@@ -71,6 +71,9 @@ glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
+glm::vec3 sexyLightLocation = glm::vec3(0.0f,0.0f,0.0f);
+
+
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	// Move the camera (A & D for left and right, along the x axis)
@@ -101,6 +104,16 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	if (key == GLFW_KEY_S)
 	{
 		cameraEye.z += 0.1f;		// Move the camera +0.01f units
+	}
+
+
+	if (key == GLFW_KEY_J)
+	{
+		sexyLightLocation.x -= 0.1f;
+	}
+	if (key == GLFW_KEY_K)
+	{
+		sexyLightLocation.x += 0.1f;
 	}
 
 
@@ -162,6 +175,8 @@ int main(void)
 	cMesh pirateMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", pirateMesh);
 
+	cMesh terrainMesh;
+	pTheModelLoader->LoadPlyModel("assets/models/Terrain.ply", terrainMesh);
 
 	// **
 	// At this point, our model is loaded and stored into a cMesh object.
@@ -303,6 +318,12 @@ int main(void)
 									 drawInfoPirate, 
 									 shaderProgID);
 
+	sModelDrawInfo drawInfoTerrain;
+	pTheVAOManager->LoadModelIntoVAO("terrain", 
+									 terrainMesh,
+									 drawInfoTerrain,
+									 shaderProgID);
+
 	// At this point, the model is loaded into the GPU
 
 
@@ -311,15 +332,15 @@ int main(void)
 
 	cGameObject pirate;
 	pirate.meshName = "pirate";
-	pirate.positionXYZ = glm::vec3(2.0f,0.0f,0.0f);
-	pirate.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
+	pirate.positionXYZ = glm::vec3(0.0f, 0.0f, 10.0f);
+	pirate.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pirate.scale = 0.1f;
 	pirate.objectColourRGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	cGameObject bunny;
 	bunny.meshName = "bunny";
-	bunny.positionXYZ = glm::vec3(-2.0f,0.0f,0.0f);
-	bunny.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
+	bunny.positionXYZ = glm::vec3(0.0f, 0.0f, -2.0f);		// -4 on z
+	bunny.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	bunny.scale = 5.0f;
 	bunny.objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 
@@ -330,10 +351,24 @@ int main(void)
 	bunny2.scale = 3.5f;
 	bunny2.objectColourRGBA = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
 
+	cGameObject terrain;
+	terrain.meshName = "terrain";
+	terrain.positionXYZ = glm::vec3(0.0f,-10.0f,0.0f);
+	terrain.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
+	terrain.scale = 0.5f;
+	terrain.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+
 	vecGameObjects.push_back(pirate);
 	vecGameObjects.push_back(bunny);
 	vecGameObjects.push_back(bunny2);
+	vecGameObjects.push_back(terrain);
 
+	//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+
+
+	glEnable(GL_DEPTH);			// Write to the depth buffer
+	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
 
 
 	while (!glfwWindowShouldClose(window))
@@ -346,8 +381,29 @@ int main(void)
 		glfwGetFramebufferSize(window, &width, &height);
 		ratio = width / (float)height;
 
+		// Projection matrix
+		p = glm::perspective(0.6f,		// FOV
+							 ratio,			// Aspect ratio
+							 0.1f,			// Near clipping plane
+							 1000.0f);		// Far clipping plane
+
+		// View matrix
+		v = glm::mat4(1.0f);
+
+		//glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
+		//glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+		//glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
+
+		v = glm::lookAt(cameraEye,
+						cameraTarget,
+						upVector);
+
+
 		glViewport(0, 0, width, height);
-		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Clear both the colour buffer (what we see) and the 
+		//  depth (or z) buffer.
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 
 		// 
@@ -407,21 +463,6 @@ int main(void)
 			// ******* SCALE TRANSFORM *********
 
 
-			//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-			p = glm::perspective(0.6f,		// FOV
-				ratio,			// Aspect ratio
-				0.1f,			// Near clipping plane
-				1000.0f);		// Far clipping plane
-
-			v = glm::mat4(1.0f);
-
-			//glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
-			//glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-			//glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
-
-			v = glm::lookAt(cameraEye,
-				cameraTarget,
-				upVector);
 
 			//mat4x4_mul(mvp, p, m);
 			mvp = p * v * m;
@@ -432,7 +473,19 @@ int main(void)
 
 
 			//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
-			glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
+			//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
+
+			//uniform mat4 matModel;		// Model or World 
+			//uniform mat4 matView; 		// View or camera
+			//uniform mat4 matProj;
+			GLint matModel_UL = glGetUniformLocation(shaderProgID, "matModel");
+			GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
+			GLint matProj_UL = glGetUniformLocation(shaderProgID, "matProj");
+	
+			glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m) );
+			glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v) );
+			glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p) );
+
 
 
 			// Find the location of the uniform variable newColour
@@ -443,7 +496,21 @@ int main(void)
 						vecGameObjects[index].objectColourRGBA.g,
 						vecGameObjects[index].objectColourRGBA.b);
 
+			//uniform float newColourRed;
+			//uniform float newColourGreen;
+			//uniform float newColourBlue;
+			GLint newColourRed_UL = glGetUniformLocation(shaderProgID, "newColourRed");
+			GLint newColourGreen_UL = glGetUniformLocation(shaderProgID, "newColourGreen");
+			GLint newColourBlue_UL = glGetUniformLocation(shaderProgID, "newColourBlue");
 
+			glUniform1f(newColourRed_UL, vecGameObjects[index].objectColourRGBA.r);
+			glUniform1f(newColourGreen_UL, vecGameObjects[index].objectColourRGBA.g);
+			glUniform1f(newColourBlue_UL, vecGameObjects[index].objectColourRGBA.b);
+
+
+			GLint lighPosition_UL = glGetUniformLocation( shaderProgID, "lightPosition");
+			glUniform3f(lighPosition_UL, sexyLightLocation.x, 
+						sexyLightLocation.y, sexyLightLocation.z );
 
 
 
@@ -451,7 +518,7 @@ int main(void)
 			//  GL_FILL is solid 
 			//  GL_LINE is "wireframe"
 			//glPointSize(15.0f);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 
 	//		glDrawArrays(GL_TRIANGLES, 0, 2844);
