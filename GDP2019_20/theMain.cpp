@@ -20,6 +20,8 @@
 #include "cVAOManager.h"		// NEW
 #include "cGameObject.h"
 
+#include "cShaderManager.h"
+
 // Is already inside the cVAOManager.h file
 //struct sVertex
 //{
@@ -44,25 +46,25 @@
 //	float x, y, z;		vPosition
 //	float r, g, b;		vColour
 
-static const char* vertex_shader_text =
-"#version 110\n"
-"uniform mat4 MVP;\n"
-"attribute vec3 vColour;\n"
-"attribute vec3 vPosition;\n"
-"varying vec3 color;\n"
-"void main()\n"
-"{\n"
-"    vec3 vertPosition = vPosition;\n"
-"    gl_Position = MVP * vec4(vertPosition, 1.0);\n"
-"    color = vColour;\n"
-"}\n";
-static const char* fragment_shader_text =
-"#version 110\n"
-"varying vec3 color;\n"
-"void main()\n"
-"{\n"
-"    gl_FragColor = vec4(color, 1.0);\n"
-"}\n";
+//static const char* vertex_shader_text =
+//"#version 110\n"
+//"uniform mat4 MVP;\n"
+//"attribute vec3 vColour;\n"
+//"attribute vec3 vPosition;\n"
+//"varying vec3 color;\n"
+//"void main()\n"
+//"{\n"
+//"    vec3 vertPosition = vPosition;\n"
+//"    gl_Position = MVP * vec4(vertPosition, 1.0);\n"
+//"    color = vColour;\n"
+//"}\n";
+//static const char* fragment_shader_text =
+//"#version 110\n"
+//"varying vec3 color;\n"
+//"void main()\n"
+//"{\n"
+//"    gl_FragColor = vec4(color, 1.0);\n"
+//"}\n";
 
 
 glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
@@ -118,8 +120,8 @@ int main(void)
 
 
 	GLFWwindow* window;
-	GLuint vertex_buffer, vertex_shader, fragment_shader, program;
-	GLint mvp_location, vpos_location, vcol_location;
+	//GLuint vertex_buffer, vertex_shader, fragment_shader, program;
+	GLint mvp_location; /*, vpos_location, vcol_location;*/
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -227,24 +229,43 @@ int main(void)
 	////sVertex vertices[4822] = {....}
 	
 
-	vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
-	glCompileShader(vertex_shader);
+	//vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+	//glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
+	//glCompileShader(vertex_shader);
 
-	fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment_shader, 1, &fragment_shader_text, NULL);
-	glCompileShader(fragment_shader);
+	//fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+	//glShaderSource(fragment_shader, 1, &fragment_shader_text, NULL);
+	//glCompileShader(fragment_shader);
 
-	program = glCreateProgram();
+	//program = glCreateProgram();
 
-	glAttachShader(program, vertex_shader);
-	glAttachShader(program, fragment_shader);
-	glLinkProgram(program);
+	//glAttachShader(program, vertex_shader);
+	//glAttachShader(program, fragment_shader);
+	//glLinkProgram(program);
+
+	cShaderManager* pTheShaderManager = new cShaderManager();
+
+	cShaderManager::cShader vertexShad;
+	vertexShad.fileName = "assets/shaders/vertexShader01.glsl";
+
+	cShaderManager::cShader fragShader;
+	fragShader.fileName = "assets/shaders/fragmentShader01.glsl";
+
+	if (!pTheShaderManager->createProgramFromFile("SimpleShader", vertexShad, fragShader))
+	{
+		std::cout << "Error: didn't compile the shader" << std::endl;
+		std::cout << pTheShaderManager->getLastError();
+		return -1;
+	}
+
+	GLuint shaderProgID = pTheShaderManager->getIDFromFriendlyName("SimpleShader");
+
 
 	//	float x, y, z;		vPosition			"attribute vec3 vPosition;\n"
 	//	float r, g, b;		vColour				"attribute vec3 vColour;\n"
 //	
-	mvp_location = glGetUniformLocation(program, "MVP");
+//	mvp_location = glGetUniformLocation(program, "MVP");
+	mvp_location = glGetUniformLocation(shaderProgID, "MVP");
 	//vpos_location = glGetAttribLocation(program, "vPosition");
 	//vcol_location = glGetAttribLocation(program, "vColour");
 //
@@ -274,13 +295,13 @@ int main(void)
 	pTheVAOManager->LoadModelIntoVAO("bunny", 
 									 bunnyMesh, 
 									 drawInfo, 
-									 program);
+									 shaderProgID);
 
 	sModelDrawInfo drawInfoPirate;
 	pTheVAOManager->LoadModelIntoVAO("pirate", 
 									 pirateMesh,
 									 drawInfoPirate, 
-									 program);
+									 shaderProgID);
 
 	// At this point, the model is loaded into the GPU
 
@@ -293,15 +314,25 @@ int main(void)
 	pirate.positionXYZ = glm::vec3(2.0f,0.0f,0.0f);
 	pirate.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
 	pirate.scale = 0.1f;
+	pirate.objectColourRGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	cGameObject bunny;
 	bunny.meshName = "bunny";
 	bunny.positionXYZ = glm::vec3(-2.0f,0.0f,0.0f);
 	bunny.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
 	bunny.scale = 5.0f;
+	bunny.objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+
+	cGameObject bunny2;
+	bunny2.meshName = "bunny";
+	bunny2.positionXYZ = glm::vec3(0.0f,0.0f,0.0f);
+	bunny2.rotationXYZ = glm::vec3(0.0f,1.0f,0.0f);
+	bunny2.scale = 3.5f;
+	bunny2.objectColourRGBA = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
 
 	vecGameObjects.push_back(pirate);
 	vecGameObjects.push_back(bunny);
+	vecGameObjects.push_back(bunny2);
 
 
 
@@ -320,9 +351,9 @@ int main(void)
 
 
 		// 
-		vecGameObjects[0].positionXYZ.x -= 0.001f;
-		vecGameObjects[1].rotationXYZ.y += 0.001f;
-		vecGameObjects[1].scale += 0.01f;
+		//vecGameObjects[0].positionXYZ.x -= 0.001f;
+		//vecGameObjects[1].rotationXYZ.y += 0.001f;
+		//vecGameObjects[1].scale += 0.01f;
 
 
 		// **************************************************
@@ -395,12 +426,26 @@ int main(void)
 			//mat4x4_mul(mvp, p, m);
 			mvp = p * v * m;
 
-
-			glUseProgram(program);
+			// Choose which shader to use
+			//glUseProgram(program);
+			glUseProgram(shaderProgID);
 
 
 			//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
 			glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
+
+
+			// Find the location of the uniform variable newColour
+			GLint newColour_location = glGetUniformLocation(shaderProgID, "newColour");
+
+			glUniform3f(newColour_location, 
+						vecGameObjects[index].objectColourRGBA.r, 
+						vecGameObjects[index].objectColourRGBA.g,
+						vecGameObjects[index].objectColourRGBA.b);
+
+
+
+
 
 			// This will change the fill mode to something 
 			//  GL_FILL is solid 

@@ -15,6 +15,7 @@ public:
 	std::string meshName;			//"Pirate"
 	glm::vec3  positionXYZ;
 	glm::vec3  rotationXYZ;
+	glm::vec4  objectColourRGBA;	
 	float scale;
 };
 

@@ -143,6 +143,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cModelLoader.cpp" />
+    <ClCompile Include="cShader.cpp" />
+    <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="theMain.cpp" />
@@ -151,6 +153,7 @@
     <ClInclude Include="cGameObject.h" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cModelLoader.h" />
+    <ClInclude Include="cShaderManager.h" />
     <ClInclude Include="cVAOManager.h" />
     <ClInclude Include="GLCommon.h" />
   </ItemGroup>
