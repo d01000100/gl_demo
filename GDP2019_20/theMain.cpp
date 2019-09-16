@@ -22,6 +22,8 @@
 
 #include "cShaderManager.h"
 
+#include <sstream>
+
 // Is already inside the cVAOManager.h file
 //struct sVertex
 //{
@@ -334,8 +336,8 @@ int main(void)
 	pirate.meshName = "pirate";
 	pirate.positionXYZ = glm::vec3(0.0f, 0.0f, 10.0f);
 	pirate.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pirate.scale = 0.1f;
-	pirate.objectColourRGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	pirate.scale = 0.75f;
+	pirate.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	cGameObject bunny;
 	bunny.meshName = "bunny";
@@ -359,8 +361,8 @@ int main(void)
 	terrain.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 
-	vecGameObjects.push_back(pirate);
-	vecGameObjects.push_back(bunny);
+	vecGameObjects.push_back(pirate);			// vecGameObjects[0]
+	vecGameObjects.push_back(bunny);		
 	vecGameObjects.push_back(bunny2);
 	vecGameObjects.push_back(terrain);
 
@@ -369,6 +371,9 @@ int main(void)
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
+
+	//float shipVelocityZ = 1.0f;
+	//float shipAccelz = 1000.0f;
 
 
 	while (!glfwWindowShouldClose(window))
@@ -410,6 +415,25 @@ int main(void)
 		//vecGameObjects[0].positionXYZ.x -= 0.001f;
 		//vecGameObjects[1].rotationXYZ.y += 0.001f;
 		//vecGameObjects[1].scale += 0.01f;
+
+
+		// Move the pirate ship
+	// for the physics floating point example
+
+		//const float DELTATIME = 1.0f / 60.f;
+		//vecGameObjects[0].positionXYZ.z += shipVelocityZ * DELTATIME;
+
+		//// Accel
+		//shipVelocityZ += shipAccelz * DELTATIME;
+
+
+		cameraEye.z = vecGameObjects[0].positionXYZ.z - 20.0f;
+		cameraTarget = vecGameObjects[0].positionXYZ;
+
+
+		std::stringstream ssTitle;
+		ssTitle << vecGameObjects[0].positionXYZ.z;
+		glfwSetWindowTitle( window, ssTitle.str().c_str() );
 
 
 		// **************************************************
@@ -518,7 +542,7 @@ int main(void)
 			//  GL_FILL is solid 
 			//  GL_LINE is "wireframe"
 			//glPointSize(15.0f);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 	//		glDrawArrays(GL_TRIANGLES, 0, 2844);

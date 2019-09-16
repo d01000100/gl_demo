@@ -27,5 +27,5 @@ void main()
 	gl_FragColor = vec4(newColourRed, newColourGreen, 
 	                    newColourBlue, 1.0 );
 	
-	gl_FragColor *= atten;
+//	gl_FragColor *= atten;
 }

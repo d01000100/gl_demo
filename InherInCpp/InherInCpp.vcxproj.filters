@@ -13,56 +13,45 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{60f6bac0-ac95-4493-9e15-40457db95f09}</UniqueIdentifier>
-    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cShip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cFastShip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cBigFastShip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iShip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cSmallShip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iShipDamageInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iShipControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
+    <ClCompile Include="cShip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cModelLoader.cpp">
+    <ClCompile Include="cFastShip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cVAOManager.cpp">
+    <ClCompile Include="cBigFastShip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cShader.cpp">
+    <ClCompile Include="cSmallShip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cShaderManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="cModelLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cMesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cVAOManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GLCommon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cGameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cShaderManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\fragmentShader01.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="assets\shaders\vertexShader01.glsl">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>
