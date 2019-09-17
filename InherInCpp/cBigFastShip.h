@@ -1,11 +1,13 @@
 #pragma once
 #include "cFastShip.h"
 #include "iShipDamageInterface.h"
+#include "cLASER.h"
+#include "cBigFreakingLASER.h"
 
 
 class cBigFastShip : 
 	public iShip,
-	public iShipDamageInterface 
+	public iShipDamageInterface
 {
 public:
 	cBigFastShip();
@@ -27,5 +29,7 @@ public:
 	float fuel;
 	float health = 100.0f;
 
+	cLASER myLASER;
+	cBigFreakingLASER myBFL;
 
 };

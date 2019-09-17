@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Weapons">
+      <UniqueIdentifier>{af25e6af-f31b-4bec-bdb1-1e85a78b0755}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cShip.h">
@@ -36,6 +39,12 @@
     <ClInclude Include="iShipControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cLASER.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="cBigFreakingLASER.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -52,6 +61,12 @@
     </ClCompile>
     <ClCompile Include="cSmallShip.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cLASER.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="cBigFreakingLASER.cpp">
+      <Filter>Weapons</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

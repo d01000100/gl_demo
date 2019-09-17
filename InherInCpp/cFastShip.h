@@ -4,9 +4,10 @@
 #include "iShipDamageInterface.h"
 
 
-class cFastShip : 
+class cFastShip :
 	public iShip,
-	public iShipDamageInterface {
+	public iShipDamageInterface
+{
 public:
 	cFastShip();
 	virtual~cFastShip();
@@ -18,8 +19,8 @@ public:
 
 	virtual void TakeDamage(float amount);
 
-
-
+private:
+	cShip myShipInsideMe;
 
 	std::string colour;
 	std::string pilotName;
@@ -27,6 +28,7 @@ public:
 	float bullets;
 	float fuel;
 	float health = 100.0f;
+
 
 
 };

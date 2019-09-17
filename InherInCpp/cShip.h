@@ -1,13 +1,15 @@
 #pragma once
 #include "iShip.h"
 #include "iShipDamageInterface.h"
+#include "cLASER.h"
 
 
 #include <string>
 
 class cShip :
 	public iShip,
-	public iShipDamageInterface {
+	public iShipDamageInterface
+{
 public:
 	cShip();
 	virtual ~cShip();
@@ -25,4 +27,8 @@ public:
 	float bullets;
 	float fuel;
 	float health = 100.0f;
+
+	cLASER myLASER;
+
+
 };

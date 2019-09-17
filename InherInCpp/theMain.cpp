@@ -2,6 +2,10 @@
 #include "cFastShip.h"
 #include "cBigFastShip.h"
 #include "cSmallShip.h"
+
+#include "cLASER.h"
+#include "cBigFreakingLASER.h"
+
 #include <iostream>
 #include <vector>
 
@@ -27,8 +31,16 @@ int main()
 	iShip* pShipD = new cSmallShip();
 	myShips.push_back( pShipD );
 
-	std::cout << std::endl;
-	pShipA->Shoot(pShipB);
+	//std::cout << std::endl;
+	//pShipA->Shoot(pShipB);
+
+	cShip* pSS = new cShip();
+	pSS->Fly();
+	pSS->myLASER.Fire();
+
+	cBigFastShip* pBFS = new cBigFastShip();
+	pBFS->myLASER.Fire();
+	pBFS->myBFL.Fire();
 
 	//myShips[0]->Fly();
 	//myShips[1]->Fly();
@@ -36,6 +48,8 @@ int main()
 	//myShips[3]->Fly();
 
 
+	//cLASER* pL = new cLASER();
+	//cBigFreakingLASER* pBFL = new cBigFreakingLASER();
 
 
 }

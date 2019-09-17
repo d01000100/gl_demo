@@ -124,7 +124,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cBigFastShip.h" />
+    <ClInclude Include="cBigFreakingLASER.h" />
     <ClInclude Include="cFastShip.h" />
+    <ClInclude Include="cLASER.h" />
     <ClInclude Include="cShip.h" />
     <ClInclude Include="cSmallShip.h" />
     <ClInclude Include="iShip.h" />
@@ -133,7 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cBigFastShip.cpp" />
+    <ClCompile Include="cBigFreakingLASER.cpp" />
     <ClCompile Include="cFastShip.cpp" />
+    <ClCompile Include="cLASER.cpp" />
     <ClCompile Include="cShip.cpp" />
     <ClCompile Include="cSmallShip.cpp" />
     <ClCompile Include="theMain.cpp" />
