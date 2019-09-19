@@ -17,6 +17,16 @@ public:
 	glm::vec3  rotationXYZ;
 	glm::vec4  objectColourRGBA;	
 	float scale;
+
+	// Add some physics things
+	glm::vec3 velocity;
+	glm::vec3 accel;
+
+	// If the object has an inverse mass of 0.0
+	//	then it's not updated by the physics code
+	float inverseMass;	// 0.0f = Doesn't move
+
+	//bool bIsDynamic;
 };
 
 #endif

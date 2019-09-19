@@ -24,6 +24,10 @@
 
 #include <sstream>
 
+// The Physics function
+#include "PhysicsStuff.h"
+
+
 // Is already inside the cVAOManager.h file
 //struct sVertex
 //{
@@ -69,8 +73,8 @@
 //"}\n";
 
 
-glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
-glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 cameraEye = glm::vec3(0.0, 8.0, -30.0);
+glm::vec3 cameraTarget = glm::vec3(0.0f, 8.0, 0.0f);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
 glm::vec3 sexyLightLocation = glm::vec3(0.0f,0.0f,0.0f);
@@ -180,6 +184,12 @@ int main(void)
 	cMesh terrainMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Terrain.ply", terrainMesh);
 
+	cMesh cubeMesh;
+	pTheModelLoader->LoadPlyModel("assets/models/Cube_1_Unit_from_origin_XYZ.ply", cubeMesh);
+
+	cMesh sphereMesh;
+	pTheModelLoader->LoadPlyModel("assets/models/Sphere_Radius_1_XYZ.ply", sphereMesh);
+
 	// **
 	// At this point, our model is loaded and stored into a cMesh object.
 	// Pass this cMesh object into the VAOManager to put onto the GPU
@@ -246,19 +256,6 @@ int main(void)
 	////sVertex vertices[4822] = {....}
 	
 
-	//vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-	//glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
-	//glCompileShader(vertex_shader);
-
-	//fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-	//glShaderSource(fragment_shader, 1, &fragment_shader_text, NULL);
-	//glCompileShader(fragment_shader);
-
-	//program = glCreateProgram();
-
-	//glAttachShader(program, vertex_shader);
-	//glAttachShader(program, fragment_shader);
-	//glLinkProgram(program);
 
 	cShaderManager* pTheShaderManager = new cShaderManager();
 
@@ -326,45 +323,83 @@ int main(void)
 									 drawInfoTerrain,
 									 shaderProgID);
 
+	sModelDrawInfo cubeMeshInfo;
+	pTheVAOManager->LoadModelIntoVAO("cube", 
+									 cubeMesh,			// Cube mesh info
+									 cubeMeshInfo,
+									 shaderProgID);
+
+	sModelDrawInfo sphereMeshInfo;
+	pTheVAOManager->LoadModelIntoVAO("sphere", 
+									 sphereMesh,		// Sphere mesh info
+									 sphereMeshInfo,
+									 shaderProgID);
+
+
 	// At this point, the model is loaded into the GPU
 
 
 	// Load up my "scene" 
 	std::vector<cGameObject> vecGameObjects;
 
-	cGameObject pirate;
-	pirate.meshName = "pirate";
-	pirate.positionXYZ = glm::vec3(0.0f, 0.0f, 10.0f);
-	pirate.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pirate.scale = 0.75f;
-	pirate.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	//cGameObject pirate;
+	//pirate.meshName = "pirate";
+	//pirate.positionXYZ = glm::vec3(0.0f, 0.0f, 10.0f);
+	//pirate.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	//pirate.scale = 0.75f;
+	//pirate.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+//
+	//cGameObject bunny;
+	//bunny.meshName = "bunny";
+	//bunny.positionXYZ = glm::vec3(0.0f, 0.0f, -2.0f);		// -4 on z
+	//bunny.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	//bunny.scale = 5.0f;
+	//bunny.objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+//
+	//cGameObject bunny2;
+	//bunny2.meshName = "bunny";
+	//bunny2.positionXYZ = glm::vec3(0.0f,0.0f,0.0f);
+	//bunny2.rotationXYZ = glm::vec3(0.0f,1.0f,0.0f);
+	//bunny2.scale = 3.5f;
+	//bunny2.objectColourRGBA = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
+//
+	//cGameObject terrain;
+	//terrain.meshName = "terrain";
+	//terrain.positionXYZ = glm::vec3(0.0f,-10.0f,0.0f);
+	//terrain.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
+	//terrain.scale = 0.5f;
+	//terrain.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	cGameObject bunny;
-	bunny.meshName = "bunny";
-	bunny.positionXYZ = glm::vec3(0.0f, 0.0f, -2.0f);		// -4 on z
-	bunny.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	bunny.scale = 5.0f;
-	bunny.objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	// Sphere and cube
+	cGameObject sphere;
+	sphere.meshName = "sphere";
+	sphere.positionXYZ = glm::vec3(-20.0f, 15.0f,0.0f);
+	sphere.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
+	sphere.scale = 1.0f;
+	sphere.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	// Set the sphere's initial velocity, etc.
+	sphere.velocity = glm::vec3(6.0f,0.0f,0.0f);
+	sphere.accel = glm::vec3(0.0f,0.0f,0.0f);
+	sphere.inverseMass = 1.0f;
 
-	cGameObject bunny2;
-	bunny2.meshName = "bunny";
-	bunny2.positionXYZ = glm::vec3(0.0f,0.0f,0.0f);
-	bunny2.rotationXYZ = glm::vec3(0.0f,1.0f,0.0f);
-	bunny2.scale = 3.5f;
-	bunny2.objectColourRGBA = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
+	cGameObject cube;
+	cube.meshName = "cube";
+	cube.positionXYZ = glm::vec3(0.0f, -1.0f, 0.0f);
+	cube.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	cube.scale = 1.0f;
+	cube.objectColourRGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	// Set the sphere's initial velocity, etc.
+	//sphere.velocity = glm::vec3(0.0f,0.0f,0.0f);
+	//sphere.accel = glm::vec3(0.0f,0.0f,0.0f);
+	cube.inverseMass = 0.0f;	// Ignored during update
 
-	cGameObject terrain;
-	terrain.meshName = "terrain";
-	terrain.positionXYZ = glm::vec3(0.0f,-10.0f,0.0f);
-	terrain.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
-	terrain.scale = 0.5f;
-	terrain.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	vecGameObjects.push_back(sphere);
+	vecGameObjects.push_back(cube);
 
-
-	vecGameObjects.push_back(pirate);			// vecGameObjects[0]
-	vecGameObjects.push_back(bunny);		
-	vecGameObjects.push_back(bunny2);
-	vecGameObjects.push_back(terrain);
+	//vecGameObjects.push_back(pirate);			// vecGameObjects[0]
+	//vecGameObjects.push_back(bunny);		
+	//vecGameObjects.push_back(bunny2);
+//	vecGameObjects.push_back(terrain);
 
 	//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 
@@ -434,6 +469,10 @@ int main(void)
 //		std::stringstream ssTitle;
 //		ssTitle << vecGameObjects[0].positionXYZ.z;
 //		glfwSetWindowTitle( window, ssTitle.str().c_str() );
+
+		// Update the objects through physics
+		PhysicsUpdate( vecGameObjects, 0.01f );
+
 
 
 		// **************************************************
