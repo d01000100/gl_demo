@@ -13,6 +13,7 @@ cSmallShip::~cSmallShip()
 void cSmallShip::Shoot(iShipDamageInterface* pShipToShoot)
 {
 	std::cout << "cSmallShip::Shoot()" << std::endl;
+
 	return;
 }
 

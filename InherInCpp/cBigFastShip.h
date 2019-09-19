@@ -5,9 +5,7 @@
 #include "cBigFreakingLASER.h"
 
 
-class cBigFastShip : 
-	public iShip,
-	public iShipDamageInterface
+class cBigFastShip : public iShip
 {
 public:
 	cBigFastShip();
@@ -21,7 +19,10 @@ public:
 
 	virtual void TakeDamage(float amount);
 	
+	cLASER* m_pLASER[2];
+	cBigFreakingLASER* m_pBFL[2];
 
+private:
 	std::string colour;
 	std::string pilotName;
 	float speed;
@@ -29,7 +30,5 @@ public:
 	float fuel;
 	float health = 100.0f;
 
-	cLASER myLASER;
-	cBigFreakingLASER myBFL;
 
 };

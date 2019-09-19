@@ -16,6 +16,9 @@
     <Filter Include="Weapons">
       <UniqueIdentifier>{af25e6af-f31b-4bec-bdb1-1e85a78b0755}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AbstractFactory">
+      <UniqueIdentifier>{3409d773-1a61-4c1a-8da5-78073f03508a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cShip.h">
@@ -45,6 +48,21 @@
     <ClInclude Include="cBigFreakingLASER.h">
       <Filter>Weapons</Filter>
     </ClInclude>
+    <ClInclude Include="cShipFactory.h">
+      <Filter>AbstractFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="cStealthShip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cFancyLASER.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="cTorpedo.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="iShipBuilder.h">
+      <Filter>AbstractFactory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -66,6 +84,18 @@
       <Filter>Weapons</Filter>
     </ClCompile>
     <ClCompile Include="cBigFreakingLASER.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="cShipFactory.cpp">
+      <Filter>AbstractFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="cStealthShip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cFancyLASER.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="cTorpedo.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
   </ItemGroup>

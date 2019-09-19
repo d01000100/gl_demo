@@ -125,21 +125,30 @@
   <ItemGroup>
     <ClInclude Include="cBigFastShip.h" />
     <ClInclude Include="cBigFreakingLASER.h" />
+    <ClInclude Include="cFancyLASER.h" />
     <ClInclude Include="cFastShip.h" />
     <ClInclude Include="cLASER.h" />
     <ClInclude Include="cShip.h" />
+    <ClInclude Include="cShipFactory.h" />
     <ClInclude Include="cSmallShip.h" />
+    <ClInclude Include="cStealthShip.h" />
+    <ClInclude Include="cTorpedo.h" />
     <ClInclude Include="iShip.h" />
+    <ClInclude Include="iShipBuilder.h" />
     <ClInclude Include="iShipControl.h" />
     <ClInclude Include="iShipDamageInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cBigFastShip.cpp" />
     <ClCompile Include="cBigFreakingLASER.cpp" />
+    <ClCompile Include="cFancyLASER.cpp" />
     <ClCompile Include="cFastShip.cpp" />
     <ClCompile Include="cLASER.cpp" />
     <ClCompile Include="cShip.cpp" />
+    <ClCompile Include="cShipFactory.cpp" />
     <ClCompile Include="cSmallShip.cpp" />
+    <ClCompile Include="cStealthShip.cpp" />
+    <ClCompile Include="cTorpedo.cpp" />
     <ClCompile Include="theMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

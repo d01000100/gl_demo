@@ -2,11 +2,10 @@
 #include <string>
 #include "cShip.h"
 #include "iShipDamageInterface.h"
+#include "cLASER.h"
 
 
-class cFastShip :
-	public iShip,
-	public iShipDamageInterface
+class cFastShip : public iShip
 {
 public:
 	cFastShip();
@@ -19,16 +18,16 @@ public:
 
 	virtual void TakeDamage(float amount);
 
-private:
-	cShip myShipInsideMe;
+	cLASER* m_pLASER1;
+	cLASER* m_pLASER2;
 
+private:
 	std::string colour;
 	std::string pilotName;
 	float speed;
 	float bullets;
 	float fuel;
-	float health = 100.0f;
-
+	float health = 101.0f;
 
 
 };

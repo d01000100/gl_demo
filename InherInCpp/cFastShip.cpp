@@ -7,6 +7,9 @@ cFastShip::cFastShip()
 	this->pilotName = "Robin";
 	this->colour = "Yellow";
 
+//	this->m_pLASER1 = new cLASER();
+//	this->m_pLASER2 = new cLASER();
+
 }
 cFastShip::~cFastShip()
 {
@@ -35,6 +38,10 @@ void cFastShip::Shoot(iShipDamageInterface* pShipToShoot)
 {
 	std::cout << "cFastShip: " << this->pilotName << " Shoots " << std::endl;
 	// 
+
+	this->m_pLASER1->Fire();
+	this->m_pLASER2->Fire();
+
 	pShipToShoot->TakeDamage(10.0f);
 	return;
 }
