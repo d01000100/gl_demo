@@ -427,13 +427,13 @@ int main(void)
 		//shipVelocityZ += shipAccelz * DELTATIME;
 
 
-		cameraEye.z = vecGameObjects[0].positionXYZ.z - 20.0f;
-		cameraTarget = vecGameObjects[0].positionXYZ;
+//		cameraEye.z = vecGameObjects[0].positionXYZ.z - 20.0f;
+//		cameraTarget = vecGameObjects[0].positionXYZ;
 
 
-		std::stringstream ssTitle;
-		ssTitle << vecGameObjects[0].positionXYZ.z;
-		glfwSetWindowTitle( window, ssTitle.str().c_str() );
+//		std::stringstream ssTitle;
+//		ssTitle << vecGameObjects[0].positionXYZ.z;
+//		glfwSetWindowTitle( window, ssTitle.str().c_str() );
 
 
 		// **************************************************
