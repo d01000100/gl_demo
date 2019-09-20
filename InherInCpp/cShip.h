@@ -10,7 +10,7 @@
 
 // Ship has a single LASER
 
-class cShip : public iShip, public iShipBuilder
+class cShip : public iShip//, public iShipBuilder
 {
 public:
 	cShip();

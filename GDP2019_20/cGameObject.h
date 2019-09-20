@@ -5,12 +5,23 @@
 #include <glm/vec3.hpp>
 #include <string>
 
+enum eShapeTypes
+{
+	AABB, 
+	SPHERE, 
+	CAPSULE,
+	PLANE,
+	MESH,
+	UNKNOWN
+};
+
 class cGameObject
 {
 public:
 	cGameObject()
 	{
-		scale = 0.0f;
+		this->scale = 0.0f;
+		this->physicsShapeType = UNKNOWN;
 	}
 	std::string meshName;			//"Pirate"
 	glm::vec3  positionXYZ;
@@ -27,6 +38,8 @@ public:
 	float inverseMass;	// 0.0f = Doesn't move
 
 	//bool bIsDynamic;
+
+	eShapeTypes physicsShapeType;
 };
 
 #endif
