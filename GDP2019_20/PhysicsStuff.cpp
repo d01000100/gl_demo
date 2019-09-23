@@ -47,11 +47,19 @@ void PhysicsUpdate(std::vector<cGameObject*>& vec_pGameObjects,
 			float leftPlane = -100.0f;
 
 			// Test to see if it's hit the cube
+//			direction = vec3( 0.0, +1.0, 0.0 )
+//		    velocity = 10.0f
 			if ( (pCurObj->positionXYZ.y - 1.0f) <= groundPlane)
 			{
 				// It's hit the cube. Set the velocity to -ve of what it is
 				// fabs() is floating point absolute value
 				pCurObj->velocity.y = fabs(pCurObj->velocity.y);
+
+//				float vel = fabs(pCurObj->velocity.y)
+//
+//				pCurObj->velocity = glm::reflect(pCurObj->velocity, 
+//												 normalOfTriangle);
+
 
 				// Damp the velocity 
 				pCurObj->velocity.y *= 0.95f;

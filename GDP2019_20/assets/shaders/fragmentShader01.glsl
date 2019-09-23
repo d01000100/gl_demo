@@ -9,7 +9,7 @@ uniform vec4 diffuseColour;
 uniform vec4 specularColour;
 
 // Used to draw debug (or unlit) objects
-uniform vec4 debugColour;
+uniform vec4 debugColour;			
 uniform bool bDoNotLight;		
 
 uniform vec4 eyeLocation;
@@ -36,19 +36,34 @@ const int SPOT_LIGHT_TYPE = 1;
 const int DIRECTIONAL_LIGHT_TYPE = 2;
 
 //const int NUMBEROFLIGHTS = 10;
-const int NUMBEROFLIGHTS = 1;
+const int NUMBEROFLIGHTS = 10;
 uniform sLight theLights[NUMBEROFLIGHTS];  	// 80 uniforms
 
+// Really appears as:
+// uniform vec4 theLights[0].position
+// uniform vec4 theLights[0].diffuse
+// uniform vec4 theLights[0].specular
+// uniform vec4 theLights[0].atten
+// uniform vec4 theLights[0].direction
+// uniform vec4 theLights[0].param1
+// uniform vec4 theLights[0].param2
 
 vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal, 
                             vec3 vertexWorldPos, vec4 vertexSpecular );
 	 
 void main()  
 {
+	if ( bDoNotLight )
+	{
+		pixelColour.rgb = debugColour.rgb;
+		pixelColour.a = 1.0f;				// NOT transparent
+		return;
+	}
 	
-//	vec4 materialColour = diffuseColour;
-	vec4 materialColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	vec4 specColour = materialColour;
+	
+	vec4 materialColour = diffuseColour;
+//	vec4 materialColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	vec4 specColour = vec4(0.0f,0.0f,0.0f,1.0f);// materialColour;
 	
 
 	vec4 outColour = calcualteLightContrib( materialColour.rgb, fNormal.xyz, 
@@ -59,7 +74,7 @@ void main()
 	
 //	pixelColour.rgb += vec3(0.5f, 0.5f, 0.5f);
 	
-	pixelColour.rgb += fNormal.xyz;
+//	pixelColour.rgb += fNormal.xyz;
 //	pixelColour.rgb += fVertWorldLocation.xyz;
 	
 }	// Ooops

@@ -41,53 +41,109 @@ glm::vec3 cameraEye = glm::vec3(0.0, 80.0, -80.0);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 8.0, 0.0f);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
-glm::vec3 sexyLightLocation = glm::vec3(0.0f,0.0f,0.0f);
+glm::vec3 sexyLightPosition = glm::vec3(-25.0f,30.0f,0.0f);
+float sexyLightLinearAtten = 0.008f;  
+float sexyLightQuadraticAtten = 0.0f;
+
+bool isShiftKeyDownByAlone(int mods)
+{
+	if (mods == GLFW_MOD_SHIFT)			
+	{
+		// Shift key is down all by itself
+		return true;
+	}
+	//// Ignore other keys and see if the shift key is down
+	//if ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT)
+	//{
+
+	//}
+	return false;
+}
 
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 
-	const float CAMERASPEED = 10.0f;
+	const float CAMERASPEED = 2.0f;
 
-	// Move the camera (A & D for left and right, along the x axis)
-	if (key == GLFW_KEY_A)
+	if ( ! isShiftKeyDownByAlone(mods) )
 	{
-		cameraEye.x -= CAMERASPEED;		// Move the camera -0.01f units
-	}
-	if (key == GLFW_KEY_D)
-	{
-		cameraEye.x += CAMERASPEED;		// Move the camera +0.01f units
+
+		// Move the camera (A & D for left and right, along the x axis)
+		if (key == GLFW_KEY_A)
+		{
+			cameraEye.x -= CAMERASPEED;		// Move the camera -0.01f units
+		}
+		if (key == GLFW_KEY_D)
+		{
+			cameraEye.x += CAMERASPEED;		// Move the camera +0.01f units
+		}
+
+		// Move the camera (Q & E for up and down, along the y axis)
+		if (key == GLFW_KEY_Q)
+		{
+			cameraEye.y -= CAMERASPEED;		// Move the camera -0.01f units
+		}
+		if (key == GLFW_KEY_E)
+		{
+			cameraEye.y += CAMERASPEED;		// Move the camera +0.01f units
+		}
+
+		// Move the camera (W & S for towards and away, along the z axis)
+		if (key == GLFW_KEY_W)
+		{
+			cameraEye.z -= CAMERASPEED;		// Move the camera -0.01f units
+		}
+		if (key == GLFW_KEY_S)
+		{
+			cameraEye.z += CAMERASPEED;		// Move the camera +0.01f units
+		}
+
 	}
 
-	// Move the camera (Q & E for up and down, along the y axis)
-	if (key == GLFW_KEY_Q)
+	if (isShiftKeyDownByAlone(mods))
 	{
-		cameraEye.y -= CAMERASPEED;		// Move the camera -0.01f units
-	}
-	if (key == GLFW_KEY_E)
-	{
-		cameraEye.y += CAMERASPEED;		// Move the camera +0.01f units
-	}
+		// move the light
+		if (key == GLFW_KEY_A)
+		{
+			sexyLightPosition.x -= CAMERASPEED;		// Move the camera -0.01f units
+		}
+		if (key == GLFW_KEY_D)
+		{
+			sexyLightPosition.x += CAMERASPEED;		// Move the camera +0.01f units
+		}
 
-	// Move the camera (W & S for towards and away, along the z axis)
-	if (key == GLFW_KEY_W)
-	{
-		cameraEye.z -= CAMERASPEED;		// Move the camera -0.01f units
-	}
-	if (key == GLFW_KEY_S)
-	{
-		cameraEye.z += CAMERASPEED;		// Move the camera +0.01f units
-	}
+		// Move the camera (Q & E for up and down, along the y axis)
+		if (key == GLFW_KEY_Q)
+		{
+			sexyLightPosition.y -= CAMERASPEED;		// Move the camera -0.01f units
+		}
+		if (key == GLFW_KEY_E)
+		{
+			sexyLightPosition.y += CAMERASPEED;		// Move the camera +0.01f units
+		}
+
+		// Move the camera (W & S for towards and away, along the z axis)
+		if (key == GLFW_KEY_W)
+		{
+			sexyLightPosition.z -= CAMERASPEED;		// Move the camera -0.01f units
+		}
+		if (key == GLFW_KEY_S)
+		{
+			sexyLightPosition.z += CAMERASPEED;		// Move the camera +0.01f units
+		}
+
+		if (key == GLFW_KEY_1)
+		{
+			sexyLightLinearAtten *= 0.99f;			// 99% of what it was
+		}
+		if (key == GLFW_KEY_2)
+		{
+			sexyLightLinearAtten *= 1.01f;			// 1% more of what it was
+		}
 
 
-	if (key == GLFW_KEY_J)
-	{
-		sexyLightLocation.x -= CAMERASPEED;
-	}
-	if (key == GLFW_KEY_K)
-	{
-		sexyLightLocation.x += CAMERASPEED;
-	}
+	}//if (isShiftKeyDownByAlone(mods))
 
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -132,6 +188,7 @@ int main(void)
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
+
 
 
 	// OpenGL and GLFW are good to go, so load the model
@@ -446,29 +503,47 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 
-		// 
-		//vecGameObjects[0].positionXYZ.x -= 0.001f;
-		//vecGameObjects[1].rotationXYZ.y += 0.001f;
-		//vecGameObjects[1].scale += 0.01f;
+		// Set the lighting values for the shader. There is only 1 light right now.
+		// uniform vec4 theLights[0].position
+		// uniform vec4 theLights[0].diffuse
+		// uniform vec4 theLights[0].specular
+		// uniform vec4 theLights[0].atten
+		// uniform vec4 theLights[0].direction
+		// uniform vec4 theLights[0].param1
+		// uniform vec4 theLights[0].param2		
+		GLint L_0_position = glGetUniformLocation( shaderProgID, "theLights[0].position");
+		GLint L_0_diffuse = glGetUniformLocation( shaderProgID, "theLights[0].diffuse");
+		GLint L_0_specular = glGetUniformLocation( shaderProgID, "theLights[0].specular");
+		GLint L_0_atten = glGetUniformLocation( shaderProgID, "theLights[0].atten");
+		GLint L_0_direction = glGetUniformLocation( shaderProgID, "theLights[0].direction");
+		GLint L_0_param1 = glGetUniformLocation( shaderProgID, "theLights[0].param1");
+		GLint L_0_param2 = glGetUniformLocation( shaderProgID, "theLights[0].param2");
+
+		glUniform4f(L_0_position, 
+					sexyLightPosition.x,
+					sexyLightPosition.y,
+					sexyLightPosition.z,
+					1.0f);
+		glUniform4f(L_0_diffuse, 1.0f, 1.0f, 1.0f, 1.0f );	// White
+		glUniform4f(L_0_specular, 1.0f, 1.0f, 1.0f, 1.0f );	// White
+		glUniform4f(L_0_atten, 0.0f,  // constant attenuation
+					           sexyLightLinearAtten,  // Linear 
+					           sexyLightQuadraticAtten,	// Quadratic 
+					           1000000.0f );	// Distance cut off
+		glUniform4f(L_0_direction, 0.0f, 0.0f, 0.0f, 1.0f );	
+		glUniform4f(L_0_param1, 0.0f /*POINT light*/, 0.0f, 0.0f, 1.0f );
+		glUniform4f(L_0_param2, 1.0f /*Light is on*/, 0.0f, 0.0f, 1.0f );
 
 
-		// Move the pirate ship
-	// for the physics floating point example
 
-		//const float DELTATIME = 1.0f / 60.f;
-		//vecGameObjects[0].positionXYZ.z += shipVelocityZ * DELTATIME;
-
-		//// Accel
-		//shipVelocityZ += shipAccelz * DELTATIME;
-
-
-//		cameraEye.z = vecGameObjects[0].positionXYZ.z - 20.0f;
-//		cameraTarget = vecGameObjects[0].positionXYZ;
-
-
-//		std::stringstream ssTitle;
-//		ssTitle << vecGameObjects[0].positionXYZ.z;
-//		glfwSetWindowTitle( window, ssTitle.str().c_str() );
+		std::stringstream ssTitle;
+		ssTitle 
+			<< sexyLightPosition.x << ", " 
+			<< sexyLightPosition.y << ", " 
+			<< sexyLightPosition.z 
+			<< " linear atten: " 
+			<< sexyLightLinearAtten;
+		glfwSetWindowTitle( window, ssTitle.str().c_str() );
 
 		// Update the objects through physics
 		PhysicsUpdate( vec_pGameObjects, 0.01f );
@@ -555,11 +630,25 @@ int main(void)
 
 		}//for (unsigned int triIndex = 0;
 
-		glm::mat4 matModel = glm::mat4(1.0f);
-		pDebugSphere->positionXYZ = closetPoint;
-		DrawObject(matModel, pDebugSphere,
-				   shaderProgID, pTheVAOManager);
+		{// Draw closest point
+			glm::mat4 matModel = glm::mat4(1.0f);
+			pDebugSphere->positionXYZ = closetPoint;
+			pDebugSphere->scale = 1.0f;
+			pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
+			pDebugSphere->isWireframe = true;
+			DrawObject(matModel, pDebugSphere,
+					   shaderProgID, pTheVAOManager);
+		}
 
+		{// Draw where the light is at
+			glm::mat4 matModel = glm::mat4(1.0f);
+			pDebugSphere->positionXYZ = sexyLightPosition;
+			pDebugSphere->scale = 0.5f;
+			pDebugSphere->debugColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			pDebugSphere->isWireframe = true;
+			DrawObject(matModel, pDebugSphere,
+					   shaderProgID, pTheVAOManager);
+		}
 
 
 		 // **************************************************
@@ -672,26 +761,47 @@ void DrawObject(glm::mat4 m,
 	//uniform float newColourRed;
 	//uniform float newColourGreen;
 	//uniform float newColourBlue;
-	GLint newColourRed_UL = glGetUniformLocation(shaderProgID, "newColourRed");
-	GLint newColourGreen_UL = glGetUniformLocation(shaderProgID, "newColourGreen");
-	GLint newColourBlue_UL = glGetUniformLocation(shaderProgID, "newColourBlue");
+	//GLint newColourRed_UL = glGetUniformLocation(shaderProgID, "newColourRed");
+	//GLint newColourGreen_UL = glGetUniformLocation(shaderProgID, "newColourGreen");
+	//GLint newColourBlue_UL = glGetUniformLocation(shaderProgID, "newColourBlue");
 
-	glUniform1f(newColourRed_UL, pCurrentObject->objectColourRGBA.r);
-	glUniform1f(newColourGreen_UL, pCurrentObject->objectColourRGBA.g);
-	glUniform1f(newColourBlue_UL, pCurrentObject->objectColourRGBA.b);
+	//glUniform1f(newColourRed_UL, pCurrentObject->objectColourRGBA.r);
+	//glUniform1f(newColourGreen_UL, pCurrentObject->objectColourRGBA.g);
+	//glUniform1f(newColourBlue_UL, pCurrentObject->objectColourRGBA.b);
+	//GLint lighPosition_UL = glGetUniformLocation(shaderProgID, "lightPosition");
+	//glUniform3f(lighPosition_UL, sexyLightLocation.x,
+	//			sexyLightLocation.y, sexyLightLocation.z);
+
+	GLint diffuseColour_UL = glGetUniformLocation(shaderProgID, "diffuseColour");
+	glUniform4f(diffuseColour_UL, 
+				pCurrentObject->objectColourRGBA.r,
+				pCurrentObject->objectColourRGBA.g,
+				pCurrentObject->objectColourRGBA.b,
+				pCurrentObject->objectColourRGBA.a);	// 
 
 
-	GLint lighPosition_UL = glGetUniformLocation(shaderProgID, "lightPosition");
-	glUniform3f(lighPosition_UL, sexyLightLocation.x,
-				sexyLightLocation.y, sexyLightLocation.z);
+	//uniform vec4 debugColour;
+	//uniform bool bDoNotLight;
+	GLint debugColour_UL = glGetUniformLocation(shaderProgID, "debugColour");
+	GLint bDoNotLight_UL = glGetUniformLocation(shaderProgID, "bDoNotLight");
 
-
-
-	// This will change the fill mode to something 
-	//  GL_FILL is solid 
-	//  GL_LINE is "wireframe"
+	if ( pCurrentObject->isWireframe )
+	{ 
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glUniform4f( debugColour_UL, 
+					pCurrentObject->debugColour.r,
+					pCurrentObject->debugColour.g,
+					pCurrentObject->debugColour.b,
+					pCurrentObject->debugColour.a);
+		glUniform1f(bDoNotLight_UL, (float)GL_TRUE);
+	}
+	else
+	{	// Regular object (lit and not wireframe)
+		glUniform1f(bDoNotLight_UL, (float)GL_FALSE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 	//glPointSize(15.0f);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 
 
 	//		glDrawArrays(GL_TRIANGLES, 0, 2844);

@@ -22,6 +22,10 @@ public:
 	{
 		this->scale = 0.0f;
 		this->physicsShapeType = UNKNOWN;
+		this->isVisible = true;
+
+		this->isWireframe = false;
+		this->debugColour = glm::vec4(1.0f,1.0f,1.0f,1.0f);
 	}
 	std::string meshName;			//"Pirate"
 	glm::vec3  positionXYZ;
@@ -40,6 +44,12 @@ public:
 	//bool bIsDynamic;
 
 	eShapeTypes physicsShapeType;
+
+	// Won't be lit, and is wireframe
+	bool isWireframe;
+	glm::vec4 debugColour;
+
+	bool isVisible;
 };
 
 #endif
