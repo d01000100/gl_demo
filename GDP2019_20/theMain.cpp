@@ -152,8 +152,8 @@ int main(void)
 	pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", pirateMesh);
 
 	cMesh terrainMesh;
-//	pTheModelLoader->LoadPlyModel("assets/models/Terrain.ply", terrainMesh);
-	pTheModelLoader->LoadPlyModel("assets/models/BigFlatTerrain.ply", terrainMesh);
+	pTheModelLoader->LoadPlyModel("assets/models/Terrain.ply", terrainMesh);
+//	pTheModelLoader->LoadPlyModel("assets/models/BigFlatTerrain.ply", terrainMesh);
 
 	cMesh cubeMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Cube_1_Unit_from_origin_XYZ.ply", cubeMesh);
@@ -313,19 +313,21 @@ int main(void)
 	// Load up my "scene" 
 	std::vector<cGameObject*> vec_pGameObjects;
 
-	//cGameObject pirate;
-	//pirate.meshName = "pirate";
-	//pirate.positionXYZ = glm::vec3(0.0f, 0.0f, 10.0f);
-	//pirate.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	//pirate.scale = 0.75f;
-	//pirate.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	cGameObject* pPirate = new cGameObject();
+	pPirate->meshName = "pirate";
+	pPirate->positionXYZ = glm::vec3(0.0f, 20.0f, 10.0f);
+	pPirate->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	pPirate->scale = 0.75f;
+	pPirate->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	pPirate->inverseMass = 0.0f;
 //
-	//cGameObject bunny;
-	//bunny.meshName = "bunny";
-	//bunny.positionXYZ = glm::vec3(0.0f, 0.0f, -2.0f);		// -4 on z
-	//bunny.rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	//bunny.scale = 5.0f;
-	//bunny.objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	cGameObject* pBunny = new cGameObject();
+	pBunny->meshName = "bunny";
+	pBunny->positionXYZ = glm::vec3(10.0f, 20.0f, -2.0f);		// -4 on z
+	pBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	pBunny->scale = 5.0f;
+	pBunny->objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	pBunny->inverseMass = 0.0f;
 //
 	//cGameObject bunny2;
 	//bunny2.meshName = "bunny";
@@ -378,6 +380,8 @@ int main(void)
 	vec_pGameObjects.push_back(pShpere);
 	vec_pGameObjects.push_back(pCube);
 	vec_pGameObjects.push_back(pTerrain);
+	vec_pGameObjects.push_back(pPirate);
+	vec_pGameObjects.push_back(pBunny);
 
 
 	// Will be moved placed around the scene
@@ -687,7 +691,7 @@ void DrawObject(glm::mat4 m,
 	//  GL_FILL is solid 
 	//  GL_LINE is "wireframe"
 	//glPointSize(15.0f);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 
 	//		glDrawArrays(GL_TRIANGLES, 0, 2844);
