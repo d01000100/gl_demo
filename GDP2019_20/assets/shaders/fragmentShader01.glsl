@@ -5,7 +5,7 @@ in vec4 fVertWorldLocation;
 in vec4 fNormal;
 in vec4 fUVx2;
 	
-uniform vec4 diffuseColour;
+uniform vec4 diffuseColour;				
 uniform vec4 specularColour;
 
 // Used to draw debug (or unlit) objects
@@ -35,7 +35,8 @@ const int POINT_LIGHT_TYPE = 0;
 const int SPOT_LIGHT_TYPE = 1;
 const int DIRECTIONAL_LIGHT_TYPE = 2;
 
-const int NUMBEROFLIGHTS = 10;
+//const int NUMBEROFLIGHTS = 10;
+const int NUMBEROFLIGHTS = 1;
 uniform sLight theLights[NUMBEROFLIGHTS];  	// 80 uniforms
 
 
@@ -45,15 +46,21 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 void main()  
 {
 	
-	vec4 materialColour = diffuseColour;
+//	vec4 materialColour = diffuseColour;
+	vec4 materialColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	vec4 specColour = materialColour;
+	
 
 	vec4 outColour = calcualteLightContrib( materialColour.rgb, fNormal.xyz, 
-	                                        fVertWorldLocation.xyz, specularColour );
+	                                        fVertWorldLocation.xyz, specColour );
 
 											
 	pixelColour = outColour;
 	
-	pixelColour.rgb += vec3(0.5f, 0.5f, 0.5f);
+//	pixelColour.rgb += vec3(0.5f, 0.5f, 0.5f);
+	
+	pixelColour.rgb += fNormal.xyz;
+//	pixelColour.rgb += fVertWorldLocation.xyz;
 	
 }	// Ooops
 

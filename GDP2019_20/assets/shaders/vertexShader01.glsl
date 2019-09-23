@@ -7,6 +7,8 @@ uniform mat4 matProj;		// Projection transform
 
 in vec4 vColour;				// Was vec3
 in vec4 vPosition;				// Was vec3
+in vec4 vNormal;				// Vertex normal
+in vec4 vUVx2;					// 2 x Texture coords
 
 //out vec3 color;
 //out vec4 vertWorld;			// Location of the vertex in the world
@@ -26,8 +28,9 @@ void main()
 	// Vertex location in "world space"
 	fVertWorldLocation = matModel * vec4(vertPosition.xyz, 1.0);		
 	
-    fColour = vColour;
+ 	fNormal = vNormal;
 	
-	fNormal = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	fUVx2 = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	// Pass the colour and UV unchanged.
+    fColour = vColour;	
+	fUVx2 = vUVx2;
 }

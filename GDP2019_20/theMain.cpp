@@ -143,23 +143,23 @@ int main(void)
 
 	cMesh bunnyMesh;		// This is stack based
 //	if ( ! pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", bunnyMesh) )
-	if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_res4_XYZ.ply", bunnyMesh) )
+	if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_res4_XYZ_N.ply", bunnyMesh) )
 	{
 		std::cout << "Didn't find the file" << std::endl;
 	}
 
 	cMesh pirateMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", pirateMesh);
+	pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz_n.ply", pirateMesh);
 
 	cMesh terrainMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Terrain.ply", terrainMesh);
+	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
 //	pTheModelLoader->LoadPlyModel("assets/models/BigFlatTerrain.ply", terrainMesh);
 
 	cMesh cubeMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Cube_1_Unit_from_origin_XYZ.ply", cubeMesh);
+	pTheModelLoader->LoadPlyModel("assets/models/Cube_1_Unit_from_origin_XYZ_n.ply", cubeMesh);
 
 	cMesh sphereMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Sphere_Radius_1_XYZ.ply", sphereMesh);
+	pTheModelLoader->LoadPlyModel("assets/models/Sphere_Radius_1_XYZ_n.ply", sphereMesh);
 
 	// **
 	// At this point, our model is loaded and stored into a cMesh object.
@@ -514,9 +514,9 @@ int main(void)
 			sPlyTriangle& curTriangle = terrainMesh.vecTriangles[triIndex];
 
 			// Get the vertices of the triangle
-			sPlyVertexXYZ triVert1 = terrainMesh.vecVertices[curTriangle.vert_index_1];
-			sPlyVertexXYZ triVert2 = terrainMesh.vecVertices[curTriangle.vert_index_2];
-			sPlyVertexXYZ triVert3 = terrainMesh.vecVertices[curTriangle.vert_index_3];
+			sPlyVertexXYZ_N triVert1 = terrainMesh.vecVertices[curTriangle.vert_index_1];
+			sPlyVertexXYZ_N triVert2 = terrainMesh.vecVertices[curTriangle.vert_index_2];
+			sPlyVertexXYZ_N triVert3 = terrainMesh.vecVertices[curTriangle.vert_index_3];
 
 			Point triVertPoint1;
 			triVertPoint1.x = triVert1.x;

@@ -5,9 +5,10 @@
 
 // This structure matches the file, so that our life is
 //   simpler and happier, and we all get along.
-struct sPlyVertexXYZ
+struct sPlyVertexXYZ_N
 {
 	float x, y, z;
+	float nx, ny, nz;		// NOW with NORMALS!!
 };
 
 struct sPlyTriangle
@@ -23,7 +24,7 @@ public:
 	cMesh() {};			// Empty c'tor
 	~cMesh() {};		// Empty d'tor
 	// Store the vertices
-	std::vector<sPlyVertexXYZ> vecVertices;
+	std::vector<sPlyVertexXYZ_N> vecVertices;
 
 	// Store the triangles
 	std::vector<sPlyTriangle> vecTriangles;

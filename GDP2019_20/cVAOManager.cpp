@@ -53,13 +53,28 @@ bool cVAOManager::LoadModelIntoVAO(
 	// Copy the data from the vecVertices...
 	for (unsigned int index = 0; index != drawInfo.numberOfVertices; index++)
 	{
+
 		drawInfo.pVertices[index].x = theMesh.vecVertices[index].x;
 		drawInfo.pVertices[index].y = theMesh.vecVertices[index].y;
 		drawInfo.pVertices[index].z = theMesh.vecVertices[index].z;
+		drawInfo.pVertices[index].w = 1.0f;		// Set to 1 if not sure
 
 		drawInfo.pVertices[index].r = 1.0f;
 		drawInfo.pVertices[index].g = 1.0f;
 		drawInfo.pVertices[index].b = 1.0f;
+		drawInfo.pVertices[index].a = 1.0f;		// Again, if not sure, set to 1.0f
+
+		drawInfo.pVertices[index].nx = theMesh.vecVertices[index].nx;
+		drawInfo.pVertices[index].ny = theMesh.vecVertices[index].ny;
+		drawInfo.pVertices[index].nz = theMesh.vecVertices[index].nz;
+		drawInfo.pVertices[index].nw = 1.0f;		// if unsure, set to 1.0f
+
+		// These are the "texture coordinates", and we aren't loading them, yet
+		drawInfo.pVertices[index].u0 = 1.0f;
+		drawInfo.pVertices[index].v0 = 1.0f;
+		drawInfo.pVertices[index].u1 = 1.0f;
+		drawInfo.pVertices[index].v1 = 1.0f;	
+
 	}
 
 	// Now copy the index information, too
@@ -128,21 +143,47 @@ bool cVAOManager::LoadModelIntoVAO(
 
 	// Set the vertex attributes.
 
+	//struct sVertex
+	//{
+	//	float x, y, z, w;			// w coordinate	
+	//	float r, g, b, a;		// a = alpha (transparency)
+	//	float nx, ny, nz, nw;
+	//	float u0, v0, u1, v1;
+	//};
 	GLint vpos_location = glGetAttribLocation(shaderProgramID, "vPosition");	// program
 	GLint vcol_location = glGetAttribLocation(shaderProgramID, "vColour");	// program;
+	GLint vnorm_location = glGetAttribLocation(shaderProgramID, "vNormal");	// program;
+	GLint vUV_location = glGetAttribLocation(shaderProgramID, "vUVx2");	// program;
 
 	// Set the vertex attributes for this shader
 	glEnableVertexAttribArray(vpos_location);	// vPos
-	glVertexAttribPointer( vpos_location, 3,		// vPos
+	glVertexAttribPointer( vpos_location, 4,		// now a vec4
 						   GL_FLOAT, GL_FALSE,
-						   sizeof(float) * 6, 
-						   ( void* )0);
+						   sizeof(sVertex),						// sizeof(float) * 6,
+						   ( void* )(offsetof(sVertex, x)) );
 
 	glEnableVertexAttribArray(vcol_location);	// vCol
-	glVertexAttribPointer( vcol_location, 3,		// vCol
+	glVertexAttribPointer( vcol_location, 4,		// vCol
 						   GL_FLOAT, GL_FALSE,
-						   sizeof(float) * 6, 
-						   ( void* )( sizeof(float) * 3 ));
+						   sizeof(sVertex),						
+						   ( void* )(offsetof(sVertex, r)) );
+
+
+	//	float nx, ny, nz, nw;
+	glEnableVertexAttribArray(vnorm_location);	// vNormal
+	glVertexAttribPointer(vnorm_location, 4,		// vNormal
+						   GL_FLOAT, GL_FALSE,
+						   sizeof(sVertex),						
+						   ( void* )(offsetof(sVertex, nx)) );
+
+	//	float u0, v0, u1, v1;
+	glEnableVertexAttribArray(vUV_location);		// vUVx2
+	glVertexAttribPointer(vUV_location, 4,		// vUVx2
+						   GL_FLOAT, GL_FALSE,
+						   sizeof(sVertex),						
+						   ( void* )(offsetof(sVertex, u0)) );
+
+
 
 	// Now that all the parts are set up, set the VAO to zero
 	glBindVertexArray(0);
