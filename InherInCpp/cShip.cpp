@@ -54,13 +54,13 @@ void cShip::TakeDamage(float amount)
 
 	this->health -= amount;
 }
-
-void cShip::SetLASER(cLASER* pTheLASER)
-{
-	this->m_pTheLASER = pTheLASER;
-}
-
-void cShip::SetFancyLASER(cFancyLASER* pFancyLASER)
-{
-	this->m_pFancyLASER = pFancyLASER;
-}
+//
+//void cShip::SetLASER(cLASER* pTheLASER)
+//{
+//	this->m_pTheLASER = pTheLASER;
+//}
+//
+//void cShip::SetFancyLASER(cFancyLASER* pFancyLASER)
+//{
+//	this->m_pFancyLASER = pFancyLASER;
+//}

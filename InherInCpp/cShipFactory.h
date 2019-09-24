@@ -5,6 +5,7 @@
 #include "iShip.h"
 #include "iShipBuilder.h"
 #include <string>
+#include <vector>
 
 // FUNCTION
 iShip* OLD_SCHOOL_CreateShip(std::string shipType);
@@ -29,4 +30,5 @@ public:
 private:
 	// The builder method
 	void BuildShip( iShip* pShip, std::string shipType );
+
 };

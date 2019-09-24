@@ -19,6 +19,12 @@
     <Filter Include="AbstractFactory">
       <UniqueIdentifier>{3409d773-1a61-4c1a-8da5-78073f03508a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="WoldObject">
+      <UniqueIdentifier>{146fdd47-bf66-47bb-b43a-ab04b7f9ca6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RobotFunFun">
+      <UniqueIdentifier>{daa97e42-aa1f-4000-884c-abdd95d3257a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cShip.h">
@@ -63,6 +69,21 @@
     <ClInclude Include="iShipBuilder.h">
       <Filter>AbstractFactory</Filter>
     </ClInclude>
+    <ClInclude Include="cWorld.h">
+      <Filter>WoldObject</Filter>
+    </ClInclude>
+    <ClInclude Include="cRobot.h">
+      <Filter>RobotFunFun</Filter>
+    </ClInclude>
+    <ClInclude Include="cRobotWorld.h">
+      <Filter>RobotFunFun</Filter>
+    </ClInclude>
+    <ClInclude Include="iMediatorInterface.h">
+      <Filter>RobotFunFun</Filter>
+    </ClInclude>
+    <ClInclude Include="cFood.h">
+      <Filter>RobotFunFun</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -97,6 +118,15 @@
     </ClCompile>
     <ClCompile Include="cTorpedo.cpp">
       <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="cWorld.cpp">
+      <Filter>WoldObject</Filter>
+    </ClCompile>
+    <ClCompile Include="cRobotWorld.cpp">
+      <Filter>RobotFunFun</Filter>
+    </ClCompile>
+    <ClCompile Include="cRobot.cpp">
+      <Filter>RobotFunFun</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

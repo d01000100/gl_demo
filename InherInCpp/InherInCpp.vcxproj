@@ -127,12 +127,17 @@
     <ClInclude Include="cBigFreakingLASER.h" />
     <ClInclude Include="cFancyLASER.h" />
     <ClInclude Include="cFastShip.h" />
+    <ClInclude Include="cFood.h" />
+    <ClInclude Include="cRobot.h" />
     <ClInclude Include="cLASER.h" />
+    <ClInclude Include="cRobotWorld.h" />
     <ClInclude Include="cShip.h" />
     <ClInclude Include="cShipFactory.h" />
     <ClInclude Include="cSmallShip.h" />
     <ClInclude Include="cStealthShip.h" />
     <ClInclude Include="cTorpedo.h" />
+    <ClInclude Include="cWorld.h" />
+    <ClInclude Include="iMediatorInterface.h" />
     <ClInclude Include="iShip.h" />
     <ClInclude Include="iShipBuilder.h" />
     <ClInclude Include="iShipControl.h" />
@@ -144,11 +149,14 @@
     <ClCompile Include="cFancyLASER.cpp" />
     <ClCompile Include="cFastShip.cpp" />
     <ClCompile Include="cLASER.cpp" />
+    <ClCompile Include="cRobot.cpp" />
+    <ClCompile Include="cRobotWorld.cpp" />
     <ClCompile Include="cShip.cpp" />
     <ClCompile Include="cShipFactory.cpp" />
     <ClCompile Include="cSmallShip.cpp" />
     <ClCompile Include="cStealthShip.cpp" />
     <ClCompile Include="cTorpedo.cpp" />
+    <ClCompile Include="cWorld.cpp" />
     <ClCompile Include="theMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -17,5 +17,8 @@ public:
 	virtual void Land(void) = 0;
 
 	virtual void TakeDamage(float amount) = 0;
+
+	// 
+//	virtual void RecieveMessage(std::string) = 0;
 };
 

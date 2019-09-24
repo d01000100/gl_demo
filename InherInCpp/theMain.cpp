@@ -5,13 +5,32 @@
 //#include "cLASER.h"
 //#include "cBigFreakingLASER.h"
 #include "cShipFactory.h"
+#include "cWorld.h"
+
+#include "cRobot.h"
+#include "cRobotWorld.h"
 
 #include <iostream>
 #include <vector>
 #include <fstream>
 
+// Another solution to the single threading issue
+
+
 int main()
 {
+	cRobotWorld* pTheWorld= new cRobotWorld();
+
+	cRobot* pR1 = new cRobot();
+	cRobot* pR2 = new cRobot();
+
+	pR1->SetWorldPointer( (iMediatorInterface*) pTheWorld);
+	pR2->SetWorldPointer( (iMediatorInterface*) pTheWorld);
+
+	pTheWorld->AddRobotToWorld(pR1);
+	pTheWorld->AddRobotToWorld(pR2);
+
+
 
 	std::vector<iShip*> myShips;
 
@@ -23,7 +42,20 @@ int main()
 		return -1;
 	}
 
+
 	cShipFactory* pFactory = new cShipFactory();
+
+//	cWorld::x = 1;
+
+//	cWorld* pTheWorld = new cWorld();
+//	cWorld* pTheWorld = cWorld::CreateAWorld();
+//	cWorld* pTheWorld2 = cWorld::CreateAWorld();
+//	cWorld* pTheWorld3 = cWorld::CreateAWorld();
+	//cWorld* pTheWorld4 = cWorld::GetWorld();
+	//cWorld* pTheWorld5 = cWorld::GetWorld();
+	//cWorld* pTheWorld6 = cWorld::GetWorld();
+
+//	cWorld* pTheWorld2 = new cWorld();
 
 	std::string tempShipType;
 	while (shipFile >> tempShipType)
@@ -36,6 +68,8 @@ int main()
 		iShip* pTheShip = pFactory->CreateShip(tempShipType);
 
 		//iShip* pTheShip = OLD_SCHOOL_CreateShip(tempShipType);
+
+//		pTheWorld->AddShipToWorld(pTheShip);
 
 		myShips.push_back( pTheShip);
 

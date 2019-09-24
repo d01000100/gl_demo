@@ -2,6 +2,7 @@
 
 //uniform mat4 MVP;
 uniform mat4 matModel;		// Model or World 
+uniform mat4 matModelInverTrans;		// For normal calculation
 uniform mat4 matView; 		// View or camera
 uniform mat4 matProj;		// Projection transform
 
