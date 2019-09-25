@@ -72,6 +72,6 @@ bool cGLRenderStateHelper::RestoreCurrentGLState(std::string &error)
 
 
 
-	return;
+	return true;
 }
 
