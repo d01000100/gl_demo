@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="NVPair">
+      <UniqueIdentifier>{01cf7ab0-202f-49e6-a6be-e53e300b6967}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cRobot.h">
@@ -27,6 +30,9 @@
     <ClInclude Include="commonstuff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sNVPair.h">
+      <Filter>NVPair</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cWorld.cpp">
@@ -37,6 +43,9 @@
     </ClCompile>
     <ClCompile Include="theMain.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sNVPair.cpp">
+      <Filter>NVPair</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

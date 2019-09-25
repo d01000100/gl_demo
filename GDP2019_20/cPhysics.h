@@ -34,8 +34,8 @@ public:
 		glm::vec3 directionOfApproach;
 		float penetrationDistance;
 		glm::vec3 adjustmentVector;
-		unsigned int Object1_ID;
-		unsigned int Object2_ID;
+		unsigned int Object1_ID;		// Shpere
+		unsigned int Object2_ID;		// Sphere or Triangle
 	};
 	
 	// This "moves" the objects based on the inegration step

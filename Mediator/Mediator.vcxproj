@@ -135,11 +135,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cBattery.h" />
+    <ClInclude Include="sNVPair.h" />
     <ClInclude Include="cRobot.h" />
     <ClInclude Include="cWorld.h" />
     <ClInclude Include="commonstuff.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sNVPair.cpp" />
     <ClCompile Include="cRobot.cpp" />
     <ClCompile Include="cWorld.cpp" />
     <ClCompile Include="theMain.cpp" />
