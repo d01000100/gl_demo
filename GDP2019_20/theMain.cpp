@@ -29,6 +29,7 @@
 
 // The Physics function
 #include "PhysicsStuff.h"
+#include "cPhysics.h"
 
 #include "DebugRenderer/cDebugRenderer.h"
 
@@ -48,7 +49,7 @@ float sexyLightLinearAtten = 0.008f;
 float sexyLightQuadraticAtten = 0.0f;
 
 
-bool g_BallCollided = false;
+//bool g_BallCollided = false;
 
 bool isShiftKeyDownByAlone(int mods)
 {
@@ -414,6 +415,9 @@ int main(void)
 	//float shipVelocityZ = 1.0f;
 	//float shipAccelz = 1000.0f;
 
+	
+	cPhysics* pPhsyics = new cPhysics();
+
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -493,9 +497,6 @@ int main(void)
 			<< sexyLightLinearAtten;
 		glfwSetWindowTitle( window, ssTitle.str().c_str() );
 
-		// Update the objects through physics
-		PhysicsUpdate( vec_pGameObjects, 0.01f );
-
 
 		GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
 		GLint matProj_UL = glGetUniformLocation(shaderProgID, "matProj");
@@ -519,6 +520,11 @@ int main(void)
 		}//for (int index...
 
 
+		// Update the objects through physics
+//		PhysicsUpdate( vec_pGameObjects, 0.01f );
+
+		pPhsyics->IntegrationStep(vec_pGameObjects, 0.01f);
+
 		// Let's draw all the closest points to the sphere
 		// on the terrain mesh....
 		// 
@@ -527,61 +533,69 @@ int main(void)
 		// - Place the debug sphere "there"
 		// - Draw it.
 
-		float closestDistanceSoFar = FLT_MAX;
-		glm::vec3 closetPoint = glm::vec3(0.0f,0.0f,0.0f);
-		sPlyTriangle closetTriangle;
+		glm::vec3 closestPoint = glm::vec3(0.0f,0.0f,0.0f);
+		cPhysics::sPhysicsTriangle closestTriangle;
 
-		for (unsigned int triIndex = 0;
-			 triIndex != terrainMesh.vecTriangles.size();
-			 triIndex++)
-		{
-			sPlyTriangle& curTriangle = terrainMesh.vecTriangles[triIndex];
+		pPhsyics->GetClosestTriangleToPoint(pShpere->positionXYZ, terrainMesh, closestPoint, closestTriangle);
 
-			// Get the vertices of the triangle
-			sPlyVertexXYZ_N triVert1 = terrainMesh.vecVertices[curTriangle.vert_index_1];
-			sPlyVertexXYZ_N triVert2 = terrainMesh.vecVertices[curTriangle.vert_index_2];
-			sPlyVertexXYZ_N triVert3 = terrainMesh.vecVertices[curTriangle.vert_index_3];
+		bool DidBallCollideWithGround = false;
+		HACK_BounceOffSomePlanes(pShpere, DidBallCollideWithGround );
 
-			Point triVertPoint1;
-			triVertPoint1.x = triVert1.x;
-			triVertPoint1.y = triVert1.y;
-			triVertPoint1.z = triVert1.z;
-
-			Point triVertPoint2;
-			triVertPoint2.x = triVert2.x;
-			triVertPoint2.y = triVert2.y;
-			triVertPoint2.z = triVert2.z;
-
-			Point triVertPoint3;
-			triVertPoint3.x = triVert3.x;
-			triVertPoint3.y = triVert3.y;
-			triVertPoint3.z = triVert3.z;
-
-			glm::vec3 curClosetPoint = ClosestPtPointTriangle( 
-				pShpere->positionXYZ, 
-				triVertPoint1, triVertPoint2, triVertPoint3 );
-			
-			// Is this the closest so far?
-			float distanceNow = glm::distance(curClosetPoint, pShpere->positionXYZ);
-
-			// is this closer than the closest distance
-			if ( distanceNow <= closestDistanceSoFar )
-			{
-				closestDistanceSoFar = distanceNow;
-				closetPoint = curClosetPoint;
-			}
-
-			//glm::mat4 matModel = glm::mat4(1.0f);
-			//pDebugSphere->positionXYZ = closetPoint;
-			//DrawObject(matModel, pDebugSphere, 
-			//			   shaderProgID, pTheVAOManager);
-
-
-		}//for (unsigned int triIndex = 0;
+//		float closestDistanceSoFar = FLT_MAX;
+//		glm::vec3 closetPoint = glm::vec3(0.0f,0.0f,0.0f);
+//		sPlyTriangle closetTriangle;
+//
+//		for (unsigned int triIndex = 0;
+//			 triIndex != terrainMesh.vecTriangles.size();
+//			 triIndex++)
+//		{
+//			sPlyTriangle& curTriangle = terrainMesh.vecTriangles[triIndex];
+//
+//			// Get the vertices of the triangle
+//			sPlyVertexXYZ_N triVert1 = terrainMesh.vecVertices[curTriangle.vert_index_1];
+//			sPlyVertexXYZ_N triVert2 = terrainMesh.vecVertices[curTriangle.vert_index_2];
+//			sPlyVertexXYZ_N triVert3 = terrainMesh.vecVertices[curTriangle.vert_index_3];
+//
+//			Point triVertPoint1;
+//			triVertPoint1.x = triVert1.x;
+//			triVertPoint1.y = triVert1.y;
+//			triVertPoint1.z = triVert1.z;
+//
+//			Point triVertPoint2;
+//			triVertPoint2.x = triVert2.x;
+//			triVertPoint2.y = triVert2.y;
+//			triVertPoint2.z = triVert2.z;
+//
+//			Point triVertPoint3;
+//			triVertPoint3.x = triVert3.x;
+//			triVertPoint3.y = triVert3.y;
+//			triVertPoint3.z = triVert3.z;
+//
+//			glm::vec3 curClosetPoint = ClosestPtPointTriangle( 
+//				pShpere->positionXYZ, 
+//				triVertPoint1, triVertPoint2, triVertPoint3 );
+//			
+//			// Is this the closest so far?
+//			float distanceNow = glm::distance(curClosetPoint, pShpere->positionXYZ);
+//
+//			// is this closer than the closest distance
+//			if ( distanceNow <= closestDistanceSoFar )
+//			{
+//				closestDistanceSoFar = distanceNow;
+//				closetPoint = curClosetPoint;
+//			}
+//
+//			//glm::mat4 matModel = glm::mat4(1.0f);
+//			//pDebugSphere->positionXYZ = closetPoint;
+//			//DrawObject(matModel, pDebugSphere, 
+//			//			   shaderProgID, pTheVAOManager);
+//
+//
+//		}//for (unsigned int triIndex = 0;
 
 		{// Draw closest point
 			glm::mat4 matModel = glm::mat4(1.0f);
-			pDebugSphere->positionXYZ = closetPoint;
+			pDebugSphere->positionXYZ = closestPoint;
 			pDebugSphere->scale = 1.0f;
 			pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
 			pDebugSphere->isWireframe = true;
@@ -591,7 +605,7 @@ int main(void)
 
 
 		// How far did we penetrate the surface?
-		glm::vec3 CentreToClosestPoint = pShpere->positionXYZ - closetPoint;
+		glm::vec3 CentreToClosestPoint = pShpere->positionXYZ - closestPoint;
 
 		// Direction that ball is going is normalized velocity
 		glm::vec3 directionBall = glm::normalize(pShpere->velocity);	// 1.0f
@@ -602,7 +616,7 @@ int main(void)
 		float distanceToClosestPoint = glm::length(CentreToClosestPoint);
 
 		// HACK
-		if (::g_BallCollided)
+		if (DidBallCollideWithGround)
 		{ 
 			float sphereRadius = 1.0f;
 			float distanceToMoveBack = sphereRadius - distanceToClosestPoint;

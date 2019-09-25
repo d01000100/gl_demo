@@ -4,7 +4,7 @@
 #include <iostream>
 #include "PhysicsStuff.h"
 
-extern bool g_BallCollided;
+//extern bool g_BallCollided;
 
 void PhysicsUpdate(std::vector<cGameObject*>& vec_pGameObjects,
 				   float deltaTime)
@@ -62,7 +62,7 @@ void PhysicsUpdate(std::vector<cGameObject*>& vec_pGameObjects,
 				pCurObj->inverseMass = 0.0f;	 // Stop it
 				
 				// HACK
-				::g_BallCollided = true;
+//				::g_BallCollided = true;
 				
 				
 				//				float vel = fabs(pCurObj->velocity.y)
@@ -200,3 +200,55 @@ int TestSphereTriangle(Sphere s, Point a, Point b, Point c, Point& p)
 	return glm::dot(v, v) <= s.r * s.r;
 }
 
+
+void HACK_BounceOffSomePlanes(cGameObject* pTheBouncingBall, bool &didItCollideWithTheGround)
+{
+
+	float groundPlane = 0.0f;
+	float rightPlane = 100.0f;
+	float leftPlane = -100.0f;
+
+	float radius = 1.0f;
+	//			direction = vec3( 0.0, +1.0, 0.0 )
+	//		    velocity = 10.0f
+	if ((pTheBouncingBall->positionXYZ.y - radius) <= groundPlane)
+	{
+		// It's hit the cube. Set the velocity to -ve of what it is
+		// fabs() is floating point absolute value
+	//				pCurObj->velocity.y = fabs(pCurObj->velocity.y);
+
+					// Stop it (it's collided with a triangle)
+	//				pCurObj->velocity = glm::vec3(0.0f,0.0f,0.0f);
+		pTheBouncingBall->inverseMass = 0.0f;	 // Stop it
+
+		// HACK
+		didItCollideWithTheGround = true;
+
+
+		//				float vel = fabs(pCurObj->velocity.y)
+	//
+	//				pCurObj->velocity = glm::reflect(pCurObj->velocity, 
+	//												 normalOfTriangle);
+
+
+					// Damp the velocity 
+		pTheBouncingBall->velocity.y *= 0.95f;
+	}
+
+	// Left plane 
+	if ((pTheBouncingBall->positionXYZ.x) <= leftPlane)
+	{
+		// It's hit the cube. Set the velocity to -ve of what it is
+		// fabs() is floating point absolute value
+		pTheBouncingBall->velocity.x = +fabs(pTheBouncingBall->velocity.x);
+	}
+	// Right plane 
+	if ((pTheBouncingBall->positionXYZ.x) >= rightPlane)
+	{
+		// It's hit the cube. Set the velocity to -ve of what it is
+		// fabs() is floating point absolute value
+		pTheBouncingBall->velocity.x = -fabs(pTheBouncingBall->velocity.x);
+	}
+
+	return;
+}

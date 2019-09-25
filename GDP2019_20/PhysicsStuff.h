@@ -22,4 +22,8 @@ int TestSphereTriangle(Sphere s, Point a, Point b, Point c, Point& p);
 void PhysicsUpdate(std::vector<cGameObject*>& vec_pGameObjects,
 				   float deltaTime);
 
+
+void HACK_BounceOffSomePlanes(cGameObject* pTheBouncingBall, bool& didItCollideWithTheGround);
+
+
 #endif

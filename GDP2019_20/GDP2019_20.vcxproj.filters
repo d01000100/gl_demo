@@ -19,6 +19,12 @@
     <Filter Include="DebugRenderer">
       <UniqueIdentifier>{bba1383a-1a1c-4ee7-9b84-b0c6b9646a64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{ff392894-8907-4e3d-8033-dd497b22c6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -39,9 +45,6 @@
     <ClCompile Include="cShaderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsStuff.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DebugRenderer\cDebugRenderer.cpp">
       <Filter>DebugRenderer</Filter>
     </ClCompile>
@@ -57,6 +60,18 @@
     <ClCompile Include="DebugRenderer\cGLRenderStateHelper.cpp">
       <Filter>DebugRenderer</Filter>
     </ClCompile>
+    <ClCompile Include="cGameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsStuff.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysics.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysics_Ericson.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -71,13 +86,7 @@
     <ClInclude Include="GLCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cGameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cShaderManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsStuff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DebugRenderer\cDebugRenderer.h">
@@ -94,6 +103,15 @@
     </ClInclude>
     <ClInclude Include="DebugRenderer\cGLRenderStateHelper.h">
       <Filter>DebugRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="cGameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsStuff.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,17 +18,7 @@ enum eShapeTypes
 class cGameObject
 {
 public:
-	cGameObject()
-	{
-		this->scale = 0.0f;
-		this->physicsShapeType = UNKNOWN;
-		this->isVisible = true;
-
-		this->isWireframe = false;
-		this->debugColour = glm::vec4(1.0f,1.0f,1.0f,1.0f);
-
-		this->inverseMass = 0.0f;	// Infinite mass
-	}
+	cGameObject();
 	std::string meshName;			//"Pirate"
 	glm::vec3  positionXYZ;
 	glm::vec3  rotationXYZ;
@@ -52,6 +42,15 @@ public:
 	glm::vec4 debugColour;
 
 	bool isVisible;
+
+	unsigned int getUniqueID(void);
+
+private:
+	// this variable is static, so common to all objects.
+	// When the object is created, the unique ID is set, and 
+	//	the next unique ID is incremented
+	static unsigned int next_uniqueID;
+	unsigned int m_uniqueID;
 };
 
 #endif

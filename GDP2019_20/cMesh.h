@@ -2,6 +2,8 @@
 #define _cMesh_HG_
 
 #include <vector>		// "smart array"
+#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
 
 // This structure matches the file, so that our life is
 //   simpler and happier, and we all get along.
