@@ -47,6 +47,9 @@ glm::vec3 sexyLightPosition = glm::vec3(-25.0f,30.0f,0.0f);
 float sexyLightLinearAtten = 0.008f;  
 float sexyLightQuadraticAtten = 0.0f;
 
+
+bool g_BallCollided = false;
+
 bool isShiftKeyDownByAlone(int mods)
 {
 	if (mods == GLFW_MOD_SHIFT)			
@@ -214,8 +217,8 @@ int main(void)
 	pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz_n.ply", pirateMesh);
 
 	cMesh terrainMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
-//	pTheModelLoader->LoadPlyModel("assets/models/BigFlatTerrain.ply", terrainMesh);
+//	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
+	pTheModelLoader->LoadPlyModel("assets/models/BigFlatTerrain_XYZ_n.ply", terrainMesh);
 
 	cMesh cubeMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Cube_1_Unit_from_origin_XYZ_n.ply", cubeMesh);
@@ -345,12 +348,12 @@ int main(void)
 	// Sphere and cube
 	cGameObject* pShpere = new cGameObject();
 	pShpere->meshName = "sphere";
-	pShpere->positionXYZ = glm::vec3(-100.0f, 100.0f, 1.0f);
+	pShpere->positionXYZ = glm::vec3(-25.0f, 20.0f, 1.0f);
 	pShpere->rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
 	pShpere->scale = 1.0f;
 	pShpere->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	// Set the sphere's initial velocity, etc.
-	pShpere->velocity = glm::vec3(6.0f,0.0f,0.0f);
+	pShpere->velocity = glm::vec3(6.0f,-15.0f,0.0f);
 	pShpere->accel = glm::vec3(0.0f,0.0f,0.0f);
 	pShpere->inverseMass = 1.0f;
 //	pShpere->inverseMass = 0.0f;			// Sphere won't move
@@ -374,6 +377,8 @@ int main(void)
 	pTerrain->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pTerrain->scale = 1.0f;
 	pTerrain->objectColourRGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	pTerrain->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	pTerrain->isWireframe = true;
 	pTerrain->inverseMass = 0.0f;	// Ignored during update
 
 	vec_pGameObjects.push_back(pShpere);
@@ -524,6 +529,7 @@ int main(void)
 
 		float closestDistanceSoFar = FLT_MAX;
 		glm::vec3 closetPoint = glm::vec3(0.0f,0.0f,0.0f);
+		sPlyTriangle closetTriangle;
 
 		for (unsigned int triIndex = 0;
 			 triIndex != terrainMesh.vecTriangles.size();
@@ -582,6 +588,45 @@ int main(void)
 			DrawObject(matModel, pDebugSphere,
 					   shaderProgID, pTheVAOManager);
 		}
+
+
+		// How far did we penetrate the surface?
+		glm::vec3 CentreToClosestPoint = pShpere->positionXYZ - closetPoint;
+
+		// Direction that ball is going is normalized velocity
+		glm::vec3 directionBall = glm::normalize(pShpere->velocity);	// 1.0f
+
+		// Calcualte direction to move it back the way it came from
+		glm::vec3 oppositeDirection = -directionBall;				// 1.0f
+
+		float distanceToClosestPoint = glm::length(CentreToClosestPoint);
+
+		// HACK
+		if (::g_BallCollided)
+		{ 
+			float sphereRadius = 1.0f;
+			float distanceToMoveBack = sphereRadius - distanceToClosestPoint;
+
+			glm::vec3 adjustmentVector = oppositeDirection * distanceToMoveBack;
+
+			// Let's move the sphere that amount...
+			pShpere->positionXYZ += adjustmentVector;
+
+
+			// NOW, I can calculate the correct response vector... 
+
+//			pShpere->velocity = glm::reflect(pShpere->velocity, triangleNormal)
+		}
+
+
+		std::cout 
+			<< pShpere->velocity.x << ", "
+			<< pShpere->velocity.y << ", "
+			<< pShpere->velocity.z << "   dist = "
+			<< distanceToClosestPoint << std::endl;
+
+		//howMuchToMoveItBack = 1.0 - lenthOfThatVector
+
 
 		{// Draw where the light is at
 			glm::mat4 matModel = glm::mat4(1.0f);

@@ -4,6 +4,8 @@
 #include <iostream>
 #include "PhysicsStuff.h"
 
+extern bool g_BallCollided;
+
 void PhysicsUpdate(std::vector<cGameObject*>& vec_pGameObjects,
 				   float deltaTime)
 {
@@ -46,16 +48,24 @@ void PhysicsUpdate(std::vector<cGameObject*>& vec_pGameObjects,
 			float rightPlane = 100.0f;
 			float leftPlane = -100.0f;
 
-			// Test to see if it's hit the cube
+			float radius = 1.0f;
 //			direction = vec3( 0.0, +1.0, 0.0 )
 //		    velocity = 10.0f
-			if ( (pCurObj->positionXYZ.y - 1.0f) <= groundPlane)
+			if ( (pCurObj->positionXYZ.y - radius) <= groundPlane)
 			{
 				// It's hit the cube. Set the velocity to -ve of what it is
 				// fabs() is floating point absolute value
-				pCurObj->velocity.y = fabs(pCurObj->velocity.y);
+//				pCurObj->velocity.y = fabs(pCurObj->velocity.y);
 
-//				float vel = fabs(pCurObj->velocity.y)
+				// Stop it (it's collided with a triangle)
+//				pCurObj->velocity = glm::vec3(0.0f,0.0f,0.0f);
+				pCurObj->inverseMass = 0.0f;	 // Stop it
+				
+				// HACK
+				::g_BallCollided = true;
+				
+				
+				//				float vel = fabs(pCurObj->velocity.y)
 //
 //				pCurObj->velocity = glm::reflect(pCurObj->velocity, 
 //												 normalOfTriangle);
