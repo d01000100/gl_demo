@@ -24,14 +24,47 @@ sModelDrawInfo::sModelDrawInfo()
 	this->pVertices = 0;	// or NULL
 	this->pIndices = 0;		// or NULL
 
-	// You could store the max and min values of the 
-	//  vertices here (determined when you load them):
-	glm::vec3 maxValues;
-	glm::vec3 minValues;
+	this->maxX = this->maxY = this->maxZ = 0.0f;
+	this->minX = this->minY = this->minZ = 0.0f;
+	this->extentX = this->extentY = this->extentZ = this->maxExtent = 0.0f;
 
-//	scale = 5.0/maxExtent;		-> 5x5x5
-	float maxExtent;
+	return;
+}
 
+void sModelDrawInfo::CalcExtents(void)
+{
+	// See if we have any vertices loaded...
+	if ( ( this->numberOfVertices == 0 ) || ( this->pVertices == 0 ) )
+	{
+		return;
+	}
+
+	// We're good
+
+	// Assume the 1st vertex is the max and min (so we can compare)
+	this->minX = this->maxX = this->pVertices[0].x;
+	this->minY = this->maxY = this->pVertices[0].y;
+	this->minZ = this->maxZ = this->pVertices[0].z;
+
+	for ( unsigned int index = 0; index != this->numberOfVertices; index++ )
+	{
+		if ( this->pVertices[index].x < this->minX ) { this->minX = this->pVertices[index].x; }
+		if ( this->pVertices[index].y < this->minY ) { this->minY = this->pVertices[index].y; }
+		if ( this->pVertices[index].z < this->minZ ) { this->minZ = this->pVertices[index].z; }
+
+		if ( this->pVertices[index].x < this->maxX ) { this->maxX = this->pVertices[index].x; }
+		if ( this->pVertices[index].y < this->maxY ) { this->maxY = this->pVertices[index].y; }
+		if ( this->pVertices[index].z < this->maxZ ) { this->maxZ = this->pVertices[index].z; }
+	}
+
+	this->extentX = this->maxX - this->minX;
+	this->extentY = this->maxY - this->minY;
+	this->extentZ = this->maxZ - this->minZ;
+	
+	this->maxExtent = this->extentX;
+	if ( this->extentY > this->maxExtent ) { this->maxExtent = this->extentY; }
+	if ( this->extentZ > this->maxExtent ) { this->maxExtent = this->extentZ; }
+	
 	return;
 }
 
@@ -46,7 +79,7 @@ bool cVAOManager::LoadModelIntoVAO(
 	// Write some code to copy the infomation from cMesh& theMesh
 	//  to the sModelDrawInfo& drawInfo...
 
-	drawInfo.numberOfVertices = theMesh.vecVertices.size();
+	drawInfo.numberOfVertices = (unsigned int)theMesh.vecVertices.size();
 	// Allocate an array big enought
 	drawInfo.pVertices = new sVertex[drawInfo.numberOfVertices];
 
@@ -78,8 +111,8 @@ bool cVAOManager::LoadModelIntoVAO(
 	}
 
 	// Now copy the index information, too
-	drawInfo.numberOfTriangles = theMesh.vecTriangles.size();
-	drawInfo.numberOfIndices = theMesh.vecTriangles.size() * 3;
+	drawInfo.numberOfTriangles = (unsigned int)theMesh.vecTriangles.size();
+	drawInfo.numberOfIndices = (unsigned int)theMesh.vecTriangles.size() * 3;
 
 	// Allocate the index array
 	drawInfo.pIndices = new unsigned int[drawInfo.numberOfIndices];
@@ -88,9 +121,9 @@ bool cVAOManager::LoadModelIntoVAO(
 	unsigned int indexIndex = 0;
 	for ( ; indexTri != drawInfo.numberOfTriangles; indexTri++, indexIndex += 3 )
 	{
-		drawInfo.pIndices[indexIndex + 0] = theMesh.vecTriangles[indexTri].vert_index_1;
-		drawInfo.pIndices[indexIndex + 1] = theMesh.vecTriangles[indexTri].vert_index_2;
-		drawInfo.pIndices[indexIndex + 2] = theMesh.vecTriangles[indexTri].vert_index_3;
+		drawInfo.pIndices[indexIndex + 0] = (unsigned int)theMesh.vecTriangles[indexTri].vert_index_1;
+		drawInfo.pIndices[indexIndex + 1] = (unsigned int)theMesh.vecTriangles[indexTri].vert_index_2;
+		drawInfo.pIndices[indexIndex + 2] = (unsigned int)theMesh.vecTriangles[indexTri].vert_index_3;
 	}
 
 

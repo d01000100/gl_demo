@@ -146,6 +146,11 @@
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
+    <ClCompile Include="DebugRenderer\cDebugRenderer.cpp" />
+    <ClCompile Include="DebugRenderer\cDebugRenderer_BuiltInShapes.cpp" />
+    <ClCompile Include="DebugRenderer\CErrorLog.cpp" />
+    <ClCompile Include="DebugRenderer\cGLRenderStateHelper.cpp" />
+    <ClCompile Include="DebugRenderer\COpenGLError.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="theMain.cpp" />
@@ -156,6 +161,11 @@
     <ClInclude Include="cModelLoader.h" />
     <ClInclude Include="cShaderManager.h" />
     <ClInclude Include="cVAOManager.h" />
+    <ClInclude Include="DebugRenderer\cDebugRenderer.h" />
+    <ClInclude Include="DebugRenderer\CErrorLog.h" />
+    <ClInclude Include="DebugRenderer\cGLRenderStateHelper.h" />
+    <ClInclude Include="DebugRenderer\COpenGLError.h" />
+    <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
     <ClInclude Include="GLCommon.h" />
     <ClInclude Include="PhysicsStuff.h" />
   </ItemGroup>

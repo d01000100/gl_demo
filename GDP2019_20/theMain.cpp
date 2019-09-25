@@ -30,6 +30,8 @@
 // The Physics function
 #include "PhysicsStuff.h"
 
+#include "DebugRenderer/cDebugRenderer.h"
+
 
 void DrawObject(glm::mat4 m,
 				cGameObject* pCurrentObject,
@@ -162,11 +164,9 @@ static void error_callback(int error, const char* description)
 int main(void)
 {
 
-
-
 	GLFWwindow* window;
 	//GLuint vertex_buffer, vertex_shader, fragment_shader, program;
-	GLint mvp_location; /*, vpos_location, vcol_location;*/
+	//GLint mvp_location; /*, vpos_location, vcol_location;*/
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -190,6 +190,11 @@ int main(void)
 	glfwSwapInterval(1);
 
 
+
+	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
+	pDebugRenderer->initialize();
+
+	pDebugRenderer->RenderDebugObjects(glm::mat4(1.0f), glm::mat4(1.0f), 0.0f);
 
 	// OpenGL and GLFW are good to go, so load the model
 	//cModelLoader theModelLoader;   // Stack
@@ -218,70 +223,7 @@ int main(void)
 	cMesh sphereMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Sphere_Radius_1_XYZ_n.ply", sphereMesh);
 
-	// **
-	// At this point, our model is loaded and stored into a cMesh object.
-	// Pass this cMesh object into the VAOManager to put onto the GPU
-	// **
-//
-	// Copy the mesh into a local array to go to the GPU
-	//sVertex* pVertices = NULL;
-//
-	//unsigned int numberOfVertsOnGPU = bunnyMesh.vecTriangles.size() * 3;
-	//// Dynamic allocation of memory...
-	//pVertices = new sVertex[numberOfVertsOnGPU];
-//
-	//// Copy the data from the cMesh format to the sVertex array format
-	//// { -0.0248608, 0.122913,  3.0f,  1.0f, 1.0f, 1.0f },
-//
-	//unsigned int triIndex = 0;	// Index into the cMesh triangle array
-	//unsigned int vertIndex = 0;	// Index into the vertex array 
-	//for (; triIndex != bunnyMesh.vecTriangles.size(); triIndex++, vertIndex += 3)
-	//{
-	//	// Make a copy (so that the next line is not crazy long)
-	//	sPlyTriangle tempVert = bunnyMesh.vecTriangles[triIndex];
-//
-	//	// The one for the GPU (vertex buffer)
-	//	pVertices[vertIndex + 0].x = bunnyMesh.vecVertices[tempVert.vert_index_1].x;
-	//	pVertices[vertIndex + 0].y = bunnyMesh.vecVertices[tempVert.vert_index_1].y;
-	//	pVertices[vertIndex + 0].z = bunnyMesh.vecVertices[tempVert.vert_index_1].z;
-	//	pVertices[vertIndex + 0].r = 1.0f;
-	//	pVertices[vertIndex + 0].g = 1.0f;
-	//	pVertices[vertIndex + 0].b = 1.0f;
-//
-	//	pVertices[vertIndex + 1].x = bunnyMesh.vecVertices[tempVert.vert_index_2].x;
-	//	pVertices[vertIndex + 1].y = bunnyMesh.vecVertices[tempVert.vert_index_2].y;
-	//	pVertices[vertIndex + 1].z = bunnyMesh.vecVertices[tempVert.vert_index_2].z;
-	//	pVertices[vertIndex + 1].r = 1.0f;
-	//	pVertices[vertIndex + 1].g = 1.0f;
-	//	pVertices[vertIndex + 1].b = 1.0f;
-//
-	//	pVertices[vertIndex + 2].x = bunnyMesh.vecVertices[tempVert.vert_index_3].x;
-	//	pVertices[vertIndex + 2].y = bunnyMesh.vecVertices[tempVert.vert_index_3].y;
-	//	pVertices[vertIndex + 2].z = bunnyMesh.vecVertices[tempVert.vert_index_3].z;
-	//	pVertices[vertIndex + 2].r = 1.0f;
-	//	pVertices[vertIndex + 2].g = 1.0f;
-	//	pVertices[vertIndex + 2].b = 1.0f;
-//
-//
-//
-	//}// for (; triIndex !=
-//
-//
-	//// NOTE: OpenGL error checks have been omitted for brevity
-	//glGenBuffers(1, &vertex_buffer);
-	//glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-//
-	//unsigned int sizeOfVertexBufferInBytes = 
-	//	numberOfVertsOnGPU * sizeof(sVertex);
-//
-	//// Copies the data into the CURRENT buffer
-	//glBufferData(GL_ARRAY_BUFFER, 
-	//			 sizeOfVertexBufferInBytes, // sizeof(vertices), 
-	//			 pVertices,					//void*  vertices, 
-	//			 GL_STATIC_DRAW);
-//
-	////sVertex* pVertices = NULL;
-	////sVertex vertices[4822] = {....}
+
 	
 
 
@@ -307,7 +249,7 @@ int main(void)
 	//	float r, g, b;		vColour				"attribute vec3 vColour;\n"
 //	
 //	mvp_location = glGetUniformLocation(program, "MVP");
-	mvp_location = glGetUniformLocation(shaderProgID, "MVP");
+//	mvp_location = glGetUniformLocation(shaderProgID, "MVP");
 	//vpos_location = glGetAttribLocation(program, "vPosition");
 	//vcol_location = glGetAttribLocation(program, "vColour");
 //
@@ -473,7 +415,8 @@ int main(void)
 		float ratio;
 		int width, height;
 		//       mat4x4 m, p, mvp;
-		glm::mat4 m, p, v, mvp;
+		//glm::mat4 m, p, v, mvp;
+		glm::mat4 p, v;
 
 		glfwGetFramebufferSize(window, &width, &height);
 		ratio = width / (float)height;

@@ -26,6 +26,8 @@ public:
 
 		this->isWireframe = false;
 		this->debugColour = glm::vec4(1.0f,1.0f,1.0f,1.0f);
+
+		this->inverseMass = 0.0f;	// Infinite mass
 	}
 	std::string meshName;			//"Pirate"
 	glm::vec3  positionXYZ;
