@@ -9,8 +9,8 @@
 class cRobotWorld : public iMediatorInterface
 {
 public:
-	virtual cFood findClosestGarbage(eGarbageType, float x, float y) {};
-	virtual bool eatGarbage(cFood theGarbage) {};
+	virtual cFood findClosestGarbage(eGarbageType, float x, float y);
+	virtual bool eatGarbage(cFood theGarbage);
 
 
 	void AddGarbage(void);

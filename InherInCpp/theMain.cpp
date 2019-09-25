@@ -6,6 +6,7 @@
 //#include "cBigFreakingLASER.h"
 #include "cShipFactory.h"
 #include "cWorld.h"
+#include "cWorld2.h"
 
 #include "cRobot.h"
 #include "cRobotWorld.h"
@@ -19,16 +20,16 @@
 
 int main()
 {
-	cRobotWorld* pTheWorld= new cRobotWorld();
+	cRobotWorld* pTheRobotWorld= new cRobotWorld();
 
 	cRobot* pR1 = new cRobot();
 	cRobot* pR2 = new cRobot();
 
-	pR1->SetWorldPointer( (iMediatorInterface*) pTheWorld);
-	pR2->SetWorldPointer( (iMediatorInterface*) pTheWorld);
+	pR1->SetWorldPointer( (iMediatorInterface*) pTheRobotWorld);
+	pR2->SetWorldPointer( (iMediatorInterface*) pTheRobotWorld);
 
-	pTheWorld->AddRobotToWorld(pR1);
-	pTheWorld->AddRobotToWorld(pR2);
+	pTheRobotWorld->AddRobotToWorld(pR1);
+	pTheRobotWorld->AddRobotToWorld(pR2);
 
 
 
@@ -47,13 +48,19 @@ int main()
 
 //	cWorld::x = 1;
 
-//	cWorld* pTheWorld = new cWorld();
-//	cWorld* pTheWorld = cWorld::CreateAWorld();
-//	cWorld* pTheWorld2 = cWorld::CreateAWorld();
-//	cWorld* pTheWorld3 = cWorld::CreateAWorld();
-	//cWorld* pTheWorld4 = cWorld::GetWorld();
-	//cWorld* pTheWorld5 = cWorld::GetWorld();
-	//cWorld* pTheWorld6 = cWorld::GetWorld();
+	//cWorld* pTheWorld = new cWorld();
+	cWorld* pTheWorld = cWorld::CreateAWorld_NotThreadSafe();
+	cWorld* pTheWorld2 = cWorld::CreateAWorld_NotThreadSafe();
+	cWorld* pTheWorld3 = cWorld::CreateAWorld_NotThreadSafe();
+
+	cWorld* pTheWorld4 = cWorld::CreateAWorld_ThreadSafe();
+	cWorld* pTheWorld5 = cWorld::CreateAWorld_ThreadSafe();
+	cWorld* pTheWorld6 = cWorld::CreateAWorld_ThreadSafe();
+
+
+	cWorld2* pTheWorld7 = cWorld2::GetWorld_ThreadSafe();
+	cWorld2* pTheWorld8 = cWorld2::GetWorld_ThreadSafe();
+	cWorld2* pTheWorld9 = cWorld2::GetWorld_ThreadSafe();
 
 //	cWorld* pTheWorld2 = new cWorld();
 

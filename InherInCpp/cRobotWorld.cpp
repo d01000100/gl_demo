@@ -10,7 +10,7 @@ void cRobotWorld::AddGarbage(void)
 {
 	// Pick a random location for the garbage
 
-	sFood newGarbage;
+	cFood newGarbage;
 	newGarbage.type = ALUMINUM;
 	newGarbage.amount = 1.0f;
 	newGarbage.x = 50.0f;
@@ -20,3 +20,22 @@ void cRobotWorld::AddGarbage(void)
 
 
 }
+
+
+cFood cRobotWorld::findClosestGarbage(eGarbageType, float x, float y)
+{
+	cFood closestFood;
+
+	if ( ! this->vecFood.empty() )
+	{
+		closestFood = this->vecFood[0];
+	}
+	return closestFood;
+}
+
+bool cRobotWorld::eatGarbage(cFood theGarbage)
+{
+
+	return true;
+}
+

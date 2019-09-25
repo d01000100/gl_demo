@@ -137,6 +137,7 @@
     <ClInclude Include="cStealthShip.h" />
     <ClInclude Include="cTorpedo.h" />
     <ClInclude Include="cWorld.h" />
+    <ClInclude Include="cWorld2.h" />
     <ClInclude Include="iMediatorInterface.h" />
     <ClInclude Include="iShip.h" />
     <ClInclude Include="iShipBuilder.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="cStealthShip.cpp" />
     <ClCompile Include="cTorpedo.cpp" />
     <ClCompile Include="cWorld.cpp" />
+    <ClCompile Include="cWorld2.cpp" />
     <ClCompile Include="theMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

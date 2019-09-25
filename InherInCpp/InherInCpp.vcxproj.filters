@@ -25,6 +25,9 @@
     <Filter Include="RobotFunFun">
       <UniqueIdentifier>{daa97e42-aa1f-4000-884c-abdd95d3257a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{1537827e-e516-4d56-9356-fe010c546de3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cShip.h">
@@ -69,9 +72,6 @@
     <ClInclude Include="iShipBuilder.h">
       <Filter>AbstractFactory</Filter>
     </ClInclude>
-    <ClInclude Include="cWorld.h">
-      <Filter>WoldObject</Filter>
-    </ClInclude>
     <ClInclude Include="cRobot.h">
       <Filter>RobotFunFun</Filter>
     </ClInclude>
@@ -83,6 +83,12 @@
     </ClInclude>
     <ClInclude Include="cFood.h">
       <Filter>RobotFunFun</Filter>
+    </ClInclude>
+    <ClInclude Include="cWorld.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="cWorld2.h">
+      <Filter>Singleton</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,14 +125,17 @@
     <ClCompile Include="cTorpedo.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
-    <ClCompile Include="cWorld.cpp">
-      <Filter>WoldObject</Filter>
-    </ClCompile>
     <ClCompile Include="cRobotWorld.cpp">
       <Filter>RobotFunFun</Filter>
     </ClCompile>
     <ClCompile Include="cRobot.cpp">
       <Filter>RobotFunFun</Filter>
+    </ClCompile>
+    <ClCompile Include="cWorld.cpp">
+      <Filter>Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="cWorld2.cpp">
+      <Filter>Singleton</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
