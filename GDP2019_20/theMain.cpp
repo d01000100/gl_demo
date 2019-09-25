@@ -194,7 +194,7 @@ int main(void)
 	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 	pDebugRenderer->initialize();
 
-	pDebugRenderer->RenderDebugObjects(glm::mat4(1.0f), glm::mat4(1.0f), 0.0f);
+//	pDebugRenderer->RenderDebugObjects(glm::mat4(1.0f), glm::mat4(1.0f), 0.0f);
 
 	// OpenGL and GLFW are good to go, so load the model
 	//cModelLoader theModelLoader;   // Stack
