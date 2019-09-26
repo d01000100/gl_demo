@@ -135,12 +135,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cBattery.h" />
+    <ClInclude Include="cHuman.h" />
+    <ClInclude Include="cHuman_Imp.h" />
+    <ClInclude Include="cObserver.h" />
+    <ClInclude Include="iMessageInterface.h" />
+    <ClInclude Include="iWorldRobotInterface.h" />
     <ClInclude Include="sNVPair.h" />
     <ClInclude Include="cRobot.h" />
     <ClInclude Include="cWorld.h" />
     <ClInclude Include="commonstuff.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cBattery.cpp" />
+    <ClCompile Include="cHuman.cpp" />
+    <ClCompile Include="cHuman_Imp.cpp" />
+    <ClCompile Include="cObserver.cpp" />
     <ClCompile Include="sNVPair.cpp" />
     <ClCompile Include="cRobot.cpp" />
     <ClCompile Include="cWorld.cpp" />

@@ -16,6 +16,9 @@
     <Filter Include="NVPair">
       <UniqueIdentifier>{01cf7ab0-202f-49e6-a6be-e53e300b6967}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Human">
+      <UniqueIdentifier>{0c5d4afe-bb7f-4098-99fa-bd18e9e0c7c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cRobot.h">
@@ -33,6 +36,21 @@
     <ClInclude Include="sNVPair.h">
       <Filter>NVPair</Filter>
     </ClInclude>
+    <ClInclude Include="iWorldRobotInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iMessageInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cHuman.h">
+      <Filter>Human</Filter>
+    </ClInclude>
+    <ClInclude Include="cHuman_Imp.h">
+      <Filter>Human</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cWorld.cpp">
@@ -46,6 +64,18 @@
     </ClCompile>
     <ClCompile Include="sNVPair.cpp">
       <Filter>NVPair</Filter>
+    </ClCompile>
+    <ClCompile Include="cBattery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cHuman.cpp">
+      <Filter>Human</Filter>
+    </ClCompile>
+    <ClCompile Include="cHuman_Imp.cpp">
+      <Filter>Human</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

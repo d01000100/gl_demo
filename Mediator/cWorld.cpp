@@ -71,6 +71,10 @@ void cWorld::GenerateWorld(int numRobots, int numBatteries, float worldSize)
 
 		pRobot->name = ssName.str();
 
+		// This might make more sense:
+		iMessageInterface* pWorldInterface = this;
+		pRobot->setWorldPointer(pWorldInterface);
+
 
 		std::cout << "Made a robot " 
 			<< pRobot->getUniqueID() << ":" 
@@ -102,6 +106,8 @@ void cWorld::GenerateWorld(int numRobots, int numBatteries, float worldSize)
 		this->m_vec_pBatteries.push_back(pBattery);
 	}
 
+	this->m_vec_pHumans.push_back( new cHuman() );
+
 	std::cout << std::endl;
 
 	return;
@@ -111,4 +117,45 @@ void cWorld::GenerateWorld(int numRobots, int numBatteries, float worldSize)
 float cWorld::getWorldSize(void)
 {
 	return this->m_worldSize;
+}
+
+sNVPair cWorld::RecieveMessage(sNVPair message)
+{
+
+	sNVPair response;
+	response.name = "OK";
+
+	if (message.name == "Take Energy from Largest Battery")
+	{
+		cBattery* pBattery = this->findLargestBattery();
+		sNVPair message;
+		message.name = "Take Energy";
+		message.fValue = message.fValue;
+		pBattery->RecieveMessage(message);
+
+		return response;
+	}
+
+	if (message.name == "Make fun of actor")
+	{
+		sNVPair message;
+		message.name = "You suck as an actor";
+		this->m_vec_pHumans[0]->RecieveMessage(message);
+		response.name = "OK";
+		return response;
+	}
+	// 
+	response.name = "UNKNOWN COMMAND";
+	return response;
+}
+
+
+cBattery* cWorld::findLargestBattery()
+{
+	// TODO: Find largest battery
+
+	// HACK: for now, just return the 1st one
+	return this->m_vec_pBatteries[0];
+
+	return 0;
 }

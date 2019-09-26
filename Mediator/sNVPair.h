@@ -5,6 +5,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
+#include <vector>
 
 struct sNVPair
 {
@@ -25,6 +26,8 @@ struct sNVPair
 	int iValue;
 	glm::vec3 v3Value;
 	void clear(void);
+
+	std::vector<sNVPair> vecChildNVPairs;
 };
 
 
