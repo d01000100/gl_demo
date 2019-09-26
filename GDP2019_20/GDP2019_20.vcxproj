@@ -155,6 +155,7 @@
     <ClCompile Include="DebugRenderer\cGLRenderStateHelper.cpp" />
     <ClCompile Include="DebugRenderer\COpenGLError.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="theMain.cpp" />
   </ItemGroup>
@@ -171,6 +172,7 @@
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
     <ClInclude Include="GLCommon.h" />
+    <ClInclude Include="LightManager\cLightHelper.h" />
     <ClInclude Include="PhysicsStuff.h" />
   </ItemGroup>
   <ItemGroup>

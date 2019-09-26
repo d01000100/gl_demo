@@ -25,6 +25,9 @@
     <Filter Include="GameObject">
       <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LightManager">
+      <UniqueIdentifier>{4d24adbe-4aca-4875-8dab-0666c5843151}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -72,6 +75,9 @@
     <ClCompile Include="cPhysics_Ericson.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="LightManager\cLightHelper.cpp">
+      <Filter>LightManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -112,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="PhysicsStuff.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="LightManager\cLightHelper.h">
+      <Filter>LightManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
