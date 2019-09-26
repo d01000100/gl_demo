@@ -63,11 +63,11 @@ void main()
 	
 	vec4 materialColour = diffuseColour;
 //	vec4 materialColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	vec4 specColour = vec4(0.0f,0.0f,0.0f,1.0f);// materialColour;
+//	vec4 specColour = vec4(0.0f,0.0f,0.0f,1.0f);// materialColour;
 	
 
 	vec4 outColour = calcualteLightContrib( materialColour.rgb, fNormal.xyz, 
-	                                        fVertWorldLocation.xyz, specColour );
+	                                        fVertWorldLocation.xyz, specularColour );
 
 											
 	pixelColour = outColour;
@@ -135,8 +135,10 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 		vec3 vLightToVertex = theLights[index].position.xyz - vertexWorldPos.xyz;
 		float distanceToLight = length(vLightToVertex);	
 		vec3 lightVector = normalize(vLightToVertex);
+		// -1 to 1
 		float dotProduct = dot(lightVector, vertexNormal.xyz);	 
 		
+		// If it's negative, will clamp to 0 --- range from 0 to 1
 		dotProduct = max( 0.0f, dotProduct );	
 		
 		vec3 lightDiffuseContrib = dotProduct * theLights[index].diffuse.rgb;

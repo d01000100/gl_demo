@@ -33,6 +33,9 @@
 
 #include "DebugRenderer/cDebugRenderer.h"
 
+// Used to visualize the attenuation of the lights...
+#include "LightManager/cLightHelper.h"
+
 
 void DrawObject(glm::mat4 m,
 				cGameObject* pCurrentObject,
@@ -41,12 +44,14 @@ void DrawObject(glm::mat4 m,
 
 
 glm::vec3 cameraEye = glm::vec3(0.0, 80.0, -80.0);
-glm::vec3 cameraTarget = glm::vec3(0.0f, 8.0, 0.0f);
+glm::vec3 cameraTarget = glm::vec3(0.0f, 10.0, 0.0f);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
 glm::vec3 sexyLightPosition = glm::vec3(-25.0f,30.0f,0.0f);
-float sexyLightLinearAtten = 0.008f;  
-float sexyLightQuadraticAtten = 0.0f;
+float sexyLightConstAtten = 0.0000001f;			// not really used (can turn off and on the light)
+float sexyLightLinearAtten = 0.03f;  
+float sexyLightQuadraticAtten = 0.0000001f;
+bool bLightDebugSheresOn = true;
 
 
 //bool g_BallCollided = false;
@@ -141,13 +146,36 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 		if (key == GLFW_KEY_1)
 		{
-			sexyLightLinearAtten *= 0.99f;			// 99% of what it was
+			sexyLightConstAtten *= 0.99f;			// 99% of what it was
 		}
 		if (key == GLFW_KEY_2)
 		{
+			sexyLightConstAtten *= 1.01f;			// 1% more of what it was
+		}		
+		if (key == GLFW_KEY_3)
+		{
+			sexyLightLinearAtten *= 0.99f;			// 99% of what it was
+		}
+		if (key == GLFW_KEY_4)
+		{
 			sexyLightLinearAtten *= 1.01f;			// 1% more of what it was
 		}
-
+		if (key == GLFW_KEY_5)
+		{
+			sexyLightQuadraticAtten *= 0.99f;			// 99% of what it was
+		}
+		if (key == GLFW_KEY_6)
+		{
+			sexyLightQuadraticAtten *= 1.01f;			// 1% more of what it was
+		}
+		if (key == GLFW_KEY_9)
+		{
+			bLightDebugSheresOn = false;			
+		}
+		if (key == GLFW_KEY_0)
+		{
+			bLightDebugSheresOn = true; 
+		}
 
 	}//if (isShiftKeyDownByAlone(mods))
 
@@ -209,7 +237,8 @@ int main(void)
 
 	cMesh bunnyMesh;		// This is stack based
 //	if ( ! pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", bunnyMesh) )
-	if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_res4_XYZ_N.ply", bunnyMesh) )
+//	if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_res4_XYZ_N.ply", bunnyMesh) )
+	if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_XYZ_n.ply", bunnyMesh) )
 	{
 		std::cout << "Didn't find the file" << std::endl;
 	}
@@ -218,8 +247,8 @@ int main(void)
 	pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz_n.ply", pirateMesh);
 
 	cMesh terrainMesh;
-//	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
-	pTheModelLoader->LoadPlyModel("assets/models/BigFlatTerrain_XYZ_n.ply", terrainMesh);
+	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
+//	pTheModelLoader->LoadPlyModel("assets/models/BigFlatTerrain_XYZ_n.ply", terrainMesh);
 
 	cMesh cubeMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Cube_1_Unit_from_origin_XYZ_n.ply", cubeMesh);
@@ -328,7 +357,7 @@ int main(void)
 	pBunny->meshName = "bunny";
 	pBunny->positionXYZ = glm::vec3(10.0f, 20.0f, -2.0f);		// -4 on z
 	pBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pBunny->scale = 5.0f;
+	pBunny->scale = 75.0f;
 	pBunny->objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	pBunny->inverseMass = 0.0f;
 //
@@ -377,9 +406,9 @@ int main(void)
 	pTerrain->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pTerrain->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pTerrain->scale = 1.0f;
-	pTerrain->objectColourRGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-	pTerrain->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-	pTerrain->isWireframe = true;
+	pTerrain->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+//	pTerrain->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+//	pTerrain->isWireframe = true;
 	pTerrain->inverseMass = 0.0f;	// Ignored during update
 
 	vec_pGameObjects.push_back(pShpere);
@@ -417,6 +446,9 @@ int main(void)
 
 	
 	cPhysics* pPhsyics = new cPhysics();
+
+
+	cLightHelper* pLightHelper = new cLightHelper();
 
 
 	while (!glfwWindowShouldClose(window))
@@ -486,6 +518,12 @@ int main(void)
 		glUniform4f(L_0_param1, 0.0f /*POINT light*/, 0.0f, 0.0f, 1.0f );
 		glUniform4f(L_0_param2, 1.0f /*Light is on*/, 0.0f, 0.0f, 1.0f );
 
+		// Also set the position of my "eye" (the camera)
+		//uniform vec4 eyeLocation;
+		GLint eyeLocation_UL = glGetUniformLocation( shaderProgID, "eyeLocation");
+
+		glUniform4f( eyeLocation_UL, 
+					 cameraEye.x, cameraEye.y, cameraEye.z, 1.0f );
 
 
 		std::stringstream ssTitle;
@@ -493,8 +531,10 @@ int main(void)
 			<< sexyLightPosition.x << ", " 
 			<< sexyLightPosition.y << ", " 
 			<< sexyLightPosition.z 
-			<< " linear atten: " 
-			<< sexyLightLinearAtten;
+			<< "Atten: "
+			<< sexyLightConstAtten << " : "
+			<< sexyLightLinearAtten << " : "
+			<< sexyLightQuadraticAtten;
 		glfwSetWindowTitle( window, ssTitle.str().c_str() );
 
 
@@ -642,16 +682,100 @@ int main(void)
 		//howMuchToMoveItBack = 1.0 - lenthOfThatVector
 
 
-		{// Draw where the light is at
-			glm::mat4 matModel = glm::mat4(1.0f);
-			pDebugSphere->positionXYZ = sexyLightPosition;
-			pDebugSphere->scale = 0.5f;
-			pDebugSphere->debugColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-			pDebugSphere->isWireframe = true;
-			DrawObject(matModel, pDebugSphere,
-					   shaderProgID, pTheVAOManager);
-		}
+		if (bLightDebugSheresOn) 
+		{
+			{// Draw where the light is at
+				glm::mat4 matModel = glm::mat4(1.0f);
+				pDebugSphere->positionXYZ = sexyLightPosition;
+				pDebugSphere->scale = 0.5f;
+				pDebugSphere->debugColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+				pDebugSphere->isWireframe = true;
+				DrawObject(matModel, pDebugSphere,
+						   shaderProgID, pTheVAOManager);
+			}
 
+			// Draw spheres to represent the attenuation...
+			{   // Draw a sphere at 1% brightness
+				glm::mat4 matModel = glm::mat4(1.0f);
+				pDebugSphere->positionXYZ = sexyLightPosition;
+				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
+													   0.01f,		// 1% brightness (essentially black)
+													   0.001f,		// Within 0.1%  
+													   100000.0f,	// Will quit when it's at this distance
+													   sexyLightConstAtten,
+													   sexyLightLinearAtten,
+													   sexyLightQuadraticAtten );
+				pDebugSphere->scale = sphereSize;
+				pDebugSphere->debugColour = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+				pDebugSphere->isWireframe = true;
+				DrawObject(matModel, pDebugSphere,
+						   shaderProgID, pTheVAOManager);
+			}
+			{   // Draw a sphere at 25% brightness
+				glm::mat4 matModel = glm::mat4(1.0f);
+				pDebugSphere->positionXYZ = sexyLightPosition;
+				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
+													   0.25f,		// 1% brightness (essentially black)
+													   0.001f,		// Within 0.1%  
+													   100000.0f,	// Will quit when it's at this distance
+													   sexyLightConstAtten,
+													   sexyLightLinearAtten,
+													   sexyLightQuadraticAtten );
+				pDebugSphere->scale = sphereSize;
+				pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+				pDebugSphere->isWireframe = true;
+				DrawObject(matModel, pDebugSphere,
+						   shaderProgID, pTheVAOManager);
+			}
+			{   // Draw a sphere at 50% brightness
+				glm::mat4 matModel = glm::mat4(1.0f);
+				pDebugSphere->positionXYZ = sexyLightPosition;
+				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
+													   0.50f,		// 1% brightness (essentially black)
+													   0.001f,		// Within 0.1%  
+													   100000.0f,	// Will quit when it's at this distance
+													   sexyLightConstAtten,
+													   sexyLightLinearAtten,
+													   sexyLightQuadraticAtten );
+				pDebugSphere->scale = sphereSize;
+				pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
+				pDebugSphere->isWireframe = true;
+				DrawObject(matModel, pDebugSphere,
+						   shaderProgID, pTheVAOManager);
+			}
+			{   // Draw a sphere at 75% brightness
+				glm::mat4 matModel = glm::mat4(1.0f);
+				pDebugSphere->positionXYZ = sexyLightPosition;
+				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
+													   0.75f,		// 1% brightness (essentially black)
+													   0.001f,		// Within 0.1%  
+													   100000.0f,	// Will quit when it's at this distance
+													   sexyLightConstAtten,
+													   sexyLightLinearAtten,
+													   sexyLightQuadraticAtten );
+				pDebugSphere->scale = sphereSize;
+				pDebugSphere->debugColour = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+				pDebugSphere->isWireframe = true;
+				DrawObject(matModel, pDebugSphere,
+						   shaderProgID, pTheVAOManager);
+			}
+			{   // Draw a sphere at 95% brightness
+				glm::mat4 matModel = glm::mat4(1.0f);
+				pDebugSphere->positionXYZ = sexyLightPosition;
+				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
+													   0.95f,		// 1% brightness (essentially black)
+													   0.001f,		// Within 0.1%  
+													   100000.0f,	// Will quit when it's at this distance
+													   sexyLightConstAtten,
+													   sexyLightLinearAtten,
+													   sexyLightQuadraticAtten );
+				pDebugSphere->scale = sphereSize;
+				pDebugSphere->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+				pDebugSphere->isWireframe = true;
+				DrawObject(matModel, pDebugSphere,
+						   shaderProgID, pTheVAOManager);
+			}
+		}// if (bLightDebugSheresOn) 
 
 		 // **************************************************
 		// **************************************************
@@ -780,6 +904,14 @@ void DrawObject(glm::mat4 m,
 				pCurrentObject->objectColourRGBA.g,
 				pCurrentObject->objectColourRGBA.b,
 				pCurrentObject->objectColourRGBA.a);	// 
+
+	GLint specularColour_UL = glGetUniformLocation(shaderProgID, "specularColour");
+	glUniform4f(specularColour_UL,
+				1.0f,	// R
+				1.0f,	// G
+				1.0f,	// B
+				1000.0f);	// Specular "power" (how shinny the object is)
+	                        // 1.0 to really big (10000.0f)
 
 
 	//uniform vec4 debugColour;

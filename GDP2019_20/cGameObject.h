@@ -23,6 +23,14 @@ public:
 	glm::vec3  positionXYZ;
 	glm::vec3  rotationXYZ;
 	glm::vec4  objectColourRGBA;	
+
+	// Likely want this now:
+	glm::vec4 diffuseColour;		// Colour of the object
+	glm::vec4 specularColour;		// Colour of the HIGHLIGHT + Shininess
+	                                // RGB - colour
+	                                // 4th value (a or w) is the "power"
+	                                // 1.0 to 10,000.0f 
+
 	float scale;
 
 	// Add some physics things
