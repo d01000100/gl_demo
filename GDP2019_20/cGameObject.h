@@ -11,7 +11,7 @@ enum eShapeTypes
 	SPHERE, 
 	CAPSULE,
 	PLANE,
-	MESH,
+	MESH,		// Triangle test
 	UNKNOWN
 };
 
@@ -19,7 +19,13 @@ class cGameObject
 {
 public:
 	cGameObject();
+	// Used to draw this mesh
 	std::string meshName;			//"Pirate"
+
+	// Values that we can assign and then look for them
+	unsigned int friendlyIDNumber;
+	std::string friendlyName;
+
 	glm::vec3  positionXYZ;
 	glm::vec3  rotationXYZ;
 	glm::vec4  objectColourRGBA;	
@@ -31,7 +37,7 @@ public:
 	                                // 4th value (a or w) is the "power"
 	                                // 1.0 to 10,000.0f 
 
-	float scale;
+	float scale;;    
 
 	// Add some physics things
 	glm::vec3 velocity;

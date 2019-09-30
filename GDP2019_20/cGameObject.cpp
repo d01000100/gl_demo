@@ -14,7 +14,10 @@ cGameObject::cGameObject()
 	this->physicsShapeType = UNKNOWN;
 
 	// Set the unique ID
+	// Take the value of the static int, 
+	//  set this to the instance variable
 	this->m_uniqueID = cGameObject::next_uniqueID;
+	// Then increment the static variable
 	cGameObject::next_uniqueID++;
 
 	return;

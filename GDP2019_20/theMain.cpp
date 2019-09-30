@@ -15,6 +15,7 @@
 #include <stdio.h>		// c libs
 
 #include <iostream>		// C++ IO standard stuff
+#include <map>			// Map aka "dictonary" 
 
 #include "cModelLoader.h"			
 #include "cVAOManager.h"		// NEW
@@ -53,6 +54,15 @@ float sexyLightLinearAtten = 0.03f;
 float sexyLightQuadraticAtten = 0.0000001f;
 bool bLightDebugSheresOn = true;
 
+
+// Load up my "scene"  (now global)
+std::vector<cGameObject*> g_vec_pGameObjects;
+std::map<std::string /*FriendlyName*/, cGameObject*> g_map_GameObjectsByFriendlyName;
+
+
+// returns NULL (0) if we didn't find it.
+cGameObject* pFindObjectByFriendlyName( std::string name );
+cGameObject* pFindObjectByFriendlyNameMap( std::string name );
 
 //bool g_BallCollided = false;
 
@@ -109,6 +119,29 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		{
 			cameraEye.z += CAMERASPEED;		// Move the camera +0.01f units
 		}
+
+		if ( key == GLFW_KEY_B )
+		{ 
+			// Shoot a bullet from the pirate ship
+			// Find the pirate ship...
+			// returns NULL (0) if we didn't find it.
+//			cGameObject* pShip = pFindObjectByFriendlyName("PirateShip");
+			cGameObject* pShip = pFindObjectByFriendlyNameMap("PirateShip");
+			// Maybe check to see if it returned something... 
+
+			// Find the sphere#2
+//			cGameObject* pBall = pFindObjectByFriendlyName("Sphere#2");
+			cGameObject* pBall = pFindObjectByFriendlyNameMap("Sphere#2");
+
+			// Set the location velocity for sphere#2
+			pBall->positionXYZ = pShip->positionXYZ;
+			pBall->inverseMass = 1.0f;		// So it's updated
+			// 20.0 units "to the right"
+			// 30.0 units "up"
+			pBall->velocity = glm::vec3( 15.0f, 20.0f, 0.0f );
+			pBall->accel = glm::vec3(0.0f,0.0f,0.0f);
+			pBall->diffuseColour = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+		}//if ( key == GLFW_KEY_B )
 
 	}
 
@@ -195,6 +228,64 @@ static void error_callback(int error, const char* description)
 
 int main(void)
 {
+	//int myArray[15];		// Integers stores integers
+
+	//std::vector<int> myVector;
+	//myVector.push_back( 25 );		// 0
+	//myVector.push_back(  8 );		// 1
+	//myVector.push_back( 17 );		// 2
+	//myVector.push_back(  1 );
+	//myVector.push_back( 11 );		// Ball
+	//myVector.push_back(  6 );
+	//myVector.push_back( 15 );
+	//myVector.push_back( 25 );		// Pirate
+	//myVector.push_back( 22 );
+	//myVector.push_back( 27 );
+	//myVector.push_back( 13 );
+	//std::cout << myVector[3];
+
+	//std::map<int, int> myMap;
+	//myMap[0] = 25;		// 0
+	//myMap[1] =  8;		// 1
+	//myMap[2] = 17;		// 2
+	//myMap[3] =  1;
+	//myMap[4] = 11;		
+	//myMap[5] =  6;
+	//myMap[6] = 15;
+	//myMap[7] = 25;	
+	//myMap[8] = 22;
+	//myMap[9] = 27;
+	//myMap[10] = 13;		// I WANT THIS ONE
+	//myMap.find( 13 );
+
+	//std::map<std::string, cGameObject> myMap;
+	//myMap["PirateShip"]
+
+
+	// A map for favorite foods
+	std::map< std::string /*index*/, std::string > mapNameToFood;
+
+	// 11 -> 2.3
+	// 111 -> 4.7
+	// 1000 -> 6.7
+	// 10000 -> 9
+	// 100,000 -> 11
+	mapNameToFood["Felipe"] = "Hay";
+	mapNameToFood["Hamza"] = "Pancake";
+	mapNameToFood["Dylan"] = "Fish Food";
+	mapNameToFood["Ethan"] = "Fish";
+	mapNameToFood["Brandon"] = "Pizza";
+	mapNameToFood["Brian"] = "Dog food";
+	mapNameToFood["Caleb"] = "Eggs";
+	mapNameToFood["Christopher"] = "Pie";
+	mapNameToFood["David"] = "Cat food";
+	mapNameToFood["Dhilip"] = "Noodles";
+	mapNameToFood["Harshil"] = "Chocolate";
+
+	std::string favFood = mapNameToFood["Dhilip"];
+	std::cout << favFood << std::endl;
+
+
 
 	GLFWwindow* window;
 	//GLuint vertex_buffer, vertex_shader, fragment_shader, program;
@@ -342,11 +433,12 @@ int main(void)
 	// At this point, the model is loaded into the GPU
 
 
-	// Load up my "scene" 
-	std::vector<cGameObject*> vec_pGameObjects;
+	//// Load up my "scene" 
+	//std::vector<cGameObject*> vec_pGameObjects;
 
 	cGameObject* pPirate = new cGameObject();
 	pPirate->meshName = "pirate";
+	pPirate->friendlyName = "PirateShip";	// Friendly name
 	pPirate->positionXYZ = glm::vec3(0.0f, 20.0f, 10.0f);
 	pPirate->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pPirate->scale = 0.75f;
@@ -355,6 +447,7 @@ int main(void)
 //
 	cGameObject* pBunny = new cGameObject();
 	pBunny->meshName = "bunny";
+	pBunny->friendlyName = "Bugs";	// Famous bunny
 	pBunny->positionXYZ = glm::vec3(10.0f, 20.0f, -2.0f);		// -4 on z
 	pBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pBunny->scale = 75.0f;
@@ -377,7 +470,14 @@ int main(void)
 
 	// Sphere and cube
 	cGameObject* pShpere = new cGameObject();
+
+	//cGameObject A; 
+	//cGameObject B;
+	//A = B;
+
+
 	pShpere->meshName = "sphere";
+	pShpere->friendlyName = "Sphere#1";	// We use to search 
 	pShpere->positionXYZ = glm::vec3(-25.0f, 20.0f, 1.0f);
 	pShpere->rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
 	pShpere->scale = 1.0f;
@@ -385,8 +485,24 @@ int main(void)
 	// Set the sphere's initial velocity, etc.
 	pShpere->velocity = glm::vec3(6.0f,-15.0f,0.0f);
 	pShpere->accel = glm::vec3(0.0f,0.0f,0.0f);
+	pShpere->physicsShapeType = SPHERE;
 	pShpere->inverseMass = 1.0f;
 //	pShpere->inverseMass = 0.0f;			// Sphere won't move
+
+		// Sphere and cube
+	cGameObject* pShpere2 = new cGameObject();
+	pShpere2->meshName = "sphere";
+	pShpere2->friendlyName = "Sphere#2";
+//	pShpere2->positionXYZ = glm::vec3(25.0f, 20.0f, 1.0f);
+	pShpere2->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	pShpere2->scale = 1.0f;
+	pShpere2->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	// Set the sphere's initial velocity, etc.
+//	pShpere2->velocity = glm::vec3(6.0f, -15.0f, 0.0f);
+	pShpere2->accel = glm::vec3(0.0f, 0.0f, 0.0f);
+	pShpere2->physicsShapeType = SPHERE;
+	pShpere2->inverseMass = 0.0f;
+	//	pShpere->inverseMass = 0.0f;			// Sphere won't move
 
 
 	cGameObject* pCube = new cGameObject();			// HEAP
@@ -403,19 +519,29 @@ int main(void)
 
 	cGameObject* pTerrain = new cGameObject();			// HEAP
 	pTerrain->meshName = "terrain";
+	pTerrain->friendlyName = "TheGround";
 	pTerrain->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pTerrain->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pTerrain->scale = 1.0f;
 	pTerrain->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	pTerrain->physicsShapeType = MESH;
 //	pTerrain->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 //	pTerrain->isWireframe = true;
 	pTerrain->inverseMass = 0.0f;	// Ignored during update
 
-	vec_pGameObjects.push_back(pShpere);
-	vec_pGameObjects.push_back(pCube);
-	vec_pGameObjects.push_back(pTerrain);
-	vec_pGameObjects.push_back(pPirate);
-	vec_pGameObjects.push_back(pBunny);
+	::g_vec_pGameObjects.push_back(pShpere);
+	::g_vec_pGameObjects.push_back(pShpere2);
+	::g_vec_pGameObjects.push_back(pCube);
+	::g_vec_pGameObjects.push_back(pTerrain);
+	::g_vec_pGameObjects.push_back(pPirate);
+	::g_vec_pGameObjects.push_back(pBunny);
+
+
+
+	::g_map_GameObjectsByFriendlyName[pShpere2->friendlyName] = pShpere;
+	::g_map_GameObjectsByFriendlyName[pTerrain->friendlyName] = pTerrain;
+	::g_map_GameObjectsByFriendlyName[pPirate->friendlyName] = pPirate;
+	::g_map_GameObjectsByFriendlyName[pBunny->friendlyName] = pBunny;
 
 
 	// Will be moved placed around the scene
@@ -548,11 +674,13 @@ int main(void)
 		// **************************************************
 		// **************************************************
 		// Loop to draw everything in the scene
-		for (int index = 0; index != vec_pGameObjects.size(); index++)
+
+
+		for (int index = 0; index != ::g_vec_pGameObjects.size(); index++)
 		{
 			glm::mat4 matModel = glm::mat4(1.0f);
 
-			cGameObject* pCurrentObject = vec_pGameObjects[index];
+			cGameObject* pCurrentObject = ::g_vec_pGameObjects[index];
 
 			DrawObject( matModel, pCurrentObject, 
 					   shaderProgID, pTheVAOManager);
@@ -563,7 +691,7 @@ int main(void)
 		// Update the objects through physics
 //		PhysicsUpdate( vec_pGameObjects, 0.01f );
 
-		pPhsyics->IntegrationStep(vec_pGameObjects, 0.01f);
+		pPhsyics->IntegrationStep(::g_vec_pGameObjects, 0.01f);
 
 		// Let's draw all the closest points to the sphere
 		// on the terrain mesh....
@@ -580,6 +708,10 @@ int main(void)
 
 		bool DidBallCollideWithGround = false;
 		HACK_BounceOffSomePlanes(pShpere, DidBallCollideWithGround );
+
+		// A more general 
+		pPhsyics->TestForCollisions(::g_vec_pGameObjects);
+
 
 //		float closestDistanceSoFar = FLT_MAX;
 //		glm::vec3 closetPoint = glm::vec3(0.0f,0.0f,0.0f);
@@ -654,6 +786,9 @@ int main(void)
 		glm::vec3 oppositeDirection = -directionBall;				// 1.0f
 
 		float distanceToClosestPoint = glm::length(CentreToClosestPoint);
+
+
+
 
 		// HACK
 		if (DidBallCollideWithGround)
@@ -956,3 +1091,27 @@ void DrawObject(glm::mat4 m,
 	return;
 } // DrawObject;
 // 
+
+// returns NULL (0) if we didn't find it.
+cGameObject* pFindObjectByFriendlyName(std::string name)
+{
+	// Do a linear search 
+	for (unsigned int index = 0;
+		 index != g_vec_pGameObjects.size(); index++)
+	{
+		if (::g_vec_pGameObjects[index]->friendlyName == name)
+		{
+			// Found it!!
+			return ::g_vec_pGameObjects[index];
+		}
+	}
+	// Didn't find it
+	return NULL;
+}
+
+// returns NULL (0) if we didn't find it.
+cGameObject* pFindObjectByFriendlyNameMap(std::string name)
+{
+	//std::map<std::string, cGameObject*> g_map_GameObjectsByFriendlyName;
+	return ::g_map_GameObjectsByFriendlyName[name];
+}

@@ -61,6 +61,14 @@ public:
 
 private:
 
+	// Does collision test and returns collision information
+	// Returns true if collision, and will load collisionInfo struct
+	bool DoSphereSphereCollisionTest( cGameObject* pA, cGameObject *pB, 
+									  sCollisionInfo &collisionInfo );
+	bool DoShphereMeshCollisionTest( cGameObject* pA, cGameObject* pB,
+									 sCollisionInfo &collisionInfo );
+
+
 	glm::vec3  m_Gravity;
 
 };

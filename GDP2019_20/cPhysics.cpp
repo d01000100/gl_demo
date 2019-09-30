@@ -137,3 +137,80 @@ void cPhysics::GetClosestTrianglesToSphere(cGameObject& testSphere, float distan
 
 
 }
+
+// Test each object with every other object
+void cPhysics::TestForCollisions(std::vector<cGameObject*>& vec_pGameObjects)
+{
+	// This will store all the collisions in this frame
+	std::vector<sCollisionInfo> vecCollisions;
+
+	sCollisionInfo collisionInfo;
+
+	for (unsigned int outerLoopIndex = 0;
+		 outerLoopIndex != vec_pGameObjects.size(); outerLoopIndex++)
+	{
+		for (unsigned int innerLoopIndex = 0;
+			 innerLoopIndex != vec_pGameObjects.size(); innerLoopIndex++)
+		{ 
+			cGameObject* pA = vec_pGameObjects[outerLoopIndex];
+			cGameObject* pB = vec_pGameObjects[innerLoopIndex];
+
+
+
+			// Note that if you don't respond to the 
+			// collision here, then you will get the same
+			// result twice (Object "A" with "B" and later, 
+			//   object "B" with "A" - but it's the same collison
+
+			// Compare the two objects:
+			// Either a sphere-sphere or sphere-mesh
+			// An I testing the object with itself? 
+			//if (pA == pB)
+			if ( pA->getUniqueID() == pB->getUniqueID() )
+			{	
+				// It's the same object
+				// Do nothing
+			}
+			else if (pA->physicsShapeType == SPHERE &&
+				pB->physicsShapeType == SPHERE)
+			{
+				if (DoSphereSphereCollisionTest(pA, pB, collisionInfo))
+				{
+					vecCollisions.push_back(collisionInfo);
+				}
+			}
+			else if (pA->physicsShapeType == SPHERE &&
+					 pB->physicsShapeType == MESH)
+			{
+				if (DoShphereMeshCollisionTest(pA, pB, collisionInfo))
+				{
+					vecCollisions.push_back(collisionInfo);
+				}
+			}
+		
+		
+		}//for (unsigned int innerLoopIndex = 0;
+	}//for (unsigned int outerLoopIndex = 0;
+
+}
+
+bool cPhysics::DoSphereSphereCollisionTest(cGameObject* pA, cGameObject* pB,
+								 sCollisionInfo& collisionInfo)
+{
+	// TODO: 
+	// Run the sphere-sphere collision test
+	// If collided, load the collisionInfo struct and return true
+	// else return false;
+
+	return false;
+}
+bool cPhysics::DoShphereMeshCollisionTest(cGameObject* pA, cGameObject* pB,
+								sCollisionInfo& collisionInfo)
+{
+	// TODO: Do the sphere-Mesh collision test
+	// If collided, load the collisionInfo struct and return true
+	//  else return false
+
+
+	return true;
+}
