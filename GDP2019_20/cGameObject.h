@@ -28,6 +28,10 @@ public:
 
 	glm::vec3  positionXYZ;
 	glm::vec3  rotationXYZ;
+	float scale;;   
+
+	glm::mat4 matWorld;
+
 	glm::vec4  objectColourRGBA;	
 
 	// Likely want this now:
@@ -37,11 +41,15 @@ public:
 	                                // 4th value (a or w) is the "power"
 	                                // 1.0 to 10,000.0f 
 
-	float scale;;    
 
 	// Add some physics things
 	glm::vec3 velocity;
 	glm::vec3 accel;
+
+	// For driving the ship around
+	float HACK_speed;
+	float HACK_AngleAroundYAxis;		// Angle, around the y axis
+
 
 	// If the object has an inverse mass of 0.0
 	//	then it's not updated by the physics code
@@ -56,6 +64,9 @@ public:
 	glm::vec4 debugColour;
 
 	bool isVisible;
+
+	bool disableDepthBufferTest;
+	bool disableDepthBufferWrite;
 
 	unsigned int getUniqueID(void);
 

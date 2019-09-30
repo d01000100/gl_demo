@@ -52,6 +52,13 @@ glm::vec3 sexyLightPosition = glm::vec3(-25.0f,30.0f,0.0f);
 float sexyLightConstAtten = 0.0000001f;			// not really used (can turn off and on the light)
 float sexyLightLinearAtten = 0.03f;  
 float sexyLightQuadraticAtten = 0.0000001f;
+
+float sexyLightSpotInnerAngle = 5.0f;
+float sexyLightSpotOuterAngle = 7.5f;
+// This is a "normalized" direction
+// (i.e. the length is 1.0f)
+glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
+
 bool bLightDebugSheresOn = true;
 
 
@@ -81,13 +88,21 @@ bool isShiftKeyDownByAlone(int mods)
 	return false;
 }
 
+bool isCtrlKeyDownByAlone(int mods)
+{
+	if (mods == GLFW_MOD_CONTROL)			
+	{
+		return true;
+	}
+	return false;
+}
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 
 	const float CAMERASPEED = 2.0f;
 
-	if ( ! isShiftKeyDownByAlone(mods) )
+	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
 
 		// Move the camera (A & D for left and right, along the x axis)
@@ -201,6 +216,24 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		{
 			sexyLightQuadraticAtten *= 1.01f;			// 1% more of what it was
 		}
+		if (key == GLFW_KEY_V)
+		{
+			sexyLightSpotInnerAngle -= 0.1f;
+		}
+		if (key == GLFW_KEY_B)
+		{
+			sexyLightSpotInnerAngle += 0.1f;
+		}
+		if (key == GLFW_KEY_N)
+		{
+			sexyLightSpotOuterAngle -= 0.1f;
+		}
+		if (key == GLFW_KEY_M)
+		{
+			sexyLightSpotOuterAngle += 0.1f;
+		}
+
+
 		if (key == GLFW_KEY_9)
 		{
 			bLightDebugSheresOn = false;			
@@ -211,6 +244,32 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		}
 
 	}//if (isShiftKeyDownByAlone(mods))
+
+	if (isCtrlKeyDownByAlone(mods))
+	{
+		cGameObject* pShip = pFindObjectByFriendlyName("PirateShip");
+		// Turn the ship around
+		if (key == GLFW_KEY_A)
+		{	// Left
+			pShip->HACK_AngleAroundYAxis -= 0.01f;
+			pShip->rotationXYZ.y = pShip->HACK_AngleAroundYAxis;
+		}
+		if (key == GLFW_KEY_D)
+		{	// Right
+			pShip->HACK_AngleAroundYAxis += 0.01f;
+			pShip->rotationXYZ.y = pShip->HACK_AngleAroundYAxis;
+		}
+		if (key == GLFW_KEY_W)
+		{	// Faster
+			pShip->HACK_speed += 0.1f;
+		}
+		if (key == GLFW_KEY_S)
+		{	// Slower
+			pShip->HACK_speed -= 0.1f;
+		}
+	}
+
+
 
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -439,18 +498,20 @@ int main(void)
 	cGameObject* pPirate = new cGameObject();
 	pPirate->meshName = "pirate";
 	pPirate->friendlyName = "PirateShip";	// Friendly name
-	pPirate->positionXYZ = glm::vec3(0.0f, 20.0f, 10.0f);
+	pPirate->positionXYZ = glm::vec3(-30.0f, 20.0f, 10.0f);
 	pPirate->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pPirate->scale = 0.75f;
 	pPirate->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	pPirate->inverseMass = 0.0f;
+	pPirate->HACK_AngleAroundYAxis = 0.0f;
+	pPirate->HACK_speed = 0.0f;
 //
 	cGameObject* pBunny = new cGameObject();
 	pBunny->meshName = "bunny";
 	pBunny->friendlyName = "Bugs";	// Famous bunny
-	pBunny->positionXYZ = glm::vec3(10.0f, 20.0f, -2.0f);		// -4 on z
+	pBunny->positionXYZ = glm::vec3(50.0f, 20.0f, -2.0f);		// -4 on z
 	pBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pBunny->scale = 75.0f;
+	pBunny->scale = 250.0f;
 	pBunny->objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	pBunny->inverseMass = 0.0f;
 //
@@ -510,7 +571,9 @@ int main(void)
 	pCube->positionXYZ = glm::vec3(0.0f, -1.0f, 0.0f);
 	pCube->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pCube->scale = 1.0f;
-	pCube->objectColourRGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	//pCube->objectColourRGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	pCube->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	pCube->isWireframe = true;
 	// Set the sphere's initial velocity, etc.
 	//sphere.velocity = glm::vec3(0.0f,0.0f,0.0f);
 	//sphere.accel = glm::vec3(0.0f,0.0f,0.0f);
@@ -547,10 +610,13 @@ int main(void)
 	// Will be moved placed around the scene
 	cGameObject* pDebugSphere = new cGameObject();
 	pDebugSphere->meshName = "sphere";
+	pDebugSphere->friendlyName = "debug_sphere";
 	pDebugSphere->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pDebugSphere->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pDebugSphere->scale = 0.1f;
-	pDebugSphere->objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+//	pDebugSphere->objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	pDebugSphere->isWireframe = true;
 	pDebugSphere->inverseMass = 0.0f;			// Sphere won't move
 
 
@@ -640,8 +706,72 @@ int main(void)
 					           sexyLightLinearAtten,  // Linear 
 					           sexyLightQuadraticAtten,	// Quadratic 
 					           1000000.0f );	// Distance cut off
-		glUniform4f(L_0_direction, 0.0f, 0.0f, 0.0f, 1.0f );	
+
+		// Point light:
 		glUniform4f(L_0_param1, 0.0f /*POINT light*/, 0.0f, 0.0f, 1.0f );
+
+
+		// ********************************************************
+		// Move the pirate in the direction it's pointing in...
+		
+		// Vec4 = mat4x4 * vec4				vertFinal = matModel * vertStart;
+		
+		cGameObject* pPirate = pFindObjectByFriendlyName("PirateShip");
+
+		glm::mat4 matRotY = glm::rotate(glm::mat4(1.0f),
+										pPirate->HACK_AngleAroundYAxis,	//(float)glfwGetTime(),					// Angle 
+										glm::vec3(0.0f, 1.0f, 0.0f));
+	
+		// Assume the ship is at 0,0,0
+		glm::vec4 frontOfShip = glm::vec4(0.0f, 0.0f, -1.0f, 1.0f);	// pointing to the "front" of the ship
+		
+		// Vec4 = mat4x4 * vec4				vertFinal = matModel * vertStart;
+		glm::vec4 frontOfShipInWorld = matRotY * frontOfShip;
+
+		// this value would be the velocity, ifyou wanted the phsyics update do to it
+		glm::vec3 newSpeedOfShipIN_THE_DIRECTION_WE_WANT_TO_GO
+			= frontOfShipInWorld * pPirate->HACK_speed;
+
+		// Update the pirate ship
+		pPirate->positionXYZ += newSpeedOfShipIN_THE_DIRECTION_WE_WANT_TO_GO;
+
+		// ********************************************************
+
+
+//	// Point the spot light at the bunny
+//	cGameObject* pBunny = pFindObjectByFriendlyName("Bugs");
+//	cGameObject* pPirate = pFindObjectByFriendlyName("PirateShip");
+//
+//	sexyLightPosition = pPirate->positionXYZ;
+//
+//	// Vector from the bunny to the ship is:
+//	// Bunny_Position - ShipPosition;
+//	glm::vec3 bunnyToShip = pBunny->positionXYZ - pPirate->positionXYZ;
+//	// Normalize the vector (unit or 1.0f length)
+//	sexyLightSpotDirection = glm::normalize(bunnyToShip);
+
+
+		//// Spot light
+		//glUniform4f(L_0_direction, 
+		//			sexyLightSpotDirection.x,		// 0
+		//			sexyLightSpotDirection.y,		// -1
+		//			sexyLightSpotDirection.z,		// 0
+		//			1.0f );	
+
+		//glUniform4f(L_0_param1,
+		//			1.0f /*SPOT light*/, 
+		//			sexyLightSpotInnerAngle,		// 15
+		//			sexyLightSpotOuterAngle,		// 30
+		//			1.0f );
+
+
+		//glUniform4f(L_0_param1,
+		//			2.0f /*DIRECTIONAL light*/, 
+		//			sexyLightSpotInnerAngle,		// 15
+		//			sexyLightSpotOuterAngle,		// 30
+		//			1.0f );
+
+
 		glUniform4f(L_0_param2, 1.0f /*Light is on*/, 0.0f, 0.0f, 1.0f );
 
 		// Also set the position of my "eye" (the camera)
@@ -1056,7 +1186,7 @@ void DrawObject(glm::mat4 m,
 
 	if ( pCurrentObject->isWireframe )
 	{ 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		// LINES
 		glUniform4f( debugColour_UL, 
 					pCurrentObject->debugColour.r,
 					pCurrentObject->debugColour.g,
@@ -1067,10 +1197,27 @@ void DrawObject(glm::mat4 m,
 	else
 	{	// Regular object (lit and not wireframe)
 		glUniform1f(bDoNotLight_UL, (float)GL_FALSE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
 	}
 	//glPointSize(15.0f);
 
+	if (pCurrentObject->disableDepthBufferTest)
+	{
+		glDisable(GL_DEPTH_TEST);					// DEPTH Test OFF
+	}
+	else
+	{
+		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
+	}
+
+	if (pCurrentObject->disableDepthBufferWrite)
+	{
+		glDisable(GL_DEPTH);						// DON'T Write to depth buffer
+	}
+	else
+	{
+		glEnable(GL_DEPTH);								// Write to depth buffer
+	}
 
 
 	//		glDrawArrays(GL_TRIANGLES, 0, 2844);

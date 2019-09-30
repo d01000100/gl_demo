@@ -20,6 +20,10 @@ cGameObject::cGameObject()
 	// Then increment the static variable
 	cGameObject::next_uniqueID++;
 
+	this->disableDepthBufferTest = false;
+	this->disableDepthBufferWrite = false;
+
+
 	return;
 }
 
