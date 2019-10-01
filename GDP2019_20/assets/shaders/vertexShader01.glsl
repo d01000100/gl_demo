@@ -27,6 +27,7 @@ void main()
 	gl_Position = matMVP * vec4(vertPosition.xyz, 1.0);
 	
 	// Vertex location in "world space"
+	// Vec4 = mat4x4 * vec4
 	fVertWorldLocation = matModel * vec4(vertPosition.xyz, 1.0);		
 	
  	fNormal = vNormal;
