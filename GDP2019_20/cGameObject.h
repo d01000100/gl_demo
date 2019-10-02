@@ -5,6 +5,9 @@
 #include <glm/vec3.hpp>
 #include <string>
 
+// NOTE: We are including the INTERFACE, not the actual renderer
+#include "DebugRenderer/iDebugRenderer.h"
+
 enum eShapeTypes
 {
 	AABB, 
@@ -70,12 +73,16 @@ public:
 
 	unsigned int getUniqueID(void);
 
+	void setDebugRenderer(iDebugRenderer* pDebugRenderer);
+
 private:
 	// this variable is static, so common to all objects.
 	// When the object is created, the unique ID is set, and 
 	//	the next unique ID is incremented
 	static unsigned int next_uniqueID;
 	unsigned int m_uniqueID;
+
+	iDebugRenderer* m_pDebugRenderer;
 };
 
 #endif

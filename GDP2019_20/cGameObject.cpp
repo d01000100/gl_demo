@@ -23,6 +23,7 @@ cGameObject::cGameObject()
 	this->disableDepthBufferTest = false;
 	this->disableDepthBufferWrite = false;
 
+	this->m_pDebugRenderer = NULL;
 
 	return;
 }
@@ -32,6 +33,13 @@ unsigned int cGameObject::getUniqueID(void)
 {
 	return this->m_uniqueID;
 }
+
+void cGameObject::setDebugRenderer(iDebugRenderer* pDebugRenderer)
+{
+	this->m_pDebugRenderer = pDebugRenderer;
+	return;
+}
+
 
 // this variable is static, so common to all objects.
 // When the object is created, the unique ID is set, and 
