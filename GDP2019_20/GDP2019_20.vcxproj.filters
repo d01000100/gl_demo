@@ -78,6 +78,12 @@
     <ClCompile Include="LightManager\cLightHelper.cpp">
       <Filter>LightManager</Filter>
     </ClCompile>
+    <ClCompile Include="UserInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GFLW_callbacks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -121,6 +127,12 @@
     </ClInclude>
     <ClInclude Include="LightManager\cLightHelper.h">
       <Filter>LightManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GFLW_callbacks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="globalStuff.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

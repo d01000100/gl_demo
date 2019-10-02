@@ -677,35 +677,79 @@ cDebugRenderer::~cDebugRenderer()
 }
 
 
-void cDebugRenderer::RenderDebugObjects(glm::mat4 matCameraView, glm::mat4 matProjection, double deltaTime)
+void cDebugRenderer::RenderDebugObjects(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime)
 {
+	glm::mat4 matView = matCameraView;
+	glm::mat4 matProj = matProjection;
+
 	this->m_copyTrianglesIntoRenderBuffer(deltaTime);
-	this->m_RenderDebugTriangles(matCameraView, matProjection, deltaTime);
+	this->m_RenderDebugTriangles(matView, matProj, deltaTime);
 
 	this->m_copyLinesIntoRenderBuffer(deltaTime);
-	this->m_RenderDebugLines(matCameraView, matProjection, deltaTime);
+	this->m_RenderDebugLines(matView, matProj, deltaTime);
 
 	this->m_copyPointsIntoRenderBuffer(deltaTime);
-	this->m_RenderDebugPoints(matCameraView, matProjection, deltaTime);
+	this->m_RenderDebugPoints(matView, matProj, deltaTime);
 
 	return;
 }
 
-
-void cDebugRenderer::m_RenderDebugTriangles(glm::mat4 matCameraView, glm::mat4 matProjection, double deltaTime)
+cDebugRenderer::sGLDrawState::sGLDrawState()
 {
 	// Save existing params
-	GLboolean GL_depth_test_state = GL_TRUE;
-	GLint GL_polygon_mode_state = GL_FILL;
-	GLboolean GL_cull_face_enabled_state = GL_TRUE;
-	GLint GL_cull_face_mode_state = GL_BACK;
-	
-		
-	glGetBooleanv( GL_DEPTH_TEST, &GL_depth_test_state );				// glEnable(GL_DEPTH_TEST);
-	glGetIntegerv( GL_POLYGON_MODE, &GL_polygon_mode_state );			// glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-	glGetBooleanv( GL_CULL_FACE, &GL_cull_face_enabled_state );			// glEnable(GL_CULL_FACE);
-	glGetIntegerv( GL_POLYGON_MODE, &GL_polygon_mode_state );			// glCullFace(GL_BACK);
+	this->GL_depth_test_state = GL_TRUE;
+	// This has two values, GL_FRONT and GL_BACK
+	this->GL_polygon_mode_state[0] = GL_FILL; /*GL_FRONT*/
+	this->GL_polygon_mode_state[1] = GL_FILL; /*GL_BACK*/ 				// 6914
+	this->GL_cull_face_enabled_state = GL_TRUE;
+	this->GL_cull_face_mode_state = GL_BACK;
+};
 
+void cDebugRenderer::m_SaveGLState( sGLDrawState &curGLState )
+{
+	glGetBooleanv( GL_DEPTH_TEST, &(curGLState.GL_depth_test_state) );				// glEnable(GL_DEPTH_TEST);
+	// This returns two values, GL_FRONT and GL_BACK
+	glGetIntegerv( GL_POLYGON_MODE, curGLState.GL_polygon_mode_state );			// glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	glGetBooleanv( GL_CULL_FACE, &(curGLState.GL_cull_face_enabled_state) );			// glEnable(GL_CULL_FACE);
+	glGetIntegerv( GL_CULL_FACE_MODE, &(curGLState.GL_cull_face_mode_state) );			// glCullFace(GL_BACK);
+
+	return;
+}
+
+void cDebugRenderer::m_RestoreGLState( const sGLDrawState &curGLState )
+{
+	glPolygonMode( GL_FRONT, curGLState.GL_polygon_mode_state[0] );	
+	glPolygonMode( GL_BACK, curGLState.GL_polygon_mode_state[1] );		
+
+	if ( curGLState.GL_cull_face_enabled_state == GL_TRUE )
+	{
+		glEnable(GL_CULL_FACE);
+	}
+	else
+	{
+		glDisable(GL_CULL_FACE);
+	}
+
+	glCullFace(curGLState.GL_cull_face_mode_state);
+
+	if ( curGLState.GL_depth_test_state == GL_TRUE )
+	{
+		glEnable(GL_DEPTH_TEST);		
+	}
+	else
+	{
+		glDisable(GL_DEPTH_TEST);
+	}
+	return;
+}
+
+
+
+void cDebugRenderer::m_RenderDebugTriangles(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime)
+{
+	// Get current GL state:
+	sGLDrawState curGLState;
+	this->m_SaveGLState( curGLState );
 
 	// Start rendering 
 	glUseProgram(this->m_TriangleShaderProgramID);
@@ -741,17 +785,18 @@ void cDebugRenderer::m_RenderDebugTriangles(glm::mat4 matCameraView, glm::mat4 m
 	glUseProgram(0);
 
 	// Put everything back as it was 
+	this->m_RestoreGLState( curGLState );
 
-	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	// Default
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glEnable(GL_DEPTH_TEST);		
 
 	return;
 }
 
-void cDebugRenderer::m_RenderDebugLines(glm::mat4 matCameraView, glm::mat4 matProjection, double deltaTime)
+void cDebugRenderer::m_RenderDebugLines(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime)
 {
+	// Get current GL state:
+	sGLDrawState curGLState;
+	this->m_SaveGLState( curGLState );
+
 	// Start rendering 
 	glUseProgram(this->m_LineShaderProgramID);
 
@@ -787,18 +832,22 @@ void cDebugRenderer::m_RenderDebugLines(glm::mat4 matCameraView, glm::mat4 matPr
 	glUseProgram(0);
 
 	// Put everything back as it was 
-	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	// Default
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glEnable(GL_DEPTH_TEST);		
+	this->m_RestoreGLState( curGLState );
 
 	return;
 }
 
-void cDebugRenderer::m_RenderDebugPoints(glm::mat4 matCameraView, glm::mat4 matProjection, double deltaTime)
+void cDebugRenderer::m_RenderDebugPoints(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime)
 {
+	// Get current GL state:
+	sGLDrawState curGLState;
+	this->m_SaveGLState( curGLState );
+
 	// TODO:
 	
+	// Put everything back as it was 
+	this->m_RestoreGLState( curGLState );
+
 	return;
 }
 

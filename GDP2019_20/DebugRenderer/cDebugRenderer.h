@@ -44,12 +44,12 @@ public:
 
 
 	// Renders scene
-	void RenderDebugObjects(glm::mat4 matCameraView, glm::mat4 matProjection, double deltaTime);
+	void RenderDebugObjects(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime);
 private:
-	void m_RenderDebugTriangles(glm::mat4 matCameraView, glm::mat4 matProjection, double deltaTime);
-	void m_RenderDebugLines(glm::mat4 matCameraView, glm::mat4 matProjection, double deltaTime);
-	void m_RenderDebugPoints(glm::mat4 matCameraView, glm::mat4 matProjection, double deltaTime);
-	void m_RenderDebugMeshes(glm::mat4 matCameraView, glm::mat4 matProjection, double deltaTime);
+	void m_RenderDebugTriangles(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime);
+	void m_RenderDebugLines(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime);
+	void m_RenderDebugPoints(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime);
+	void m_RenderDebugMeshes(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime);
 
 	// Used to save and restore the render state during the debug render calls
 	cGLRenderStateHelper* m_pGLRenderState;
@@ -234,8 +234,20 @@ private:
 			/ ( static_cast <double> (RAND_MAX/(static_cast<double>(max-min) )));
 		return static_cast<T>(value);
 	};
-private:
 
+	// For saving and restoring some of the GL state
+	struct sGLDrawState
+	{
+		sGLDrawState();
+		// Save existing params
+		unsigned char /*GLboolean*/ GL_depth_test_state;			// = GL_TRUE;
+		// This has two values, GL_FRONT and GL_BACK
+		int /*GLint*/ GL_polygon_mode_state[2];			// = { GL_FILL /*GL_FRONT*/, GL_FILL /*GL_BACK*/ };				// 6914
+		unsigned char /*GLboolean*/ GL_cull_face_enabled_state;	// = GL_TRUE;
+		int /*GLint*/ GL_cull_face_mode_state;			// = GL_BACK;
+	};
+	void m_SaveGLState( sGLDrawState &curGLState );
+	void m_RestoreGLState( const sGLDrawState &curGLState );
 };
 
 #endif

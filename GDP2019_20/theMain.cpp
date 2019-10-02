@@ -2,6 +2,8 @@
 //#include <glad/glad.h>
 //#include <GLFW/glfw3.h>
 
+#include "globalStuff.h"
+
 //#include "linmath.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp> // glm::vec3
@@ -37,6 +39,9 @@
 // Used to visualize the attenuation of the lights...
 #include "LightManager/cLightHelper.h"
 
+// Keyboard, error, mouse, etc. are now here
+#include "GFLW_callbacks.h"
+
 
 void DrawObject(glm::mat4 m,
 				cGameObject* pCurrentObject,
@@ -67,220 +72,11 @@ std::vector<cGameObject*> g_vec_pGameObjects;
 std::map<std::string /*FriendlyName*/, cGameObject*> g_map_GameObjectsByFriendlyName;
 
 
-// returns NULL (0) if we didn't find it.
-cGameObject* pFindObjectByFriendlyName( std::string name );
-cGameObject* pFindObjectByFriendlyNameMap( std::string name );
+
 
 //bool g_BallCollided = false;
 
-bool isShiftKeyDownByAlone(int mods)
-{
-	if (mods == GLFW_MOD_SHIFT)			
-	{
-		// Shift key is down all by itself
-		return true;
-	}
-	//// Ignore other keys and see if the shift key is down
-	//if ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT)
-	//{
 
-	//}
-	return false;
-}
-
-bool isCtrlKeyDownByAlone(int mods)
-{
-	if (mods == GLFW_MOD_CONTROL)			
-	{
-		return true;
-	}
-	return false;
-}
-
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-
-	const float CAMERASPEED = 2.0f;
-
-	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
-	{
-
-		// Move the camera (A & D for left and right, along the x axis)
-		if (key == GLFW_KEY_A)
-		{
-			cameraEye.x -= CAMERASPEED;		// Move the camera -0.01f units
-		}
-		if (key == GLFW_KEY_D)
-		{
-			cameraEye.x += CAMERASPEED;		// Move the camera +0.01f units
-		}
-
-		// Move the camera (Q & E for up and down, along the y axis)
-		if (key == GLFW_KEY_Q)
-		{
-			cameraEye.y -= CAMERASPEED;		// Move the camera -0.01f units
-		}
-		if (key == GLFW_KEY_E)
-		{
-			cameraEye.y += CAMERASPEED;		// Move the camera +0.01f units
-		}
-
-		// Move the camera (W & S for towards and away, along the z axis)
-		if (key == GLFW_KEY_W)
-		{
-			cameraEye.z -= CAMERASPEED;		// Move the camera -0.01f units
-		}
-		if (key == GLFW_KEY_S)
-		{
-			cameraEye.z += CAMERASPEED;		// Move the camera +0.01f units
-		}
-
-		if ( key == GLFW_KEY_B )
-		{ 
-			// Shoot a bullet from the pirate ship
-			// Find the pirate ship...
-			// returns NULL (0) if we didn't find it.
-//			cGameObject* pShip = pFindObjectByFriendlyName("PirateShip");
-			cGameObject* pShip = pFindObjectByFriendlyNameMap("PirateShip");
-			// Maybe check to see if it returned something... 
-
-			// Find the sphere#2
-//			cGameObject* pBall = pFindObjectByFriendlyName("Sphere#2");
-			cGameObject* pBall = pFindObjectByFriendlyNameMap("Sphere#2");
-
-			// Set the location velocity for sphere#2
-			pBall->positionXYZ = pShip->positionXYZ;
-			pBall->inverseMass = 1.0f;		// So it's updated
-			// 20.0 units "to the right"
-			// 30.0 units "up"
-			pBall->velocity = glm::vec3( 15.0f, 20.0f, 0.0f );
-			pBall->accel = glm::vec3(0.0f,0.0f,0.0f);
-			pBall->diffuseColour = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
-		}//if ( key == GLFW_KEY_B )
-
-	}
-
-	if (isShiftKeyDownByAlone(mods))
-	{
-		// move the light
-		if (key == GLFW_KEY_A)
-		{
-			sexyLightPosition.x -= CAMERASPEED;		// Move the camera -0.01f units
-		}
-		if (key == GLFW_KEY_D)
-		{
-			sexyLightPosition.x += CAMERASPEED;		// Move the camera +0.01f units
-		}
-
-		// Move the camera (Q & E for up and down, along the y axis)
-		if (key == GLFW_KEY_Q)
-		{
-			sexyLightPosition.y -= CAMERASPEED;		// Move the camera -0.01f units
-		}
-		if (key == GLFW_KEY_E)
-		{
-			sexyLightPosition.y += CAMERASPEED;		// Move the camera +0.01f units
-		}
-
-		// Move the camera (W & S for towards and away, along the z axis)
-		if (key == GLFW_KEY_W)
-		{
-			sexyLightPosition.z -= CAMERASPEED;		// Move the camera -0.01f units
-		}
-		if (key == GLFW_KEY_S)
-		{
-			sexyLightPosition.z += CAMERASPEED;		// Move the camera +0.01f units
-		}
-
-		if (key == GLFW_KEY_1)
-		{
-			sexyLightConstAtten *= 0.99f;			// 99% of what it was
-		}
-		if (key == GLFW_KEY_2)
-		{
-			sexyLightConstAtten *= 1.01f;			// 1% more of what it was
-		}		
-		if (key == GLFW_KEY_3)
-		{
-			sexyLightLinearAtten *= 0.99f;			// 99% of what it was
-		}
-		if (key == GLFW_KEY_4)
-		{
-			sexyLightLinearAtten *= 1.01f;			// 1% more of what it was
-		}
-		if (key == GLFW_KEY_5)
-		{
-			sexyLightQuadraticAtten *= 0.99f;			// 99% of what it was
-		}
-		if (key == GLFW_KEY_6)
-		{
-			sexyLightQuadraticAtten *= 1.01f;			// 1% more of what it was
-		}
-		if (key == GLFW_KEY_V)
-		{
-			sexyLightSpotInnerAngle -= 0.1f;
-		}
-		if (key == GLFW_KEY_B)
-		{
-			sexyLightSpotInnerAngle += 0.1f;
-		}
-		if (key == GLFW_KEY_N)
-		{
-			sexyLightSpotOuterAngle -= 0.1f;
-		}
-		if (key == GLFW_KEY_M)
-		{
-			sexyLightSpotOuterAngle += 0.1f;
-		}
-
-
-		if (key == GLFW_KEY_9)
-		{
-			bLightDebugSheresOn = false;			
-		}
-		if (key == GLFW_KEY_0)
-		{
-			bLightDebugSheresOn = true; 
-		}
-
-	}//if (isShiftKeyDownByAlone(mods))
-
-	if (isCtrlKeyDownByAlone(mods))
-	{
-		cGameObject* pShip = pFindObjectByFriendlyName("PirateShip");
-		// Turn the ship around
-		if (key == GLFW_KEY_A)
-		{	// Left
-			pShip->HACK_AngleAroundYAxis -= 0.01f;
-			pShip->rotationXYZ.y = pShip->HACK_AngleAroundYAxis;
-		}
-		if (key == GLFW_KEY_D)
-		{	// Right
-			pShip->HACK_AngleAroundYAxis += 0.01f;
-			pShip->rotationXYZ.y = pShip->HACK_AngleAroundYAxis;
-		}
-		if (key == GLFW_KEY_W)
-		{	// Faster
-			pShip->HACK_speed += 0.1f;
-		}
-		if (key == GLFW_KEY_S)
-		{	// Slower
-			pShip->HACK_speed -= 0.1f;
-		}
-	}
-
-
-
-
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
-
-}
-
-static void error_callback(int error, const char* description)
-{
-	fprintf(stderr, "Error: %s\n", description);
-}
 
 
 
@@ -302,7 +98,7 @@ int main(void)
 	//myVector.push_back( 27 );
 	//myVector.push_back( 13 );
 	//std::cout << myVector[3];
-
+//
 	//std::map<int, int> myMap;
 	//myMap[0] = 25;		// 0
 	//myMap[1] =  8;		// 1
@@ -645,6 +441,9 @@ int main(void)
 
 	while (!glfwWindowShouldClose(window))
 	{
+
+		glUseProgram(shaderProgID);
+
 		float ratio;
 		int width, height;
 		//       mat4x4 m, p, mvp;
@@ -734,6 +533,12 @@ int main(void)
 
 		// Update the pirate ship
 		pPirate->positionXYZ += newSpeedOfShipIN_THE_DIRECTION_WE_WANT_TO_GO;
+
+
+		pDebugRenderer->addTriangle( pPirate->positionXYZ, 
+									 glm::vec3(0.0f,0.0f,0.0f), 
+									 glm::vec3(0.0f, 10.0f, 0.0f), 
+									 glm::vec3(1.0f,1.0f,1.0f) );
 
 		// ********************************************************
 
@@ -947,6 +752,8 @@ int main(void)
 		//howMuchToMoveItBack = 1.0 - lenthOfThatVector
 
 
+
+
 		if (bLightDebugSheresOn) 
 		{
 			{// Draw where the light is at
@@ -1045,6 +852,9 @@ int main(void)
 		 // **************************************************
 		// **************************************************
 
+		
+		
+		pDebugRenderer->RenderDebugObjects( v, p, 0.01f );
 
 
 
@@ -1124,7 +934,7 @@ void DrawObject(glm::mat4 m,
 
 	// Choose which shader to use
 	//glUseProgram(program);
-	glUseProgram(shaderProgID);
+	//glUseProgram(shaderProgID);
 
 
 	//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
