@@ -6,40 +6,9 @@
 #include <string>
 #include <fstream>
 
-class cPerson
-{
-public:
-	cPerson() {};
-	cPerson(std::string first, std::string last)
-	{
-		this->firstName = first;
-		this->lastName = last;
-		this->shoeSize = -1;	// UNKNOWN
-	}
-	std::string firstName;
-	std::string lastName;
-	int shoeSize;
-};
+#include "cPerson.h"
 
-void LoadFileAndMakePeople(int numPeople, std::vector<cPerson>& vecPeople)
-{
-//	int index = rand() % (myVec.size() - 1);
-//	myVec[index];
-	// TODO:
-	// Open the first name files
-	// Open the last name file
-	// Pick a random gender (boy or girl)
-	// Pick a random last name
-	// Add that person to the vector
-	vecPeople.push_back(cPerson("Johnny", "Depp") );
-	vecPeople.push_back(cPerson("Sweeney", "Todd") );
-	vecPeople.push_back(cPerson("Arnold", "Schwarzenegger") );
-	vecPeople.push_back(cPerson("Jim", "Carrey") );
-	vecPeople.push_back(cPerson("Emma", "Watson") );
-	vecPeople.push_back(cPerson("Michael", "Feeney") );
-
-	return;
-}
+void LoadFileAndMakePeople(int numPeople, std::vector<cPerson>& vecPeople);
 
 // Binary predicate function for sort (takes 2 things)
 bool IsPersonA_GT_PersonB(cPerson& A, cPerson& B)
@@ -166,7 +135,7 @@ void printMap(std::map<std::string, std::string>& myMap)
 int main()
 {
 	std::vector<cPerson> vecPeople;
-	LoadFileAndMakePeople(10, vecPeople);
+	LoadFileAndMakePeople(50000, vecPeople);
 	PrintVectorOfPeople(vecPeople);
 
 //	std::sort( vecPeople.begin(), vecPeople.end(), IsPersonA_GT_PersonB );

@@ -110,15 +110,15 @@ void cPhysics::GetClosestTriangleToPoint(Point pointXYZ, cMesh& mesh, glm::vec3&
 			closestPoint = curClosetPoint;
 
 			// Copy the triangle information over, as well
-			closestTriangle.verts[0].x = mesh.vecVertices[mesh.vecTriangles[0].vert_index_1].x;
-			closestTriangle.verts[0].y = mesh.vecVertices[mesh.vecTriangles[0].vert_index_1].y;
-			closestTriangle.verts[0].z = mesh.vecVertices[mesh.vecTriangles[0].vert_index_1].z;
-			closestTriangle.verts[1].x = mesh.vecVertices[mesh.vecTriangles[0].vert_index_2].x;
-			closestTriangle.verts[1].y = mesh.vecVertices[mesh.vecTriangles[0].vert_index_2].y;
-			closestTriangle.verts[1].z = mesh.vecVertices[mesh.vecTriangles[0].vert_index_2].z;
-			closestTriangle.verts[2].x = mesh.vecVertices[mesh.vecTriangles[0].vert_index_3].x;
-			closestTriangle.verts[2].y = mesh.vecVertices[mesh.vecTriangles[0].vert_index_3].y;
-			closestTriangle.verts[2].z = mesh.vecVertices[mesh.vecTriangles[0].vert_index_3].z;
+			closestTriangle.verts[0].x = triVert1.x;
+			closestTriangle.verts[0].y = triVert1.y;
+			closestTriangle.verts[0].z = triVert1.z;
+			closestTriangle.verts[1].x = triVert2.x;
+			closestTriangle.verts[1].y = triVert2.y;
+			closestTriangle.verts[1].z = triVert2.z;
+			closestTriangle.verts[2].x = triVert3.x;
+			closestTriangle.verts[2].y = triVert3.y;
+			closestTriangle.verts[2].z = triVert3.z;
 			
 			// TODO: Copy the normal, too	
 

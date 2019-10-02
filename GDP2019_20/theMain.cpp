@@ -301,6 +301,9 @@ int main(void)
 	pPirate->inverseMass = 0.0f;
 	pPirate->HACK_AngleAroundYAxis = 0.0f;
 	pPirate->HACK_speed = 0.0f;
+	// Add a debug renderer to this object
+	pPirate->setDebugRenderer( pDebugRenderer );
+
 //
 	cGameObject* pBunny = new cGameObject();
 	pBunny->meshName = "bunny";
@@ -531,6 +534,13 @@ int main(void)
 		glm::vec3 newSpeedOfShipIN_THE_DIRECTION_WE_WANT_TO_GO
 			= frontOfShipInWorld * pPirate->HACK_speed;
 
+		// Draw a line showing where we are going...
+		pDebugRenderer->addLine( pPirate->positionXYZ, 
+								 pPirate->positionXYZ + (glm::vec3(frontOfShipInWorld) * pPirate->HACK_speed * 5.0f), 
+								 glm::vec3( 1.0f, 0.0f, 0.0f) );
+
+		// Draw a line showing how fast we are going...
+
 		// Update the pirate ship
 		pPirate->positionXYZ += newSpeedOfShipIN_THE_DIRECTION_WE_WANT_TO_GO;
 
@@ -538,11 +548,12 @@ int main(void)
 		//pDebugRenderer->addTriangle( pPirate->positionXYZ, 
 		//							 glm::vec3(0.0f,0.0f,0.0f), 
 		//							 glm::vec3(0.0f, 10.0f, 0.0f), 
-		//							 glm::vec3(1.0f,1.0f,1.0f) );
+		//							 glm::vec3(0.0f,1.0f,0.0f) );
 
-		pDebugRenderer->addLine( pPirate->positionXYZ, 
-								 glm::vec3(0.0f, 10.0f, 0.0f), 
-								 glm::vec3(0.0f,1.0f,0.0f) );
+		//pDebugRenderer->addLine( pPirate->positionXYZ, 
+		//						 glm::vec3(0.0f, 10.0f, 0.0f), 
+		//						 glm::vec3(0.0f,1.0f,0.0f),
+		//						 2.0f );
 		// ********************************************************
 
 
@@ -644,6 +655,25 @@ int main(void)
 
 		pPhsyics->GetClosestTriangleToPoint(pShpere->positionXYZ, terrainMesh, closestPoint, closestTriangle);
 
+		// Highlight the triangle that I'm closest to
+		pDebugRenderer->addTriangle(closestTriangle.verts[0], 
+									closestTriangle.verts[1], 
+									closestTriangle.verts[2],
+									glm::vec3(1.0f, 0.0f, 0.0f) );
+
+		// Highlight the triangle that I'm closest to
+		// To draw the normal, calculate the average of the 3 vertices, 
+		// then draw that average + the normal (the normal starts at the 0,0,0 OF THE TRIANGLE)
+		glm::vec3 centreOfTriangle = ( closestTriangle.verts[0] + 
+									   closestTriangle.verts[1] + 
+									   closestTriangle.verts[2] ) / 3.0f;		// Average
+
+		glm::vec3 normalInWorld = centreOfTriangle + (closestTriangle.normal * 10.0f);	// Normal x 10 length
+
+		pDebugRenderer->addLine(centreOfTriangle, 
+								normalInWorld,
+								glm::vec3(1.0f, 1.0f, 0.0f) );
+
 		bool DidBallCollideWithGround = false;
 		HACK_BounceOffSomePlanes(pShpere, DidBallCollideWithGround );
 
@@ -725,25 +755,30 @@ int main(void)
 
 		float distanceToClosestPoint = glm::length(CentreToClosestPoint);
 
+		pDebugRenderer->addLine( pShpere->positionXYZ, 
+								 closestPoint, 
+								 glm::vec3(0.0f, 1.0f, 0.0f), 
+								 1.0f );
 
 
 
-		// HACK
-		if (DidBallCollideWithGround)
-		{ 
-			float sphereRadius = 1.0f;
-			float distanceToMoveBack = sphereRadius - distanceToClosestPoint;
 
-			glm::vec3 adjustmentVector = oppositeDirection * distanceToMoveBack;
-
-			// Let's move the sphere that amount...
-			pShpere->positionXYZ += adjustmentVector;
-
-
-			// NOW, I can calculate the correct response vector... 
-
-//			pShpere->velocity = glm::reflect(pShpere->velocity, triangleNormal)
-		}
+//		// HACK
+//		if (DidBallCollideWithGround)
+//		{ 
+//			float sphereRadius = 1.0f;
+//			float distanceToMoveBack = sphereRadius - distanceToClosestPoint;
+//
+//			glm::vec3 adjustmentVector = oppositeDirection * distanceToMoveBack;
+//
+//			// Let's move the sphere that amount...
+//			pShpere->positionXYZ += adjustmentVector;
+//
+//
+//			// NOW, I can calculate the correct response vector... 
+//
+////			pShpere->velocity = glm::reflect(pShpere->velocity, triangleNormal)
+//		}
 
 
 		std::cout 

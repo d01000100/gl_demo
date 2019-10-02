@@ -215,14 +215,14 @@ void HACK_BounceOffSomePlanes(cGameObject* pTheBouncingBall, bool &didItCollideW
 	{
 		// It's hit the cube. Set the velocity to -ve of what it is
 		// fabs() is floating point absolute value
-	//				pCurObj->velocity.y = fabs(pCurObj->velocity.y);
+		pTheBouncingBall->velocity.y = fabs(pTheBouncingBall->velocity.y);
 
 					// Stop it (it's collided with a triangle)
 	//				pCurObj->velocity = glm::vec3(0.0f,0.0f,0.0f);
-		pTheBouncingBall->inverseMass = 0.0f;	 // Stop it
+		//pTheBouncingBall->inverseMass = 0.0f;	 // Stop it
 
-		// HACK
-		didItCollideWithTheGround = true;
+		//// HACK
+		//didItCollideWithTheGround = true;
 
 
 		//				float vel = fabs(pCurObj->velocity.y)
@@ -232,7 +232,7 @@ void HACK_BounceOffSomePlanes(cGameObject* pTheBouncingBall, bool &didItCollideW
 
 
 					// Damp the velocity 
-		pTheBouncingBall->velocity.y *= 0.95f;
+		//pTheBouncingBall->velocity.y *= 0.95f;
 	}
 
 	// Left plane 
