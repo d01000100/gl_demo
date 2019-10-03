@@ -987,6 +987,14 @@ void DrawObject(glm::mat4 m,
 	//glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 	//glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
+	// Calcualte the inverse transpose of the model matrix and pass that...
+	// Stripping away scaling and translation, leaving only rotation
+	// Because the normal is only a direction, really
+	GLint matModelIT_UL = glGetUniformLocation(shaderProgID, "matModelInverseTranspose");
+	glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(m));
+	glUniformMatrix4fv(matModelIT_UL, 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
+
+
 
 
 	// Find the location of the uniform variable newColour

@@ -132,11 +132,94 @@ void printMap(std::map<std::string, std::string>& myMap)
 	}
 }
 
+std::vector<cPerson>::iterator
+FindThisPerson( std::vector<cPerson> &vecPeople,
+					    std::string nameToFind )
+{
+	// Find that name
+	std::vector<cPerson>::iterator itPerson = vecPeople.begin();
+	for ( ;
+		 itPerson != vecPeople.end();
+		 itPerson++)
+	{
+		if (itPerson->firstName == nameToFind)
+		{
+			return itPerson;
+		}
+	}
+	return itPerson;
+}
+
+
 int main()
 {
 	std::vector<cPerson> vecPeople;
-	LoadFileAndMakePeople(50000, vecPeople);
+	LoadFileAndMakePeople(10, vecPeople);
 	PrintVectorOfPeople(vecPeople);
+
+	// Find a particular person
+	std::cout << "Type a last name to find: ";
+	std::string nameToFind;
+	std::cin >> nameToFind;
+
+	std::vector<cPerson>::iterator itY = FindThisPerson(vecPeople, nameToFind);
+
+	if (itY == vecPeople.end())
+	{
+		std::cout << "Didn't find it" << std::endl;
+	}
+	else
+	{
+		itY->firstName = "Beyonce";
+	}
+
+
+	itY--;
+	std::cout << itY->firstName << std::endl;
+
+	itY++;  itY++;
+	std::cout << itY->firstName << std::endl;
+
+	vecPeople.erase( itY );
+
+
+
+	std::map<std::string /*name*/, std::string /*food*/> mapNameToFood;
+	mapNameToFood["Felipe"] = "Hay";
+	mapNameToFood["Hamza"] = "Pancake";
+	mapNameToFood["Dylan"] = "Fish Food";
+	mapNameToFood["Ethan"] = "Fish";
+	mapNameToFood["Brandon"] = "Pizza";
+	mapNameToFood["Brian"] = "Dog food";
+	mapNameToFood["Caleb"] = "Eggs";
+	mapNameToFood["Christopher"] = "Pie";
+	mapNameToFood["David"] = "Cat food";
+	mapNameToFood["Dhilip"] = "Noodles";
+	mapNameToFood["Harshil"] = "Chocolate";
+
+	//std::cout << mapNameToFood["Michael"];
+
+	std::map<std::string, std::string>::iterator itX = mapNameToFood.find("Ethan");
+
+	if (itX == mapNameToFood.end())
+	{
+		std::cout << "Didn't find them" << std::endl;
+	}
+	else   // itX != mapNameToFood.end()
+	{
+		std::cout << itX->first << ", " << itX->second << std::endl;
+	}
+
+	///
+	printMap(mapNameToFood);
+
+
+
+
+
+
+
+
 
 //	std::sort( vecPeople.begin(), vecPeople.end(), IsPersonA_GT_PersonB );
 	// Or with a functor...
@@ -155,10 +238,10 @@ int main()
 
 	PrintVectorOfPeople(vecPeople);
 
-	int x[10] = {0};		// 0-9			// At compile time (STACK)
-	int* pX = new int[10];		// At run time (HEAP)
-	x[3] = 123123;
-	pX[3] = 1323321;
+	//int x[10] = {0};		// 0-9			// At compile time (STACK)
+	//int* pX = new int[10];		// At run time (HEAP)
+	//x[3] = 123123;
+	//pX[3] = 1323321;
 
 	std::vector<int> myVec;	// 0
 	myVec.push_back(48);
@@ -180,20 +263,7 @@ int main()
 
 
 
-	std::map<std::string /*name*/, std::string /*food*/> mapNameToFood;
-	mapNameToFood["Felipe"] = "Hay";
-	mapNameToFood["Hamza"] = "Pancake";
-	mapNameToFood["Dylan"] = "Fish Food";
-	mapNameToFood["Ethan"] = "Fish";
-	mapNameToFood["Brandon"] = "Pizza";
-	mapNameToFood["Brian"] = "Dog food";
-	mapNameToFood["Caleb"] = "Eggs";
-	mapNameToFood["Christopher"] = "Pie";
-	mapNameToFood["David"] = "Cat food";
-	mapNameToFood["Dhilip"] = "Noodles";
-	mapNameToFood["Harshil"] = "Chocolate";
-	///
-	printMap(mapNameToFood);
+
 
 
 

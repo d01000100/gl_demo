@@ -18,7 +18,7 @@ unsigned int LoadNameFile(std::string fileName, std::vector<std::string>& vecNam
 	unsigned int nameCount = 0;
 
 	std::ifstream theFile(fileName.c_str());
-	if (!theFile.is_open())
+	if ( ! theFile.is_open())
 	{
 		return nameCount;
 	}
