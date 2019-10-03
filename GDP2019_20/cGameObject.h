@@ -10,9 +10,9 @@
 
 enum eShapeTypes
 {
-	AABB, 
-	SPHERE, 
-	CAPSULE,
+	AABB,					// min and max corners 
+	SPHERE,					// Radius
+	CAPSULE,			
 	PLANE,
 	MESH,		// Triangle test
 	UNKNOWN
@@ -60,7 +60,12 @@ public:
 
 	//bool bIsDynamic;
 
+	// We could contain another class or struct with the phsyics stuff
+	// or we could use this type to determine what we need to check.
 	eShapeTypes physicsShapeType;
+	// 
+	glm::vec3 AABB_min, AABB_max;
+	float SPHERE_radius;
 
 	// Won't be lit, and is wireframe
 	bool isWireframe;

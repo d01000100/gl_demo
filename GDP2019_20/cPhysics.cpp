@@ -4,7 +4,8 @@ cPhysics::cPhysics()
 {
 	// This is a typical Earth gravity value. 
 	// note that this doesn't mean that the simulation will "look good", though... 
-	this->m_Gravity = glm::vec3(0.0f, -9.81f, 0.0f);
+//	this->m_Gravity = glm::vec3(0.0f, -9.81f, 0.0f);
+	this->m_Gravity = glm::vec3(0.0f, -1.0f, 0.0f);
 	return;
 }
 
@@ -121,6 +122,13 @@ void cPhysics::GetClosestTriangleToPoint(Point pointXYZ, cMesh& mesh, glm::vec3&
 			closestTriangle.verts[2].z = triVert3.z;
 			
 			// TODO: Copy the normal, too	
+			// Quick is to average the normal of all 3 vertices
+			glm::vec3 triVert1Norm = glm::vec3(triVert1.nx, triVert1.ny, triVert1.nz );
+			glm::vec3 triVert2Norm = glm::vec3(triVert2.nx, triVert2.ny, triVert2.nz );
+			glm::vec3 triVert3Norm = glm::vec3(triVert3.nx, triVert3.ny, triVert3.nz );
+
+			// Average of the vertex normals... 
+			closestTriangle.normal = (triVert1Norm + triVert2Norm + triVert3Norm) / 3.0f;
 
 		}
 

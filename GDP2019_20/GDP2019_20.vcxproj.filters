@@ -28,6 +28,9 @@
     <Filter Include="LightManager">
       <UniqueIdentifier>{4d24adbe-4aca-4875-8dab-0666c5843151}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LowPassFilter">
+      <UniqueIdentifier>{90db0187-9f5a-4e25-917c-0920eed7abc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -84,6 +87,9 @@
     <ClCompile Include="GFLW_callbacks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cLowPassFilter.cpp">
+      <Filter>LowPassFilter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -133,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="globalStuff.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cLowPassFilter.h">
+      <Filter>LowPassFilter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

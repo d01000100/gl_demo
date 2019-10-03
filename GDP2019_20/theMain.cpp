@@ -34,6 +34,8 @@
 #include "PhysicsStuff.h"
 #include "cPhysics.h"
 
+#include "cLowPassFilter.h"
+
 #include "DebugRenderer/cDebugRenderer.h"
 
 // Used to visualize the attenuation of the lights...
@@ -78,7 +80,28 @@ std::map<std::string /*FriendlyName*/, cGameObject*> g_map_GameObjectsByFriendly
 
 
 
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	// Move the sphere to where the camera is and shoot the ball from there...
 
+	cGameObject* pTheBall = pFindObjectByFriendlyName("Sphere#1");
+
+	// What's the velocity
+	// Target - eye = direction
+	glm::vec3 direction = glm::normalize( cameraTarget - cameraEye ); 
+
+	float speed = 10.0f; 
+
+	pTheBall->velocity = direction * speed;
+	pTheBall->positionXYZ = cameraEye;
+
+	return;
+}
+
+// Make a class with a vector of doubles. 
+// Set this vector to all zeros. 
+// Add a method: addTime();
+// Add a method: getAgerage();
 
 
 int main(void)
@@ -152,6 +175,8 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
+
+
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
@@ -163,6 +188,8 @@ int main(void)
 	}
 
 	glfwSetKeyCallback(window, key_callback);
+	// Set the mouse button callback
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
@@ -171,6 +198,7 @@ int main(void)
 
 	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 	pDebugRenderer->initialize();
+
 
 //	pDebugRenderer->RenderDebugObjects(glm::mat4(1.0f), glm::mat4(1.0f), 0.0f);
 
@@ -188,6 +216,9 @@ int main(void)
 	{
 		std::cout << "Didn't find the file" << std::endl;
 	}
+
+	cMesh largeBunnyMesh;
+	pTheModelLoader->LoadPlyModel("assets/models/Large_Physics_Bunny_XYZ_N.ply", largeBunnyMesh);
 
 	cMesh pirateMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz_n.ply", pirateMesh);
@@ -284,6 +315,12 @@ int main(void)
 									 sphereMeshInfo,
 									 shaderProgID);
 
+	sModelDrawInfo largeBunnyDrawInfo;
+	pTheVAOManager->LoadModelIntoVAO("large_bunny", 
+									 largeBunnyMesh,		// Sphere mesh info
+									 largeBunnyDrawInfo,
+									 shaderProgID);
+
 
 	// At this point, the model is loaded into the GPU
 
@@ -338,14 +375,15 @@ int main(void)
 
 	pShpere->meshName = "sphere";
 	pShpere->friendlyName = "Sphere#1";	// We use to search 
-	pShpere->positionXYZ = glm::vec3(-25.0f, 20.0f, 1.0f);
+	pShpere->positionXYZ = glm::vec3(0.0f, 30.0, 0.0f);
 	pShpere->rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
 	pShpere->scale = 1.0f;
 	pShpere->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	// Set the sphere's initial velocity, etc.
-	pShpere->velocity = glm::vec3(6.0f,-15.0f,0.0f);
+	pShpere->velocity = glm::vec3(0.0f,0.0f,0.0f);
 	pShpere->accel = glm::vec3(0.0f,0.0f,0.0f);
 	pShpere->physicsShapeType = SPHERE;
+	pShpere->SPHERE_radius = 1.0f;
 	pShpere->inverseMass = 1.0f;
 //	pShpere->inverseMass = 0.0f;			// Sphere won't move
 
@@ -390,13 +428,28 @@ int main(void)
 //	pTerrain->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 //	pTerrain->isWireframe = true;
 	pTerrain->inverseMass = 0.0f;	// Ignored during update
+	pTerrain->isVisible = false;
+
+	cGameObject* pLargeBunny = new cGameObject();			// HEAP
+	pLargeBunny->meshName = "large_bunny";
+	pLargeBunny->friendlyName = "largeBunny";
+	pLargeBunny->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	pLargeBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	pLargeBunny->scale = 1.0f;	//***** SCALE = 1.0f *****/
+	pLargeBunny->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	pLargeBunny->physicsShapeType = MESH;
+//	pTerrain->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+//	pTerrain->isWireframe = true;
+	pLargeBunny->inverseMass = 0.0f;	// Ignored during update
+
 
 	::g_vec_pGameObjects.push_back(pShpere);
 	::g_vec_pGameObjects.push_back(pShpere2);
 	::g_vec_pGameObjects.push_back(pCube);
-	::g_vec_pGameObjects.push_back(pTerrain);
+//	::g_vec_pGameObjects.push_back(pTerrain);
 	::g_vec_pGameObjects.push_back(pPirate);
 	::g_vec_pGameObjects.push_back(pBunny);
+	::g_vec_pGameObjects.push_back(pLargeBunny);
 
 
 
@@ -438,12 +491,33 @@ int main(void)
 	
 	cPhysics* pPhsyics = new cPhysics();
 
+	cLowPassFilter avgDeltaTimeThingy;
+
 
 	cLightHelper* pLightHelper = new cLightHelper();
+
+	// Get the initial time
+	double lastTime = glfwGetTime();
 
 
 	while (!glfwWindowShouldClose(window))
 	{
+
+		// Get the initial time
+		double currentTime = glfwGetTime();
+
+		// Frame time... (how many seconds since last frame)
+		double deltaTime = currentTime - lastTime;
+		lastTime = currentTime;
+
+		const double SOME_HUGE_TIME = 0.1;	// 100 ms;
+		if (deltaTime > SOME_HUGE_TIME)
+		{
+			deltaTime = SOME_HUGE_TIME;
+		}
+
+		avgDeltaTimeThingy.addValue(deltaTime);
+
 
 		glUseProgram(shaderProgID);
 
@@ -537,7 +611,7 @@ int main(void)
 		// Draw a line showing where we are going...
 		pDebugRenderer->addLine( pPirate->positionXYZ, 
 								 pPirate->positionXYZ + (glm::vec3(frontOfShipInWorld) * pPirate->HACK_speed * 5.0f), 
-								 glm::vec3( 1.0f, 0.0f, 0.0f) );
+								 glm::vec3( 1.0f, 0.0f, 0.0f), 0.5f );
 
 		// Draw a line showing how fast we are going...
 
@@ -640,7 +714,12 @@ int main(void)
 		// Update the objects through physics
 //		PhysicsUpdate( vec_pGameObjects, 0.01f );
 
-		pPhsyics->IntegrationStep(::g_vec_pGameObjects, 0.01f);
+
+
+//		pPhsyics->IntegrationStep(::g_vec_pGameObjects, 0.01f);
+//		pPhsyics->IntegrationStep(::g_vec_pGameObjects, (float)deltaTime);
+		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		pPhsyics->IntegrationStep(::g_vec_pGameObjects, (float)averageDeltaTime);
 
 		// Let's draw all the closest points to the sphere
 		// on the terrain mesh....
@@ -650,10 +729,12 @@ int main(void)
 		// - Place the debug sphere "there"
 		// - Draw it.
 
+		//**********************************************************
+		//**********************************************************
 		glm::vec3 closestPoint = glm::vec3(0.0f,0.0f,0.0f);
 		cPhysics::sPhysicsTriangle closestTriangle;
 
-		pPhsyics->GetClosestTriangleToPoint(pShpere->positionXYZ, terrainMesh, closestPoint, closestTriangle);
+		pPhsyics->GetClosestTriangleToPoint(pShpere->positionXYZ, largeBunnyMesh, closestPoint, closestTriangle);
 
 		// Highlight the triangle that I'm closest to
 		pDebugRenderer->addTriangle(closestTriangle.verts[0], 
@@ -668,17 +749,67 @@ int main(void)
 									   closestTriangle.verts[1] + 
 									   closestTriangle.verts[2] ) / 3.0f;		// Average
 
-		glm::vec3 normalInWorld = centreOfTriangle + (closestTriangle.normal * 10.0f);	// Normal x 10 length
+		glm::vec3 normalInWorld = centreOfTriangle + (closestTriangle.normal * 20.0f);	// Normal x 10 length
 
 		pDebugRenderer->addLine(centreOfTriangle, 
 								normalInWorld,
 								glm::vec3(1.0f, 1.0f, 0.0f) );
+
+		// Are we hitting the triangle? 
+		float distance = glm::length(pShpere->positionXYZ - closestPoint);
+
+		if (distance <= pShpere->SPHERE_radius)
+		{
+			// If you want, move the sphere back to where it just penetrated...
+			// So that it will collide exactly where it's supposed to. 
+			// But, that's not a big problem.
+
+
+			// Is in contact with the triangle... 
+			// Calculate the response vector off the triangle. 
+			glm::vec3 velocityVector = glm::normalize(pShpere->velocity);
+
+			// closestTriangle.normal
+			glm::vec3 reflectionVec = glm::reflect( velocityVector, closestTriangle.normal);
+			reflectionVec = glm::normalize(reflectionVec);
+
+			// Stop the sphere and draw the two vectors...
+//			pShpere->inverseMass = 0.0f;	// Stopped
+
+			glm::vec3 velVecX20 = velocityVector * 10.0f;
+			pDebugRenderer->addLine( closestPoint, velVecX20, 
+									 glm::vec3(1.0f, 0.0f, 0.0f),  30.0f /*seconds*/);
+
+			glm::vec3 reflectionVecX20 = reflectionVec * 10.0f;
+			pDebugRenderer->addLine( closestPoint, reflectionVecX20,
+									 glm::vec3(0.0f, 1.0f, 1.0f),  30.0f /*seconds*/);
+
+			// Change the direction of the ball (the bounce off the triangle)
+
+			// Get lenght of the velocity vector
+			float speed = glm::length(pShpere->velocity);
+
+			pShpere->velocity = reflectionVec * speed;
+
+		}
+
+
+
 
 		bool DidBallCollideWithGround = false;
 		HACK_BounceOffSomePlanes(pShpere, DidBallCollideWithGround );
 
 		// A more general 
 		pPhsyics->TestForCollisions(::g_vec_pGameObjects);
+
+
+
+
+
+		//**********************************************************
+		//**********************************************************
+
+
 
 
 //		float closestDistanceSoFar = FLT_MAX;
