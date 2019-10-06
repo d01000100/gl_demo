@@ -39,7 +39,6 @@
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
 
-
 void DrawObject(glm::mat4 m,
 				cGameObject* pCurrentObject,
 				GLint shaderProgID,
@@ -49,6 +48,8 @@ void DrawObject(glm::mat4 m,
 glm::vec3 cameraEye = glm::vec3(0.0, 80.0, -80.0);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 10.0, 0.0f);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
+
+cShaderManager theShaderManager;
 
 glm::vec3 sexyLightPosition = glm::vec3(-25.0f,30.0f,0.0f);
 float sexyLightConstAtten = 0.0000001f;			// not really used (can turn off and on the light)
@@ -81,7 +82,6 @@ int main(void)
 	}
 
 	glfwSetKeyCallback(window, key_callback);
-	//glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
@@ -97,22 +97,20 @@ int main(void)
 	cMesh terrainMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
 
-	cShaderManager* pTheShaderManager = new cShaderManager();
-
 	cShaderManager::cShader vertexShad;
 	vertexShad.fileName = "assets/shaders/vertexShader01.glsl";
 
 	cShaderManager::cShader fragShader;
 	fragShader.fileName = "assets/shaders/fragmentShader01.glsl";
 
-	if (!pTheShaderManager->createProgramFromFile("SimpleShader", vertexShad, fragShader))
+	if (!::theShaderManager.createProgramFromFile("SimpleShader", vertexShad, fragShader))
 	{
 		std::cout << "Error: didn't compile the shader" << std::endl;
-		std::cout << pTheShaderManager->getLastError();
+		std::cout << theShaderManager.getLastError();
 		return -1;
 	}
 
-	GLuint shaderProgID = pTheShaderManager->getIDFromFriendlyName("SimpleShader");
+	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName("SimpleShader");
 
 	// Create a VAO Manager...
 	cVAOManager* pTheVAOManager = new cVAOManager();

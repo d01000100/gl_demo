@@ -1,11 +1,13 @@
 #pragma once
 
 #include "cGameObject.h"
+#include "cShaderManager.h"
 
 // returns NULL (0) if we didn't find it.
 cGameObject* pFindObjectByFriendlyName( std::string name );
 cGameObject* pFindObjectByFriendlyNameMap( std::string name );
 
+extern cShaderManager theShaderManager;
 
 // These are defined in theMain.cpp
 extern glm::vec3 cameraEye;
