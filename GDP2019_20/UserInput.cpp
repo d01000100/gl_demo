@@ -50,29 +50,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			cameraEye.z += CAMERASPEED;		// Move the camera +0.01f units
 		}
 
-		if ( key == GLFW_KEY_B )
-		{ 
-			// Shoot a bullet from the pirate ship
-			// Find the pirate ship...
-			// returns NULL (0) if we didn't find it.
-//			cGameObject* pShip = pFindObjectByFriendlyName("PirateShip");
-			cGameObject* pShip = pFindObjectByFriendlyNameMap("PirateShip");
-			// Maybe check to see if it returned something... 
-
-			// Find the sphere#2
-//			cGameObject* pBall = pFindObjectByFriendlyName("Sphere#2");
-			cGameObject* pBall = pFindObjectByFriendlyNameMap("Sphere#2");
-
-			// Set the location velocity for sphere#2
-			pBall->positionXYZ = pShip->positionXYZ;
-			pBall->inverseMass = 1.0f;		// So it's updated
-			// 20.0 units "to the right"
-			// 30.0 units "up"
-			pBall->velocity = glm::vec3( 15.0f, 20.0f, 0.0f );
-			pBall->accel = glm::vec3(0.0f,0.0f,0.0f);
-			pBall->diffuseColour = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
-		}//if ( key == GLFW_KEY_B )
-
 	}
 
 	if (isShiftKeyDownByAlone(mods))
@@ -130,22 +107,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_6)
 		{
 			sexyLightQuadraticAtten *= 1.01f;			// 1% more of what it was
-		}
-		if (key == GLFW_KEY_V)
-		{
-			sexyLightSpotInnerAngle -= 0.1f;
-		}
-		if (key == GLFW_KEY_B)
-		{
-			sexyLightSpotInnerAngle += 0.1f;
-		}
-		if (key == GLFW_KEY_N)
-		{
-			sexyLightSpotOuterAngle -= 0.1f;
-		}
-		if (key == GLFW_KEY_M)
-		{
-			sexyLightSpotOuterAngle += 0.1f;
 		}
 
 

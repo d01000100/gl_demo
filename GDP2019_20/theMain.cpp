@@ -54,15 +54,7 @@ glm::vec3 sexyLightPosition = glm::vec3(-25.0f,30.0f,0.0f);
 float sexyLightConstAtten = 0.0000001f;			// not really used (can turn off and on the light)
 float sexyLightLinearAtten = 0.03f;  
 float sexyLightQuadraticAtten = 0.0000001f;
-
-float sexyLightSpotInnerAngle = 5.0f;
-float sexyLightSpotOuterAngle = 7.5f;
-// This is a "normalized" direction
-// (i.e. the length is 1.0f)
-glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
-
-bool bLightDebugSheresOn = true;
-
+bool bLightDebugSheresOn = false;
 
 // Load up my "scene"  (now global)
 std::vector<cGameObject*> g_vec_pGameObjects;
@@ -107,7 +99,7 @@ int main(void)
 	}
 
 	glfwSetKeyCallback(window, key_callback);
-	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	//glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
@@ -117,28 +109,11 @@ int main(void)
 
 	cModelLoader* pTheModelLoader = new cModelLoader();	// Heap
 
-	cMesh bunnyMesh;		// This is stack based
-	if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_XYZ_n.ply", bunnyMesh) )
-	{
-		std::cout << "Didn't find the file" << std::endl;
-	}
-
 	cMesh largeBunnyMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Large_Physics_Bunny_XYZ_N.ply", largeBunnyMesh);
 
-	cMesh pirateMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz_n.ply", pirateMesh);
-
 	cMesh terrainMesh;
 	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
-//	pTheModelLoader->LoadPlyModel("assets/models/BigFlatTerrain_XYZ_n.ply", terrainMesh);
-
-	cMesh cubeMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Cube_1_Unit_from_origin_XYZ_n.ply", cubeMesh);
-
-	cMesh sphereMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Sphere_Radius_1_XYZ_n.ply", sphereMesh);	
-
 
 	cShaderManager* pTheShaderManager = new cShaderManager();
 
@@ -160,34 +135,10 @@ int main(void)
 	// Create a VAO Manager...
 	cVAOManager* pTheVAOManager = new cVAOManager();
 
-	sModelDrawInfo drawInfo;
-	pTheVAOManager->LoadModelIntoVAO("bunny", 
-									 bunnyMesh, 
-									 drawInfo, 
-									 shaderProgID);
-
-	sModelDrawInfo drawInfoPirate;
-	pTheVAOManager->LoadModelIntoVAO("pirate", 
-									 pirateMesh,
-									 drawInfoPirate, 
-									 shaderProgID);
-
 	sModelDrawInfo drawInfoTerrain;
 	pTheVAOManager->LoadModelIntoVAO("terrain", 
 									 terrainMesh,
 									 drawInfoTerrain,
-									 shaderProgID);
-
-	sModelDrawInfo cubeMeshInfo;
-	pTheVAOManager->LoadModelIntoVAO("cube", 
-									 cubeMesh,			// Cube mesh info
-									 cubeMeshInfo,
-									 shaderProgID);
-
-	sModelDrawInfo sphereMeshInfo;
-	pTheVAOManager->LoadModelIntoVAO("sphere", 
-									 sphereMesh,		// Sphere mesh info
-									 sphereMeshInfo,
 									 shaderProgID);
 
 	sModelDrawInfo largeBunnyDrawInfo;
@@ -195,64 +146,6 @@ int main(void)
 									 largeBunnyMesh,		// Sphere mesh info
 									 largeBunnyDrawInfo,
 									 shaderProgID);
-
-	cGameObject* pPirate = new cGameObject();
-	pPirate->meshName = "pirate";
-	pPirate->friendlyName = "PirateShip";	// Friendly name
-	pPirate->positionXYZ = glm::vec3(-30.0f, 20.0f, 10.0f);
-	pPirate->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pPirate->scale = 0.75f;
-	pPirate->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	pPirate->inverseMass = 0.0f;
-	pPirate->HACK_AngleAroundYAxis = 0.0f;
-	pPirate->HACK_speed = 0.0f;
-	// Add a debug renderer to this object
-	pPirate->setDebugRenderer( pDebugRenderer );
-
-	cGameObject* pBunny = new cGameObject();
-	pBunny->meshName = "bunny";
-	pBunny->friendlyName = "Bugs";	// Famous bunny
-	pBunny->positionXYZ = glm::vec3(50.0f, 20.0f, -2.0f);		// -4 on z
-	pBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pBunny->scale = 250.0f;
-	pBunny->objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	pBunny->inverseMass = 0.0f;
-
-	// Sphere and cube
-	cGameObject* pShpere = new cGameObject();
-
-	pShpere->meshName = "sphere";
-	pShpere->friendlyName = "Sphere#1";	// We use to search 
-	pShpere->positionXYZ = glm::vec3(0.0f, 30.0, 0.0f);
-	pShpere->rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
-	pShpere->scale = 1.0f;
-	pShpere->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	// Set the sphere's initial velocity, etc.
-	pShpere->velocity = glm::vec3(0.0f,0.0f,0.0f);
-	pShpere->accel = glm::vec3(0.0f,0.0f,0.0f);
-	pShpere->physicsShapeType = SPHERE;
-	pShpere->SPHERE_radius = 1.0f;
-	pShpere->inverseMass = 1.0f;
-
-	// Sphere and cube
-	cGameObject* pShpere2 = new cGameObject();
-	pShpere2->meshName = "sphere";
-	pShpere2->friendlyName = "Sphere#2";
-	pShpere2->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pShpere2->scale = 1.0f;
-	pShpere2->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	pShpere2->accel = glm::vec3(0.0f, 0.0f, 0.0f);
-	pShpere2->physicsShapeType = SPHERE;
-	pShpere2->inverseMass = 0.0f;
-
-	cGameObject* pCube = new cGameObject();			// HEAP
-	pCube->meshName = "cube";
-	pCube->positionXYZ = glm::vec3(0.0f, -1.0f, 0.0f);
-	pCube->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pCube->scale = 1.0f;
-	pCube->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-	pCube->isWireframe = true;
-	pCube->inverseMass = 0.0f;	// Ignored during update
 
 	cGameObject* pTerrain = new cGameObject();			// HEAP
 	pTerrain->meshName = "terrain";
@@ -268,24 +161,15 @@ int main(void)
 	cGameObject* pLargeBunny = new cGameObject();			// HEAP
 	pLargeBunny->meshName = "large_bunny";
 	pLargeBunny->friendlyName = "largeBunny";
-	pLargeBunny->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	pLargeBunny->positionXYZ = glm::vec3(0.0f, 20.0f, 0.0f);
 	pLargeBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pLargeBunny->scale = 1.0f;	//***** SCALE = 1.0f *****/
 	pLargeBunny->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	pLargeBunny->physicsShapeType = MESH;
 	pLargeBunny->inverseMass = 0.0f;	// Ignored during update
 
-	::g_vec_pGameObjects.push_back(pShpere);
-	::g_vec_pGameObjects.push_back(pShpere2);
-	::g_vec_pGameObjects.push_back(pCube);
-	::g_vec_pGameObjects.push_back(pPirate);
-	::g_vec_pGameObjects.push_back(pBunny);
+	::g_vec_pGameObjects.push_back(pTerrain);
 	::g_vec_pGameObjects.push_back(pLargeBunny);
-
-	::g_map_GameObjectsByFriendlyName[pShpere2->friendlyName] = pShpere;
-	::g_map_GameObjectsByFriendlyName[pTerrain->friendlyName] = pTerrain;
-	::g_map_GameObjectsByFriendlyName[pPirate->friendlyName] = pPirate;
-	::g_map_GameObjectsByFriendlyName[pBunny->friendlyName] = pBunny;
 
 	// Will be moved placed around the scene
 	cGameObject* pDebugSphere = new cGameObject();
@@ -309,7 +193,6 @@ int main(void)
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
-
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -387,39 +270,6 @@ int main(void)
 
 		// Point light:
 		glUniform4f(L_0_param1, 0.0f /*POINT light*/, 0.0f, 0.0f, 1.0f );
-
-
-		// ********************************************************
-		// Move the pirate in the direction it's pointing in...
-		
-		// Vec4 = mat4x4 * vec4				vertFinal = matModel * vertStart;
-		
-		cGameObject* pPirate = pFindObjectByFriendlyName("PirateShip");
-
-		glm::mat4 matRotY = glm::rotate(glm::mat4(1.0f),
-										pPirate->HACK_AngleAroundYAxis,	//(float)glfwGetTime(),					// Angle 
-										glm::vec3(0.0f, 1.0f, 0.0f));
-	
-		// Assume the ship is at 0,0,0
-		glm::vec4 frontOfShip = glm::vec4(0.0f, 0.0f, -1.0f, 1.0f);	// pointing to the "front" of the ship
-		
-		// Vec4 = mat4x4 * vec4				vertFinal = matModel * vertStart;
-		glm::vec4 frontOfShipInWorld = matRotY * frontOfShip;
-
-		// this value would be the velocity, ifyou wanted the phsyics update do to it
-		glm::vec3 newSpeedOfShipIN_THE_DIRECTION_WE_WANT_TO_GO
-			= frontOfShipInWorld * pPirate->HACK_speed;
-
-		// Draw a line showing where we are going...
-		pDebugRenderer->addLine( pPirate->positionXYZ, 
-								 pPirate->positionXYZ + (glm::vec3(frontOfShipInWorld) * pPirate->HACK_speed * 5.0f), 
-								 glm::vec3( 1.0f, 0.0f, 0.0f), 0.5f );
-
-		// Draw a line showing how fast we are going...
-
-		// Update the pirate ship
-		pPirate->positionXYZ += newSpeedOfShipIN_THE_DIRECTION_WE_WANT_TO_GO;
-		// ********************************************************
 		
 		glUniform4f(L_0_param2, 1.0f /*Light is on*/, 0.0f, 0.0f, 1.0f );
 
@@ -429,18 +279,6 @@ int main(void)
 
 		glUniform4f( eyeLocation_UL, 
 					 cameraEye.x, cameraEye.y, cameraEye.z, 1.0f );
-
-
-		std::stringstream ssTitle;
-		ssTitle 
-			<< sexyLightPosition.x << ", " 
-			<< sexyLightPosition.y << ", " 
-			<< sexyLightPosition.z 
-			<< "Atten: "
-			<< sexyLightConstAtten << " : "
-			<< sexyLightLinearAtten << " : "
-			<< sexyLightQuadraticAtten;
-		glfwSetWindowTitle( window, ssTitle.str().c_str() );
 
 
 		GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
@@ -453,8 +291,6 @@ int main(void)
 		// **************************************************
 		// **************************************************
 		// Loop to draw everything in the scene
-
-
 		for (int index = 0; index != ::g_vec_pGameObjects.size(); index++)
 		{
 			glm::mat4 matModel = glm::mat4(1.0f);
@@ -468,207 +304,6 @@ int main(void)
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		pPhsyics->IntegrationStep(::g_vec_pGameObjects, (float)averageDeltaTime);
-
-		// Let's draw all the closest points to the sphere
-		// on the terrain mesh....
-		// 
-		// For each triangle in the terrain mesh:
-		// - Run ClosestPointToTriangle
-		// - Place the debug sphere "there"
-		// - Draw it.
-
-		//**********************************************************
-		//**********************************************************
-		glm::vec3 closestPoint = glm::vec3(0.0f,0.0f,0.0f);
-		cPhysics::sPhysicsTriangle closestTriangle;
-
-		pPhsyics->GetClosestTriangleToPoint(pShpere->positionXYZ, largeBunnyMesh, closestPoint, closestTriangle);
-
-		// Highlight the triangle that I'm closest to
-		pDebugRenderer->addTriangle(closestTriangle.verts[0], 
-									closestTriangle.verts[1], 
-									closestTriangle.verts[2],
-									glm::vec3(1.0f, 0.0f, 0.0f) );
-
-		// Highlight the triangle that I'm closest to
-		// To draw the normal, calculate the average of the 3 vertices, 
-		// then draw that average + the normal (the normal starts at the 0,0,0 OF THE TRIANGLE)
-		glm::vec3 centreOfTriangle = ( closestTriangle.verts[0] + 
-									   closestTriangle.verts[1] + 
-									   closestTriangle.verts[2] ) / 3.0f;		// Average
-
-		glm::vec3 normalInWorld = centreOfTriangle + (closestTriangle.normal * 20.0f);	// Normal x 10 length
-
-		pDebugRenderer->addLine(centreOfTriangle, 
-								normalInWorld,
-								glm::vec3(1.0f, 1.0f, 0.0f) );
-
-		// Are we hitting the triangle? 
-		float distance = glm::length(pShpere->positionXYZ - closestPoint);
-
-		if (distance <= pShpere->SPHERE_radius)
-		{
-			// If you want, move the sphere back to where it just penetrated...
-			// So that it will collide exactly where it's supposed to. 
-			// But, that's not a big problem.
-
-
-			// Is in contact with the triangle... 
-			// Calculate the response vector off the triangle. 
-			glm::vec3 velocityVector = glm::normalize(pShpere->velocity);
-
-			// closestTriangle.normal
-			glm::vec3 reflectionVec = glm::reflect( velocityVector, closestTriangle.normal);
-			reflectionVec = glm::normalize(reflectionVec);
-
-			glm::vec3 velVecX20 = velocityVector * 10.0f;
-			pDebugRenderer->addLine( closestPoint, velVecX20, 
-									 glm::vec3(1.0f, 0.0f, 0.0f),  30.0f /*seconds*/);
-
-			glm::vec3 reflectionVecX20 = reflectionVec * 10.0f;
-			pDebugRenderer->addLine( closestPoint, reflectionVecX20,
-									 glm::vec3(0.0f, 1.0f, 1.0f),  30.0f /*seconds*/);
-
-			// Change the direction of the ball (the bounce off the triangle)
-
-			// Get lenght of the velocity vector
-			float speed = glm::length(pShpere->velocity);
-
-			pShpere->velocity = reflectionVec * speed;
-		}
-
-		bool DidBallCollideWithGround = false;
-		HACK_BounceOffSomePlanes(pShpere, DidBallCollideWithGround );
-
-		// A more general 
-		pPhsyics->TestForCollisions(::g_vec_pGameObjects);
-
-		{// Draw closest point
-			glm::mat4 matModel = glm::mat4(1.0f);
-			pDebugSphere->positionXYZ = closestPoint;
-			pDebugSphere->scale = 1.0f;
-			pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
-			pDebugSphere->isWireframe = true;
-			DrawObject(matModel, pDebugSphere,
-					   shaderProgID, pTheVAOManager);
-		}
-
-		// How far did we penetrate the surface?
-		glm::vec3 CentreToClosestPoint = pShpere->positionXYZ - closestPoint;
-
-		// Direction that ball is going is normalized velocity
-		glm::vec3 directionBall = glm::normalize(pShpere->velocity);	// 1.0f
-
-		// Calcualte direction to move it back the way it came from
-		glm::vec3 oppositeDirection = -directionBall;				// 1.0f
-
-		float distanceToClosestPoint = glm::length(CentreToClosestPoint);
-
-		pDebugRenderer->addLine( pShpere->positionXYZ, 
-								 closestPoint, 
-								 glm::vec3(0.0f, 1.0f, 0.0f), 
-								 1.0f );
-
-		std::cout 
-			<< pShpere->velocity.x << ", "
-			<< pShpere->velocity.y << ", "
-			<< pShpere->velocity.z << "   dist = "
-			<< distanceToClosestPoint << std::endl;
-
-		if (bLightDebugSheresOn) 
-		{
-			{// Draw where the light is at
-				glm::mat4 matModel = glm::mat4(1.0f);
-				pDebugSphere->positionXYZ = sexyLightPosition;
-				pDebugSphere->scale = 0.5f;
-				pDebugSphere->debugColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-				pDebugSphere->isWireframe = true;
-				DrawObject(matModel, pDebugSphere,
-						   shaderProgID, pTheVAOManager);
-			}
-
-			// Draw spheres to represent the attenuation...
-			{   // Draw a sphere at 1% brightness
-				glm::mat4 matModel = glm::mat4(1.0f);
-				pDebugSphere->positionXYZ = sexyLightPosition;
-				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
-													   0.01f,		// 1% brightness (essentially black)
-													   0.001f,		// Within 0.1%  
-													   100000.0f,	// Will quit when it's at this distance
-													   sexyLightConstAtten,
-													   sexyLightLinearAtten,
-													   sexyLightQuadraticAtten );
-				pDebugSphere->scale = sphereSize;
-				pDebugSphere->debugColour = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-				pDebugSphere->isWireframe = true;
-				DrawObject(matModel, pDebugSphere,
-						   shaderProgID, pTheVAOManager);
-			}
-			{   // Draw a sphere at 25% brightness
-				glm::mat4 matModel = glm::mat4(1.0f);
-				pDebugSphere->positionXYZ = sexyLightPosition;
-				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
-													   0.25f,		// 1% brightness (essentially black)
-													   0.001f,		// Within 0.1%  
-													   100000.0f,	// Will quit when it's at this distance
-													   sexyLightConstAtten,
-													   sexyLightLinearAtten,
-													   sexyLightQuadraticAtten );
-				pDebugSphere->scale = sphereSize;
-				pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-				pDebugSphere->isWireframe = true;
-				DrawObject(matModel, pDebugSphere,
-						   shaderProgID, pTheVAOManager);
-			}
-			{   // Draw a sphere at 50% brightness
-				glm::mat4 matModel = glm::mat4(1.0f);
-				pDebugSphere->positionXYZ = sexyLightPosition;
-				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
-													   0.50f,		// 1% brightness (essentially black)
-													   0.001f,		// Within 0.1%  
-													   100000.0f,	// Will quit when it's at this distance
-													   sexyLightConstAtten,
-													   sexyLightLinearAtten,
-													   sexyLightQuadraticAtten );
-				pDebugSphere->scale = sphereSize;
-				pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
-				pDebugSphere->isWireframe = true;
-				DrawObject(matModel, pDebugSphere,
-						   shaderProgID, pTheVAOManager);
-			}
-			{   // Draw a sphere at 75% brightness
-				glm::mat4 matModel = glm::mat4(1.0f);
-				pDebugSphere->positionXYZ = sexyLightPosition;
-				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
-													   0.75f,		// 1% brightness (essentially black)
-													   0.001f,		// Within 0.1%  
-													   100000.0f,	// Will quit when it's at this distance
-													   sexyLightConstAtten,
-													   sexyLightLinearAtten,
-													   sexyLightQuadraticAtten );
-				pDebugSphere->scale = sphereSize;
-				pDebugSphere->debugColour = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
-				pDebugSphere->isWireframe = true;
-				DrawObject(matModel, pDebugSphere,
-						   shaderProgID, pTheVAOManager);
-			}
-			{   // Draw a sphere at 95% brightness
-				glm::mat4 matModel = glm::mat4(1.0f);
-				pDebugSphere->positionXYZ = sexyLightPosition;
-				float sphereSize = pLightHelper->calcApproxDistFromAtten( 
-													   0.95f,		// 1% brightness (essentially black)
-													   0.001f,		// Within 0.1%  
-													   100000.0f,	// Will quit when it's at this distance
-													   sexyLightConstAtten,
-													   sexyLightLinearAtten,
-													   sexyLightQuadraticAtten );
-				pDebugSphere->scale = sphereSize;
-				pDebugSphere->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-				pDebugSphere->isWireframe = true;
-				DrawObject(matModel, pDebugSphere,
-						   shaderProgID, pTheVAOManager);
-			}
-		}// if (bLightDebugSheresOn) 		
 		
 		pDebugRenderer->RenderDebugObjects( v, p, 0.01f );
 		glfwSwapBuffers(window);
