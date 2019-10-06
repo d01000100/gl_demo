@@ -60,24 +60,6 @@ bool bLightDebugSheresOn = false;
 std::vector<cGameObject*> g_vec_pGameObjects;
 std::map<std::string /*FriendlyName*/, cGameObject*> g_map_GameObjectsByFriendlyName;
 
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
-	// Move the sphere to where the camera is and shoot the ball from there...
-
-	cGameObject* pTheBall = pFindObjectByFriendlyName("Sphere#1");
-
-	// What's the velocity
-	// Target - eye = direction
-	glm::vec3 direction = glm::normalize( cameraTarget - cameraEye ); 
-
-	float speed = 10.0f; 
-
-	pTheBall->velocity = direction * speed;
-	pTheBall->positionXYZ = cameraEye;
-
-	return;
-}
-
 int main(void)
 {
 	GLFWwindow* window;
