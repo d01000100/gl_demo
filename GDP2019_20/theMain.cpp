@@ -1,10 +1,5 @@
 #include "GLCommon.h"
-//#include <glad/glad.h>
-//#include <GLFW/glfw3.h>
-
 #include "globalStuff.h"
-
-//#include "linmath.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp> // glm::vec3
 #include <glm/vec4.hpp> // glm::vec4
@@ -73,13 +68,6 @@ bool bLightDebugSheresOn = true;
 std::vector<cGameObject*> g_vec_pGameObjects;
 std::map<std::string /*FriendlyName*/, cGameObject*> g_map_GameObjectsByFriendlyName;
 
-
-
-
-//bool g_BallCollided = false;
-
-
-
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
 	// Move the sphere to where the camera is and shoot the ball from there...
@@ -98,76 +86,9 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 	return;
 }
 
-// Make a class with a vector of doubles. 
-// Set this vector to all zeros. 
-// Add a method: addTime();
-// Add a method: getAgerage();
-
-
 int main(void)
 {
-	//int myArray[15];		// Integers stores integers
-
-	//std::vector<int> myVector;
-	//myVector.push_back( 25 );		// 0
-	//myVector.push_back(  8 );		// 1
-	//myVector.push_back( 17 );		// 2
-	//myVector.push_back(  1 );
-	//myVector.push_back( 11 );		// Ball
-	//myVector.push_back(  6 );
-	//myVector.push_back( 15 );
-	//myVector.push_back( 25 );		// Pirate
-	//myVector.push_back( 22 );
-	//myVector.push_back( 27 );
-	//myVector.push_back( 13 );
-	//std::cout << myVector[3];
-//
-	//std::map<int, int> myMap;
-	//myMap[0] = 25;		// 0
-	//myMap[1] =  8;		// 1
-	//myMap[2] = 17;		// 2
-	//myMap[3] =  1;
-	//myMap[4] = 11;		
-	//myMap[5] =  6;
-	//myMap[6] = 15;
-	//myMap[7] = 25;	
-	//myMap[8] = 22;
-	//myMap[9] = 27;
-	//myMap[10] = 13;		// I WANT THIS ONE
-	//myMap.find( 13 );
-
-	//std::map<std::string, cGameObject> myMap;
-	//myMap["PirateShip"]
-
-
-	// A map for favorite foods
-	std::map< std::string /*index*/, std::string > mapNameToFood;
-
-	// 11 -> 2.3
-	// 111 -> 4.7
-	// 1000 -> 6.7
-	// 10000 -> 9
-	// 100,000 -> 11
-	mapNameToFood["Felipe"] = "Hay";
-	mapNameToFood["Hamza"] = "Pancake";
-	mapNameToFood["Dylan"] = "Fish Food";
-	mapNameToFood["Ethan"] = "Fish";
-	mapNameToFood["Brandon"] = "Pizza";
-	mapNameToFood["Brian"] = "Dog food";
-	mapNameToFood["Caleb"] = "Eggs";
-	mapNameToFood["Christopher"] = "Pie";
-	mapNameToFood["David"] = "Cat food";
-	mapNameToFood["Dhilip"] = "Noodles";
-	mapNameToFood["Harshil"] = "Chocolate";
-
-	std::string favFood = mapNameToFood["Dhilip"];
-	std::cout << favFood << std::endl;
-
-
-
 	GLFWwindow* window;
-	//GLuint vertex_buffer, vertex_shader, fragment_shader, program;
-	//GLint mvp_location; /*, vpos_location, vcol_location;*/
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -175,12 +96,10 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-
-
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
+	window = glfwCreateWindow(640, 480, "SimpleGame", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -188,30 +107,17 @@ int main(void)
 	}
 
 	glfwSetKeyCallback(window, key_callback);
-	// Set the mouse button callback
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
 
-
-
 	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 	pDebugRenderer->initialize();
-
-
-//	pDebugRenderer->RenderDebugObjects(glm::mat4(1.0f), glm::mat4(1.0f), 0.0f);
-
-	// OpenGL and GLFW are good to go, so load the model
-	//cModelLoader theModelLoader;   // Stack
-	//theModelLoader.LoadPlyModel();
-
 
 	cModelLoader* pTheModelLoader = new cModelLoader();	// Heap
 
 	cMesh bunnyMesh;		// This is stack based
-//	if ( ! pTheModelLoader->LoadPlyModel("assets/models/Sky_Pirate_Combined_xyz.ply", bunnyMesh) )
-//	if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_res4_XYZ_N.ply", bunnyMesh) )
 	if ( ! pTheModelLoader->LoadPlyModel("assets/models/bun_zipper_XYZ_n.ply", bunnyMesh) )
 	{
 		std::cout << "Didn't find the file" << std::endl;
@@ -231,10 +137,7 @@ int main(void)
 	pTheModelLoader->LoadPlyModel("assets/models/Cube_1_Unit_from_origin_XYZ_n.ply", cubeMesh);
 
 	cMesh sphereMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Sphere_Radius_1_XYZ_n.ply", sphereMesh);
-
-
-	
+	pTheModelLoader->LoadPlyModel("assets/models/Sphere_Radius_1_XYZ_n.ply", sphereMesh);	
 
 
 	cShaderManager* pTheShaderManager = new cShaderManager();
@@ -254,37 +157,9 @@ int main(void)
 
 	GLuint shaderProgID = pTheShaderManager->getIDFromFriendlyName("SimpleShader");
 
-
-	//	float x, y, z;		vPosition			"attribute vec3 vPosition;\n"
-	//	float r, g, b;		vColour				"attribute vec3 vColour;\n"
-//	
-//	mvp_location = glGetUniformLocation(program, "MVP");
-//	mvp_location = glGetUniformLocation(shaderProgID, "MVP");
-	//vpos_location = glGetAttribLocation(program, "vPosition");
-	//vcol_location = glGetAttribLocation(program, "vColour");
-//
-	//glEnableVertexAttribArray(vpos_location);
-	//glVertexAttribPointer(vpos_location, 
-	//					  3, 
-	//					  GL_FLOAT, 
-	//					  GL_FALSE,
-	//					  sizeof(sVertex),	// sizeof(vertices[0]),
-	//					  (void*)0);
-//
-	//glEnableVertexAttribArray(vcol_location);
-	//glVertexAttribPointer(vcol_location, 3, 
-	//					  GL_FLOAT, 
-	//					  GL_FALSE,
-	//					  sizeof(sVertex),	// sizeof(vertices[0]),
-	//					  (void*)(sizeof(float) * 3));
-
-
 	// Create a VAO Manager...
-	// #include "cVAOManager.h"  (at the top of your file)
 	cVAOManager* pTheVAOManager = new cVAOManager();
 
-	// Note, the "filename" here is really the "model name" 
-	//  that we can look up later (i.e. it doesn't have to be the file name)
 	sModelDrawInfo drawInfo;
 	pTheVAOManager->LoadModelIntoVAO("bunny", 
 									 bunnyMesh, 
@@ -321,13 +196,6 @@ int main(void)
 									 largeBunnyDrawInfo,
 									 shaderProgID);
 
-
-	// At this point, the model is loaded into the GPU
-
-
-	//// Load up my "scene" 
-	//std::vector<cGameObject*> vec_pGameObjects;
-
 	cGameObject* pPirate = new cGameObject();
 	pPirate->meshName = "pirate";
 	pPirate->friendlyName = "PirateShip";	// Friendly name
@@ -341,7 +209,6 @@ int main(void)
 	// Add a debug renderer to this object
 	pPirate->setDebugRenderer( pDebugRenderer );
 
-//
 	cGameObject* pBunny = new cGameObject();
 	pBunny->meshName = "bunny";
 	pBunny->friendlyName = "Bugs";	// Famous bunny
@@ -350,28 +217,9 @@ int main(void)
 	pBunny->scale = 250.0f;
 	pBunny->objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	pBunny->inverseMass = 0.0f;
-//
-	//cGameObject bunny2;
-	//bunny2.meshName = "bunny";
-	//bunny2.positionXYZ = glm::vec3(0.0f,0.0f,0.0f);
-	//bunny2.rotationXYZ = glm::vec3(0.0f,1.0f,0.0f);
-	//bunny2.scale = 3.5f;
-	//bunny2.objectColourRGBA = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
-//
-	//cGameObject terrain;
-	//terrain.meshName = "terrain";
-	//terrain.positionXYZ = glm::vec3(0.0f,-10.0f,0.0f);
-	//terrain.rotationXYZ = glm::vec3(0.0f,0.0f,0.0f);
-	//terrain.scale = 0.5f;
-	//terrain.objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// Sphere and cube
 	cGameObject* pShpere = new cGameObject();
-
-	//cGameObject A; 
-	//cGameObject B;
-	//A = B;
-
 
 	pShpere->meshName = "sphere";
 	pShpere->friendlyName = "Sphere#1";	// We use to search 
@@ -385,37 +233,26 @@ int main(void)
 	pShpere->physicsShapeType = SPHERE;
 	pShpere->SPHERE_radius = 1.0f;
 	pShpere->inverseMass = 1.0f;
-//	pShpere->inverseMass = 0.0f;			// Sphere won't move
 
-		// Sphere and cube
+	// Sphere and cube
 	cGameObject* pShpere2 = new cGameObject();
 	pShpere2->meshName = "sphere";
 	pShpere2->friendlyName = "Sphere#2";
-//	pShpere2->positionXYZ = glm::vec3(25.0f, 20.0f, 1.0f);
 	pShpere2->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pShpere2->scale = 1.0f;
 	pShpere2->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	// Set the sphere's initial velocity, etc.
-//	pShpere2->velocity = glm::vec3(6.0f, -15.0f, 0.0f);
 	pShpere2->accel = glm::vec3(0.0f, 0.0f, 0.0f);
 	pShpere2->physicsShapeType = SPHERE;
 	pShpere2->inverseMass = 0.0f;
-	//	pShpere->inverseMass = 0.0f;			// Sphere won't move
-
 
 	cGameObject* pCube = new cGameObject();			// HEAP
 	pCube->meshName = "cube";
 	pCube->positionXYZ = glm::vec3(0.0f, -1.0f, 0.0f);
 	pCube->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pCube->scale = 1.0f;
-	//pCube->objectColourRGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 	pCube->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 	pCube->isWireframe = true;
-	// Set the sphere's initial velocity, etc.
-	//sphere.velocity = glm::vec3(0.0f,0.0f,0.0f);
-	//sphere.accel = glm::vec3(0.0f,0.0f,0.0f);
 	pCube->inverseMass = 0.0f;	// Ignored during update
-
 
 	cGameObject* pTerrain = new cGameObject();			// HEAP
 	pTerrain->meshName = "terrain";
@@ -425,8 +262,6 @@ int main(void)
 	pTerrain->scale = 1.0f;
 	pTerrain->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	pTerrain->physicsShapeType = MESH;
-//	pTerrain->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-//	pTerrain->isWireframe = true;
 	pTerrain->inverseMass = 0.0f;	// Ignored during update
 	pTerrain->isVisible = false;
 
@@ -438,26 +273,19 @@ int main(void)
 	pLargeBunny->scale = 1.0f;	//***** SCALE = 1.0f *****/
 	pLargeBunny->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	pLargeBunny->physicsShapeType = MESH;
-//	pTerrain->debugColour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-//	pTerrain->isWireframe = true;
 	pLargeBunny->inverseMass = 0.0f;	// Ignored during update
-
 
 	::g_vec_pGameObjects.push_back(pShpere);
 	::g_vec_pGameObjects.push_back(pShpere2);
 	::g_vec_pGameObjects.push_back(pCube);
-//	::g_vec_pGameObjects.push_back(pTerrain);
 	::g_vec_pGameObjects.push_back(pPirate);
 	::g_vec_pGameObjects.push_back(pBunny);
 	::g_vec_pGameObjects.push_back(pLargeBunny);
-
-
 
 	::g_map_GameObjectsByFriendlyName[pShpere2->friendlyName] = pShpere;
 	::g_map_GameObjectsByFriendlyName[pTerrain->friendlyName] = pTerrain;
 	::g_map_GameObjectsByFriendlyName[pPirate->friendlyName] = pPirate;
 	::g_map_GameObjectsByFriendlyName[pBunny->friendlyName] = pBunny;
-
 
 	// Will be moved placed around the scene
 	cGameObject* pDebugSphere = new cGameObject();
@@ -466,33 +294,16 @@ int main(void)
 	pDebugSphere->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pDebugSphere->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pDebugSphere->scale = 0.1f;
-//	pDebugSphere->objectColourRGBA = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	pDebugSphere->isWireframe = true;
 	pDebugSphere->inverseMass = 0.0f;			// Sphere won't move
 
-
-
-
-	//vecGameObjects.push_back(pirate);			// vecGameObjects[0]
-	//vecGameObjects.push_back(bunny);		
-	//vecGameObjects.push_back(bunny2);
-//	vecGameObjects.push_back(terrain);
-
-	//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-
-
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
-
-	//float shipVelocityZ = 1.0f;
-	//float shipAccelz = 1000.0f;
-
 	
 	cPhysics* pPhsyics = new cPhysics();
 
 	cLowPassFilter avgDeltaTimeThingy;
-
 
 	cLightHelper* pLightHelper = new cLightHelper();
 
@@ -502,7 +313,6 @@ int main(void)
 
 	while (!glfwWindowShouldClose(window))
 	{
-
 		// Get the initial time
 		double currentTime = glfwGetTime();
 
@@ -518,13 +328,10 @@ int main(void)
 
 		avgDeltaTimeThingy.addValue(deltaTime);
 
-
 		glUseProgram(shaderProgID);
 
 		float ratio;
 		int width, height;
-		//       mat4x4 m, p, mvp;
-		//glm::mat4 m, p, v, mvp;
 		glm::mat4 p, v;
 
 		glfwGetFramebufferSize(window, &width, &height);
@@ -539,14 +346,9 @@ int main(void)
 		// View matrix
 		v = glm::mat4(1.0f);
 
-		//glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0);
-		//glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-		//glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
-
 		v = glm::lookAt(cameraEye,
 						cameraTarget,
 						upVector);
-
 
 		glViewport(0, 0, width, height);
 
@@ -617,54 +419,8 @@ int main(void)
 
 		// Update the pirate ship
 		pPirate->positionXYZ += newSpeedOfShipIN_THE_DIRECTION_WE_WANT_TO_GO;
-
-
-		//pDebugRenderer->addTriangle( pPirate->positionXYZ, 
-		//							 glm::vec3(0.0f,0.0f,0.0f), 
-		//							 glm::vec3(0.0f, 10.0f, 0.0f), 
-		//							 glm::vec3(0.0f,1.0f,0.0f) );
-
-		//pDebugRenderer->addLine( pPirate->positionXYZ, 
-		//						 glm::vec3(0.0f, 10.0f, 0.0f), 
-		//						 glm::vec3(0.0f,1.0f,0.0f),
-		//						 2.0f );
 		// ********************************************************
-
-
-//	// Point the spot light at the bunny
-//	cGameObject* pBunny = pFindObjectByFriendlyName("Bugs");
-//	cGameObject* pPirate = pFindObjectByFriendlyName("PirateShip");
-//
-//	sexyLightPosition = pPirate->positionXYZ;
-//
-//	// Vector from the bunny to the ship is:
-//	// Bunny_Position - ShipPosition;
-//	glm::vec3 bunnyToShip = pBunny->positionXYZ - pPirate->positionXYZ;
-//	// Normalize the vector (unit or 1.0f length)
-//	sexyLightSpotDirection = glm::normalize(bunnyToShip);
-
-
-		//// Spot light
-		//glUniform4f(L_0_direction, 
-		//			sexyLightSpotDirection.x,		// 0
-		//			sexyLightSpotDirection.y,		// -1
-		//			sexyLightSpotDirection.z,		// 0
-		//			1.0f );	
-
-		//glUniform4f(L_0_param1,
-		//			1.0f /*SPOT light*/, 
-		//			sexyLightSpotInnerAngle,		// 15
-		//			sexyLightSpotOuterAngle,		// 30
-		//			1.0f );
-
-
-		//glUniform4f(L_0_param1,
-		//			2.0f /*DIRECTIONAL light*/, 
-		//			sexyLightSpotInnerAngle,		// 15
-		//			sexyLightSpotOuterAngle,		// 30
-		//			1.0f );
-
-
+		
 		glUniform4f(L_0_param2, 1.0f /*Light is on*/, 0.0f, 0.0f, 1.0f );
 
 		// Also set the position of my "eye" (the camera)
@@ -710,14 +466,6 @@ int main(void)
 
 		}//for (int index...
 
-
-		// Update the objects through physics
-//		PhysicsUpdate( vec_pGameObjects, 0.01f );
-
-
-
-//		pPhsyics->IntegrationStep(::g_vec_pGameObjects, 0.01f);
-//		pPhsyics->IntegrationStep(::g_vec_pGameObjects, (float)deltaTime);
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		pPhsyics->IntegrationStep(::g_vec_pGameObjects, (float)averageDeltaTime);
 
@@ -773,9 +521,6 @@ int main(void)
 			glm::vec3 reflectionVec = glm::reflect( velocityVector, closestTriangle.normal);
 			reflectionVec = glm::normalize(reflectionVec);
 
-			// Stop the sphere and draw the two vectors...
-//			pShpere->inverseMass = 0.0f;	// Stopped
-
 			glm::vec3 velVecX20 = velocityVector * 10.0f;
 			pDebugRenderer->addLine( closestPoint, velVecX20, 
 									 glm::vec3(1.0f, 0.0f, 0.0f),  30.0f /*seconds*/);
@@ -790,79 +535,13 @@ int main(void)
 			float speed = glm::length(pShpere->velocity);
 
 			pShpere->velocity = reflectionVec * speed;
-
 		}
-
-
-
 
 		bool DidBallCollideWithGround = false;
 		HACK_BounceOffSomePlanes(pShpere, DidBallCollideWithGround );
 
 		// A more general 
 		pPhsyics->TestForCollisions(::g_vec_pGameObjects);
-
-
-
-
-
-		//**********************************************************
-		//**********************************************************
-
-
-
-
-//		float closestDistanceSoFar = FLT_MAX;
-//		glm::vec3 closetPoint = glm::vec3(0.0f,0.0f,0.0f);
-//		sPlyTriangle closetTriangle;
-//
-//		for (unsigned int triIndex = 0;
-//			 triIndex != terrainMesh.vecTriangles.size();
-//			 triIndex++)
-//		{
-//			sPlyTriangle& curTriangle = terrainMesh.vecTriangles[triIndex];
-//
-//			// Get the vertices of the triangle
-//			sPlyVertexXYZ_N triVert1 = terrainMesh.vecVertices[curTriangle.vert_index_1];
-//			sPlyVertexXYZ_N triVert2 = terrainMesh.vecVertices[curTriangle.vert_index_2];
-//			sPlyVertexXYZ_N triVert3 = terrainMesh.vecVertices[curTriangle.vert_index_3];
-//
-//			Point triVertPoint1;
-//			triVertPoint1.x = triVert1.x;
-//			triVertPoint1.y = triVert1.y;
-//			triVertPoint1.z = triVert1.z;
-//
-//			Point triVertPoint2;
-//			triVertPoint2.x = triVert2.x;
-//			triVertPoint2.y = triVert2.y;
-//			triVertPoint2.z = triVert2.z;
-//
-//			Point triVertPoint3;
-//			triVertPoint3.x = triVert3.x;
-//			triVertPoint3.y = triVert3.y;
-//			triVertPoint3.z = triVert3.z;
-//
-//			glm::vec3 curClosetPoint = ClosestPtPointTriangle( 
-//				pShpere->positionXYZ, 
-//				triVertPoint1, triVertPoint2, triVertPoint3 );
-//			
-//			// Is this the closest so far?
-//			float distanceNow = glm::distance(curClosetPoint, pShpere->positionXYZ);
-//
-//			// is this closer than the closest distance
-//			if ( distanceNow <= closestDistanceSoFar )
-//			{
-//				closestDistanceSoFar = distanceNow;
-//				closetPoint = curClosetPoint;
-//			}
-//
-//			//glm::mat4 matModel = glm::mat4(1.0f);
-//			//pDebugSphere->positionXYZ = closetPoint;
-//			//DrawObject(matModel, pDebugSphere, 
-//			//			   shaderProgID, pTheVAOManager);
-//
-//
-//		}//for (unsigned int triIndex = 0;
 
 		{// Draw closest point
 			glm::mat4 matModel = glm::mat4(1.0f);
@@ -873,7 +552,6 @@ int main(void)
 			DrawObject(matModel, pDebugSphere,
 					   shaderProgID, pTheVAOManager);
 		}
-
 
 		// How far did we penetrate the surface?
 		glm::vec3 CentreToClosestPoint = pShpere->positionXYZ - closestPoint;
@@ -891,37 +569,11 @@ int main(void)
 								 glm::vec3(0.0f, 1.0f, 0.0f), 
 								 1.0f );
 
-
-
-
-//		// HACK
-//		if (DidBallCollideWithGround)
-//		{ 
-//			float sphereRadius = 1.0f;
-//			float distanceToMoveBack = sphereRadius - distanceToClosestPoint;
-//
-//			glm::vec3 adjustmentVector = oppositeDirection * distanceToMoveBack;
-//
-//			// Let's move the sphere that amount...
-//			pShpere->positionXYZ += adjustmentVector;
-//
-//
-//			// NOW, I can calculate the correct response vector... 
-//
-////			pShpere->velocity = glm::reflect(pShpere->velocity, triangleNormal)
-//		}
-
-
 		std::cout 
 			<< pShpere->velocity.x << ", "
 			<< pShpere->velocity.y << ", "
 			<< pShpere->velocity.z << "   dist = "
 			<< distanceToClosestPoint << std::endl;
-
-		//howMuchToMoveItBack = 1.0 - lenthOfThatVector
-
-
-
 
 		if (bLightDebugSheresOn) 
 		{
@@ -1016,31 +668,17 @@ int main(void)
 				DrawObject(matModel, pDebugSphere,
 						   shaderProgID, pTheVAOManager);
 			}
-		}// if (bLightDebugSheresOn) 
-
-		 // **************************************************
-		// **************************************************
-
-		
+		}// if (bLightDebugSheresOn) 		
 		
 		pDebugRenderer->RenderDebugObjects( v, p, 0.01f );
-
-
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
-
 	// Delete everything
 	delete pTheModelLoader;
-//	delete pTheVAOManager;
-
-	// Watch out!!
-	// sVertex* pVertices = new sVertex[numberOfVertsOnGPU];
-//	delete [] pVertices;		// If it's an array, also use [] bracket
 
 	exit(EXIT_SUCCESS);
 }
@@ -1051,11 +689,7 @@ void DrawObject(glm::mat4 m,
 				GLint shaderProgID,
 				cVAOManager* pVAOManager)
 {
-	// 
-				//         mat4x4_identity(m);
 	m = glm::mat4(1.0f);
-
-
 
 	// ******* TRANSLATION TRANSFORM *********
 	glm::mat4 matTrans
@@ -1064,29 +698,22 @@ void DrawObject(glm::mat4 m,
 							   pCurrentObject->positionXYZ.y,
 							   pCurrentObject->positionXYZ.z));
 	m = m * matTrans;
-	// ******* TRANSLATION TRANSFORM *********
-
-
 
 	// ******* ROTATION TRANSFORM *********
-	//mat4x4_rotate_Z(m, m, (float) glfwGetTime());
 	glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-									pCurrentObject->rotationXYZ.z,					// Angle 
+									pCurrentObject->rotationXYZ.z,
 									glm::vec3(0.0f, 0.0f, 1.0f));
 	m = m * rotateZ;
 
 	glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
-									pCurrentObject->rotationXYZ.y,	//(float)glfwGetTime(),					// Angle 
+									pCurrentObject->rotationXYZ.y,
 									glm::vec3(0.0f, 1.0f, 0.0f));
 	m = m * rotateY;
 
 	glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
-									pCurrentObject->rotationXYZ.x,	// (float)glfwGetTime(),					// Angle 
+									pCurrentObject->rotationXYZ.x,
 									glm::vec3(1.0f, 0.0f, 0.0f));
 	m = m * rotateX;
-	// ******* ROTATION TRANSFORM *********
-
-
 
 	// ******* SCALE TRANSFORM *********
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f),
@@ -1094,20 +721,6 @@ void DrawObject(glm::mat4 m,
 										   pCurrentObject->scale,
 										   pCurrentObject->scale));
 	m = m * scale;
-	// ******* SCALE TRANSFORM *********
-
-
-
-	//mat4x4_mul(mvp, p, m);
-	//mvp = p * v * m;
-
-	// Choose which shader to use
-	//glUseProgram(program);
-	//glUseProgram(shaderProgID);
-
-
-	//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
-	//glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
 	//uniform mat4 matModel;		// Model or World 
 	//uniform mat4 matView; 		// View or camera
@@ -1115,8 +728,6 @@ void DrawObject(glm::mat4 m,
 	GLint matModel_UL = glGetUniformLocation(shaderProgID, "matModel");
 
 	glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
-	//glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
-	//glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 	// Calcualte the inverse transpose of the model matrix and pass that...
 	// Stripping away scaling and translation, leaving only rotation
@@ -1125,9 +736,6 @@ void DrawObject(glm::mat4 m,
 	glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(m));
 	glUniformMatrix4fv(matModelIT_UL, 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
 
-
-
-
 	// Find the location of the uniform variable newColour
 	GLint newColour_location = glGetUniformLocation(shaderProgID, "newColour");
 
@@ -1135,20 +743,6 @@ void DrawObject(glm::mat4 m,
 				pCurrentObject->objectColourRGBA.r,
 				pCurrentObject->objectColourRGBA.g,
 				pCurrentObject->objectColourRGBA.b);
-
-	//uniform float newColourRed;
-	//uniform float newColourGreen;
-	//uniform float newColourBlue;
-	//GLint newColourRed_UL = glGetUniformLocation(shaderProgID, "newColourRed");
-	//GLint newColourGreen_UL = glGetUniformLocation(shaderProgID, "newColourGreen");
-	//GLint newColourBlue_UL = glGetUniformLocation(shaderProgID, "newColourBlue");
-
-	//glUniform1f(newColourRed_UL, pCurrentObject->objectColourRGBA.r);
-	//glUniform1f(newColourGreen_UL, pCurrentObject->objectColourRGBA.g);
-	//glUniform1f(newColourBlue_UL, pCurrentObject->objectColourRGBA.b);
-	//GLint lighPosition_UL = glGetUniformLocation(shaderProgID, "lightPosition");
-	//glUniform3f(lighPosition_UL, sexyLightLocation.x,
-	//			sexyLightLocation.y, sexyLightLocation.z);
 
 	GLint diffuseColour_UL = glGetUniformLocation(shaderProgID, "diffuseColour");
 	glUniform4f(diffuseColour_UL, 
@@ -1164,7 +758,6 @@ void DrawObject(glm::mat4 m,
 				1.0f,	// B
 				1000.0f);	// Specular "power" (how shinny the object is)
 	                        // 1.0 to really big (10000.0f)
-
 
 	//uniform vec4 debugColour;
 	//uniform bool bDoNotLight;
@@ -1206,12 +799,7 @@ void DrawObject(glm::mat4 m,
 		glEnable(GL_DEPTH);								// Write to depth buffer
 	}
 
-
-	//		glDrawArrays(GL_TRIANGLES, 0, 2844);
-	//		glDrawArrays(GL_TRIANGLES, 0, numberOfVertsOnGPU);
-
 	sModelDrawInfo drawInfo;
-	//if (pTheVAOManager->FindDrawInfoByModelName("bunny", drawInfo))
 	if (pVAOManager->FindDrawInfoByModelName(pCurrentObject->meshName, drawInfo))
 	{
 		glBindVertexArray(drawInfo.VAO_ID);
@@ -1223,8 +811,7 @@ void DrawObject(glm::mat4 m,
 	}
 	
 	return;
-} // DrawObject;
-// 
+} // DrawObject; 
 
 // returns NULL (0) if we didn't find it.
 cGameObject* pFindObjectByFriendlyName(std::string name)
@@ -1246,6 +833,5 @@ cGameObject* pFindObjectByFriendlyName(std::string name)
 // returns NULL (0) if we didn't find it.
 cGameObject* pFindObjectByFriendlyNameMap(std::string name)
 {
-	//std::map<std::string, cGameObject*> g_map_GameObjectsByFriendlyName;
 	return ::g_map_GameObjectsByFriendlyName[name];
 }
