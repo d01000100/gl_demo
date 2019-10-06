@@ -90,6 +90,9 @@
     <ClCompile Include="cLowPassFilter.cpp">
       <Filter>LowPassFilter</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -142,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="cLowPassFilter.h">
       <Filter>LowPassFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

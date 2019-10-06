@@ -38,6 +38,7 @@
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
+#include "Scene.h"
 
 void DrawObject(glm::mat4 m,
 				cGameObject* pCurrentObject,
@@ -50,6 +51,8 @@ glm::vec3 cameraTarget = glm::vec3(0.0f, 10.0, 0.0f);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
 cShaderManager theShaderManager;
+std::string shader_name = "SimpleShader";
+Scene* theScene = Scene::getTheScene();
 
 glm::vec3 sexyLightPosition = glm::vec3(-25.0f,30.0f,0.0f);
 float sexyLightConstAtten = 0.0000001f;			// not really used (can turn off and on the light)
@@ -89,28 +92,26 @@ int main(void)
 	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 	pDebugRenderer->initialize();
 
-	cModelLoader* pTheModelLoader = new cModelLoader();	// Heap
-
-	cMesh largeBunnyMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Large_Physics_Bunny_XYZ_N.ply", largeBunnyMesh);
-
-	cMesh terrainMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
-
 	cShaderManager::cShader vertexShad;
 	vertexShad.fileName = "assets/shaders/vertexShader01.glsl";
 
 	cShaderManager::cShader fragShader;
 	fragShader.fileName = "assets/shaders/fragmentShader01.glsl";
 
-	if (!::theShaderManager.createProgramFromFile("SimpleShader", vertexShad, fragShader))
+	if (!::theShaderManager.createProgramFromFile(::shader_name, vertexShad, fragShader))
 	{
 		std::cout << "Error: didn't compile the shader" << std::endl;
 		std::cout << theShaderManager.getLastError();
 		return -1;
 	}
 
-	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName("SimpleShader");
+	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
+
+	
+	cModelLoader* pTheModelLoader = new cModelLoader();	// Heap
+
+	cMesh terrainMesh;
+	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
 
 	// Create a VAO Manager...
 	cVAOManager* pTheVAOManager = new cVAOManager();
@@ -120,12 +121,8 @@ int main(void)
 									 terrainMesh,
 									 drawInfoTerrain,
 									 shaderProgID);
-
-	sModelDrawInfo largeBunnyDrawInfo;
-	pTheVAOManager->LoadModelIntoVAO("large_bunny", 
-									 largeBunnyMesh,		// Sphere mesh info
-									 largeBunnyDrawInfo,
-									 shaderProgID);
+									 
+	theScene->loadScene("add file");
 
 	cGameObject* pTerrain = new cGameObject();			// HEAP
 	pTerrain->meshName = "terrain";
@@ -138,29 +135,8 @@ int main(void)
 	pTerrain->inverseMass = 0.0f;	// Ignored during update
 	pTerrain->isVisible = false;
 
-	cGameObject* pLargeBunny = new cGameObject();			// HEAP
-	pLargeBunny->meshName = "large_bunny";
-	pLargeBunny->friendlyName = "largeBunny";
-	pLargeBunny->positionXYZ = glm::vec3(0.0f, 20.0f, 0.0f);
-	pLargeBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pLargeBunny->scale = 1.0f;	//***** SCALE = 1.0f *****/
-	pLargeBunny->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	pLargeBunny->physicsShapeType = MESH;
-	pLargeBunny->inverseMass = 0.0f;	// Ignored during update
-
 	::g_vec_pGameObjects.push_back(pTerrain);
-	::g_vec_pGameObjects.push_back(pLargeBunny);
-
-	// Will be moved placed around the scene
-	cGameObject* pDebugSphere = new cGameObject();
-	pDebugSphere->meshName = "sphere";
-	pDebugSphere->friendlyName = "debug_sphere";
-	pDebugSphere->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pDebugSphere->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pDebugSphere->scale = 0.1f;
-	pDebugSphere->debugColour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	pDebugSphere->isWireframe = true;
-	pDebugSphere->inverseMass = 0.0f;			// Sphere won't move
+	theScene->addGameObject(pTerrain);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -267,7 +243,6 @@ int main(void)
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
-
 		// **************************************************
 		// **************************************************
 		// Loop to draw everything in the scene
@@ -277,10 +252,11 @@ int main(void)
 
 			cGameObject* pCurrentObject = ::g_vec_pGameObjects[index];
 
-			DrawObject( matModel, pCurrentObject, 
-					   shaderProgID, pTheVAOManager);
+			/*DrawObject( matModel, pCurrentObject, 
+					   shaderProgID, pTheVAOManager);*/
 
 		}//for (int index...
+		theScene->drawScene();
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		pPhsyics->IntegrationStep(::g_vec_pGameObjects, (float)averageDeltaTime);
@@ -291,9 +267,6 @@ int main(void)
 	}
 	glfwDestroyWindow(window);
 	glfwTerminate();
-
-	// Delete everything
-	delete pTheModelLoader;
 
 	exit(EXIT_SUCCESS);
 }

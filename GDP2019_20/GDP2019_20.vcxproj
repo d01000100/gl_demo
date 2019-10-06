@@ -160,6 +160,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="UserInput.cpp" />
   </ItemGroup>
@@ -181,6 +182,7 @@
     <ClInclude Include="globalStuff.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
     <ClInclude Include="PhysicsStuff.h" />
+    <ClInclude Include="Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl" />

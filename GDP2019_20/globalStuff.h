@@ -8,6 +8,7 @@ cGameObject* pFindObjectByFriendlyName( std::string name );
 cGameObject* pFindObjectByFriendlyNameMap( std::string name );
 
 extern cShaderManager theShaderManager;
+extern std::string shader_name;
 
 // These are defined in theMain.cpp
 extern glm::vec3 cameraEye;
