@@ -40,12 +40,6 @@
 #include "GFLW_callbacks.h"
 #include "Scene.h"
 
-void DrawObject(glm::mat4 m,
-				cGameObject* pCurrentObject,
-				GLint shaderProgID,
-				cVAOManager* pVAOManager);
-
-
 glm::vec3 cameraEye = glm::vec3(0.0, 80.0, -80.0);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 10.0, 0.0f);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -58,11 +52,6 @@ glm::vec3 sexyLightPosition = glm::vec3(-25.0f,30.0f,0.0f);
 float sexyLightConstAtten = 0.0000001f;			// not really used (can turn off and on the light)
 float sexyLightLinearAtten = 0.03f;  
 float sexyLightQuadraticAtten = 0.0000001f;
-bool bLightDebugSheresOn = false;
-
-// Load up my "scene"  (now global)
-std::vector<cGameObject*> g_vec_pGameObjects;
-std::map<std::string /*FriendlyName*/, cGameObject*> g_map_GameObjectsByFriendlyName;
 
 int main(void)
 {
@@ -223,7 +212,7 @@ int main(void)
 		theScene->drawScene();
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		pPhsyics->IntegrationStep(::g_vec_pGameObjects, (float)averageDeltaTime);
+		//pPhsyics->IntegrationStep(::g_vec_pGameObjects, (float)averageDeltaTime);
 		
 		pDebugRenderer->RenderDebugObjects( v, p, 0.01f );
 		glfwSwapBuffers(window);
@@ -233,157 +222,4 @@ int main(void)
 	glfwTerminate();
 
 	exit(EXIT_SUCCESS);
-}
-
-
-void DrawObject(glm::mat4 m, 
-				cGameObject* pCurrentObject, 
-				GLint shaderProgID,
-				cVAOManager* pVAOManager)
-{
-	m = glm::mat4(1.0f);
-
-	// ******* TRANSLATION TRANSFORM *********
-	glm::mat4 matTrans
-	= glm::translate(glm::mat4(1.0f),
-					 glm::vec3(pCurrentObject->positionXYZ.x,
-							   pCurrentObject->positionXYZ.y,
-							   pCurrentObject->positionXYZ.z));
-	m = m * matTrans;
-
-	// ******* ROTATION TRANSFORM *********
-	glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-									pCurrentObject->rotationXYZ.z,
-									glm::vec3(0.0f, 0.0f, 1.0f));
-	m = m * rotateZ;
-
-	glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
-									pCurrentObject->rotationXYZ.y,
-									glm::vec3(0.0f, 1.0f, 0.0f));
-	m = m * rotateY;
-
-	glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
-									pCurrentObject->rotationXYZ.x,
-									glm::vec3(1.0f, 0.0f, 0.0f));
-	m = m * rotateX;
-
-	// ******* SCALE TRANSFORM *********
-	glm::mat4 scale = glm::scale(glm::mat4(1.0f),
-								 glm::vec3(pCurrentObject->scale,
-										   pCurrentObject->scale,
-										   pCurrentObject->scale));
-	m = m * scale;
-
-	//uniform mat4 matModel;		// Model or World 
-	//uniform mat4 matView; 		// View or camera
-	//uniform mat4 matProj;
-	GLint matModel_UL = glGetUniformLocation(shaderProgID, "matModel");
-
-	glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
-
-	// Calcualte the inverse transpose of the model matrix and pass that...
-	// Stripping away scaling and translation, leaving only rotation
-	// Because the normal is only a direction, really
-	GLint matModelIT_UL = glGetUniformLocation(shaderProgID, "matModelInverseTranspose");
-	glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(m));
-	glUniformMatrix4fv(matModelIT_UL, 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
-
-	// Find the location of the uniform variable newColour
-	GLint newColour_location = glGetUniformLocation(shaderProgID, "newColour");
-
-	glUniform3f(newColour_location,
-				pCurrentObject->objectColourRGBA.r,
-				pCurrentObject->objectColourRGBA.g,
-				pCurrentObject->objectColourRGBA.b);
-
-	GLint diffuseColour_UL = glGetUniformLocation(shaderProgID, "diffuseColour");
-	glUniform4f(diffuseColour_UL, 
-				pCurrentObject->objectColourRGBA.r,
-				pCurrentObject->objectColourRGBA.g,
-				pCurrentObject->objectColourRGBA.b,
-				pCurrentObject->objectColourRGBA.a);	// 
-
-	GLint specularColour_UL = glGetUniformLocation(shaderProgID, "specularColour");
-	glUniform4f(specularColour_UL,
-				1.0f,	// R
-				1.0f,	// G
-				1.0f,	// B
-				1000.0f);	// Specular "power" (how shinny the object is)
-	                        // 1.0 to really big (10000.0f)
-
-	//uniform vec4 debugColour;
-	//uniform bool bDoNotLight;
-	GLint debugColour_UL = glGetUniformLocation(shaderProgID, "debugColour");
-	GLint bDoNotLight_UL = glGetUniformLocation(shaderProgID, "bDoNotLight");
-
-	if ( pCurrentObject->isWireframe )
-	{ 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		// LINES
-		glUniform4f( debugColour_UL, 
-					pCurrentObject->debugColour.r,
-					pCurrentObject->debugColour.g,
-					pCurrentObject->debugColour.b,
-					pCurrentObject->debugColour.a);
-		glUniform1f(bDoNotLight_UL, (float)GL_TRUE);
-	}
-	else
-	{	// Regular object (lit and not wireframe)
-		glUniform1f(bDoNotLight_UL, (float)GL_FALSE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
-	}
-	//glPointSize(15.0f);
-
-	if (pCurrentObject->disableDepthBufferTest)
-	{
-		glDisable(GL_DEPTH_TEST);					// DEPTH Test OFF
-	}
-	else
-	{
-		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
-	}
-
-	if (pCurrentObject->disableDepthBufferWrite)
-	{
-		glDisable(GL_DEPTH);						// DON'T Write to depth buffer
-	}
-	else
-	{
-		glEnable(GL_DEPTH);								// Write to depth buffer
-	}
-
-	sModelDrawInfo drawInfo;
-	if (pVAOManager->FindDrawInfoByModelName(pCurrentObject->meshName, drawInfo))
-	{
-		glBindVertexArray(drawInfo.VAO_ID);
-		glDrawElements(GL_TRIANGLES,
-					   drawInfo.numberOfIndices,
-					   GL_UNSIGNED_INT,
-					   0);
-		glBindVertexArray(0);
-	}
-	
-	return;
-} // DrawObject; 
-
-// returns NULL (0) if we didn't find it.
-cGameObject* pFindObjectByFriendlyName(std::string name)
-{
-	// Do a linear search 
-	for (unsigned int index = 0;
-		 index != g_vec_pGameObjects.size(); index++)
-	{
-		if (::g_vec_pGameObjects[index]->friendlyName == name)
-		{
-			// Found it!!
-			return ::g_vec_pGameObjects[index];
-		}
-	}
-	// Didn't find it
-	return NULL;
-}
-
-// returns NULL (0) if we didn't find it.
-cGameObject* pFindObjectByFriendlyNameMap(std::string name)
-{
-	return ::g_map_GameObjectsByFriendlyName[name];
 }

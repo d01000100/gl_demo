@@ -108,23 +108,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			sexyLightQuadraticAtten *= 1.01f;			// 1% more of what it was
 		}
-
-
-		if (key == GLFW_KEY_9)
-		{
-			bLightDebugSheresOn = false;			
-		}
-		if (key == GLFW_KEY_0)
-		{
-			bLightDebugSheresOn = true; 
-		}
-
 	}//if (isShiftKeyDownByAlone(mods))
 
 
 	// Moving the pirate ship in a certain direction
 	if (isCtrlKeyDownByAlone(mods))
 	{
+		/*
 		const float SHIP_SPEED_CHANGE = 0.01f;
 		const float SHIP_ANGLE_CHANGE = 0.01f;
 
@@ -148,39 +138,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{	// Slower
 			pShip->HACK_speed -= SHIP_SPEED_CHANGE;
 		}
+		*/
 	}
-
-
-
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
-
 }
-
-
-
 
 bool isShiftKeyDownByAlone(int mods)
 {
-	if (mods == GLFW_MOD_SHIFT)			
-	{
-		// Shift key is down all by itself
-		return true;
-	}
-	//// Ignore other keys and see if the shift key is down
-	//if ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT)
-	//{
-
-	//}
-	return false;
+	return mods == GLFW_MOD_SHIFT;
 }
 
 bool isCtrlKeyDownByAlone(int mods)
 {
-	if (mods == GLFW_MOD_CONTROL)			
-	{
-		return true;
-	}
-	return false;
+	return mods == GLFW_MOD_CONTROL;
 }

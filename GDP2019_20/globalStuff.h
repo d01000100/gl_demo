@@ -3,10 +3,6 @@
 #include "cGameObject.h"
 #include "cShaderManager.h"
 
-// returns NULL (0) if we didn't find it.
-cGameObject* pFindObjectByFriendlyName( std::string name );
-cGameObject* pFindObjectByFriendlyNameMap( std::string name );
-
 extern cShaderManager theShaderManager;
 extern std::string shader_name;
 
@@ -19,12 +15,3 @@ extern glm::vec3 sexyLightPosition;
 extern float sexyLightConstAtten;
 extern float sexyLightLinearAtten;  
 extern float sexyLightQuadraticAtten;
-
-extern float sexyLightSpotInnerAngle;
-extern float sexyLightSpotOuterAngle;
-
-// This is a "normalized" direction
-// (i.e. the length is 1.0f)
-extern glm::vec3 sexyLightSpotDirection;
-
-extern bool bLightDebugSheresOn;
