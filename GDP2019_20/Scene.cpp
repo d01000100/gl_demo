@@ -81,13 +81,25 @@ void Scene::loadScene(std::string filename) {
 	cGameObject* pLargeBunny = new cGameObject();			// HEAP
 	pLargeBunny->meshName = "large_bunny";
 	pLargeBunny->friendlyName = "largeBunny";
-	pLargeBunny->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	pLargeBunny->positionXYZ = glm::vec3(0.0f, 20.0f, 0.0f);
 	pLargeBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pLargeBunny->scale = 1.0f;
 	pLargeBunny->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	pLargeBunny->physicsShapeType = MESH;
 	pLargeBunny->inverseMass = 0.0f;	// Ignored during update
 	addGameObject(pLargeBunny);
+
+	cGameObject* pTerrain = new cGameObject();			// HEAP
+	pTerrain->meshName = "terrain";
+	pTerrain->friendlyName = "TheGround";
+	pTerrain->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	pTerrain->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	pTerrain->scale = 1.0f;
+	pTerrain->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	pTerrain->physicsShapeType = MESH;
+	pTerrain->inverseMass = 0.0f;	// Ignored during update
+	pTerrain->isVisible = false;
+	addGameObject(pTerrain);
 }
 
 void Scene::saveScene(std::string filename) {

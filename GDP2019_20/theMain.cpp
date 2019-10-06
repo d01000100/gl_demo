@@ -110,33 +110,10 @@ int main(void)
 	
 	cModelLoader* pTheModelLoader = new cModelLoader();	// Heap
 
-	cMesh terrainMesh;
-	pTheModelLoader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
-
 	// Create a VAO Manager...
 	cVAOManager* pTheVAOManager = new cVAOManager();
-
-	sModelDrawInfo drawInfoTerrain;
-	pTheVAOManager->LoadModelIntoVAO("terrain", 
-									 terrainMesh,
-									 drawInfoTerrain,
-									 shaderProgID);
 									 
 	theScene->loadScene("add file");
-
-	cGameObject* pTerrain = new cGameObject();			// HEAP
-	pTerrain->meshName = "terrain";
-	pTerrain->friendlyName = "TheGround";
-	pTerrain->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pTerrain->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pTerrain->scale = 1.0f;
-	pTerrain->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	pTerrain->physicsShapeType = MESH;
-	pTerrain->inverseMass = 0.0f;	// Ignored during update
-	pTerrain->isVisible = false;
-
-	::g_vec_pGameObjects.push_back(pTerrain);
-	theScene->addGameObject(pTerrain);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -243,19 +220,6 @@ int main(void)
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
-		// **************************************************
-		// **************************************************
-		// Loop to draw everything in the scene
-		for (int index = 0; index != ::g_vec_pGameObjects.size(); index++)
-		{
-			glm::mat4 matModel = glm::mat4(1.0f);
-
-			cGameObject* pCurrentObject = ::g_vec_pGameObjects[index];
-
-			/*DrawObject( matModel, pCurrentObject, 
-					   shaderProgID, pTheVAOManager);*/
-
-		}//for (int index...
 		theScene->drawScene();
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
