@@ -23,62 +23,44 @@ class cGameObject
 public:
 	cGameObject();
 	// Used to draw this mesh
-	std::string meshName;			//"Pirate"
-
-	// Values that we can assign and then look for them
-	unsigned int friendlyIDNumber;
+	std::string meshName;
 	std::string friendlyName;
 
 	glm::vec3  positionXYZ;
 	glm::vec3  rotationXYZ;
-	float scale;;   
+	float scale;
 
 	glm::mat4 matWorld;
 
-	glm::vec4  objectColourRGBA;	
-
-	// Likely want this now:
+	//glm::vec4  objectColourRGBA;	
 	glm::vec4 diffuseColour;		// Colour of the object
 	glm::vec4 specularColour;		// Colour of the HIGHLIGHT + Shininess
 	                                // RGB - colour
 	                                // 4th value (a or w) is the "power"
 	                                // 1.0 to 10,000.0f 
+	bool isWireframe;
+	bool isVisible;
 
 
 	// Add some physics things
 	glm::vec3 velocity;
 	glm::vec3 accel;
-
-	// For driving the ship around
-	float HACK_speed;
-	float HACK_AngleAroundYAxis;		// Angle, around the y axis
-
-
 	// If the object has an inverse mass of 0.0
 	//	then it's not updated by the physics code
 	float inverseMass;	// 0.0f = Doesn't move
 
-	//bool bIsDynamic;
-
 	// We could contain another class or struct with the phsyics stuff
 	// or we could use this type to determine what we need to check.
 	eShapeTypes physicsShapeType;
-	// 
+
 	glm::vec3 AABB_min, AABB_max;
 	float SPHERE_radius;
-
-	// Won't be lit, and is wireframe
-	bool isWireframe;
-	glm::vec4 debugColour;
-
-	bool isVisible;
-
-	bool disableDepthBufferTest;
-	bool disableDepthBufferWrite;
 
 	unsigned int getUniqueID(void);
 
 	void setDebugRenderer(iDebugRenderer* pDebugRenderer);
+
+	glm::mat4 calculateTransformationMatrix();
 
 private:
 	// this variable is static, so common to all objects.

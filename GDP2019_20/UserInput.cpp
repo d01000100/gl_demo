@@ -54,91 +54,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	if (isShiftKeyDownByAlone(mods))
 	{
-		// move the light
-		if (key == GLFW_KEY_A)
-		{
-			sexyLightPosition.x -= CAMERASPEED;		// Move the camera -0.01f units
-		}
-		if (key == GLFW_KEY_D)
-		{
-			sexyLightPosition.x += CAMERASPEED;		// Move the camera +0.01f units
-		}
-
-		// Move the camera (Q & E for up and down, along the y axis)
-		if (key == GLFW_KEY_Q)
-		{
-			sexyLightPosition.y -= CAMERASPEED;		// Move the camera -0.01f units
-		}
-		if (key == GLFW_KEY_E)
-		{
-			sexyLightPosition.y += CAMERASPEED;		// Move the camera +0.01f units
-		}
-
-		// Move the camera (W & S for towards and away, along the z axis)
-		if (key == GLFW_KEY_W)
-		{
-			sexyLightPosition.z -= CAMERASPEED;		// Move the camera -0.01f units
-		}
-		if (key == GLFW_KEY_S)
-		{
-			sexyLightPosition.z += CAMERASPEED;		// Move the camera +0.01f units
-		}
-
-		if (key == GLFW_KEY_1)
-		{
-			sexyLightConstAtten *= 0.99f;			// 99% of what it was
-		}
-		if (key == GLFW_KEY_2)
-		{
-			sexyLightConstAtten *= 1.01f;			// 1% more of what it was
-		}		
-		if (key == GLFW_KEY_3)
-		{
-			sexyLightLinearAtten *= 0.99f;			// 99% of what it was
-		}
-		if (key == GLFW_KEY_4)
-		{
-			sexyLightLinearAtten *= 1.01f;			// 1% more of what it was
-		}
-		if (key == GLFW_KEY_5)
-		{
-			sexyLightQuadraticAtten *= 0.99f;			// 99% of what it was
-		}
-		if (key == GLFW_KEY_6)
-		{
-			sexyLightQuadraticAtten *= 1.01f;			// 1% more of what it was
-		}
+		
 	}//if (isShiftKeyDownByAlone(mods))
 
 
 	// Moving the pirate ship in a certain direction
 	if (isCtrlKeyDownByAlone(mods))
 	{
-		/*
-		const float SHIP_SPEED_CHANGE = 0.01f;
-		const float SHIP_ANGLE_CHANGE = 0.01f;
-
-		cGameObject* pShip = pFindObjectByFriendlyName("PirateShip");
-		// Turn the ship around
-		if (key == GLFW_KEY_A)
-		{	// Left
-			pShip->HACK_AngleAroundYAxis -= SHIP_ANGLE_CHANGE;
-			pShip->rotationXYZ.y = pShip->HACK_AngleAroundYAxis;
-		}
-		if (key == GLFW_KEY_D)
-		{	// Right
-			pShip->HACK_AngleAroundYAxis += SHIP_ANGLE_CHANGE;
-			pShip->rotationXYZ.y = pShip->HACK_AngleAroundYAxis;
-		}
-		if (key == GLFW_KEY_W)
-		{	// Faster
-			pShip->HACK_speed += SHIP_SPEED_CHANGE;
-		}
-		if (key == GLFW_KEY_S)
-		{	// Slower
-			pShip->HACK_speed -= SHIP_SPEED_CHANGE;
-		}
-		*/
+		
 	}
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)

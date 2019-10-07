@@ -84,7 +84,8 @@ void Scene::loadObjects(std::string filename) {
 	pLargeBunny->positionXYZ = glm::vec3(0.0f, 20.0f, 0.0f);
 	pLargeBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pLargeBunny->scale = 1.0f;
-	pLargeBunny->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	pLargeBunny->diffuseColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	pLargeBunny->specularColour = glm::vec4(1.0f, 1.0f, 1.0f, 1000.0f);
 	pLargeBunny->physicsShapeType = MESH;
 	pLargeBunny->inverseMass = 0.0f;	// Ignored during update
 	addGameObject(pLargeBunny);
@@ -95,7 +96,8 @@ void Scene::loadObjects(std::string filename) {
 	pTerrain->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pTerrain->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	pTerrain->scale = 1.0f;
-	pTerrain->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	pTerrain->diffuseColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	pTerrain->specularColour = glm::vec4(0.0f, 1.0f, 0.0f, 1000.0f);
 	pTerrain->physicsShapeType = MESH;
 	pTerrain->inverseMass = 0.0f;	// Ignored during update
 	pTerrain->isVisible = false;
@@ -112,7 +114,7 @@ void Scene::loadLights(std::string filename) {
 	light->linear_atten = 0.03f;
 	light->quad_atten = 0.0000001f;
 	light->diffuseColor = glm::vec3(1.0f, 0.0f, 1.0f);
-	light->specularColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);;
+	light->specularColor = glm::vec4(0.0f, 1.0f, 0.0f, 500.0f);;
 	light->isOn = true;
 	// Add it to the map
 	lights["light1"] = light;
@@ -130,41 +132,9 @@ void Scene::drawObjects()
 	{
 		cGameObject* pCurrentObject = i->second;
 
-		glm::mat4 m = glm::mat4(1.0f);
-
-		// ******* TRANSLATION TRANSFORM *********
-		glm::mat4 matTrans
-			= glm::translate(glm::mat4(1.0f),
-				glm::vec3(pCurrentObject->positionXYZ.x,
-					pCurrentObject->positionXYZ.y,
-					pCurrentObject->positionXYZ.z));
-		m = m * matTrans;
-
-		// ******* ROTATION TRANSFORM *********
-		glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-			pCurrentObject->rotationXYZ.z,	// Angle 
-			glm::vec3(0.0f, 0.0f, 1.0f));
-		m = m * rotateZ;
-
-		glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
-			pCurrentObject->rotationXYZ.y,
-			glm::vec3(0.0f, 1.0f, 0.0f));
-		m = m * rotateY;
-
-		glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
-			pCurrentObject->rotationXYZ.x,
-			glm::vec3(1.0f, 0.0f, 0.0f));
-		m = m * rotateX;
-
-		// ******* SCALE TRANSFORM *********
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f),
-			glm::vec3(pCurrentObject->scale,
-				pCurrentObject->scale,
-				pCurrentObject->scale));
-		m = m * scale;
-
 		GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 
+		glm::mat4 m = pCurrentObject->calculateTransformationMatrix();
 
 		GLint matModel_UL = glGetUniformLocation(programID, "matModel");
 		glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
@@ -176,49 +146,25 @@ void Scene::drawObjects()
 		glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(m));
 		glUniformMatrix4fv(matModelIT_UL, 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
 
-		// Find the location of the uniform variable newColour
-		GLint newColour_location = glGetUniformLocation(programID, "newColour");
-
-		glUniform3f(newColour_location,
-			pCurrentObject->objectColourRGBA.r,
-			pCurrentObject->objectColourRGBA.g,
-			pCurrentObject->objectColourRGBA.b);
-
 		GLint diffuseColour_UL = glGetUniformLocation(programID, "diffuseColour");
 		glUniform4f(diffuseColour_UL,
-			pCurrentObject->objectColourRGBA.r,
-			pCurrentObject->objectColourRGBA.g,
-			pCurrentObject->objectColourRGBA.b,
-			pCurrentObject->objectColourRGBA.a);
+			pCurrentObject->diffuseColour.r,
+			pCurrentObject->diffuseColour.g,
+			pCurrentObject->diffuseColour.b,
+			pCurrentObject->diffuseColour.a);
 
 		GLint specularColour_UL = glGetUniformLocation(programID, "specularColour");
 		glUniform4f(specularColour_UL,
-			1.0f,	// R
-			1.0f,	// G
-			1.0f,	// B
+			pCurrentObject->specularColour.r,
+			pCurrentObject->specularColour.g,
+			pCurrentObject->specularColour.b,
 			1000.0f);	// Specular "power" (how shinny the object is)
 						// 1.0 to really big (10000.0f)
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
-
-		if (pCurrentObject->disableDepthBufferTest)
-		{
-			glDisable(GL_DEPTH_TEST);					// DEPTH Test OFF
-		}
-		else
-		{
-			glEnable(GL_DEPTH_TEST);						// Turn ON depth test
-		}
-
-		if (pCurrentObject->disableDepthBufferWrite)
-		{
-			glDisable(GL_DEPTH);						// DON'T Write to depth buffer
-		}
-		else
-		{
-			glEnable(GL_DEPTH);								// Write to depth buffer
-		}
-
+		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
+		glEnable(GL_DEPTH);								// Write to depth buffer
+		
 		sModelDrawInfo drawInfo;
 		if (theVAOManager->FindDrawInfoByModelName(pCurrentObject->meshName, drawInfo))
 		{

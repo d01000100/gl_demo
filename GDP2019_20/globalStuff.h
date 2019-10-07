@@ -10,8 +10,3 @@ extern std::string shader_name;
 extern glm::vec3 cameraEye;
 extern glm::vec3 cameraTarget;
 extern glm::vec3 upVector;
-
-extern glm::vec3 sexyLightPosition;
-extern float sexyLightConstAtten;
-extern float sexyLightLinearAtten;  
-extern float sexyLightQuadraticAtten;
