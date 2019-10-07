@@ -50,7 +50,7 @@ cGameObject* Scene::findGameObject(std::string name) {
 	}
 }
 
-void Scene::loadScene(std::string filename) {
+void Scene::loadObjects(std::string filename) {
 
 	// Load meshes
 	cModelLoader* model_loader = new cModelLoader();
@@ -102,11 +102,28 @@ void Scene::loadScene(std::string filename) {
 	addGameObject(pTerrain);
 }
 
-void Scene::saveScene(std::string filename) {
+void Scene::loadLights(std::string filename) {
 
+	// Specify the lights info 
+	cLight* light = new cLight();
+	light->type = POINT;
+	light->pos = glm::vec3(0.0f, 30.0f, 0.0f);
+	light->const_atten = 0.0000001f;			// not really used (can turn off and on the light)
+	light->linear_atten = 0.03f;
+	light->quad_atten = 0.0000001f;
+	light->diffuseColor = glm::vec3(1.0f, 0.0f, 1.0f);
+	light->specularColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);;
+	light->isOn = true;
+	// Add it to the map
+	lights["light1"] = light;
 }
 
-void Scene::drawScene()
+void Scene::loadScene(std::string filename) {
+	loadObjects(filename);
+	loadLights(filename);
+}
+
+void Scene::drawObjects()
 {
 	for (std::map<std::string, cGameObject*>::iterator i = game_objects.begin();
 		i != game_objects.end(); i++)
@@ -213,4 +230,55 @@ void Scene::drawScene()
 			glBindVertexArray(0);
 		}
 	}
+}
+
+void Scene::drawLights() {
+
+	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
+
+	std::map<std::string, cLight*>::iterator iLight;
+	int index;
+	for (iLight = lights.begin(), index = 0; iLight != lights.end(); iLight++, index++) {
+
+		// Set the lighting values for the shader.
+		// See fragmentShader for documentation
+		std::string prefix = "theLights[";
+		GLint L_0_position = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].position").c_str());
+		GLint L_0_diffuse = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].diffuse").c_str());
+		GLint L_0_specular = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].specular").c_str());
+		GLint L_0_atten = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].atten").c_str());
+		GLint L_0_direction = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].direction").c_str());
+		GLint L_0_param1 = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].param1").c_str());
+		GLint L_0_param2 = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].param2").c_str());
+
+		cLight* light = iLight->second;
+
+		glUniform4f(L_0_position,
+			light->pos.x,
+			light->pos.y,
+			light->pos.z,
+			1.0f);
+		glUniform4f(L_0_diffuse, light->diffuseColor.r, light->diffuseColor.g, light->diffuseColor.b, 1.0f);	
+		glUniform4f(L_0_specular, light->specularColor.r, light->specularColor.g, light->specularColor.b, light->specularColor.a);	
+		glUniform4f(L_0_atten, light->const_atten,  
+					light->linear_atten, 
+					light->quad_atten,	
+					light->cutOffDist);	
+
+		// x = lightType, y = inner angle, z = outer angle, w = TBD
+		// 0 = pointlight
+		// 1 = spot light
+		// 2 = directional light
+		glUniform4f(L_0_param1, light->type /*POINT light*/, light->inner_angle, light->outer_angle, 1.0f);
+		glUniform4f(L_0_param2, light->isOn /*Light is on*/, 0.0f, 0.0f, 1.0f);
+	}
+}
+
+void Scene::drawScene() {
+	drawObjects();
+	drawLights();
+}
+
+void Scene::saveScene(std::string filename) {
+
 }

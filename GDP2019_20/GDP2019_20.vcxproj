@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cGameObject.cpp" />
+    <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
     <ClCompile Include="cPhysics.cpp" />
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cGameObject.h" />
+    <ClInclude Include="cLight.h" />
     <ClInclude Include="cLowPassFilter.h" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cModelLoader.h" />

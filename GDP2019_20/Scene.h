@@ -4,14 +4,20 @@
 #include <vector>
 #include "cGameObject.h"
 #include "cVAOManager.h"
+#include "cLight.h"
 
 class Scene
 {
 private:
 	std::map<std::string, cGameObject*> game_objects;
+	std::map<std::string, cLight*> lights;
+	cVAOManager* theVAOManager;
 	static Scene* theScene;
 	Scene();
-	cVAOManager* theVAOManager;
+	void loadObjects(std::string filename);
+	void loadLights(std::string filename);
+	void drawObjects();
+	void drawLights();
 
 public:
 	~Scene();
