@@ -5,49 +5,43 @@
 
 #include "GFLW_callbacks.h"
 #include "globalStuff.h"			// for find object
+#include "Camera.h"
 
 #include <stdio.h>		// for fprintf()
 
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
 
-
+Camera* theCamera = Camera::getTheCamera();
+const float CAMERAROTATIONSPEED = 0.05f; // glm::radians(0.1f);
+const float CAMERAZOOMSPEED = 2.0f;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-
-	const float CAMERASPEED = 2.0f;
-
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
-
-		// Move the camera (A & D for left and right, along the x axis)
 		if (key == GLFW_KEY_A)
 		{
-			cameraEye.x -= CAMERASPEED;		// Move the camera -0.01f units
+			theCamera->moveLeft(CAMERAROTATIONSPEED);
 		}
 		if (key == GLFW_KEY_D)
 		{
-			cameraEye.x += CAMERASPEED;		// Move the camera +0.01f units
+			theCamera->moveRight(CAMERAROTATIONSPEED);
 		}
-
-		// Move the camera (Q & E for up and down, along the y axis)
 		if (key == GLFW_KEY_Q)
 		{
-			cameraEye.y -= CAMERASPEED;		// Move the camera -0.01f units
+			theCamera->zoom(CAMERAZOOMSPEED);
 		}
 		if (key == GLFW_KEY_E)
 		{
-			cameraEye.y += CAMERASPEED;		// Move the camera +0.01f units
+			theCamera->zoom(-CAMERAZOOMSPEED);
 		}
-
-		// Move the camera (W & S for towards and away, along the z axis)
 		if (key == GLFW_KEY_W)
 		{
-			cameraEye.z -= CAMERASPEED;		// Move the camera -0.01f units
+			theCamera->moveUp(CAMERAROTATIONSPEED);
 		}
 		if (key == GLFW_KEY_S)
 		{
-			cameraEye.z += CAMERASPEED;		// Move the camera +0.01f units
+			theCamera->moveDown(CAMERAROTATIONSPEED);
 		}
 
 	}

@@ -14,16 +14,9 @@
 #include <iostream>		// C++ IO standard stuff
 #include <map>			// Map aka "dictonary" 
 
-#include "cModelLoader.h"			
-#include "cVAOManager.h"		// NEW
-#include "cGameObject.h"
-
 #include "cShaderManager.h"
 
 #include <sstream>
-
-#include <limits.h>
-#include <float.h>
 
 // The Physics function
 #include "PhysicsStuff.h"
@@ -33,16 +26,11 @@
 
 #include "DebugRenderer/cDebugRenderer.h"
 
-// Used to visualize the attenuation of the lights...
-#include "LightManager/cLightHelper.h"
+#include "Scene.h"
+#include "Camera.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
-#include "Scene.h"
-
-glm::vec3 cameraEye = glm::vec3(0.0, 80.0, -80.0);
-glm::vec3 cameraTarget = glm::vec3(0.0f, 10.0, 0.0f);
-glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
@@ -50,6 +38,7 @@ Scene* theScene = Scene::getTheScene();
 
 int main(void)
 {
+	Camera* theCamera = Camera::getTheCamera();
 	GLFWwindow* window;
 
 	glfwSetErrorCallback(error_callback);
@@ -91,9 +80,6 @@ int main(void)
 
 	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 
-	
-	cModelLoader* pTheModelLoader = new cModelLoader();	// Heap
-
 	// Create a VAO Manager...
 	cVAOManager* pTheVAOManager = new cVAOManager();
 									 
@@ -105,8 +91,6 @@ int main(void)
 	cPhysics* pPhsyics = new cPhysics();
 
 	cLowPassFilter avgDeltaTimeThingy;
-
-	cLightHelper* pLightHelper = new cLightHelper();
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
@@ -143,26 +127,13 @@ int main(void)
 							 0.1f,			// Near clipping plane
 							 1000.0f);		// Far clipping plane
 
-		// View matrix
-		v = glm::mat4(1.0f);
-
-		v = glm::lookAt(cameraEye,
-						cameraTarget,
-						upVector);
+		v = theCamera->lookAt();
 
 		glViewport(0, 0, width, height);
 
 		// Clear both the colour buffer (what we see) and the 
 		//  depth (or z) buffer.
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-		// TODO: Move to Camera
-		// Also set the position of my "eye" (the camera)
-		//uniform vec4 eyeLocation;
-		GLint eyeLocation_UL = glGetUniformLocation( shaderProgID, "eyeLocation");
-
-		glUniform4f( eyeLocation_UL, 
-					 cameraEye.x, cameraEye.y, cameraEye.z, 1.0f );
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 		GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
