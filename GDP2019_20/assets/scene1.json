@@ -1,0 +1,45 @@
+{
+  "Meshes": [
+    {
+      "name": "large_bunny",
+      "filename": "assets/models/Large_Physics_Bunny_XYZ_N.ply"
+    },
+    {
+      "name": "terrain",
+      "filename": "assets/models/Terrain_XYZ_n.ply"
+    }
+  ],
+  "Objects": [
+    {
+      "name": "cool_object",
+      "mesh": "pretty_mesh",
+      "position": [ 1.0, 4.0, -5.0 ],
+      "rotation": [ 0.0, 90.0, 0.0 ],
+      "scale": 1.0,
+      "diffuseColor": [ 1.0, 0.0, 1.0 ],
+      "specularColor": [ 1.0, 1.0, 0.0, 50.0 ],
+      "isVisible": true,
+      "front": [ 0.0, 0.0, -1.0 ],
+      "Physics": {
+        "gravity": true,
+        "velocityDir": [ 5.0, 0.0, 0.0 ],
+        "speed": 5.0,
+        "acceleration": 0.0,
+        "collider": "sphere",
+        "radius": 4.0
+      }
+    }
+  ],
+  "Lights": [
+    {
+      "name": "shiny_light",
+      "position": [ 10.0, 5.0, 10.0 ],
+      "type": "point", 
+      "linearAtten": 0.003,
+      "quadAtten": 0.5,
+      "direction": [ 1.0, 1.0, 1.0 ], 
+      "innerRad": 2.0,
+      "outerRad": 3.0
+    }
+  ]
+}

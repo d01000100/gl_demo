@@ -28,6 +28,7 @@
 
 #include "Scene.h"
 #include "Camera.h"
+#include "JSON_IO.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -83,7 +84,7 @@ int main(void)
 	// Create a VAO Manager...
 	cVAOManager* pTheVAOManager = new cVAOManager();
 									 
-	theScene->loadScene("add file");
+	if (!theScene->loadScene("assets/scene1.json")) { return -1; }
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing

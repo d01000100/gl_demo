@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "cModelLoader.h"
 #include "globalStuff.h"
+#include "JSON_IO.h"
 
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp> // glm::vec3
@@ -48,6 +49,27 @@ cGameObject* Scene::findGameObject(std::string name) {
 	else {
 		return NULL;
 	}
+}
+
+bool Scene::loadMeshes(std::string filename) {
+	std::vector<meshSettings>* vMeshes = readMeshes(filename);
+
+	if (!vMeshes) { return false; }
+	
+	cModelLoader model_loader; 
+
+	for (int i = 0; i < vMeshes->size(); i++) {
+
+		meshSettings settings = vMeshes->at(i);
+		cMesh* data = new cMesh();
+		if (!model_loader.LoadPlyModel(settings.filename, *data)) {
+			printf("Couldn't load %s model file\n", settings.filename);
+			return false;
+		}
+		meshes[settings.name] = data;
+	}
+
+	return true;
 }
 
 void Scene::loadObjects(std::string filename) {
@@ -120,9 +142,11 @@ void Scene::loadLights(std::string filename) {
 	lights["light1"] = light;
 }
 
-void Scene::loadScene(std::string filename) {
+bool Scene::loadScene(std::string filename) {
+	if (!loadMeshes(filename)) { return false; }
 	loadObjects(filename);
 	loadLights(filename);
+	return true;
 }
 
 void Scene::drawObjects()
