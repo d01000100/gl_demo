@@ -56,96 +56,54 @@ bool Scene::loadMeshes(std::string filename) {
 
 	if (!vMeshes) { return false; }
 	
-	cModelLoader model_loader; 
+	cModelLoader model_loader;
+
+	GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 
 	for (int i = 0; i < vMeshes->size(); i++) {
-
 		meshSettings settings = vMeshes->at(i);
 		cMesh* data = new cMesh();
+
 		if (!model_loader.LoadPlyModel(settings.filename, *data)) {
-			printf("Couldn't load %s model file\n", settings.filename);
+			printf("Couldn't load %s model file\n", settings.filename.c_str());
 			return false;
 		}
+
+		sModelDrawInfo drawInfo;
+		theVAOManager->LoadModelIntoVAO(settings.name,
+			*data,
+			drawInfo,
+			programID);
+
 		meshes[settings.name] = data;
 	}
 
 	return true;
 }
 
-void Scene::loadObjects(std::string filename) {
+bool Scene::loadObjects(std::string filename) {
 
-	// Load meshes
-	cModelLoader* model_loader = new cModelLoader();
+	std::map<std::string, cGameObject*> *read_objects = readObjects(filename);
+	if (read_objects == NULL) {
+		return false;
+	}
 
-	cMesh largeBunnyMesh;
-	model_loader->LoadPlyModel("assets/models/Large_Physics_Bunny_XYZ_N.ply", largeBunnyMesh);
-
-	cMesh terrainMesh;
-	model_loader->LoadPlyModel("assets/models/Terrain_XYZ_n.ply", terrainMesh);
-
-	GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
-
-	// Move to MeshLoader (Manager)
-	sModelDrawInfo drawInfoTerrain;
-	theVAOManager->LoadModelIntoVAO("terrain",
-		terrainMesh,
-		drawInfoTerrain,
-		programID);
-
-	sModelDrawInfo largeBunnyDrawInfo;
-	theVAOManager->LoadModelIntoVAO("large_bunny",
-		largeBunnyMesh,		// Sphere mesh info
-		largeBunnyDrawInfo,
-		programID);
-
-	// Create Game 	Objects
-	// At this point, the model is loaded into the GPU
-	cGameObject* pLargeBunny = new cGameObject();			// HEAP
-	pLargeBunny->meshName = "large_bunny";
-	pLargeBunny->friendlyName = "largeBunny";
-	pLargeBunny->positionXYZ = glm::vec3(0.0f, 20.0f, 0.0f);
-	pLargeBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pLargeBunny->scale = 1.0f;
-	pLargeBunny->diffuseColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	pLargeBunny->specularColour = glm::vec4(1.0f, 1.0f, 1.0f, 1000.0f);
-	pLargeBunny->physicsShapeType = MESH;
-	pLargeBunny->inverseMass = 0.0f;	// Ignored during update
-	addGameObject(pLargeBunny);
-
-	cGameObject* pTerrain = new cGameObject();			// HEAP
-	pTerrain->meshName = "terrain";
-	pTerrain->friendlyName = "TheGround";
-	pTerrain->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pTerrain->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	pTerrain->scale = 1.0f;
-	pTerrain->diffuseColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	pTerrain->specularColour = glm::vec4(0.0f, 1.0f, 0.0f, 1000.0f);
-	pTerrain->physicsShapeType = MESH;
-	pTerrain->inverseMass = 0.0f;	// Ignored during update
-	pTerrain->isVisible = false;
-	addGameObject(pTerrain);
+	game_objects = *read_objects;
 }
 
-void Scene::loadLights(std::string filename) {
+bool Scene::loadLights(std::string filename) {
 
-	// Specify the lights info 
-	cLight* light = new cLight();
-	light->type = POINT;
-	light->pos = glm::vec3(0.0f, 30.0f, 0.0f);
-	light->const_atten = 0.0000001f;			// not really used (can turn off and on the light)
-	light->linear_atten = 0.03f;
-	light->quad_atten = 0.0000001f;
-	light->diffuseColor = glm::vec3(1.0f, 0.0f, 1.0f);
-	light->specularColor = glm::vec4(0.0f, 1.0f, 0.0f, 500.0f);;
-	light->isOn = true;
-	// Add it to the map
-	lights["light1"] = light;
+	std::map<std::string, cLight*>* read_lights = readLights(filename);
+
+	if (!read_lights) {	return false; }
+
+	lights = *read_lights;
 }
 
 bool Scene::loadScene(std::string filename) {
 	if (!loadMeshes(filename)) { return false; }
-	loadObjects(filename);
-	loadLights(filename);
+	if (!loadObjects(filename)) { return false; }
+	if (!loadLights(filename)) { return false; }
 	return true;
 }
 
@@ -172,16 +130,16 @@ void Scene::drawObjects()
 
 		GLint diffuseColour_UL = glGetUniformLocation(programID, "diffuseColour");
 		glUniform4f(diffuseColour_UL,
-			pCurrentObject->diffuseColour.r,
-			pCurrentObject->diffuseColour.g,
-			pCurrentObject->diffuseColour.b,
-			pCurrentObject->diffuseColour.a);
+			pCurrentObject->diffuseColor.r,
+			pCurrentObject->diffuseColor.g,
+			pCurrentObject->diffuseColor.b,
+			pCurrentObject->diffuseColor.a);
 
 		GLint specularColour_UL = glGetUniformLocation(programID, "specularColour");
 		glUniform4f(specularColour_UL,
-			pCurrentObject->specularColour.r,
-			pCurrentObject->specularColour.g,
-			pCurrentObject->specularColour.b,
+			pCurrentObject->specularColor.r,
+			pCurrentObject->specularColor.g,
+			pCurrentObject->specularColor.b,
 			1000.0f);	// Specular "power" (how shinny the object is)
 						// 1.0 to really big (10000.0f)
 
@@ -230,17 +188,23 @@ void Scene::drawLights() {
 			1.0f);
 		glUniform4f(L_0_diffuse, light->diffuseColor.r, light->diffuseColor.g, light->diffuseColor.b, 1.0f);	
 		glUniform4f(L_0_specular, light->specularColor.r, light->specularColor.g, light->specularColor.b, light->specularColor.a);	
-		glUniform4f(L_0_atten, light->const_atten,  
-					light->linear_atten, 
-					light->quad_atten,	
+		glUniform4f(L_0_atten, light->constAtten,  
+					light->linearAtten, 
+					light->quadAtten,	
 					light->cutOffDist);	
 
 		// x = lightType, y = inner angle, z = outer angle, w = TBD
 		// 0 = pointlight
 		// 1 = spot light
 		// 2 = directional light
-		glUniform4f(L_0_param1, light->type /*POINT light*/, light->inner_angle, light->outer_angle, 1.0f);
+		glUniform4f(L_0_param1, light->type /*POINT light*/, light->innerAngle, light->outerAngle, 1.0f);
 		glUniform4f(L_0_param2, light->isOn /*Light is on*/, 0.0f, 0.0f, 1.0f);
+
+		glUniform4f(L_0_direction, 
+					light->direction.x,
+					light->direction.y,
+					light->direction.z,
+					1.0f );	
 	}
 }
 

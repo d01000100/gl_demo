@@ -14,9 +14,9 @@ class cLight
 public:
 	lightType type;
 	glm::vec3 pos;
-	float const_atten;
-	float linear_atten;
-	float quad_atten;
+	float constAtten;
+	float linearAtten;
+	float quadAtten;
 	glm::vec3 diffuseColor;
 	glm::vec4 specularColor;
 	float cutOffDist;
@@ -24,8 +24,8 @@ public:
 
 	// for spotlights
 	glm::vec3 direction;
-	float inner_angle;
-	float outer_angle;
+	float innerAngle;
+	float outerAngle;
 
 	cLight();
 };

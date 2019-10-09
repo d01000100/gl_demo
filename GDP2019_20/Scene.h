@@ -15,9 +15,9 @@ private:
 	cVAOManager* theVAOManager;
 	static Scene* theScene;
 	Scene();
-	void loadObjects(std::string filename);
+	bool loadObjects(std::string filename);
 	bool loadMeshes(std::string filename);
-	void loadLights(std::string filename);
+	bool loadLights(std::string filename);
 	void drawObjects();
 	void drawLights();
 
