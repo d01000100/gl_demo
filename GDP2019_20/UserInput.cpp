@@ -12,11 +12,13 @@
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
 
-Camera* theCamera = Camera::getTheCamera();
 const float CAMERAROTATIONSPEED = 0.05f; // glm::radians(0.1f);
 const float CAMERAZOOMSPEED = 2.0f;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+	Camera* theCamera = Camera::getTheCamera();
+	Scene* theScene = Scene::getTheScene();
+
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
 		if (key == GLFW_KEY_A)

@@ -25,18 +25,12 @@ Camera* Camera::getTheCamera() {
 	return theCamera;
 }
 
-void Camera::setTarget(glm::vec3 target) {
-	this->target = target;
-	if (glm::normalize(direction()) == upVector) {
-		this->target += glm::vec3(1.0f, 1.0f, 1.0f);
-	}
+void Camera::setTarget(glm::vec3 p_target) {
+	target = p_target;
 }
 
-void Camera::setPosition(glm::vec3 pos) {
-	this->pos = pos;
-	if (glm::normalize(direction()) == upVector) {
-		this->pos += glm::vec3(1.0f, 1.0f, 1.0f);
-	}
+void Camera::setPosition(glm::vec3 position) {
+	pos = position;
 }
 
 glm::vec3 Camera::getPosition() {
@@ -44,20 +38,19 @@ glm::vec3 Camera::getPosition() {
 }
 
 void Camera::moveUp(float angle) {
-	pos = glm::rotate(direction(), -angle, right());
-	//upVector = glm::normalize(glm::cross(upVector, direction()));
+	pos = glm::rotate(direction(), -angle, right()) + target;
 }
 
 void Camera::moveDown(float angle) {
-	pos = glm::rotate(direction(), angle, right());
+	pos = glm::rotate(direction(), angle, right()) + target;
 }
 
 void Camera::moveRight(float angle) {
-	pos = glm::rotate(direction(), angle, upVector);
+	pos = glm::rotate(direction(), angle, upVector) + target;
 }
 
 void Camera::moveLeft(float angle) {
-	pos = glm::rotate(direction(), -angle, upVector);
+	pos = glm::rotate(direction(), -angle, upVector) + target;
 }
 
 void Camera::zoom(float distance) {
