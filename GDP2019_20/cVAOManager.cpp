@@ -129,8 +129,6 @@ bool cVAOManager::LoadModelIntoVAO(
 
 	drawInfo.meshName = fileName;
 
-	// TODO: Load the model from file
-
 	// 
 	// Model is loaded and the vertices and indices are in the drawInfo struct
 	// 
@@ -149,19 +147,14 @@ bool cVAOManager::LoadModelIntoVAO(
 	//	and vertex attribute layout, is stored in the 'state' 
 	//	of the VAO... 
 
-
-	// NOTE: OpenGL error checks have been omitted for brevity
-//	glGenBuffers(1, &vertex_buffer);
 	glGenBuffers(1, &(drawInfo.VertexBufferID) );
 
-//	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, drawInfo.VertexBufferID);
-	// sVert vertices[3]
-	glBufferData( GL_ARRAY_BUFFER, 
-				  sizeof(sVertex) * drawInfo.numberOfVertices,	// ::g_NumberOfVertsToDraw,	// sizeof(vertices), 
-				  (GLvoid*) drawInfo.pVertices,							// pVertices,			//vertices, 
-				  GL_STATIC_DRAW );
 
+	glBufferData( GL_ARRAY_BUFFER, 
+				  sizeof(sVertex) * drawInfo.numberOfVertices,	
+				  (GLvoid*) drawInfo.pVertices,					
+				  GL_STATIC_DRAW );
 
 	// Copy the index buffer into the video card, too
 	// Create an index buffer.
@@ -192,7 +185,7 @@ bool cVAOManager::LoadModelIntoVAO(
 	glEnableVertexAttribArray(vpos_location);	// vPos
 	glVertexAttribPointer( vpos_location, 4,		// now a vec4
 						   GL_FLOAT, GL_FALSE,
-						   sizeof(sVertex),						// sizeof(float) * 6,
+						   sizeof(sVertex),						
 						   ( void* )(offsetof(sVertex, x)) );
 
 	glEnableVertexAttribArray(vcol_location);	// vCol
@@ -200,7 +193,6 @@ bool cVAOManager::LoadModelIntoVAO(
 						   GL_FLOAT, GL_FALSE,
 						   sizeof(sVertex),						
 						   ( void* )(offsetof(sVertex, r)) );
-
 
 	//	float nx, ny, nz, nw;
 	glEnableVertexAttribArray(vnorm_location);	// vNormal
@@ -226,7 +218,6 @@ bool cVAOManager::LoadModelIntoVAO(
 
 	glDisableVertexAttribArray(vpos_location);
 	glDisableVertexAttribArray(vcol_location);
-
 
 	// Store the draw information into the map
 	this->m_map_ModelName_to_VAOID[ drawInfo.meshName ] = drawInfo;
