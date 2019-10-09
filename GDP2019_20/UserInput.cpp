@@ -6,6 +6,7 @@
 #include "GFLW_callbacks.h"
 #include "globalStuff.h"			// for find object
 #include "Camera.h"
+#include "Scene.h"
 
 #include <stdio.h>		// for fprintf()
 
@@ -46,6 +47,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			theCamera->moveDown(CAMERAROTATIONSPEED);
 		}
 
+		// reset ball to position
+		if (key == GLFW_KEY_SPACE) {
+			cGameObject* ball = theScene->findGameObject("ball");
+			ball->positionXYZ = glm::vec3(0.0f, 50.0f, 0.0f);
+			ball->physics->velocity = glm::vec3(0.0f);
+			ball->physics->acceleration = glm::vec3(0.0f);
+		}
 	}
 
 	if (isShiftKeyDownByAlone(mods))

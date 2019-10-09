@@ -35,11 +35,14 @@
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
-Scene* theScene = Scene::getTheScene();
 
 int main(void)
 {
+	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = Camera::getTheCamera();
+	theCamera->setPosition(glm::vec3(0.0, 80.0, 2.0));
+	theCamera->setTarget(glm::vec3(0.0, 10.0, 0.0));
+
 	GLFWwindow* window;
 
 	glfwSetErrorCallback(error_callback);
@@ -51,7 +54,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	window = glfwCreateWindow(640, 480, "SimpleGame", NULL, NULL);
+	window = glfwCreateWindow(1600, 800, "SimpleGame", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -89,7 +92,7 @@ int main(void)
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
 	
-	cPhysics* pPhsyics = new cPhysics();
+	cPhysics* pPhysics = new cPhysics();
 
 	cLowPassFilter avgDeltaTimeThingy;
 
@@ -145,10 +148,11 @@ int main(void)
 
 		theScene->drawScene();
 
-		theCamera->setTarget(theScene->findGameObject("bugs")->positionXYZ);
+		theCamera->setTarget(theScene->findGameObject("ball")->positionXYZ);
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		pPhsyics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
+		pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
+		pPhysics->TestForCollisions(theScene->getGameObjects());
 		
 		pDebugRenderer->RenderDebugObjects( v, p, 0.01f );
 		glfwSwapBuffers(window);

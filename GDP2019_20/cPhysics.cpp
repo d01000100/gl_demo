@@ -2,13 +2,9 @@
 
 cPhysics::cPhysics()
 {
-	// This is a typical Earth gravity value. 
-	// note that this doesn't mean that the simulation will "look good", though... 
-//	this->m_Gravity = glm::vec3(0.0f, -9.81f, 0.0f);
-	this->m_Gravity = glm::vec3(0.0f, -1.0f, 0.0f);
+	this->m_Gravity = glm::vec3(0.0f, -0.5f, 0.0f);
 	return;
 }
-
 
 void cPhysics::setGravity(glm::vec3 newGravityValue)
 {
@@ -20,7 +16,6 @@ glm::vec3 cPhysics::getGravity(void)
 {
 	return this->m_Gravity;
 }
-
 
 void cPhysics::IntegrationStep(std::vector<cGameObject*> vec_pGameObjects, float deltaTime)
 {
@@ -132,7 +127,7 @@ void cPhysics::GetClosestTrianglesToSphere(cGameObject& testSphere, float distan
 }
 
 // Test each object with every other object
-void cPhysics::TestForCollisions(std::vector<cGameObject*>& vec_pGameObjects)
+void cPhysics::TestForCollisions(std::vector<cGameObject*> vec_pGameObjects)
 {
 	// This will store all the collisions in this frame
 	std::vector<sCollisionInfo> vecCollisions;
@@ -148,43 +143,29 @@ void cPhysics::TestForCollisions(std::vector<cGameObject*>& vec_pGameObjects)
 			cGameObject* pA = vec_pGameObjects[outerLoopIndex];
 			cGameObject* pB = vec_pGameObjects[innerLoopIndex];
 
-
-
-			// Note that if you don't respond to the 
-			// collision here, then you will get the same
-			// result twice (Object "A" with "B" and later, 
-			//   object "B" with "A" - but it's the same collison
-
-			// Compare the two objects:
-			// Either a sphere-sphere or sphere-mesh
-			// An I testing the object with itself? 
-			//if (pA == pB)
+			// Am I testing the object with itself? 
 			if ( pA->getUniqueID() == pB->getUniqueID() )
 			{	
-				// It's the same object
-				// Do nothing
+				continue;
 			}
-			else if (pA->physicsShapeType == SPHERE &&
-				pB->physicsShapeType == SPHERE)
+			else if (pA->physics->shape == SPHERE &&
+				pB->physics->shape == SPHERE)
 			{
 				if (DoSphereSphereCollisionTest(pA, pB, collisionInfo))
 				{
 					vecCollisions.push_back(collisionInfo);
 				}
 			}
-			else if (pA->physicsShapeType == SPHERE &&
-					 pB->physicsShapeType == MESH)
+			else if (pA->physics->shape == SPHERE &&
+					 pB->physics->shape == MESH)
 			{
-				if (DoShphereMeshCollisionTest(pA, pB, collisionInfo))
+				if (DoSphereMeshCollision(pA, pB, collisionInfo))
 				{
 					vecCollisions.push_back(collisionInfo);
 				}
-			}
-		
-		
+			}		
 		}//for (unsigned int innerLoopIndex = 0;
 	}//for (unsigned int outerLoopIndex = 0;
-
 }
 
 bool cPhysics::DoSphereSphereCollisionTest(cGameObject* pA, cGameObject* pB,
@@ -197,13 +178,93 @@ bool cPhysics::DoSphereSphereCollisionTest(cGameObject* pA, cGameObject* pB,
 
 	return false;
 }
-bool cPhysics::DoShphereMeshCollisionTest(cGameObject* pA, cGameObject* pB,
+bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 								sCollisionInfo& collisionInfo)
 {
-	// TODO: Do the sphere-Mesh collision test
-	// If collided, load the collisionInfo struct and return true
-	//  else return false
+	glm::vec3 closestPoint;
+	sPhysicsTriangle closestTriangle;
+
+	// Get a transformed mesh to match the object's position and rotation
+	cMesh transformed_mesh =  transformMesh(
+		*mesh->physics->mesh, 
+		mesh->calculateTransformationMatrix());
+
+	GetClosestTriangleToPoint(sphere->positionXYZ, transformed_mesh, closestPoint, closestTriangle);
+
+	// Are we hitting the triangle? 
+	float distance = glm::length(sphere->positionXYZ - closestPoint);
+
+	if (distance <= sphere->physics->radius)
+	{
+		// Move the sphere back to where it just penetrated...
+		// So that it will collide exactly where it's supposed to. 
+
+		// 1. Calculate vector from centre of sphere to closest point
+		glm::vec3 vecSphereToClosestPoint = closestPoint - sphere->positionXYZ;
+
+		// 2. Get the length of this vector
+		float centreToContractDistance = glm::length(vecSphereToClosestPoint);
+
+		// 3. Create a vector from closest point to radius
+		float lengthPositionAdjustment = sphere->physics->radius - centreToContractDistance;
+
+		// 4. Sphere is moving in the direction of the velocity, so 
+		//    we want to move the sphere BACK along this velocity vector
+		glm::vec3 vecDirection = glm::normalize(sphere->physics->velocity);
+
+		glm::vec3 vecPositionAdjust = (-vecDirection) * lengthPositionAdjustment;
+
+		// 5. Reposition sphere 
+		sphere->positionXYZ += (vecPositionAdjust);
+
+		// Is in contact with the triangle... 
+		// Calculate the response vector off the triangle. 
+		glm::vec3 velocityVector = glm::normalize(sphere->physics->velocity);
+
+		// closestTriangle.normal
+		glm::vec3 reflectionVec = glm::reflect(velocityVector, closestTriangle.normal);
+		reflectionVec = glm::normalize(reflectionVec);
+
+		// Change the direction of the ball (the bounce off the triangle)
+
+		// Get lenght of the velocity vector
+		float speed = glm::length(sphere->physics->velocity);
+
+		sphere->physics->velocity = reflectionVec * (speed * 0.8f);
+		return true;
+	}
+	return false;
+}
+
+cMesh cPhysics::transformMesh(cMesh mesh, glm::mat4 tMat) {
+	// Using the same thing that happens in the shader, 
+	// we transform the vertices of the mesh by the world matrix
+
+	for (std::vector<sPlyVertexXYZ_N>::iterator itVert = mesh.vecVertices.begin();
+		itVert != mesh.vecVertices.end(); itVert++)
+	{
+		glm::vec4 vertex = glm::vec4(itVert->x, itVert->y, itVert->z, 1.0f);
+
+		glm::vec4 vertexWorldTransformed = tMat * vertex;
+
+		// Update 
+		// itVert is not a vec3, so we need to do this manyally
+		itVert->x = vertexWorldTransformed.x;
+		itVert->y = vertexWorldTransformed.y;
+		itVert->z = vertexWorldTransformed.z;
 
 
-	return true;
+		// CALCAULTE THE NORMALS for the this mesh, too (for the response)
+		// for the normal, do the inverse transpose of the world matrix
+		glm::mat4 matWorld_Inv_Transp = glm::inverse(glm::transpose(tMat));
+		glm::vec4 normal = glm::vec4(itVert->nx, itVert->ny, itVert->nz, 1.0f);
+		glm::vec4 normalWorldTransformed = matWorld_Inv_Transp * normal;
+
+		// Update 
+		itVert->nx = normalWorldTransformed.x;
+		itVert->ny = normalWorldTransformed.y;
+		itVert->nz = normalWorldTransformed.z;
+	}
+
+	return mesh;
 }

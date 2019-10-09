@@ -98,9 +98,9 @@ std::map<std::string, cGameObject*>* readObjects(std::string filename) {
 		}
 
 		if (jObj->find("rotation") != jObj->end()) {
-			float x = (*jObj)["rotation"][0].get<float>();
-			float y = (*jObj)["rotation"][1].get<float>();
-			float z = (*jObj)["rotation"][2].get<float>();
+			float x = glm::radians((*jObj)["rotation"][0].get<float>());
+			float y = glm::radians((*jObj)["rotation"][1].get<float>());
+			float z = glm::radians((*jObj)["rotation"][2].get<float>());
 			gameObj->rotationXYZ = glm::vec3(x, y, z);
 		}
 		else {
@@ -215,6 +215,11 @@ std::map<std::string, cGameObject*>* readObjects(std::string filename) {
 			else {
 				physics->shape = UNKNOWN;
 			}
+			
+			if (jPhysics.find("radius") != jPhysics.end()) {
+				physics->radius = jPhysics["radius"].get<float>();
+			}
+
 			gameObj->physics = physics;
 		}
 

@@ -5,6 +5,7 @@
 #include "cMesh.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
+#include <glm/mat4x4.hpp> // glm::mat4
 #include <vector>
 
 class cPhysics
@@ -42,7 +43,7 @@ public:
 	void IntegrationStep( std::vector<cGameObject*> vec_pGameObjects,
 					      float deltaTime );
 
-	void TestForCollisions( std::vector<cGameObject*>& vec_pGameObjects );
+	void TestForCollisions( std::vector<cGameObject*> vec_pGameObjects );
 
 	// Returns all the triangles and the closest points
 	void GetClosestTriangleToPoint( Point pointXYZ, cMesh &mesh, glm::vec3 &closestPoint, sPhysicsTriangle &closestTriangle );
@@ -65,8 +66,10 @@ private:
 	// Returns true if collision, and will load collisionInfo struct
 	bool DoSphereSphereCollisionTest( cGameObject* pA, cGameObject *pB, 
 									  sCollisionInfo &collisionInfo );
-	bool DoShphereMeshCollisionTest( cGameObject* pA, cGameObject* pB,
+	bool DoSphereMeshCollision( cGameObject* pA, cGameObject* pB,
 									 sCollisionInfo &collisionInfo );
+
+	cMesh transformMesh(cMesh mesh, glm::mat4 tMat);
 
 
 	glm::vec3  m_Gravity;
