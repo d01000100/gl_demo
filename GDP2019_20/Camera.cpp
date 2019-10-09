@@ -66,15 +66,12 @@ void Camera::zoom(float distance) {
 }
 
 glm::mat4 Camera::lookAt() {
-	return glm::lookAt(pos, target, upVector);
 
 	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 
 	// Also set the position of my "eye" into the shader
 	GLint eyeLocation_UL = glGetUniformLocation(shaderProgID, "eyeLocation");
-	glUniform4f(eyeLocation_UL,
-		theCamera->getPosition().x,
-		theCamera->getPosition().y,
-		theCamera->getPosition().z,
-		1.0f);
+	glUniform4f(eyeLocation_UL, pos.x, pos.y, pos.z, 1.0f);
+
+	return glm::lookAt(pos, target, upVector);
 }
