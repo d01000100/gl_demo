@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <string>
+#include "cMesh.h"
 
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
@@ -18,28 +19,45 @@ enum eShapeTypes
 	UNKNOWN
 };
 
+struct sPhysicsObject {
+	float speed;
+	glm::vec3 velocity;
+	glm::vec3 acceleration;
+	bool gravity;
+
+	// We could contain another class or struct with the phsyics stuff
+	// or we could use this type to determine what we need to check.
+	eShapeTypes shape;
+	float radius;
+	cMesh* mesh;
+};
+
 class cGameObject
 {
 public:
 	cGameObject();
 	// Used to draw this mesh
 	std::string meshName;
+	cMesh* mesh;
 	std::string friendlyName;
 
 	glm::vec3  positionXYZ;
 	glm::vec3  rotationXYZ;
+	glm::vec3 front;
 	float scale;
 
 	glm::mat4 matWorld;
 
 	//glm::vec4  objectColourRGBA;	
-	glm::vec4 diffuseColour;		// Colour of the object
-	glm::vec4 specularColour;		// Colour of the HIGHLIGHT + Shininess
+	glm::vec4 diffuseColor;		// Colour of the object
+	glm::vec4 specularColor;		// Colour of the HIGHLIGHT + Shininess
 	                                // RGB - colour
 	                                // 4th value (a or w) is the "power"
 	                                // 1.0 to 10,000.0f 
 	bool isWireframe;
 	bool isVisible;
+
+	sPhysicsObject* physics;
 
 
 	// Add some physics things

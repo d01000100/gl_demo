@@ -13,6 +13,7 @@ cGameObject::cGameObject()
 
 	this->isWireframe = false;
 
+	physics = NULL;
 	this->velocity = glm::vec3(0.0f,0.0f,0.0f);
 	this->accel = glm::vec3(0.0f,0.0f,0.0f);
 	this->inverseMass = 0.0f;	// Infinite mass

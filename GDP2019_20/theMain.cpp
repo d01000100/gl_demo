@@ -145,8 +145,10 @@ int main(void)
 
 		theScene->drawScene();
 
+		theCamera->setTarget(theScene->findGameObject("bugs")->positionXYZ);
+
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		//pPhsyics->IntegrationStep(::g_vec_pGameObjects, (float)averageDeltaTime);
+		pPhsyics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
 		
 		pDebugRenderer->RenderDebugObjects( v, p, 0.01f );
 		glfwSwapBuffers(window);

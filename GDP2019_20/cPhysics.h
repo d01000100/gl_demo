@@ -39,7 +39,7 @@ public:
 	};
 	
 	// This "moves" the objects based on the inegration step
-	void IntegrationStep( std::vector<cGameObject*>& vec_pGameObjects,
+	void IntegrationStep( std::vector<cGameObject*> vec_pGameObjects,
 					      float deltaTime );
 
 	void TestForCollisions( std::vector<cGameObject*>& vec_pGameObjects );

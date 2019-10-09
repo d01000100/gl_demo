@@ -22,46 +22,31 @@ glm::vec3 cPhysics::getGravity(void)
 }
 
 
-void cPhysics::IntegrationStep(std::vector<cGameObject*>& vec_pGameObjects, float deltaTime)
+void cPhysics::IntegrationStep(std::vector<cGameObject*> vec_pGameObjects, float deltaTime)
 {
-
-
 	for (unsigned int index = 0;
 		 index != vec_pGameObjects.size(); index++)
 	{
 		// Get a pointer to the current object (makes the code a little clearer)
 		cGameObject* pCurObj = vec_pGameObjects[index];
 
-		if (pCurObj->inverseMass != 0.0f)
+		if (pCurObj->physics)
 		{
+			sPhysicsObject* phObj = pCurObj->physics;
+			
+			if (phObj->gravity) {
+				phObj->acceleration += m_Gravity;
+			}
 
 			// Forward Explicit Euler Inetegration
 			//NewVelocty += Velocity + ( Ax * DeltaTime )
-
-			// 
-			pCurObj->accel = this->m_Gravity;
-
-
-			pCurObj->velocity.x += pCurObj->accel.x * deltaTime;
-			pCurObj->velocity.y += pCurObj->accel.y * deltaTime;
-			pCurObj->velocity.z += pCurObj->accel.z * deltaTime;
-			//		// Or you can do this...
-			//		CurObj.velocity += CurObj.accel * deltaTime;
-
-					//NewPosition = Posistion + ( Vx * DeltaTime )
-
-			pCurObj->positionXYZ.x += pCurObj->velocity.x * deltaTime;
-			pCurObj->positionXYZ.y += pCurObj->velocity.y * deltaTime;
-			pCurObj->positionXYZ.z += pCurObj->velocity.z * deltaTime;
-
-
+			phObj->velocity += phObj->acceleration * deltaTime;
+			pCurObj->positionXYZ += phObj->velocity * deltaTime;
 		}
 	}//for (unsigned int index = 0;
 
 	return;
 }
-
-
 
 // Returns all the triangles and the closest points
 void cPhysics::GetClosestTriangleToPoint(Point pointXYZ, cMesh& mesh, glm::vec3& closestPoint, sPhysicsTriangle& closestTriangle)

@@ -88,7 +88,17 @@ bool Scene::loadObjects(std::string filename) {
 		return false;
 	}
 
+	for (std::map<std::string, cGameObject*>::iterator iObj = read_objects->begin();
+		iObj != read_objects->end(); iObj++) {
+		cGameObject* pObj = iObj->second;
+		if (pObj->physics && pObj->physics->shape == MESH) {
+			pObj->physics->mesh = meshes[pObj->meshName];
+		}
+	}
+
 	game_objects = *read_objects;
+
+	return true;
 }
 
 bool Scene::loadLights(std::string filename) {
