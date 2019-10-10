@@ -91,10 +91,10 @@ std::map<std::string, cGameObject*>* readObjects(std::string filename) {
 			float x = (*jObj)["position"][0].get<float>();
 			float y = (*jObj)["position"][1].get<float>();
 			float z = (*jObj)["position"][2].get<float>();
-			gameObj->positionXYZ = glm::vec3(x, y, z);
+			gameObj->position = glm::vec3(x, y, z);
 		}
 		else {
-			gameObj->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+			gameObj->position = glm::vec3(0.0f, 0.0f, 0.0f);
 		}
 
 		if (jObj->find("rotation") != jObj->end()) {

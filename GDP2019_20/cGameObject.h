@@ -41,7 +41,7 @@ public:
 	cMesh* mesh;
 	std::string friendlyName;
 
-	glm::vec3  positionXYZ;
+	glm::vec3  position;
 	glm::vec3  rotationXYZ;
 	glm::vec3 front;
 	float scale;
@@ -58,21 +58,6 @@ public:
 	bool isVisible;
 
 	sPhysicsObject* physics;
-
-
-	// Add some physics things
-	glm::vec3 velocity;
-	glm::vec3 accel;
-	// If the object has an inverse mass of 0.0
-	//	then it's not updated by the physics code
-	float inverseMass;	// 0.0f = Doesn't move
-
-	// We could contain another class or struct with the phsyics stuff
-	// or we could use this type to determine what we need to check.
-	eShapeTypes physicsShapeType;
-
-	glm::vec3 AABB_min, AABB_max;
-	float SPHERE_radius;
 
 	unsigned int getUniqueID(void);
 

@@ -164,6 +164,7 @@
     <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneEditor.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="UserInput.cpp" />
   </ItemGroup>
@@ -189,6 +190,7 @@
     <ClInclude Include="LightManager\cLightHelper.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneEditor.h" />
     <ClInclude Include="UserInput.h" />
   </ItemGroup>
   <ItemGroup>

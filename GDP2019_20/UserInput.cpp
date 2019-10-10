@@ -7,6 +7,7 @@
 #include "globalStuff.h"			// for find object
 #include "Camera.h"
 #include "Scene.h"
+#include "SceneEditor.h"
 
 #include <stdio.h>		// for fprintf()
 
@@ -15,10 +16,15 @@ bool isCtrlKeyDownByAlone(int mods);
 
 const float CAMERAROTATIONSPEED = 0.05f; // glm::radians(0.1f);
 const float CAMERAZOOMSPEED = 2.0f;
+
+const float TRANSLATION_STEP = 0.5f;
+const float ROTATION_STEP = glm::radians(0.5f);
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	Camera* theCamera = Camera::getTheCamera();
 	Scene* theScene = Scene::getTheScene();
+	SceneEditor* theEditor = SceneEditor::getTheEditor();
 
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
@@ -50,15 +56,108 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		// reset ball to position
 		if (key == GLFW_KEY_SPACE) {
 			cGameObject* ball = theScene->findGameObject("ball");
-			ball->positionXYZ = glm::vec3(0.0f, 50.0f, 0.0f);
+			ball->position = glm::vec3(0.0f, 50.0f, 0.0f);
 			ball->physics->velocity = glm::vec3(0.0f);
 			ball->physics->acceleration = glm::vec3(0.0f);
 		}
+
+		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+			theEditor->nextObject();
+		}
+
+		if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
+			theEditor->previousObject();
+		}
+
+		if (key == GLFW_KEY_T && action == GLFW_PRESS) {
+			theEditor->setObjectMode(TRANS);
+		}
+
+		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+			theEditor->setObjectMode(ROT);
+		}
+
+		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
+			theEditor->setObjectMode(SCALE);
+		}
 	}
 
+	// Edit mode
 	if (isShiftKeyDownByAlone(mods))
 	{
-		
+		switch (theEditor->objectMode) {
+			case TRANS: {
+				glm::vec3 direction = glm::vec3(0.0f);
+				if (key == GLFW_KEY_A)
+				{
+					direction = glm::vec3(-1.0f, 0.0f, 0.0f);
+				}
+				if (key == GLFW_KEY_D)
+				{
+					direction = glm::vec3(1.0f, 0.0f, 0.0f);
+				}
+				if (key == GLFW_KEY_Q)
+				{
+					direction = glm::vec3(0.0f, 0.0f, -1.0f);
+				}
+				if (key == GLFW_KEY_E)
+				{
+					direction = glm::vec3(0.0f, 0.0f, 1.0f);
+				}
+				if (key == GLFW_KEY_W)
+				{
+					direction = glm::vec3(0.0f, 1.0f, 0.0f);
+				}
+				if (key == GLFW_KEY_S)
+				{
+					direction = glm::vec3(0.0f, -1.0f, 0.0f); 
+				}
+				theEditor->translateObject(direction * TRANSLATION_STEP);
+				break;
+			}
+			case ROT: {
+				glm::vec3 rotation = glm::vec3(0.0f);
+				if (key == GLFW_KEY_A)
+				{
+					rotation = glm::vec3(0.0f, 1.0f, 0.0f);
+				}
+				if (key == GLFW_KEY_D)
+				{
+					rotation = glm::vec3(0.0f, -1.0f, 0.0f);
+				}
+				if (key == GLFW_KEY_Q)
+				{
+					rotation = glm::vec3(0.0f, 0.0f, -1.0f);
+				}
+				if (key == GLFW_KEY_E)
+				{
+					rotation = glm::vec3(0.0f, 0.0f, 1.0f);
+				}
+				if (key == GLFW_KEY_W)
+				{
+					rotation = glm::vec3(-1.0f, 0.0f, 0.0f);
+				}
+				if (key == GLFW_KEY_S)
+				{
+					rotation = glm::vec3(1.0f, 0.0f, 0.0f);
+				}
+				theEditor->rotateObject(rotation * ROTATION_STEP);
+				break;
+			}
+			case SCALE: {
+				float scale = 1.0f;
+				if (key == GLFW_KEY_W)
+				{
+					scale = 1.1f;
+				}
+				if (key == GLFW_KEY_S)
+				{
+					scale = 0.9f;
+				}
+				theEditor->scaleObject(scale);
+				break;
+			}
+		}
 	}//if (isShiftKeyDownByAlone(mods))
 
 

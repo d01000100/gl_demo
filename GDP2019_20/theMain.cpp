@@ -10,24 +10,19 @@
 
 #include <stdlib.h>		// c libs
 #include <stdio.h>		// c libs
-
 #include <iostream>		// C++ IO standard stuff
 #include <map>			// Map aka "dictonary" 
-
 #include "cShaderManager.h"
-
 #include <sstream>
 
 // The Physics function
 #include "PhysicsStuff.h"
 #include "cPhysics.h"
-
 #include "cLowPassFilter.h"
-
 #include "DebugRenderer/cDebugRenderer.h"
-
 #include "Scene.h"
 #include "Camera.h"
+#include "SceneEditor.h"
 #include "JSON_IO.h"
 
 // Keyboard, error, mouse, etc. are now here
@@ -40,6 +35,7 @@ int main(void)
 {
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = Camera::getTheCamera();
+	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	theCamera->setPosition(glm::vec3(0.0, 80.0, 2.0));
 	theCamera->setTarget(glm::vec3(0.0, 10.0, 0.0));
 
@@ -66,8 +62,8 @@ int main(void)
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
 
-	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
-	pDebugRenderer->initialize();
+	/*cDebugRenderer* pDebugRenderer = new cDebugRenderer();
+	pDebugRenderer->initialize();*/
 
 	cShaderManager::cShader vertexShad;
 	vertexShad.fileName = "assets/shaders/vertexShader01.glsl";
@@ -83,11 +79,10 @@ int main(void)
 	}
 
 	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
-
-	// Create a VAO Manager...
-	cVAOManager* pTheVAOManager = new cVAOManager();
 									 
 	if (!theScene->loadScene("assets/scene1.json")) { return -1; }
+
+	sceneEditor->init(theScene->getGameObjects());
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -148,13 +143,14 @@ int main(void)
 
 		theScene->drawScene();
 
-		theCamera->setTarget(theScene->findGameObject("ball")->positionXYZ);
+		//theCamera->setTarget(theScene->findGameObject("ball")->position);
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
-		pPhysics->TestForCollisions(theScene->getGameObjects());
+		//pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
+		//pPhysics->TestForCollisions(theScene->getGameObjects());
 		
-		pDebugRenderer->RenderDebugObjects( v, p, 0.01f );
+		sceneEditor->objectDebug();	
+		sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

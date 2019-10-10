@@ -14,10 +14,6 @@ cGameObject::cGameObject()
 	this->isWireframe = false;
 
 	physics = NULL;
-	this->velocity = glm::vec3(0.0f,0.0f,0.0f);
-	this->accel = glm::vec3(0.0f,0.0f,0.0f);
-	this->inverseMass = 0.0f;	// Infinite mass
-	this->physicsShapeType = UNKNOWN;
 
 	// Set the unique ID
 	// Take the value of the static int, 
@@ -50,9 +46,9 @@ glm::mat4 cGameObject::calculateTransformationMatrix() {
 	// ******* TRANSLATION TRANSFORM *********
 	glm::mat4 matTrans
 		= glm::translate(glm::mat4(1.0f),
-			glm::vec3(positionXYZ.x,
-				positionXYZ.y,
-				positionXYZ.z));
+			glm::vec3(position.x,
+				position.y,
+				position.z));
 	m = m * matTrans;
 
 	//// ******* ROTATION TRANSFORM *********
