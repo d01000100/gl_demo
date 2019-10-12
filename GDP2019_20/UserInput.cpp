@@ -103,6 +103,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			theEditor->setObjectMode(ANGLES);
 		}
 
+		if (key == GLFW_KEY_SPACE && 
+			action == GLFW_PRESS && 
+			theEditor->getEditMode() == LIGHTS) {
+			theEditor->toggleLight();
+		}
+
 		// General edition mode
 		if (key == GLFW_KEY_O && action == GLFW_PRESS) {
 			theEditor->setEditMode(OBJS);

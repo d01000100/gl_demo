@@ -55,5 +55,6 @@ public:
 	void changeQuadAtten(float deltaScale);
 	void changeInnerAngle(float deltaScale);
 	void changeOuterAngle(float deltaScale);
+	void toggleLight();
 };
 

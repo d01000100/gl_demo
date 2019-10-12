@@ -268,6 +268,10 @@ void SceneEditor::changeOuterAngle(float deltaScale){
 	(*selectedLight)->outerAngle *= deltaScale;
 }
 
+void SceneEditor::toggleLight() {
+	(*selectedLight)->isOn = !(*selectedLight)->isOn;
+}
+
 void SceneEditor::LightDebug(){ 
 	glm::vec3 pos  = (*selectedLight)->pos;
 	glm::vec3 dir = (*selectedLight)->direction;
