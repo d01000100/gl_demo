@@ -269,7 +269,7 @@ void SceneEditor::changeOuterAngle(float deltaScale){
 }
 
 void SceneEditor::toggleLight() {
-	(*selectedLight)->isOn = !(*selectedLight)->isOn;
+	(*selectedLight)->isOn = !(*selectedLight)->isOn; 
 }
 
 void SceneEditor::LightDebug(){ 

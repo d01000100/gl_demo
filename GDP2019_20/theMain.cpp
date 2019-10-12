@@ -30,6 +30,7 @@
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
+std::string scene_filename = "assets/scene1.json";
 
 int main(void)
 {
@@ -80,7 +81,7 @@ int main(void)
 
 	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 									 
-	if (!theScene->loadScene("assets/scene1.json")) { return -1; }
+	if (!theScene->loadScene(scene_filename)) { return -1; }
 
 	sceneEditor->init(theScene);
 

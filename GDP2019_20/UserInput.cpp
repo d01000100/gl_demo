@@ -56,14 +56,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			theCamera->moveDown(CAMERAROTATIONSPEED);
 		}
 
-		// reset ball to position
-		if (key == GLFW_KEY_SPACE) {
-			cGameObject* ball = theScene->findGameObject("ball");
-			ball->position = glm::vec3(0.0f, 50.0f, 0.0f);
-			ball->physics->velocity = glm::vec3(0.0f);
-			ball->physics->acceleration = glm::vec3(0.0f);
-		}
-
 		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
 			switch (theEditor->getEditMode()) {
 			case OBJS:
@@ -118,8 +110,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 		if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
-			std::ofstream outFile("assets/saved_scene.json");
-			outFile << serializeObjects(theScene->getGameObjects()) << "\n";
+			saveScene(theScene, ::scene_filename);
+		}
+
+		if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
+			theScene->reloadScene(::scene_filename);
 		}
 	}
 

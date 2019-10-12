@@ -52,6 +52,11 @@ std::vector<cLight*> Scene::getLights() {
 	return vs;
 }
 
+std::map<std::string, cLight*> Scene::getLightsMap() { return lights;  }
+std::map<std::string, cMesh*> Scene::getMeshesMap() {
+	return meshes;
+}
+
 cGameObject* Scene::findGameObject(std::string name) {
 
 	if (game_objects.find(name) != game_objects.end()) {
@@ -74,6 +79,8 @@ bool Scene::loadMeshes(std::string filename) {
 	for (int i = 0; i < vMeshes->size(); i++) {
 		meshSettings settings = vMeshes->at(i);
 		cMesh* data = new cMesh();
+
+		data->filename = settings.filename;
 
 		if (!model_loader.LoadPlyModel(settings.filename, *data)) {
 			printf("Couldn't load %s model file\n", settings.filename.c_str());
@@ -123,6 +130,12 @@ bool Scene::loadLights(std::string filename) {
 
 bool Scene::loadScene(std::string filename) {
 	if (!loadMeshes(filename)) { return false; }
+	if (!loadObjects(filename)) { return false; }
+	if (!loadLights(filename)) { return false; }
+	return true;
+}
+
+bool Scene::reloadScene(std::string filename) {
 	if (!loadObjects(filename)) { return false; }
 	if (!loadLights(filename)) { return false; }
 	return true;

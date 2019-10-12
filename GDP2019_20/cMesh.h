@@ -25,6 +25,7 @@ class cMesh
 public:
 	cMesh() {};			// Empty c'tor
 	~cMesh() {};		// Empty d'tor
+	std::string filename;
 	// Store the vertices
 	std::vector<sPlyVertexXYZ_N> vecVertices;
 

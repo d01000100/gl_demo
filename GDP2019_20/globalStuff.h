@@ -1,10 +1,11 @@
 #pragma once
 
-#include "cGameObject.h"
 #include "cShaderManager.h"
 
 extern cShaderManager theShaderManager;
 extern std::string shader_name;
+
+extern std::string scene_filename;
 
 // These are defined in theMain.cpp
 //extern glm::vec3 cameraEye;
