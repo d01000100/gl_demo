@@ -41,6 +41,17 @@ std::vector<cGameObject*> Scene::getGameObjects() {
 	return vs;
 }
 
+std::vector<cLight*> Scene::getLights() {
+
+	std::vector<cLight*> vs;
+	for (std::map<std::string, cLight*>::iterator i = lights.begin();
+		i != lights.end(); i++)
+	{
+		vs.push_back(i->second);
+	}
+	return vs;
+}
+
 cGameObject* Scene::findGameObject(std::string name) {
 
 	if (game_objects.find(name) != game_objects.end()) {

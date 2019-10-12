@@ -1,5 +1,7 @@
 #include "SceneEditor.h"
 #include "Camera.h"
+#include "Scene.h"
+#include <glm/gtx/rotate_vector.hpp>
 
 SceneEditor::SceneEditor() {}
 
@@ -9,9 +11,12 @@ SceneEditor* SceneEditor::getTheEditor() {
 	return theEditor;
 }
 
-void SceneEditor::init(std::vector<cGameObject*> objs) {
-    objects = objs;
+void SceneEditor::init(Scene* scene) {
+    objects = scene->getGameObjects();
 	selectedObj = objects.begin();
+	lights = scene->getLights();
+	selectedLight = lights.begin();
+	editMode = OBJS;
 	objectMode = TRANS;
 	debugRenderer = new cDebugRenderer();
 	debugRenderer->initialize();
@@ -23,6 +28,36 @@ cDebugRenderer* SceneEditor::getDebugRenderer() {
 	return debugRenderer;
 }
 
+void SceneEditor::drawDebug() {
+	switch (editMode) {
+	case OBJS:
+		objectDebug();
+		break;
+	case LIGHTS:
+		LightDebug();
+		break;
+	}
+}
+
+void SceneEditor::setEditMode(eEditMode m) {
+	editMode = m;
+	Camera* theCamera = Camera::getTheCamera();
+	if (m == OBJS) {
+		glm::vec3 objPos = (*selectedObj)->position;
+		//theCamera->setTarget(objPos);
+		//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
+	}
+	if (m == LIGHTS) {
+		glm::vec3 objPos = (*selectedLight)->pos;
+		//theCamera->setTarget(objPos);
+		//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
+	}
+}
+
+eEditMode SceneEditor::getEditMode() {
+	return editMode;
+}
+
 void SceneEditor::nextObject() {
 	selectedObj++;
 	if (selectedObj == objects.end()) {
@@ -31,7 +66,7 @@ void SceneEditor::nextObject() {
 	Camera* theCamera = Camera::getTheCamera();
 	glm::vec3 objPos = (*selectedObj)->position;
 	theCamera->setTarget(objPos);
-	theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
+	//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
 }
 
 void SceneEditor::previousObject() {
@@ -42,7 +77,7 @@ void SceneEditor::previousObject() {
 	Camera* theCamera = Camera::getTheCamera();
 	glm::vec3 objPos = (*selectedObj)->position;
 	theCamera->setTarget(objPos);
-	theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
+	//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
 }
 
 void SceneEditor::setObjectMode(eObjectMode m) {
@@ -50,46 +85,75 @@ void SceneEditor::setObjectMode(eObjectMode m) {
 }
 
 void SceneEditor::translateObject(glm::vec3 deltaTranslation) {
-	(*selectedObj)->position += deltaTranslation;
-	glm::vec3 objPos = (*selectedObj)->position;
+	glm::vec3 pos;
+	switch (editMode) {
+	case OBJS:
+		pos = (*selectedObj)->position;
+		break;
+	case LIGHTS:
+		pos = (*selectedLight)->pos;
+		break;
+	}
+	pos += deltaTranslation;
 	Camera* theCamera = Camera::getTheCamera();
-	theCamera->setTarget(objPos);
+	theCamera->setTarget(pos);
 	theCamera->setPosition(theCamera->getPosition() + deltaTranslation);
-}
 
-void SceneEditor::rotateObject(glm::vec3 deltaRotation) {
-	(*selectedObj)->rotationXYZ += deltaRotation;
-}
-
-void SceneEditor::scaleObject(float deltaScale) {
-	(*selectedObj)->scale *= deltaScale;
-}
-
-void SceneEditor::objectDebug() {
-	switch (objectMode) {
-	case TRANS:
-		objectDebugTranslation();
+	switch (editMode) {
+	case OBJS:
+		(*selectedObj)->position = pos;
 		break;
-	case ROT:
-		objectDebugRotation();
-		break;
-	case SCALE:
-		objectDebugScale();
+	case LIGHTS:
+		(*selectedLight)->pos = pos;
 		break;
 	}
 }
 
-void SceneEditor::objectDebugTranslation() {
-	cGameObject obj = **selectedObj;
-	glm::vec3 pos = obj.position;
+void SceneEditor::rotateObject(glm::vec3 deltaRotation) {
+	switch (editMode) {
+	case OBJS:
+		(*selectedObj)->rotationXYZ += deltaRotation;
+		break;
+	case LIGHTS:
+		(*selectedLight)->direction = glm::normalize((*selectedLight)->direction + deltaRotation);
+		break;
+	}
+}
+
+void SceneEditor::scaleObject(float deltaScale) {
+	switch (editMode) {
+	case OBJS:
+		(*selectedObj)->scale *= deltaScale;
+		break;
+	case LIGHTS:
+		(*selectedLight)->linearAtten *= deltaScale;
+		break;
+	}
+}
+
+void SceneEditor::objectDebug() {
+	glm::vec3 pos = (**selectedObj).position;
+	switch (objectMode) {
+	case TRANS:
+		debugTranslation(pos);
+		break;
+	case ROT:
+		debugRotation(pos);
+		break;
+	case SCALE:
+		debugScale(pos);
+		break;
+	}
+}
+
+void SceneEditor::debugTranslation(glm::vec3 pos) {
 
 	debugRenderer->addLine(pos, pos + glm::vec3(5.0, 0.0, 0.0), glm::vec3(1.0, 0.0, 0.0), 0.1f);
 	debugRenderer->addLine(pos, pos + glm::vec3(0.0, 5.0, 0.0), glm::vec3(0.0, 1.0, 0.0), 0.1f);
 	debugRenderer->addLine(pos, pos + glm::vec3(0.0, 0.0, 5.0), glm::vec3(0.0, 0.0, 1.0), 0.1f);
 }
 
-void SceneEditor::objectDebugRotation() {
-	glm::vec3 pos = (*selectedObj)->position;
+void SceneEditor::debugRotation(glm::vec3 pos) {
 
 	drLine xpos, xneg, zpos, zneg;
 	glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -117,8 +181,7 @@ void SceneEditor::objectDebugRotation() {
 	debugRenderer->addLine(zneg);
 }
 
-void SceneEditor::objectDebugScale() {
-	glm::vec3 pos = (*selectedObj)->position;
+void SceneEditor::debugScale(glm::vec3 pos) {
 
 	glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
 	glm::vec3 yellow = glm::vec3(1.0f, 1.0f, 0.0f);
@@ -167,4 +230,62 @@ void SceneEditor::objectDebugScale() {
 		pos + glm::vec3(-innerDist, -innerDist, -innerDist),
 		pos + glm::vec3(-outerDist, -outerDist, -outerDist),
 		red, 0.1f);
+}
+
+void SceneEditor::nextLight() {
+	selectedLight++;
+	if (selectedLight == lights.end()) {
+		selectedLight = lights.begin();
+	}
+	Camera* theCamera = Camera::getTheCamera();
+	glm::vec3 LightPos = (*selectedLight)->pos;
+	theCamera->setTarget(LightPos);
+	//theCamera->setPosition(LightPos + glm::vec3(0.0f, 0.0f, -50.0f));
+}
+
+void SceneEditor::previousLight() {
+	if (selectedLight == lights.begin()) {
+		selectedLight = lights.end();
+	}
+	selectedLight--;
+	Camera* theCamera = Camera::getTheCamera();
+	glm::vec3 LightPos = (*selectedLight)->pos;
+	theCamera->setTarget(LightPos);
+	//theCamera->setPosition(LightPos + glm::vec3(0.0f, 0.0f, -50.0f));
+}
+
+void SceneEditor::translateLight(glm::vec3 deltaTranslation){ }
+void SceneEditor::rotateLight(glm::vec3 deltaRotation){ }
+void SceneEditor::changeLinearAtten(float deltaScale){ 
+}
+void SceneEditor::changeQuadAtten(float deltaScale) { 
+	(*selectedLight)->quadAtten *= deltaScale;
+}
+void SceneEditor::changeInnerAngle(float deltaScale) {
+	(*selectedLight)->innerAngle *= deltaScale;
+}
+void SceneEditor::changeOuterAngle(float deltaScale){ 
+	(*selectedLight)->outerAngle *= deltaScale;
+}
+
+void SceneEditor::LightDebug(){ 
+	glm::vec3 pos  = (*selectedLight)->pos;
+	glm::vec3 dir = (*selectedLight)->direction;
+	switch (objectMode) {
+	case TRANS: 
+		debugTranslation(pos);
+		break;
+	case ROT:
+		debugRenderer->addLine(pos, pos + dir * 10.0f, glm::vec3(1.0, 1.0, 1.0), 0.1f);
+		break;
+	case SCALE:		
+		debugScale(pos);
+		break;
+	case ANGLES:
+		glm::vec3 leftInner = glm::rotate(dir, (*selectedLight)->innerAngle * 0.5f, glm::vec3(0.0, 1.0f, 0.0f));
+		glm::vec3 rightInner = glm::rotate(dir, (*selectedLight)->innerAngle * -0.5f, glm::vec3(0.0, 1.0f, 0.0f));
+		debugRenderer->addLine(pos, pos + leftInner * 10.0f, glm::vec3(1.0, 1.0, 1.0), 0.1f);
+		debugRenderer->addLine(pos, pos + rightInner * 10.0f, glm::vec3(1.0, 1.0, 1.0), 0.1f);
+		break;
+	}
 }

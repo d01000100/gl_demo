@@ -36,8 +36,8 @@ int main(void)
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = Camera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
-	theCamera->setPosition(glm::vec3(0.0, 80.0, 2.0));
-	theCamera->setTarget(glm::vec3(0.0, 10.0, 0.0));
+	theCamera->setPosition(glm::vec3(0.0, 80.0, 10.0));
+	theCamera->setTarget(glm::vec3(0.0, 20.0, 0.0));
 
 	GLFWwindow* window;
 
@@ -82,7 +82,7 @@ int main(void)
 									 
 	if (!theScene->loadScene("assets/scene1.json")) { return -1; }
 
-	sceneEditor->init(theScene->getGameObjects());
+	sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -149,7 +149,7 @@ int main(void)
 		//pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
 		//pPhysics->TestForCollisions(theScene->getGameObjects());
 		
-		sceneEditor->objectDebug();	
+		sceneEditor->drawDebug();	
 		sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -2,12 +2,15 @@
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
+#include <iostream>
+#include <fstream>
 
 #include "GFLW_callbacks.h"
 #include "globalStuff.h"			// for find object
 #include "Camera.h"
 #include "Scene.h"
 #include "SceneEditor.h"
+#include "JSON_IO.h"
 
 #include <stdio.h>		// for fprintf()
 
@@ -62,13 +65,28 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
-			theEditor->nextObject();
+			switch (theEditor->getEditMode()) {
+			case OBJS:
+				theEditor->nextObject();
+				break;
+			case LIGHTS:
+				theEditor->nextLight();
+				break;
+			}
 		}
 
 		if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
-			theEditor->previousObject();
+			switch (theEditor->getEditMode()) {
+			case OBJS:
+				theEditor->previousObject();
+				break;
+			case LIGHTS:
+				theEditor->previousLight();
+				break;
+			}
 		}
 
+		// Individual obj mode
 		if (key == GLFW_KEY_T && action == GLFW_PRESS) {
 			theEditor->setObjectMode(TRANS);
 		}
@@ -79,6 +97,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
 			theEditor->setObjectMode(SCALE);
+		}
+
+		if (key == GLFW_KEY_V && action == GLFW_PRESS) {
+			theEditor->setObjectMode(ANGLES);
+		}
+
+		// General edition mode
+		if (key == GLFW_KEY_O && action == GLFW_PRESS) {
+			theEditor->setEditMode(OBJS);
+		}
+		if (key == GLFW_KEY_L && action == GLFW_PRESS) {
+			theEditor->setEditMode(LIGHTS);
+		}
+
+		if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
+			std::ofstream outFile("assets/saved_scene.json");
+			outFile << serializeObjects(theScene->getGameObjects()) << "\n";
 		}
 	}
 
@@ -145,17 +180,43 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				break;
 			}
 			case SCALE: {
-				float scale = 1.0f;
 				if (key == GLFW_KEY_W)
 				{
-					scale = 1.1f;
+					theEditor->scaleObject(1.1f);
 				}
 				if (key == GLFW_KEY_S)
 				{
-					scale = 0.9f;
+					theEditor->scaleObject(0.9f); 
 				}
-				theEditor->scaleObject(scale);
+				if (key == GLFW_KEY_A && theEditor->getEditMode() == LIGHTS)
+				{
+					theEditor->changeQuadAtten(1.1f);
+				}
+				if (key == GLFW_KEY_D && theEditor->getEditMode() == LIGHTS)
+				{
+					theEditor->changeQuadAtten(0.9f);
+				}
 				break;
+			case ANGLES:
+				if (theEditor->getEditMode() == LIGHTS) {
+					if (key == GLFW_KEY_W)
+					{
+						theEditor->changeOuterAngle(1.02f);
+					}
+					if (key == GLFW_KEY_S)
+					{
+						theEditor->changeOuterAngle(0.98f);
+					}
+					if (key == GLFW_KEY_A)
+					{
+						theEditor->changeInnerAngle(0.98f);
+					}
+					if (key == GLFW_KEY_D)
+					{
+						theEditor->changeInnerAngle(1.02f);
+					}
+					break;
+				}
 			}
 		}
 	}//if (isShiftKeyDownByAlone(mods))

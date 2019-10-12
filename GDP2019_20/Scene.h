@@ -26,6 +26,7 @@ public:
 	static Scene* getTheScene();
 	void addGameObject(cGameObject* obj);
 	std::vector<cGameObject*> getGameObjects();
+	std::vector<cLight*> getLights();
 	cGameObject* findGameObject(std::string name);
 	bool loadScene(std::string filename);
 	void saveScene(std::string filename);
