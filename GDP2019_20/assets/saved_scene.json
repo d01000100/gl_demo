@@ -1,0 +1,203 @@
+{
+  "Lights": [
+    {
+      "cutOffDist": 100000.0,
+      "diffuseColor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "innerAngle": 0.0,
+      "isOn": true,
+      "linearAtten": 0.20000000298023224,
+      "name": "light2",
+      "outerAngle": 0.0,
+      "position": [
+        20.0,
+        10.0,
+        0.0
+      ],
+      "quadAtten": 1.0000000116860974e-07,
+      "specularColor": [
+        1.0,
+        1.0,
+        0.0,
+        500.0
+      ],
+      "type": "point"
+    },
+    {
+      "cutOffDist": 100000.0,
+      "diffuseColor": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "innerAngle": 0.0,
+      "isOn": true,
+      "linearAtten": 0.20000000298023224,
+      "name": "shiny_light",
+      "outerAngle": 0.0,
+      "position": [
+        0.0,
+        10.0,
+        0.0
+      ],
+      "quadAtten": 1.0000000116860974e-07,
+      "specularColor": [
+        1.0,
+        1.0,
+        0.0,
+        500.0
+      ],
+      "type": "point"
+    },
+    {
+      "cutOffDist": 40.0,
+      "diffuseColor": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "direction": [
+        -0.1602420210838318,
+        -0.8698675036430359,
+        -0.4665331542491913
+      ],
+      "innerAngle": 30.0,
+      "isOn": true,
+      "linearAtten": 0.029999999329447746,
+      "name": "spotlight0",
+      "outerAngle": 50.0,
+      "position": [
+        -19.0,
+        9.0,
+        -20.0
+      ],
+      "quadAtten": 1.0000000116860974e-07,
+      "specularColor": [
+        0.0,
+        0.0,
+        1.0,
+        500.0
+      ],
+      "type": "spot"
+    }
+  ],
+  "Meshes": [
+    {
+      "filename": "assets/models/Sphere_Radius_1_XYZ_n.ply",
+      "name": "sphere"
+    },
+    {
+      "filename": "assets/models/Terrain_XYZ_n.ply",
+      "name": "terrain"
+    }
+  ],
+  "Objects": [
+    {
+      "Physics": {
+        "acceleration": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gravity": false,
+        "radius": 0.0,
+        "shape": "MESH",
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "diffuseColor": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929
+      ],
+      "front": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "isVisible": true,
+      "mesh": "terrain",
+      "name": "TheGround",
+      "position": [
+        10.0,
+        -10.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.7853981852531433,
+        0.3490658402442932
+      ],
+      "scale": 0.800000011920929,
+      "specularColor": [
+        1.0,
+        1.0,
+        1.0,
+        50.0
+      ]
+    },
+    {
+      "Physics": {
+        "acceleration": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gravity": true,
+        "radius": 2.0,
+        "shape": "SPHERE",
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "diffuseColor": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "front": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "isVisible": true,
+      "mesh": "sphere",
+      "name": "ball",
+      "position": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 2.0,
+      "specularColor": [
+        1.0,
+        1.0,
+        0.0,
+        1000.0
+      ]
+    }
+  ]
+}

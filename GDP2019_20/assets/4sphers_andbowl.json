@@ -51,7 +51,7 @@
             "Physics": {
                 "acceleration": [
                     0.0,
-                    0,
+                    -707.0,
                     0.0
                 ],
                 "gravity": true,
@@ -73,7 +73,7 @@
             ],
             "isVisible": true,
             "mesh": "sphere",
-            "name": "ball",
+            "name": "1003",
             "position": [
                 0.0,
                 30.0,
@@ -96,14 +96,59 @@
             "Physics": {
                 "acceleration": [
                     0.0,
-                    0,
+                    -707.0,
+                    0.0
+                ],
+                "gravity": true,
+                "radius": 2.0,
+                "shape": "sphere",
+                "velocity": [
+                    0, 0, 0
+                ]
+            },
+            "diffuseColor": [
+                0.10000000149011612,
+                1.0,
+                0.10000000149011612
+            ],
+            "front": [
+                -1.0,
+                0.0,
+                0.0
+            ],
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "1004",
+            "position": [
+                0.0,
+                42.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 2.0,
+            "specularColor": [
+                1.0,
+                1.0,
+                0.0,
+                1000.0
+            ]
+        },
+        {
+            "Physics": {
+                "acceleration": [
+                    0.0,
+                    -707.0,
                     0.0
                 ],
                 "gravity": true,
                 "radius": 5.0,
                 "shape": "sphere",
                 "velocity": [
-                    20, 0, 0
+                    0, 0, 0
                 ]
             },
             "diffuseColor": [
@@ -174,7 +219,7 @@
             "rotation": [
                 -91.99984741210938,
                 -6.000000476837158,
-                15.0
+                0.0
             ],
             "scale": 10.407779693603516,
             "specularColor": [
@@ -182,6 +227,51 @@
                 1.0,
                 1.0,
                 50.0
+            ]
+        },
+        {
+            "Physics": {
+                "acceleration": [
+                    0.0,
+                    -707.0,
+                    0.0
+                ],
+                "gravity": true,
+                "radius": 2.0,
+                "shape": "sphere",
+                "velocity": [
+                    0, 0, 0
+                ]
+            },
+            "diffuseColor": [
+                0.10000000149011612,
+                1.0,
+                0.10000000149011612
+            ],
+            "front": [
+                -1.0,
+                0.0,
+                0.0
+            ],
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "ball",
+            "position": [
+                0.0,
+                10.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 2.0,
+            "specularColor": [
+                1.0,
+                1.0,
+                0.0,
+                1000.0
             ]
         }
     ]
