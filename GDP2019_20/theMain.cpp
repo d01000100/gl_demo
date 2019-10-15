@@ -32,6 +32,7 @@
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
 std::string scene_filename = "assets/scene1.json";
+bool ::isPlaying = false;
 
 int main(void)
 {
@@ -152,11 +153,15 @@ int main(void)
 		theScene->drawScene();
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
-		pPhysics->TestForCollisions(theScene->getGameObjects());
+
+		if (::isPlaying) {
+			pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
+			pPhysics->TestForCollisions(theScene->getGameObjects());
+			theScene->findGameObject("blender")->rotationXYZ += glm::vec3(0.0f, 2.0f, 0.0f) * (float)averageDeltaTime;
+		}
 		
 		sceneEditor->drawDebug();	
-		sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
+		//sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
 		//pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
