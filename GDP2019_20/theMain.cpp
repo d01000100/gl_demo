@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include <glm/gtx/string_cast.hpp>
 
 #include <stdlib.h>		// c libs
 #include <stdio.h>		// c libs
@@ -97,6 +98,7 @@ int main(void)
 	double lastTime = glfwGetTime();
 
 	theCamera->setTarget(theScene->findGameObject("TheBowl")->position);
+	theCamera->setPosition(glm::vec3(-44, 100, 0));
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -120,6 +122,8 @@ int main(void)
 		float ratio;
 		int width, height;
 		glm::mat4 p, v;
+
+		//glfwSetWindowTitle(window, glm::to_string(theCamera->getPosition()).c_str());
 
 		glfwGetFramebufferSize(window, &width, &height);
 		ratio = width / (float)height;
@@ -153,7 +157,7 @@ int main(void)
 		
 		sceneEditor->drawDebug();	
 		sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
-		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
+		//pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

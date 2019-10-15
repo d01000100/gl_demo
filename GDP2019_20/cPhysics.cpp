@@ -193,7 +193,7 @@ bool cPhysics::DoSphereSphereCollision(cGameObject* pA, cGameObject* pB,
 		vel_reflected = glm::reflect(pB->physics->velocity, -normDist);
 		vel_reflected = glm::normalize(vel_reflected);
 
-		pB->physics->velocity = vel_reflected * glm::length(pB->physics->velocity);
+		pB->physics->velocity = vel_reflected * glm::length(pB->physics->velocity) * 0.95f;
 
 		//pB->physics->acceleration = glm::vec3(0.0f);
 		//pB->physics->velocity = glm::vec3(0.0f);
@@ -269,7 +269,7 @@ bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 		// Get lenght of the velocity vector
 		float speed = glm::length(sphere->physics->velocity);
 
-		sphere->physics->velocity = reflectionVec * speed;
+		sphere->physics->velocity = reflectionVec * speed * 0.95f;
 		debugRenderer->addLine(closestPoint, closestPoint + sphere->physics->velocity * 0.2f, glm::vec3(0.0f, 0.0f, 1.0f), 500.0f);
 		//sphere->physics = NULL;
 		return true;
