@@ -1,3 +1,4 @@
+
 #ifndef _cPhysics_HG_
 #define _cPhysics_HG_
 
@@ -8,6 +9,8 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <vector>
 
+#include "DebugRenderer/cDebugRenderer.h"
+
 class cPhysics
 {
 public:
@@ -16,6 +19,7 @@ public:
 	// Alias to a type "existing type" "new type name"
 	typedef glm::vec3 Point;
 	typedef glm::vec3 Vector;
+	cDebugRenderer* debugRenderer;
 
 	struct Sphere
 	{
@@ -64,7 +68,7 @@ private:
 
 	// Does collision test and returns collision information
 	// Returns true if collision, and will load collisionInfo struct
-	bool DoSphereSphereCollisionTest( cGameObject* pA, cGameObject *pB, 
+	bool DoSphereSphereCollision( cGameObject* pA, cGameObject *pB, 
 									  sCollisionInfo &collisionInfo );
 	bool DoSphereMeshCollision( cGameObject* pA, cGameObject* pB,
 									 sCollisionInfo &collisionInfo );

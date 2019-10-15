@@ -1,8 +1,9 @@
 #include "cPhysics.h"
+#include "globalStuff.h"
 
 cPhysics::cPhysics()
 {
-	this->m_Gravity = glm::vec3(0.0f, -0.5f, 0.0f);
+	this->m_Gravity = glm::vec3(0.0f, -1.0f, 0.0f);
 	return;
 }
 
@@ -148,33 +149,62 @@ void cPhysics::TestForCollisions(std::vector<cGameObject*> vec_pGameObjects)
 			{	
 				continue;
 			}
-			else if (pA->physics->shape == SPHERE &&
-				pB->physics->shape == SPHERE)
-			{
-				if (DoSphereSphereCollisionTest(pA, pB, collisionInfo))
+			else if (pA->physics && pB->physics) {
+				if (pA->physics->shape == SPHERE &&
+					pB->physics->shape == SPHERE)
 				{
-					vecCollisions.push_back(collisionInfo);
+					if (DoSphereSphereCollision(pA, pB, collisionInfo))
+					{
+						vecCollisions.push_back(collisionInfo);
+					}
 				}
+				else if (pA->physics->shape == SPHERE &&
+						 pB->physics->shape == MESH)
+				{
+					if (DoSphereMeshCollision(pA, pB, collisionInfo))
+					{
+						vecCollisions.push_back(collisionInfo);
+					}
+				}		
 			}
-			else if (pA->physics->shape == SPHERE &&
-					 pB->physics->shape == MESH)
-			{
-				if (DoSphereMeshCollision(pA, pB, collisionInfo))
-				{
-					vecCollisions.push_back(collisionInfo);
-				}
-			}		
 		}//for (unsigned int innerLoopIndex = 0;
 	}//for (unsigned int outerLoopIndex = 0;
 }
 
-bool cPhysics::DoSphereSphereCollisionTest(cGameObject* pA, cGameObject* pB,
+bool cPhysics::DoSphereSphereCollision(cGameObject* pA, cGameObject* pB,
 								 sCollisionInfo& collisionInfo)
 {
-	// TODO: 
-	// Run the sphere-sphere collision test
-	// If collided, load the collisionInfo struct and return true
-	// else return false;
+	// B -> A (en origen)
+	glm::vec3 distance = pA->position - pB->position;
+	float clippingDist = pA->physics->radius + pB->physics->radius - glm::length(distance);
+	if (clippingDist > 0) {
+
+		glm::vec3 normDist = glm::normalize(distance);
+
+		pA->position += clippingDist * normDist;
+
+		// reflect ball A according to the vector between the balls
+		glm::vec3 vel_reflected = glm::reflect(pA->physics->velocity, normDist);
+		vel_reflected = glm::normalize(vel_reflected);
+
+		pA->physics->velocity = vel_reflected * glm::length(pA->physics->velocity);
+
+		// reflect ball B according to the inverseo of the vector between the balls
+		vel_reflected = glm::reflect(pB->physics->velocity, -normDist);
+		vel_reflected = glm::normalize(vel_reflected);
+
+		pB->physics->velocity = vel_reflected * glm::length(pB->physics->velocity);
+
+		//pB->physics->acceleration = glm::vec3(0.0f);
+		//pB->physics->velocity = glm::vec3(0.0f);
+		//pB->physics->gravity = false;
+
+		//pA->physics->acceleration = glm::vec3(0.0f);
+		//pA->physics->velocity = glm::vec3(0.0f);
+		//pA->physics->gravity = false;
+
+		return true;
+	}
 
 	return false;
 }
@@ -191,9 +221,9 @@ bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 
 	GetClosestTriangleToPoint(sphere->position, transformed_mesh, closestPoint, closestTriangle);
 
-	// Are we hitting the triangle? 
 	float distance = glm::length(sphere->position - closestPoint);
 
+	// Are we hitting the triangle? 
 	if (distance <= sphere->physics->radius)
 	{
 		// Move the sphere back to where it just penetrated...
@@ -218,11 +248,20 @@ bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 		sphere->position += (vecPositionAdjust);
 
 		// Is in contact with the triangle... 
+		
+		// draw velocity
+		debugRenderer->addLine(closestPoint, closestPoint - sphere->physics->velocity * 0.2f, glm::vec3(1.0f, 0.0f, 0.0f), 500.0f);
+		// draw normal
+		debugRenderer->addLine(closestPoint, closestPoint + closestTriangle.normal * 10.0f, glm::vec3(1.0f, 1.0f, 1.0f), 500.0f);
+
 		// Calculate the response vector off the triangle. 
 		glm::vec3 velocityVector = glm::normalize(sphere->physics->velocity);
 
+
 		// closestTriangle.normal
-		glm::vec3 reflectionVec = glm::reflect(velocityVector, closestTriangle.normal);
+		glm::vec3 reflectionVec = glm::reflect(velocityVector, glm::normalize(closestTriangle.normal));
+		// draw reflection
+
 		reflectionVec = glm::normalize(reflectionVec);
 
 		// Change the direction of the ball (the bounce off the triangle)
@@ -230,7 +269,9 @@ bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 		// Get lenght of the velocity vector
 		float speed = glm::length(sphere->physics->velocity);
 
-		sphere->physics->velocity = reflectionVec * (speed * 0.8f);
+		sphere->physics->velocity = reflectionVec * speed;
+		debugRenderer->addLine(closestPoint, closestPoint + sphere->physics->velocity * 0.2f, glm::vec3(0.0f, 0.0f, 1.0f), 500.0f);
+		//sphere->physics = NULL;
 		return true;
 	}
 	return false;

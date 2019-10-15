@@ -63,8 +63,8 @@ int main(void)
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
 
-	/*cDebugRenderer* pDebugRenderer = new cDebugRenderer();
-	pDebugRenderer->initialize();*/
+	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
+	pDebugRenderer->initialize();
 
 	cShaderManager::cShader vertexShad;
 	vertexShad.fileName = "assets/shaders/vertexShader01.glsl";
@@ -89,11 +89,14 @@ int main(void)
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
 	
 	cPhysics* pPhysics = new cPhysics();
+	pPhysics->debugRenderer = pDebugRenderer;
 
 	cLowPassFilter avgDeltaTimeThingy;
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
+
+	theCamera->setTarget(theScene->findGameObject("TheBowl")->position);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -144,14 +147,13 @@ int main(void)
 
 		theScene->drawScene();
 
-		//theCamera->setTarget(theScene->findGameObject("ball")->position);
-
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		//pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
-		//pPhysics->TestForCollisions(theScene->getGameObjects());
+		pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
+		pPhysics->TestForCollisions(theScene->getGameObjects());
 		
 		sceneEditor->drawDebug();	
 		sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
+		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

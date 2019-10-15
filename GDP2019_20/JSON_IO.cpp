@@ -420,19 +420,22 @@ nlohmann::json serializeObjects(std::vector<cGameObject*> objs) {
 
 			eShapeTypes shape = physics->shape;
 			if (shape == SPHERE) {
-				jPhysics["shape"] = "SPHERE";
+				jPhysics["shape"] = "sphere";
 			}
 			else if (shape == MESH) {
-				jPhysics["shape"] = "MESH";
+				jPhysics["shape"] = "mesh";
 			}
 			else if (shape == AABB) {
-				jPhysics["shape"] = "AABB";
+				jPhysics["shape"] = "aabb";
 			}
 			else if (shape == CAPSULE) {
-				jPhysics["shape"] = "CAPSULE";
+				jPhysics["shape"] = "capsule";
 			}
 			else if (shape == PLANE) {
-				jPhysics["shape"] = "PLANE";
+				jPhysics["shape"] = "plane";
+			}
+			else {
+				jPhysics["shape"] = "???";
 			}
 
 			jPhysics["radius"] = physics->radius;

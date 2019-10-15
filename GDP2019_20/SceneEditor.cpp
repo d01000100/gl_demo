@@ -44,12 +44,12 @@ void SceneEditor::setEditMode(eEditMode m) {
 	Camera* theCamera = Camera::getTheCamera();
 	if (m == OBJS) {
 		glm::vec3 objPos = (*selectedObj)->position;
-		//theCamera->setTarget(objPos);
+		theCamera->setTarget(objPos);
 		//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
 	}
 	if (m == LIGHTS) {
 		glm::vec3 objPos = (*selectedLight)->pos;
-		//theCamera->setTarget(objPos);
+		theCamera->setTarget(objPos);
 		//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
 	}
 }
