@@ -23,5 +23,10 @@ public:
 	void moveLeft(float angle);
 	void zoom(float distance);
 	glm::mat4 lookAt();
+
+	// navigation camera
+	void turnVertically(float angle);
+	void turnHorizontally(float angle);
+	void walk(float distance);
 };
 

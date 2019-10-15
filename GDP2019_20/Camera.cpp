@@ -3,7 +3,10 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include "Camera.h"
+#include "globalStuff.h"
+#include "Colors.h"
 
 Camera* Camera::theCamera = new Camera();
 
@@ -68,3 +71,17 @@ glm::mat4 Camera::lookAt() {
 
 	return glm::lookAt(pos, target, upVector);
 }
+
+// navigation camera
+void Camera::turnVertically(float angle) {
+	target = glm::rotate(-direction(), angle, right()) + pos;
+}
+void Camera::turnHorizontally(float angle) {
+	target = glm::rotate(-direction(), angle, upVector) + pos;
+}
+void Camera::walk(float distance) {
+	glm::vec3 forward = glm::normalize(-direction());
+	target += forward * distance;
+	pos += forward * distance;
+}
+	

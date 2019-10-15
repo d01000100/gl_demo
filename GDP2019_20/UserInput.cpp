@@ -24,13 +24,10 @@ const float CAMERAZOOMSPEED = 2.0f;
 const float TRANSLATION_STEP = 0.5f;
 const float ROTATION_STEP = glm::radians(0.5f);
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
+void camera_around_target(int key, int scancode, int action, int mods) {
 	Camera* theCamera = Camera::getTheCamera();
-	Scene* theScene = Scene::getTheScene();
-	SceneEditor* theEditor = SceneEditor::getTheEditor();
 
-	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
+	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods))
 	{
 		if (key == GLFW_KEY_A)
 		{
@@ -56,7 +53,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			theCamera->moveDown(CAMERAROTATIONSPEED);
 		}
+	}
+}
 
+void editScene(int key, int scancode, int action, int mods) 
+{
+	SceneEditor* theEditor = SceneEditor::getTheEditor();
+	Scene* theScene = Scene::getTheScene();
+
+	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods))
+	{
 		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
 			switch (theEditor->getEditMode()) {
 			case OBJS:
@@ -78,30 +84,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				break;
 			}
 		}
-
-		// Individual obj mode
-		if (key == GLFW_KEY_T && action == GLFW_PRESS) {
-			theEditor->setObjectMode(TRANS);
-		}
-
-		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-			theEditor->setObjectMode(ROT);
-		}
-
-		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
-			theEditor->setObjectMode(SCALE);
-		}
-
-		if (key == GLFW_KEY_V && action == GLFW_PRESS) {
-			theEditor->setObjectMode(ANGLES);
-		}
-
-		if (key == GLFW_KEY_SPACE && 
-			action == GLFW_PRESS && 
-			theEditor->getEditMode() == LIGHTS) {
-			theEditor->toggleLight();
-		}
-
 		// General edition mode
 		if (key == GLFW_KEY_O && action == GLFW_PRESS) {
 			theEditor->setEditMode(OBJS);
@@ -123,76 +105,109 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 	}
 
+}
+
+void editObject(int key, int scancode, int action, int mods)
+{
+	SceneEditor* theEditor = SceneEditor::getTheEditor();
+
+	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods))
+	{
+		// Individual obj mode
+		if (key == GLFW_KEY_T && action == GLFW_PRESS) {
+			theEditor->setObjectMode(TRANS);
+		}
+
+		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+			theEditor->setObjectMode(ROT);
+		}
+
+		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
+			theEditor->setObjectMode(SCALE);
+		}
+
+		if (key == GLFW_KEY_V && action == GLFW_PRESS) {
+			theEditor->setObjectMode(ANGLES);
+		}
+
+		if (key == GLFW_KEY_SPACE &&
+			action == GLFW_PRESS &&
+			theEditor->getEditMode() == LIGHTS) {
+			theEditor->toggleLight();
+		}
+	}
+
 	// Edit mode
 	if (isShiftKeyDownByAlone(mods))
 	{
 		switch (theEditor->objectMode) {
-			case TRANS: {
-				glm::vec3 direction = glm::vec3(0.0f);
-				if (key == GLFW_KEY_A)
-				{
-					direction = glm::vec3(-1.0f, 0.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_D)
-				{
-					direction = glm::vec3(1.0f, 0.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_Q)
-				{
-					direction = glm::vec3(0.0f, 0.0f, -1.0f);
-				}
-				if (key == GLFW_KEY_E)
-				{
-					direction = glm::vec3(0.0f, 0.0f, 1.0f);
-				}
-				if (key == GLFW_KEY_W)
-				{
-					direction = glm::vec3(0.0f, 1.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_S)
-				{
-					direction = glm::vec3(0.0f, -1.0f, 0.0f); 
-				}
-				theEditor->translateObject(direction * TRANSLATION_STEP);
-				break;
+		case TRANS: {
+			glm::vec3 direction = glm::vec3(0.0f);
+			if (key == GLFW_KEY_A)
+			{
+				direction = glm::vec3(-1.0f, 0.0f, 0.0f);
 			}
-			case ROT: {
-				glm::vec3 rotation = glm::vec3(0.0f);
-				if (key == GLFW_KEY_A)
-				{
-					rotation = glm::vec3(0.0f, 1.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_D)
-				{
-					rotation = glm::vec3(0.0f, -1.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_Q)
-				{
-					rotation = glm::vec3(0.0f, 0.0f, -1.0f);
-				}
-				if (key == GLFW_KEY_E)
-				{
-					rotation = glm::vec3(0.0f, 0.0f, 1.0f);
-				}
-				if (key == GLFW_KEY_W)
-				{
-					rotation = glm::vec3(-1.0f, 0.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_S)
-				{
-					rotation = glm::vec3(1.0f, 0.0f, 0.0f);
-				}
-				theEditor->rotateObject(rotation * ROTATION_STEP);
-				break;
+			if (key == GLFW_KEY_D)
+			{
+				direction = glm::vec3(1.0f, 0.0f, 0.0f);
 			}
-			case SCALE: {
+			if (key == GLFW_KEY_Q)
+			{
+				direction = glm::vec3(0.0f, 0.0f, -1.0f);
+			}
+			if (key == GLFW_KEY_E)
+			{
+				direction = glm::vec3(0.0f, 0.0f, 1.0f);
+			}
+			if (key == GLFW_KEY_W)
+			{
+				direction = glm::vec3(0.0f, 1.0f, 0.0f);
+			}
+			if (key == GLFW_KEY_S)
+			{
+				direction = glm::vec3(0.0f, -1.0f, 0.0f);
+			}
+			theEditor->translateObject(direction * TRANSLATION_STEP);
+			break;
+		}
+		case ROT: {
+			glm::vec3 rotation = glm::vec3(0.0f);
+			if (key == GLFW_KEY_A)
+			{
+				rotation = glm::vec3(0.0f, 1.0f, 0.0f);
+			}
+			if (key == GLFW_KEY_D)
+			{
+				rotation = glm::vec3(0.0f, -1.0f, 0.0f);
+			}
+			if (key == GLFW_KEY_Q)
+			{
+				rotation = glm::vec3(0.0f, 0.0f, -1.0f);
+			}
+			if (key == GLFW_KEY_E)
+			{
+				rotation = glm::vec3(0.0f, 0.0f, 1.0f);
+			}
+			if (key == GLFW_KEY_W)
+			{
+				rotation = glm::vec3(-1.0f, 0.0f, 0.0f);
+			}
+			if (key == GLFW_KEY_S)
+			{
+				rotation = glm::vec3(1.0f, 0.0f, 0.0f);
+			}
+			theEditor->rotateObject(rotation * ROTATION_STEP);
+			break;
+		}
+		case SCALE: {
+			if (action != GLFW_RELEASE) {
 				if (key == GLFW_KEY_W)
 				{
 					theEditor->scaleObject(1.1f);
 				}
 				if (key == GLFW_KEY_S)
 				{
-					theEditor->scaleObject(0.9f); 
+					theEditor->scaleObject(0.9f);
 				}
 				if (key == GLFW_KEY_A && theEditor->getEditMode() == LIGHTS)
 				{
@@ -202,31 +217,75 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				{
 					theEditor->changeQuadAtten(0.9f);
 				}
-				break;
-			case ANGLES:
-				if (theEditor->getEditMode() == LIGHTS) {
-					if (key == GLFW_KEY_W)
-					{
-						theEditor->changeOuterAngle(1.02f);
-					}
-					if (key == GLFW_KEY_S)
-					{
-						theEditor->changeOuterAngle(0.98f);
-					}
-					if (key == GLFW_KEY_A)
-					{
-						theEditor->changeInnerAngle(0.98f);
-					}
-					if (key == GLFW_KEY_D)
-					{
-						theEditor->changeInnerAngle(1.02f);
-					}
-					break;
+			}
+			break;
+		}
+		case ANGLES:
+			if (theEditor->getEditMode() == LIGHTS) {
+				if (key == GLFW_KEY_W)
+				{
+					theEditor->changeOuterAngle(1.02f);
 				}
+				if (key == GLFW_KEY_S)
+				{
+					theEditor->changeOuterAngle(0.98f);
+				}
+				if (key == GLFW_KEY_A)
+				{
+					theEditor->changeInnerAngle(0.98f);
+				}
+				if (key == GLFW_KEY_D)
+				{
+					theEditor->changeInnerAngle(1.02f);
+				}
+				break;
 			}
 		}
-	}//if (isShiftKeyDownByAlone(mods))
+	}
+}
 
+void navigation_camera(int key, int scancode, int action, int mods) {
+	Camera* theCamera = Camera::getTheCamera();
+
+	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods))
+	{
+		if (key == GLFW_KEY_A)
+		{
+			theCamera->turnHorizontally(-CAMERAROTATIONSPEED);
+		}
+		if (key == GLFW_KEY_D)
+		{
+			theCamera->turnHorizontally(CAMERAROTATIONSPEED);
+		}
+		if (key == GLFW_KEY_Q)
+		{
+			theCamera->walk(-CAMERAZOOMSPEED);
+		}
+		if (key == GLFW_KEY_E)
+		{
+			theCamera->walk(CAMERAZOOMSPEED);
+		}
+		if (key == GLFW_KEY_W)
+		{
+			theCamera->turnVertically(-CAMERAROTATIONSPEED);
+		}
+		if (key == GLFW_KEY_S)
+		{
+			theCamera->turnVertically(CAMERAROTATIONSPEED);
+		}
+	}
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	Camera* theCamera = Camera::getTheCamera();
+	Scene* theScene = Scene::getTheScene();
+	SceneEditor* theEditor = SceneEditor::getTheEditor();
+
+	//camera_around_target(key, scancode, action, mods);
+	navigation_camera(key, scancode, action, mods);
+	editScene(key, scancode, action, mods);
+	editObject(key, scancode, action, mods);
 
 	// Moving the pirate ship in a certain direction
 	if (isCtrlKeyDownByAlone(mods))

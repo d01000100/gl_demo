@@ -33,6 +33,7 @@ cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
 std::string scene_filename = "assets/scene1.json";
 bool ::isPlaying = true;
+cDebugRenderer *theDebugRenderer = new cDebugRenderer();
 
 int main(void)
 {
@@ -67,6 +68,7 @@ int main(void)
 
 	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 	pDebugRenderer->initialize();
+	::theDebugRenderer->initialize();
 
 	cShaderManager::cShader vertexShad;
 	vertexShad.fileName = "assets/shaders/vertexShader01.glsl";
@@ -161,8 +163,11 @@ int main(void)
 		}
 		
 		sceneEditor->drawDebug();	
-		//sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
+		sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
+		// colision lines
 		//pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
+		// camera and others
+		::theDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

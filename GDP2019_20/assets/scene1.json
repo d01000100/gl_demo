@@ -44,29 +44,18 @@
         {
             "filename": "assets/models/Sphere_Radius_1_XYZ_n.ply",
             "name": "sphere"
+        },
+        {
+            "filename": "assets/models/Terrain_XYZ_n.ply",
+            "name": "terrain"
         }
     ],
     "Objects": [
         {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 3.0,
-                "shape": "sphere",
-                "velocity": [
-                    5.0,
-                    0.0,
-                    0.0
-                ]
-            },
             "diffuseColor": [
-                0.30000001192092896,
+                0.7,
                 0.5,
-                1.0
+                0.1
             ],
             "front": [
                 1.0,
@@ -74,19 +63,17 @@
                 0.0
             ],
             "isVisible": true,
-            "mesh": "sphere",
-            "name": "1000",
+            "mesh": "terrain",
+            "name": "TheGround",
             "position": [
-                21.0,
-                0.0,
-                -0.5
+                0, 0, 0
             ],
             "rotation": [
                 0.0,
                 0.0,
                 0.0
             ],
-            "scale": 3.0,
+            "scale": 1.0,
             "specularColor": [
                 1.0,
                 1.0,
