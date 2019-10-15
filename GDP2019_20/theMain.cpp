@@ -32,7 +32,7 @@
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
 std::string scene_filename = "assets/scene1.json";
-bool ::isPlaying = false;
+bool ::isPlaying = true;
 
 int main(void)
 {

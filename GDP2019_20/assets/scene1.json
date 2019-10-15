@@ -44,10 +44,6 @@
         {
             "filename": "assets/models/Sphere_Radius_1_XYZ_n.ply",
             "name": "sphere"
-        },
-        {
-            "filename": "assets/models/Terrain_XYZ_n.ply",
-            "name": "terrain"
         }
     ],
     "Objects": [
@@ -79,7 +75,7 @@
             ],
             "isVisible": true,
             "mesh": "sphere",
-            "name": "1003",
+            "name": "1000",
             "position": [
                 21.0,
                 0.0,
@@ -126,7 +122,7 @@
             ],
             "isVisible": true,
             "mesh": "sphere",
-            "name": "1004",
+            "name": "1001",
             "position": [
                 13.0,
                 11.0,
@@ -173,7 +169,7 @@
             ],
             "isVisible": true,
             "mesh": "sphere",
-            "name": "1005",
+            "name": "1002",
             "position": [
                 20.0,
                 9.0,
@@ -220,7 +216,7 @@
             ],
             "isVisible": true,
             "mesh": "sphere",
-            "name": "1006",
+            "name": "1003",
             "position": [
                 5.0,
                 -0.5,
@@ -267,7 +263,7 @@
             ],
             "isVisible": true,
             "mesh": "sphere",
-            "name": "1007",
+            "name": "1004",
             "position": [
                 4.5,
                 15.0,
@@ -289,7 +285,7 @@
         {
             "Physics": {
                 "acceleration": [
-                    -9.0,
+                    0.0,
                     0.0,
                     0.0
                 ],
@@ -297,15 +293,15 @@
                 "radius": 2.0,
                 "shape": "sphere",
                 "velocity": [
+                    -4.0,
                     0.0,
-                    0.0,
-                    0.0
+                    3.0
                 ]
             },
             "diffuseColor": [
-                0.10000000149011612,
-                0.10000000149011612,
-                0.10000000149011612
+                8.0,
+                0.0010000000474974513,
+                1.0
             ],
             "front": [
                 -1.0,
@@ -314,11 +310,152 @@
             ],
             "isVisible": true,
             "mesh": "sphere",
-            "name": "1008",
+            "name": "1005",
             "position": [
-                -5.0,
-                -4.0,
+                0.5,
+                -7.5,
+                -3.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 2.0,
+            "specularColor": [
+                1.0,
+                1.0,
+                0.0,
+                1000.0
+            ]
+        },
+        {
+            "Physics": {
+                "acceleration": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "gravity": true,
+                "radius": 2.0,
+                "shape": "sphere",
+                "velocity": [
+                    4.0,
+                    0.0,
+                    3.0
+                ]
+            },
+            "diffuseColor": [
+                1.0,
+                0.0010000000474974513,
+                4.0
+            ],
+            "front": [
+                -1.0,
+                0.0,
+                0.0
+            ],
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "1006",
+            "position": [
+                -3.0,
+                3.0,
                 5.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 2.0,
+            "specularColor": [
+                1.0,
+                1.0,
+                0.0,
+                1000.0
+            ]
+        },
+        {
+            "Physics": {
+                "acceleration": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "gravity": true,
+                "radius": 2.0,
+                "shape": "sphere",
+                "velocity": [
+                    4.0,
+                    0.0,
+                    12.0
+                ]
+            },
+            "diffuseColor": [
+                1.0,
+                0.0010000000474974513,
+                1.0
+            ],
+            "front": [
+                -1.0,
+                0.0,
+                0.0
+            ],
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "1010",
+            "position": [
+                7.0,
+                8.5,
+                5.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 2.0,
+            "specularColor": [
+                1.0,
+                1.0,
+                0.0,
+                1000.0
+            ]
+        },
+        {
+            "Physics": {
+                "acceleration": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "gravity": true,
+                "radius": 2.0,
+                "shape": "sphere",
+                "velocity": [
+                    -14.0,
+                    0.0,
+                    7.0
+                ]
+            },
+            "diffuseColor": [
+                1.0,
+                0.0010000000474974513,
+                1.0
+            ],
+            "front": [
+                -1.0,
+                0.0,
+                0.0
+            ],
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "1011",
+            "position": [
+                4.0,
+                9.0,
+                -5.0
             ],
             "rotation": [
                 0.0,
@@ -410,54 +547,8 @@
             "mesh": "sphere",
             "name": "ball",
             "position": [
-                0.0,
+                1.0,
                 8.5,
-                5.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 2.0,
-            "specularColor": [
-                1.0,
-                1.0,
-                0.0,
-                1000.0
-            ]
-        },
-        {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 2.0,
-                "shape": "sphere",
-                "velocity": [
-                    -4.0,
-                    0.0,
-                    3.0
-                ]
-            },
-            "diffuseColor": [
-                8.0,
-                0.0010000000474974513,
-                1.0
-            ],
-            "front": [
-                -1.0,
-                0.0,
-                0.0
-            ],
-            "isVisible": true,
-            "mesh": "sphere",
-            "position": [
-                0.0,
-                11.5,
                 5.0
             ],
             "rotation": [
@@ -518,52 +609,6 @@
                 1.0,
                 1.0,
                 50.0
-            ]
-        },
-        {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 2.0,
-                "shape": "sphere",
-                "velocity": [
-                    -4.0,
-                    0.0,
-                    3.0
-                ]
-            },
-            "diffuseColor": [
-                1.0,
-                0.0010000000474974513,
-                4.0
-            ],
-            "front": [
-                -1.0,
-                0.0,
-                0.0
-            ],
-            "isVisible": true,
-            "mesh": "sphere",
-            "position": [
-                0.0,
-                6.0,
-                5.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 2.0,
-            "specularColor": [
-                1.0,
-                1.0,
-                0.0,
-                1000.0
             ]
         }
     ]
