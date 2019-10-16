@@ -67,6 +67,10 @@ cGameObject* Scene::findGameObject(std::string name) {
 	}
 }
 
+cLight* Scene::findLight(std::string name) {
+	return lights[name];
+}
+
 bool Scene::loadMeshes(std::string filename) {
 	std::vector<meshSettings>* vMeshes = readMeshes(filename);
 

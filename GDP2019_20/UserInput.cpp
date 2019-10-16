@@ -286,8 +286,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	Scene* theScene = Scene::getTheScene();
 	SceneEditor* theEditor = SceneEditor::getTheEditor();
 
-	camera_around_target(key, scancode, action, mods);
-	//navigation_camera(key, scancode, action, mods);
+	//camera_around_target(key, scancode, action, mods);
+	navigation_camera(key, scancode, action, mods);
 	editScene(key, scancode, action, mods);
 	editObject(key, scancode, action, mods);
 

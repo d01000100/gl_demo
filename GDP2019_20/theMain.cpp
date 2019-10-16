@@ -40,8 +40,6 @@ int main(void)
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = Camera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
-	theCamera->setPosition(glm::vec3(0.0, 80.0, 10.0));
-	theCamera->setTarget(glm::vec3(0.0, 20.0, 0.0));
 
 	GLFWwindow* window;
 
@@ -87,7 +85,6 @@ int main(void)
 									 
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
-	sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -100,8 +97,11 @@ int main(void)
 	// Get the initial time
 	double lastTime = glfwGetTime();
 
+	theCamera->setLights("player_left", "player_right");
 	theCamera->setTarget(theScene->findGameObject("Yellow Submarine")->position);
 	theCamera->setPosition(glm::vec3(-44, 100, 0));
+
+	sceneEditor->init(theScene);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -163,6 +163,7 @@ int main(void)
 		}
 		
 		sceneEditor->drawDebug();	
+		//theCamera->debugTarget();
 		sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
 		// colision lines
 		//pDebugRenderer->RenderDebugObjects(v, p, 0.01f);

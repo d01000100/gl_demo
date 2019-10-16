@@ -30,6 +30,7 @@ public:
 	std::map<std::string, cLight*> getLightsMap();
 	std::map<std::string, cMesh*> getMeshesMap();
 	cGameObject* findGameObject(std::string name);
+	cLight* findLight(std::string name);
 	bool loadScene(std::string filename);
 	bool reloadScene(std::string filename);
 	void saveScene(std::string filename);
