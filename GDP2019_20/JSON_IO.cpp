@@ -144,6 +144,13 @@ std::map<std::string, cGameObject*>* readObjects(std::string filename) {
 			gameObj->isVisible = true;
 		}
 
+		if (jObj->find("isWireframe") != jObj->end()) {
+			gameObj->isWireframe = (*jObj)["isWireframe"].get<bool>();
+		}
+		else {
+			gameObj->isWireframe = false;
+		}
+
 		if (jObj->find("front") != jObj->end()) {
 			float x = (*jObj)["front"][0].get<float>();
 			float y = (*jObj)["front"][1].get<float>();
@@ -398,6 +405,7 @@ nlohmann::json serializeObjects(std::vector<cGameObject*> objs) {
 		jObj["specularColor"][3] = gameObj->specularColor.a;
 
 		jObj["isVisible"] = gameObj->isVisible;
+		jObj["isWireframe"] = gameObj->isWireframe;
 
 		jObj["front"][0] = gameObj->front.x; 
 		jObj["front"][1] = gameObj->front.y; 
