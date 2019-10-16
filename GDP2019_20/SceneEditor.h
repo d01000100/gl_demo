@@ -46,6 +46,7 @@ public:
 	void translateObject(glm::vec3 deltaTranslation);
 	void rotateObject(glm::vec3 deltaRotation);
 	void scaleObject(float deltaScale);
+	void toggleWireframe();
 
 	void nextLight();
 	void previousLight();

@@ -131,6 +131,10 @@ void SceneEditor::scaleObject(float deltaScale) {
 	}
 }
 
+void SceneEditor::toggleWireframe() {
+	(*selectedObj)->isWireframe = !(*selectedObj)->isWireframe;
+}
+
 void SceneEditor::objectDebug() {
 	glm::vec3 pos = (**selectedObj).position;
 	switch (objectMode) {

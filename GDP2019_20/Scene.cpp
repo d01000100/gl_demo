@@ -177,7 +177,8 @@ void Scene::drawObjects()
 			1000.0f);	// Specular "power" (how shinny the object is)
 						// 1.0 to really big (10000.0f)
 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
+		glPolygonMode(GL_FRONT_AND_BACK, 
+			pCurrentObject->isWireframe ? GL_LINE : GL_FILL);
 		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
 		glEnable(GL_DEPTH);								// Write to depth buffer
 		
