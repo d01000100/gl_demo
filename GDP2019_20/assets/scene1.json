@@ -34,28 +34,48 @@
     ],
     "Meshes": [
         {
-            "filename": "assets/models/blender.ply",
-            "name": "blender"
+            "filename": "assets/models/anglerfish.ply ",
+            "name": "anglerfish"
         },
         {
-            "filename": "assets/models/low_poly_bowl.ply",
-            "name": "bowl"
+            "filename": "assets/models/Cangrejo.ply ",
+            "name": "cangrejo"
         },
         {
-            "filename": "assets/models/Sphere_Radius_1_XYZ_n.ply",
-            "name": "sphere"
+            "filename": "assets/models/Coral 01.ply",
+            "name": "coral1"
         },
         {
-            "filename": "assets/models/Terrain_XYZ_n.ply",
-            "name": "terrain"
+            "filename": "assets/models/Coral 02.ply",
+            "name": "coral2"
+        },
+        {
+            "filename": "assets/models/Medusa.ply",
+            "name": "medusa"
+        },
+        {
+            "filename": "assets/models/Pez globo inflado.ply",
+            "name": "pez globo"
+        },
+        {
+            "filename": "assets/models/Pez sierra.ply",
+            "name": "pez sierra"
+        },
+        {
+            "filename": "assets/models/seafloor.ply",
+            "name": "seafloor"
+        },
+        {
+            "filename": "assets/models/Submarino.ply",
+            "name": "submarino"
         }
     ],
     "Objects": [
         {
             "diffuseColor": [
-                0.7,
-                0.5,
-                0.1
+                0.30000001192092896,
+                1.4901161193847656e-08,
+                5.960464477539063e-08
             ],
             "front": [
                 1.0,
@@ -63,17 +83,20 @@
                 0.0
             ],
             "isVisible": true,
-            "mesh": "terrain",
+            "isWireframe": false,
+            "mesh": "seafloor",
             "name": "TheGround",
             "position": [
-                0, 0, 0
+                0.0,
+                1.0,
+                0.0
             ],
             "rotation": [
                 0.0,
                 0.0,
                 0.0
             ],
-            "scale": 1.0,
+            "scale": 2.796340227127075,
             "specularColor": [
                 1.0,
                 1.0,
@@ -82,115 +105,6 @@
             ]
         },
         {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 3.0,
-                "shape": "sphere",
-                "velocity": [
-                    0.0,
-                    0.0,
-                    -2.0
-                ]
-            },
-            "diffuseColor": [
-                0.800000011920929,
-                0.5,
-                0.4000000059604645
-            ],
-            "front": [
-                1.0,
-                0.0,
-                0.0
-            ],
-            "isVisible": true,
-            "mesh": "sphere",
-            "name": "1001",
-            "position": [
-                13.0,
-                11.0,
-                13.5
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 3.0,
-            "specularColor": [
-                1.0,
-                1.0,
-                1.0,
-                50.0
-            ]
-        },
-        {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 3.0,
-                "shape": "sphere",
-                "velocity": [
-                    4.0,
-                    0.0,
-                    7.0
-                ]
-            },
-            "diffuseColor": [
-                1.0,
-                0.20000000298023224,
-                0.4000000059604645
-            ],
-            "front": [
-                1.0,
-                0.0,
-                0.0
-            ],
-            "isVisible": true,
-            "mesh": "sphere",
-            "name": "1002",
-            "position": [
-                20.0,
-                9.0,
-                10.5
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 3.0,
-            "specularColor": [
-                1.0,
-                1.0,
-                1.0,
-                50.0
-            ]
-        },
-        {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 5.0,
-                "shape": "sphere",
-                "velocity": [
-                    -4.0,
-                    0.0,
-                    9.0
-                ]
-            },
             "diffuseColor": [
                 1.0,
                 1.0,
@@ -202,19 +116,20 @@
                 0.0
             ],
             "isVisible": true,
-            "mesh": "sphere",
-            "name": "1003",
+            "isWireframe": false,
+            "mesh": "submarino",
+            "name": "Yellow Submarine",
             "position": [
-                5.0,
-                -0.5,
-                3.5
+                -2.5,
+                12.0,
+                -129.5
             ],
             "rotation": [
-                0.0,
-                0.0,
-                0.0
+                -88.99986267089844,
+                -30.500015258789063,
+                -1.0000001192092896
             ],
-            "scale": 5.0,
+            "scale": 0.011159151792526245,
             "specularColor": [
                 1.0,
                 1.0,
@@ -223,25 +138,10 @@
             ]
         },
         {
-            "Physics": {
-                "acceleration": [
-                    4.0,
-                    0.0,
-                    -1.0
-                ],
-                "gravity": true,
-                "radius": 2.0,
-                "shape": "sphere",
-                "velocity": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            },
             "diffuseColor": [
-                1.0,
-                1.0,
-                1.0
+                0.4000000059604645,
+                0.20000001788139343,
+                0.10000000149011612
             ],
             "front": [
                 1.0,
@@ -249,19 +149,20 @@
                 0.0
             ],
             "isVisible": true,
-            "mesh": "sphere",
-            "name": "1004",
+            "isWireframe": false,
+            "mesh": "anglerfish",
+            "name": "anglerfish",
             "position": [
-                4.5,
-                15.0,
-                -3.0
+                -162.5,
+                11.5,
+                -46.5
             ],
             "rotation": [
-                0.0,
-                0.0,
-                0.0
+                -88.99986267089844,
+                118.49970245361328,
+                -1.0000001192092896
             ],
-            "scale": 2.0,
+            "scale": 0.05814969167113304,
             "specularColor": [
                 1.0,
                 1.0,
@@ -270,213 +171,208 @@
             ]
         },
         {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 2.0,
-                "shape": "sphere",
-                "velocity": [
-                    -4.0,
-                    0.0,
-                    3.0
-                ]
-            },
             "diffuseColor": [
-                8.0,
-                0.0010000000474974513,
+                1.0,
+                0.30000001192092896,
                 1.0
             ],
             "front": [
-                -1.0,
+                1.0,
                 0.0,
                 0.0
             ],
             "isVisible": true,
-            "mesh": "sphere",
-            "name": "1005",
+            "isWireframe": false,
+            "mesh": "pez globo",
+            "name": "blob",
             "position": [
+                -38.0,
+                14.5,
+                -68.5
+            ],
+            "rotation": [
+                -88.99986267089844,
+                101.49979400634766,
+                -1.0000001192092896
+            ],
+            "scale": 0.014852832071483135,
+            "specularColor": [
+                1.0,
+                1.0,
+                1.0,
+                50.0
+            ]
+        },
+        {
+            "diffuseColor": [
+                1.0,
+                0.20000000298023224,
+                0.10000000149011612
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isVisible": true,
+            "isWireframe": false,
+            "mesh": "coral1",
+            "name": "coral1-1",
+            "position": [
+                2.5,
+                29.0,
+                -41.0
+            ],
+            "rotation": [
+                -88.99986267089844,
+                170.49940490722656,
+                -1.0000001192092896
+            ],
+            "scale": 0.014852832071483135,
+            "specularColor": [
+                1.0,
+                1.0,
+                1.0,
+                50.0
+            ]
+        },
+        {
+            "diffuseColor": [
+                0.800000011920929,
+                0.800000011920929,
+                0.10000000149011612
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isVisible": true,
+            "isWireframe": false,
+            "mesh": "coral1",
+            "name": "coral1-2",
+            "position": [
+                -116.5,
+                31.5,
+                -7.0
+            ],
+            "rotation": [
+                -88.99986267089844,
+                170.49940490722656,
+                16.499998092651367
+            ],
+            "scale": 0.021746033802628517,
+            "specularColor": [
+                1.0,
+                1.0,
+                1.0,
+                50.0
+            ]
+        },
+        {
+            "diffuseColor": [
+                1.0,
                 0.5,
-                -7.5,
-                -3.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 2.0,
-            "specularColor": [
-                1.0,
-                1.0,
-                0.0,
-                1000.0
-            ]
-        },
-        {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 2.0,
-                "shape": "sphere",
-                "velocity": [
-                    4.0,
-                    0.0,
-                    3.0
-                ]
-            },
-            "diffuseColor": [
-                1.0,
-                0.0010000000474974513,
-                4.0
+                0.0010000000474974513
             ],
             "front": [
-                -1.0,
+                1.0,
                 0.0,
                 0.0
             ],
             "isVisible": true,
-            "mesh": "sphere",
-            "name": "1006",
+            "isWireframe": false,
+            "mesh": "coral1",
+            "name": "coral1-3",
             "position": [
-                -3.0,
-                3.0,
-                5.0
+                50.0,
+                35.0,
+                -219.0
             ],
             "rotation": [
-                0.0,
-                0.0,
-                0.0
+                -97.49981689453125,
+                -25.00001335144043,
+                -1.0000001192092896
             ],
-            "scale": 2.0,
+            "scale": 0.014852832071483135,
             "specularColor": [
                 1.0,
                 1.0,
-                0.0,
-                1000.0
+                1.0,
+                50.0
             ]
         },
         {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 2.0,
-                "shape": "sphere",
-                "velocity": [
-                    4.0,
-                    0.0,
-                    12.0
-                ]
-            },
             "diffuseColor": [
-                1.0,
-                0.0010000000474974513,
+                0.5,
+                0.10000000149011612,
                 1.0
             ],
             "front": [
-                -1.0,
+                1.0,
                 0.0,
                 0.0
             ],
             "isVisible": true,
-            "mesh": "sphere",
-            "name": "1010",
+            "isWireframe": false,
+            "mesh": "coral2",
+            "name": "coral2-1",
             "position": [
-                7.0,
-                8.5,
-                5.0
+                57.5,
+                20.0,
+                -41.0
             ],
             "rotation": [
-                0.0,
-                0.0,
-                0.0
+                -88.99986267089844,
+                219.49913024902344,
+                -33.00001907348633
             ],
-            "scale": 2.0,
+            "scale": 0.014852832071483135,
             "specularColor": [
                 1.0,
                 1.0,
-                0.0,
-                1000.0
+                1.0,
+                50.0
             ]
         },
         {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 2.0,
-                "shape": "sphere",
-                "velocity": [
-                    -14.0,
-                    0.0,
-                    7.0
-                ]
-            },
             "diffuseColor": [
                 1.0,
-                0.0010000000474974513,
+                0.10000000149011612,
                 1.0
             ],
             "front": [
-                -1.0,
+                1.0,
                 0.0,
                 0.0
             ],
             "isVisible": true,
-            "mesh": "sphere",
-            "name": "1011",
+            "isWireframe": false,
+            "mesh": "coral2",
+            "name": "coral2-2",
             "position": [
-                4.0,
-                9.0,
-                -5.0
+                -240.0,
+                17.0,
+                -86.0
             ],
             "rotation": [
-                0.0,
-                0.0,
-                0.0
+                -88.99986267089844,
+                -82.49990844726563,
+                -1.0000001192092896
             ],
-            "scale": 2.0,
+            "scale": 0.028943974524736404,
             "specularColor": [
                 1.0,
                 1.0,
-                0.0,
-                1000.0
+                1.0,
+                50.0
             ]
         },
         {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": false,
-                "radius": 0.0,
-                "shape": "mesh",
-                "velocity": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            },
             "diffuseColor": [
                 0.10000000149011612,
-                0.5,
-                0.009999999776482582
+                0.10000000149011612,
+                1.0
             ],
             "front": [
                 1.0,
@@ -484,19 +380,20 @@
                 0.0
             ],
             "isVisible": true,
-            "mesh": "bowl",
-            "name": "TheBowl",
+            "isWireframe": false,
+            "mesh": "coral2",
+            "name": "coral2-3",
             "position": [
-                13.0,
-                -26.0,
-                6.0
+                -124.0,
+                -1.5,
+                -216.0
             ],
             "rotation": [
-                -91.99984741210938,
-                -6.000000476837158,
-                15.000000953674316
+                -88.99986267089844,
+                40.000022888183594,
+                -1.0000001192092896
             ],
-            "scale": 4.902699947357178,
+            "scale": 0.014852832071483135,
             "specularColor": [
                 1.0,
                 1.0,
@@ -505,68 +402,105 @@
             ]
         },
         {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": true,
-                "radius": 2.0,
-                "shape": "sphere",
-                "velocity": [
-                    -4.0,
-                    0.0,
-                    3.0
-                ]
-            },
             "diffuseColor": [
-                1.0,
-                0.0010000000474974513,
+                0.20000000298023224,
+                0.5,
                 1.0
             ],
             "front": [
-                -1.0,
+                1.0,
                 0.0,
                 0.0
             ],
             "isVisible": true,
-            "mesh": "sphere",
-            "name": "ball",
+            "isWireframe": false,
+            "mesh": "medusa",
+            "name": "medusa_azul",
             "position": [
-                1.0,
-                8.5,
-                5.0
+                -235.0,
+                3.0,
+                -195.5
             ],
             "rotation": [
-                0.0,
-                0.0,
-                0.0
+                -87.4998779296875,
+                36.50001907348633,
+                -1.0067217317555333e-06
             ],
-            "scale": 2.0,
+            "scale": 0.007104062475264072,
             "specularColor": [
                 1.0,
                 1.0,
-                0.0,
-                1000.0
+                1.0,
+                50.0
             ]
         },
         {
-            "Physics": {
-                "acceleration": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "gravity": false,
-                "radius": 0.0,
-                "shape": "mesh",
-                "velocity": [
-                    0.0,
-                    0.0,
-                    0.0
-                ]
-            },
+            "diffuseColor": [
+                1.0,
+                0.4000000059604645,
+                0.20000000298023224
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isVisible": true,
+            "isWireframe": false,
+            "mesh": "medusa",
+            "name": "medusa_roja",
+            "position": [
+                96.0,
+                15.0,
+                -123.5
+            ],
+            "rotation": [
+                -87.4998779296875,
+                36.50001907348633,
+                -1.0672170702719086e-07
+            ],
+            "scale": 0.007104062475264072,
+            "specularColor": [
+                1.0,
+                1.0,
+                1.0,
+                50.0
+            ]
+        },
+        {
+            "diffuseColor": [
+                1.0,
+                0.30000001192092896,
+                0.20000000298023224
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isVisible": true,
+            "isWireframe": false,
+            "mesh": "cangrejo",
+            "name": "sebastian",
+            "position": [
+                -102.5,
+                -1.5,
+                -216.0
+            ],
+            "rotation": [
+                -88.99986267089844,
+                40.000022888183594,
+                -1.0000001192092896
+            ],
+            "scale": 0.014852832071483135,
+            "specularColor": [
+                1.0,
+                1.0,
+                1.0,
+                50.0
+            ]
+        },
+        {
             "diffuseColor": [
                 0.5,
                 0.5,
@@ -578,19 +512,20 @@
                 0.0
             ],
             "isVisible": true,
-            "mesh": "blender",
-            "name": "blender",
+            "isWireframe": false,
+            "mesh": "pez sierra",
+            "name": "sierra",
             "position": [
-                13.0,
-                -25.0,
-                6.0
+                -127.5,
+                49.5,
+                16.5
             ],
             "rotation": [
-                -91.99984741210938,
-                -71.49996185302734,
-                15.000000953674316
+                -88.99986267089844,
+                75.49993896484375,
+                -1.0000001192092896
             ],
-            "scale": 4.902699947357178,
+            "scale": 0.014852832071483135,
             "specularColor": [
                 1.0,
                 1.0,

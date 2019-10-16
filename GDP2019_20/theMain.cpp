@@ -32,7 +32,7 @@
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
 std::string scene_filename = "assets/scene1.json";
-bool ::isPlaying = true;
+bool ::isPlaying = false;
 cDebugRenderer *theDebugRenderer = new cDebugRenderer();
 
 int main(void)
@@ -100,7 +100,7 @@ int main(void)
 	// Get the initial time
 	double lastTime = glfwGetTime();
 
-	theCamera->setTarget(theScene->findGameObject("TheBowl")->position);
+	theCamera->setTarget(theScene->findGameObject("Yellow Submarine")->position);
 	theCamera->setPosition(glm::vec3(-44, 100, 0));
 
 	while (!glfwWindowShouldClose(window))
