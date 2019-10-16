@@ -494,7 +494,7 @@ json serializeLights(std::map<std::string,cLight*> lights) {
 				jLight["type"] = "point";
 				break;
 			case SPOT:
-				jLight["type"] = "spot";
+				jLight["type"] = "spotlight";
 				break;
 			case DIRECTIONAL:
 				jLight["type"] = "directional";
