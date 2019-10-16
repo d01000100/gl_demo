@@ -89,15 +89,15 @@ void editScene(int key, int scancode, int action, int mods)
 			theEditor->setEditMode(OBJS);
 		}
 		if (key == GLFW_KEY_L && action == GLFW_PRESS) {
-			theEditor->setEditMode(LIGHTS);
+			//theEditor->setEditMode(LIGHTS);
 		}
 
 		if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
-			saveScene(theScene, ::scene_filename);
+			//saveScene(theScene,::scene_filename);
 		}
 
 		if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
-			theScene->reloadScene(::scene_filename);
+			//theScene->reloadScene(::scene_filename);
 		}
 
 		if (key == GLFW_KEY_PAUSE && action == GLFW_PRESS) {
@@ -114,21 +114,21 @@ void editObject(int key, int scancode, int action, int mods)
 	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods))
 	{
 		// Individual obj mode
-		if (key == GLFW_KEY_T && action == GLFW_PRESS) {
-			theEditor->setObjectMode(TRANS);
-		}
+		//if (key == GLFW_KEY_T && action == GLFW_PRESS) {
+		//	theEditor->setObjectMode(TRANS);
+		//}
 
-		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-			theEditor->setObjectMode(ROT);
-		}
+		//if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+		//	theEditor->setObjectMode(ROT);
+		//}
 
-		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
-			theEditor->setObjectMode(SCALE);
-		}
+		//if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
+		//	theEditor->setObjectMode(SCALE);
+		//}
 
-		if (key == GLFW_KEY_V && action == GLFW_PRESS) {
-			theEditor->setObjectMode(ANGLES);
-		}
+		//if (key == GLFW_KEY_V && action == GLFW_PRESS) {
+		//	theEditor->setObjectMode(ANGLES);
+		//}
 
 		if (key == GLFW_KEY_SPACE &&
 			action == GLFW_PRESS) {
@@ -142,7 +142,7 @@ void editObject(int key, int scancode, int action, int mods)
 	}
 
 	// Edit mode
-	if (isShiftKeyDownByAlone(mods))
+	/*if (isShiftKeyDownByAlone(mods))
 	{
 		switch (theEditor->objectMode) {
 		case TRANS: {
@@ -245,7 +245,7 @@ void editObject(int key, int scancode, int action, int mods)
 				break;
 			}
 		}
-	}
+	}*/
 }
 
 void navigation_camera(int key, int scancode, int action, int mods) {
@@ -280,6 +280,18 @@ void navigation_camera(int key, int scancode, int action, int mods) {
 	}
 }
 
+void sub_lights(int key, int scancode, int action, int mods) {
+	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods)
+		&& action == GLFW_PRESS && key == GLFW_KEY_ENTER) 
+	{
+		Scene* theScene = Scene::getTheScene();
+		cLight* left = theScene->findLight("player_left");
+		cLight* right = theScene->findLight("player_right");
+
+		left->isOn = !left->isOn; right->isOn = !right->isOn;
+	}
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	Camera* theCamera = Camera::getTheCamera();
@@ -290,6 +302,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	navigation_camera(key, scancode, action, mods);
 	editScene(key, scancode, action, mods);
 	editObject(key, scancode, action, mods);
+	sub_lights(key, scancode, action, mods);
 
 	// Moving the pirate ship in a certain direction
 	if (isCtrlKeyDownByAlone(mods))

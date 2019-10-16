@@ -98,8 +98,9 @@ int main(void)
 	double lastTime = glfwGetTime();
 
 	theCamera->setLights("player_left", "player_right");
-	theCamera->setTarget(theScene->findGameObject("Yellow Submarine")->position);
-	theCamera->setPosition(glm::vec3(-44, 100, 0));
+	glm::vec3 submarine_pos = theScene->findGameObject("sebastian")->position;
+	theCamera->setPosition(submarine_pos + glm::vec3(10.0f, 10.0f, 10.0f));
+	theCamera->setTarget(submarine_pos);
 
 	sceneEditor->init(theScene);
 

@@ -1,8 +1,8 @@
-# Physics Project 1
+# Graphics Project 1
 
 José Daniel Casado Aguilar - 0940167
 
-Graphic scene and Physics simulator that shows a bunch of spheres bouncing around inside a bowl with a "blender" on the bottom to stir them up.
+Graphic scene showing an underwater from the point of view of a "submarine" navigating through it
 
 ## Build instructions
 
@@ -14,10 +14,17 @@ Within Visual Studio, click on `Local Windows Debugger` (F5)
 
 ### Use instructions
 
-When the programs starts, the simulation will show a lot of spheres bouncing around. The user can:
+When the programs starts the scene will load showing another submarine in the scene
 
-- Press the `pause` button and pause or play the scene.
-- Press `F5` to reload the scene file and reset the scene.
+- Press the W and S to turn down and up, respectively.
+- Press the A and D to turn left and right.
+- Press E and Q to move forward or backwards.
+- Press Enter to turn on or off the "player submarine" lights.
+
+Theres a little three line indicator that shows the active object.
+
+- Press the UP and DOWN arrows to change the active object, and make the camera look at that object.
+- Press SPACE to toggle wireframe or solid mode in the active object.
 
 ## Scene file
 
