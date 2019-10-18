@@ -83,136 +83,137 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 	return mItems;
 }
 
-std::map<std::string, cLight*>* readLights(std::string filename) {
-	std::ifstream i;
-	i.open(filename);
+//std::map<std::string, cLight*>* readLights(std::string filename) {
 
-	if (!i.is_open()) {
-		printf("Didn't found %s file \n", filename.c_str());
-		return NULL;
-	}
-
-	json jFile;
-	i >> jFile;
-
-	json::iterator jLights = jFile.find("Lights");
-	if (jLights == jFile.end()) {
-		printf("No Lights found!!\n");
-		return NULL;
-	}
-
-	std::map<std::string, cLight*>* mLights = new std::map<std::string, cLight*>();
-	for (json::iterator jLight = jLights->begin();
-		jLight != jLights->end(); jLight++) {
-
-		cLight* light = new cLight();
-		std::string name;
-
-		if (jLight->find("name") == jLight->end()) {
-			printf("Light without a name!!\n");
-			return NULL;
-		}
-		else {
-			name = (*jLight)["name"].get<std::string>();
-		}
-
-		if (jLight->find("position") != jLight->end()) {
-			float x = (*jLight)["position"][0].get<float>();
-			float y = (*jLight)["position"][1].get<float>();
-			float z = (*jLight)["position"][2].get<float>();
-			light->pos = glm::vec3(x, y, z);
-		}
-		else {
-			light->pos = glm::vec3(0.0f, 0.0f, 0.0f);
-		}
-
-		if (jLight->find("diffuseColor") != jLight->end()) {
-			float x = (*jLight)["diffuseColor"][0].get<float>();
-			float y = (*jLight)["diffuseColor"][1].get<float>();
-			float z = (*jLight)["diffuseColor"][2].get<float>();
-			light->diffuseColor = glm::vec3(x, y, z);
-		}
-		else {
-			light->diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-		}
-
-		if (jLight->find("specularColor") != jLight->end()) {
-			float x = (*jLight)["specularColor"][0].get<float>();
-			float y = (*jLight)["specularColor"][1].get<float>();
-			float z = (*jLight)["specularColor"][2].get<float>();
-			float w = (*jLight)["specularColor"][3].get<float>();
-			light->specularColor = glm::vec4(x, y, z, w);
-		}
-		else {
-			light->specularColor = glm::vec4(1.0f, 1.0f, 1.0f, 50.0f);
-		}
-
-		if (jLight->find("linearAtten") != jLight->end()) {
-			light->linearAtten = (*jLight)["linearAtten"].get<float>();
-		}
-		else {
-			light->linearAtten = 0.05f;
-		}
-
-		if (jLight->find("quadAtten") != jLight->end()) {
-			light->quadAtten = (*jLight)["quadAtten"].get<float>();
-		}
-		else {
-			light->quadAtten = 1.0f;
-		}
-
-		if (jLight->find("cutOffDist") != jLight->end()) {
-			light->cutOffDist = (*jLight)["cutOffDist"].get<float>();
-		}
-		else {
-			light->cutOffDist = 50.0f;
-		}
-
-		if (jLight->find("type") != jLight->end()) {
-			std::string type = (*jLight)["type"].get<std::string>();
-			if (type == "point") {
-				light->type = POINT;
-			}
-			if (type == "spotlight") {
-				light->type = SPOT;
-			}
-			if (type == "directional") {
-				light->type = DIRECTIONAL;
-			}
-		}
-		else {
-			light->type = POINT;
-		}
-
-		if (jLight->find("isOn") != jLight->end()) {
-			light->isOn = (*jLight)["isOn"].get<bool>();
-		}
-		else {
-			light->isOn = true;
-		}
-
-		if (jLight->find("direction") != jLight->end()) {
-			float x = (*jLight)["direction"][0].get<float>();
-			float y = (*jLight)["direction"][1].get<float>();
-			float z = (*jLight)["direction"][2].get<float>();
-			light->direction = glm::normalize(glm::vec3(x,y,z));
-		}
-
-		if (jLight->find("innerAngle") != jLight->end()) {
-			light->innerAngle = (*jLight)["innerAngle"].get<float>();
-		}
-
-		if (jLight->find("outerAngle") != jLight->end()) {
-			light->outerAngle = (*jLight)["outerAngle"].get<float>();
-		}
-
-		(*mLights)[name] = light;
-	}
-
-	i.close();
-
-	return mLights;
-}
+//	std::ifstream i;
+//	i.open(filename);
+//
+//	if (!i.is_open()) {
+//		printf("Didn't found %s file \n", filename.c_str());
+//		return NULL;
+//	}
+//
+//	json jFile;
+//	i >> jFile;
+//
+//	json::iterator jLights = jFile.find("Lights");
+//	if (jLights == jFile.end()) {
+//		printf("No Lights found!!\n");
+//		return NULL;
+//	}
+//
+//	std::map<std::string, cLight*>* mLights = new std::map<std::string, cLight*>();
+//	for (json::iterator jLight = jLights->begin();
+//		jLight != jLights->end(); jLight++) {
+//
+//		cLight* light = new cLight();
+//		std::string name;
+//
+//		if (jLight->find("name") == jLight->end()) {
+//			printf("Light without a name!!\n");
+//			return NULL;
+//		}
+//		else {
+//			name = (*jLight)["name"].get<std::string>();
+//		}
+//
+//		if (jLight->find("position") != jLight->end()) {
+//			float x = (*jLight)["position"][0].get<float>();
+//			float y = (*jLight)["position"][1].get<float>();
+//			float z = (*jLight)["position"][2].get<float>();
+//			light->pos = glm::vec3(x, y, z);
+//		}
+//		else {
+//			light->pos = glm::vec3(0.0f, 0.0f, 0.0f);
+//		}
+//
+//		if (jLight->find("diffuseColor") != jLight->end()) {
+//			float x = (*jLight)["diffuseColor"][0].get<float>();
+//			float y = (*jLight)["diffuseColor"][1].get<float>();
+//			float z = (*jLight)["diffuseColor"][2].get<float>();
+//			light->diffuseColor = glm::vec3(x, y, z);
+//		}
+//		else {
+//			light->diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+//		}
+//
+//		if (jLight->find("specularColor") != jLight->end()) {
+//			float x = (*jLight)["specularColor"][0].get<float>();
+//			float y = (*jLight)["specularColor"][1].get<float>();
+//			float z = (*jLight)["specularColor"][2].get<float>();
+//			float w = (*jLight)["specularColor"][3].get<float>();
+//			light->specularColor = glm::vec4(x, y, z, w);
+//		}
+//		else {
+//			light->specularColor = glm::vec4(1.0f, 1.0f, 1.0f, 50.0f);
+//		}
+//
+//		if (jLight->find("linearAtten") != jLight->end()) {
+//			light->linearAtten = (*jLight)["linearAtten"].get<float>();
+//		}
+//		else {
+//			light->linearAtten = 0.05f;
+//		}
+//
+//		if (jLight->find("quadAtten") != jLight->end()) {
+//			light->quadAtten = (*jLight)["quadAtten"].get<float>();
+//		}
+//		else {
+//			light->quadAtten = 1.0f;
+//		}
+//
+//		if (jLight->find("cutOffDist") != jLight->end()) {
+//			light->cutOffDist = (*jLight)["cutOffDist"].get<float>();
+//		}
+//		else {
+//			light->cutOffDist = 50.0f;
+//		}
+//
+//		if (jLight->find("type") != jLight->end()) {
+//			std::string type = (*jLight)["type"].get<std::string>();
+//			if (type == "point") {
+//				light->type = POINT;
+//			}
+//			if (type == "spotlight") {
+//				light->type = SPOT;
+//			}
+//			if (type == "directional") {
+//				light->type = DIRECTIONAL;
+//			}
+//		}
+//		else {
+//			light->type = POINT;
+//		}
+//
+//		if (jLight->find("isOn") != jLight->end()) {
+//			light->isOn = (*jLight)["isOn"].get<bool>();
+//		}
+//		else {
+//			light->isOn = true;
+//		}
+//
+//		if (jLight->find("direction") != jLight->end()) {
+//			float x = (*jLight)["direction"][0].get<float>();
+//			float y = (*jLight)["direction"][1].get<float>();
+//			float z = (*jLight)["direction"][2].get<float>();
+//			light->direction = glm::normalize(glm::vec3(x,y,z));
+//		}
+//
+//		if (jLight->find("innerAngle") != jLight->end()) {
+//			light->innerAngle = (*jLight)["innerAngle"].get<float>();
+//		}
+//
+//		if (jLight->find("outerAngle") != jLight->end()) {
+//			light->outerAngle = (*jLight)["outerAngle"].get<float>();
+//		}
+//
+//		(*mLights)[name] = light;
+//	}
+//
+//	i.close();
+//
+//	return mLights;
+//}
 
 //nlohmann::json serializeObjects(std::vector<cGameObject*> objs) {
 
@@ -300,94 +301,96 @@ std::map<std::string, cLight*>* readLights(std::string filename) {
 //	return jObjs_v;
 //}
 
-json serializeLights(std::map<std::string,cLight*> lights) {
-	json jvLights;
-	int i;
-	std::map<std::string,cLight*>::iterator iLight;
-	for (iLight = lights.begin(), i = 0;
-		iLight != lights.end(); iLight++, i++) {
+//json serializeLights(std::map<std::string,cLight*> lights) {
 
-		cLight* light = iLight->second;
-		json jLight;
+//	json jvLights;
+//	int i;
+//	std::map<std::string,cLight*>::iterator iLight;
+//	for (iLight = lights.begin(), i = 0;
+//		iLight != lights.end(); iLight++, i++) {
+//
+//		cLight* light = iLight->second;
+//		json jLight;
+//
+//		jLight["name"] = iLight->first;
+//
+//		
+//		jLight["position"][0] = light->pos.x; 
+//		jLight["position"][1] = light->pos.y; 
+//		jLight["position"][2] = light->pos.z; 
+//
+//		jLight["diffuseColor"][0] = light->diffuseColor.x;
+//		jLight["diffuseColor"][1] = light->diffuseColor.y;
+//		jLight["diffuseColor"][2] = light->diffuseColor.z;
+//
+//		jLight["specularColor"][0] = light->specularColor.x;
+//		jLight["specularColor"][1] = light->specularColor.y;
+//		jLight["specularColor"][2] = light->specularColor.z;
+//		jLight["specularColor"][3] = light->specularColor.w;
+//
+//		jLight["linearAtten"] = light->linearAtten;
+//
+//		jLight["quadAtten"] = light->quadAtten;
+//
+//		jLight["cutOffDist"] = light->cutOffDist;
+//
+//		switch (light->type) {
+//			case POINT:
+//				jLight["type"] = "point";
+//				break;
+//			case SPOT:
+//				jLight["type"] = "spot";
+//				break;
+//			case DIRECTIONAL:
+//				jLight["type"] = "directional";
+//				break;
+//		}
+//
+//		jLight["isOn"] = light->isOn;
+//
+//		jLight["direction"][0] = light->direction.x;
+//		jLight["direction"][1] = light->direction.y;
+//		jLight["direction"][2] = light->direction.z;
+//
+//		jLight["innerAngle"] = light->innerAngle;
+//
+//		jLight["outerAngle"] = light->outerAngle;
+//
+//		jvLights[i] = jLight;
+//	}
+//	return jvLights;
+//}
 
-		jLight["name"] = iLight->first;
+//json serializeMeshes(std::map<std::string,cMesh*> meshes) {
 
-		
-		jLight["position"][0] = light->pos.x; 
-		jLight["position"][1] = light->pos.y; 
-		jLight["position"][2] = light->pos.z; 
-
-		jLight["diffuseColor"][0] = light->diffuseColor.x;
-		jLight["diffuseColor"][1] = light->diffuseColor.y;
-		jLight["diffuseColor"][2] = light->diffuseColor.z;
-
-		jLight["specularColor"][0] = light->specularColor.x;
-		jLight["specularColor"][1] = light->specularColor.y;
-		jLight["specularColor"][2] = light->specularColor.z;
-		jLight["specularColor"][3] = light->specularColor.w;
-
-		jLight["linearAtten"] = light->linearAtten;
-
-		jLight["quadAtten"] = light->quadAtten;
-
-		jLight["cutOffDist"] = light->cutOffDist;
-
-		switch (light->type) {
-			case POINT:
-				jLight["type"] = "point";
-				break;
-			case SPOT:
-				jLight["type"] = "spot";
-				break;
-			case DIRECTIONAL:
-				jLight["type"] = "directional";
-				break;
-		}
-
-		jLight["isOn"] = light->isOn;
-
-		jLight["direction"][0] = light->direction.x;
-		jLight["direction"][1] = light->direction.y;
-		jLight["direction"][2] = light->direction.z;
-
-		jLight["innerAngle"] = light->innerAngle;
-
-		jLight["outerAngle"] = light->outerAngle;
-
-		jvLights[i] = jLight;
-	}
-	return jvLights;
-}
-
-json serializeMeshes(std::map<std::string,cMesh*> meshes) {
-	json jvMeshes;
-	int i;
-	std::map<std::string,cMesh*>::iterator iMesh;
-	for (iMesh = meshes.begin(), i = 0;
-		iMesh != meshes.end(); iMesh++, i++) {
-
-		cMesh *mesh = iMesh->second;
-		json jMesh;
-
-		jMesh["name"] = iMesh->first;
-		jMesh["filename"] = mesh->filename;
-
-		jvMeshes[i] = jMesh;
-	}
-
-	return jvMeshes;
-}
-
-void saveScene(Scene* scene, std::string filename) {
-	std::ofstream file(filename);
-
-	json jScene;
-
-	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
-	//jScene["Objects"] = serializeObjects(scene->getGameObjects());
-	jScene["Lights"] = serializeLights(scene->getLightsMap());
-
-	file << jScene;
-
-	file.close();
-}
+//	json jvMeshes;
+//	int i;
+//	std::map<std::string,cMesh*>::iterator iMesh;
+//	for (iMesh = meshes.begin(), i = 0;
+//		iMesh != meshes.end(); iMesh++, i++) {
+//
+//		cMesh *mesh = iMesh->second;
+//		json jMesh;
+//
+//		jMesh["name"] = iMesh->first;
+//		jMesh["filename"] = mesh->filename;
+//
+//		jvMeshes[i] = jMesh;
+//	}
+//
+//	return jvMeshes;
+//}
+//
+//void saveScene(Scene* scene, std::string filename) {
+//	std::ofstream file(filename);
+//
+//	json jScene;
+//
+//	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
+//	//jScene["Objects"] = serializeObjects(scene->getGameObjects());
+//	jScene["Lights"] = serializeLights(scene->getLightsMap());
+//
+//	file << jScene;
+//
+//	file.close();
+//}
