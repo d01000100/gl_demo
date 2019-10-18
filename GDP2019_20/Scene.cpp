@@ -14,31 +14,11 @@
 
 Scene* Scene::theScene = new Scene();
 
-Scene::Scene() {
-	theVAOManager = new cVAOManager();
-}
-
-Scene::~Scene() {
-	delete theVAOManager;
-}
+// does nothing. Need to "implement" it to make it private
+Scene::Scene() { } 
 
 Scene* Scene::getTheScene() {
 	return theScene;
-}
-
-void Scene::addGameObject(cGameObject* obj) {
-	game_objects[obj->friendlyName] = obj;
-}
-
-std::vector<cGameObject*> Scene::getGameObjects() {
-
-	std::vector<cGameObject*> vs;
-	for (std::map<std::string, cGameObject*>::iterator i = game_objects.begin();
-		i != game_objects.end(); i++)
-	{
-		vs.push_back(i->second);
-	}
-	return vs;
 }
 
 std::vector<cLight*> Scene::getLights() {
@@ -53,18 +33,9 @@ std::vector<cLight*> Scene::getLights() {
 }
 
 std::map<std::string, cLight*> Scene::getLightsMap() { return lights;  }
+
 std::map<std::string, cMesh*> Scene::getMeshesMap() {
 	return meshes;
-}
-
-cGameObject* Scene::findGameObject(std::string name) {
-
-	if (game_objects.find(name) != game_objects.end()) {
-		return game_objects[name];
-	}
-	else {
-		return NULL;
-	}
 }
 
 bool Scene::loadMeshes(std::string filename) {
@@ -88,33 +59,13 @@ bool Scene::loadMeshes(std::string filename) {
 		}
 
 		sModelDrawInfo drawInfo;
-		theVAOManager->LoadModelIntoVAO(settings.name,
+		::theVAOManager->LoadModelIntoVAO(settings.name,
 			*data,
 			drawInfo,
 			programID);
 
 		meshes[settings.name] = data;
 	}
-
-	return true;
-}
-
-bool Scene::loadObjects(std::string filename) {
-
-	std::map<std::string, cGameObject*> *read_objects = readObjects(filename);
-	if (read_objects == NULL) {
-		return false;
-	}
-
-	for (std::map<std::string, cGameObject*>::iterator iObj = read_objects->begin();
-		iObj != read_objects->end(); iObj++) {
-		cGameObject* pObj = iObj->second;
-		if (pObj->physics && pObj->physics->shape == MESH) {
-			pObj->physics->mesh = meshes[pObj->meshName];
-		}
-	}
-
-	game_objects = *read_objects;
 
 	return true;
 }
@@ -130,68 +81,22 @@ bool Scene::loadLights(std::string filename) {
 
 bool Scene::loadScene(std::string filename) {
 	if (!loadMeshes(filename)) { return false; }
-	if (!loadObjects(filename)) { return false; }
-	if (!loadLights(filename)) { return false; }
+
+	if (!reloadScene(filename)) { return false; }
 	return true;
 }
 
 bool Scene::reloadScene(std::string filename) {
-	if (!loadObjects(filename)) { return false; }
+	//if (!loadObjects(filename)) { return false; }
+
+	std::map<std::string, iGameItem*>* loaded_items = readItems(filename);
+	if (loaded_items == NULL) { return false; }
+	else {
+		gameItems = *loaded_items;
+	}
+
 	if (!loadLights(filename)) { return false; }
 	return true;
-}
-
-void Scene::drawObjects()
-{
-	for (std::map<std::string, cGameObject*>::iterator i = game_objects.begin();
-		i != game_objects.end(); i++)
-	{
-		cGameObject* pCurrentObject = i->second;
-
-		GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
-
-		glm::mat4 m = pCurrentObject->calculateTransformationMatrix();
-
-		GLint matModel_UL = glGetUniformLocation(programID, "matModel");
-		glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
-
-		// Calcualte the inverse transpose of the model matrix and pass that...
-		// Stripping away scaling and translation, leaving only rotation
-		// Because the normal is only a direction, really
-		GLint matModelIT_UL = glGetUniformLocation(programID, "matModelInverseTranspose");
-		glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(m));
-		glUniformMatrix4fv(matModelIT_UL, 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
-
-		GLint diffuseColour_UL = glGetUniformLocation(programID, "diffuseColour");
-		glUniform4f(diffuseColour_UL,
-			pCurrentObject->diffuseColor.r,
-			pCurrentObject->diffuseColor.g,
-			pCurrentObject->diffuseColor.b,
-			pCurrentObject->diffuseColor.a);
-
-		GLint specularColour_UL = glGetUniformLocation(programID, "specularColour");
-		glUniform4f(specularColour_UL,
-			pCurrentObject->specularColor.r,
-			pCurrentObject->specularColor.g,
-			pCurrentObject->specularColor.b,
-			1000.0f);	// Specular "power" (how shinny the object is)
-						// 1.0 to really big (10000.0f)
-
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
-		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
-		glEnable(GL_DEPTH);								// Write to depth buffer
-		
-		sModelDrawInfo drawInfo;
-		if (theVAOManager->FindDrawInfoByModelName(pCurrentObject->meshName, drawInfo))
-		{
-			glBindVertexArray(drawInfo.VAO_ID);
-			glDrawElements(GL_TRIANGLES,
-				drawInfo.numberOfIndices,
-				GL_UNSIGNED_INT,
-				0);
-			glBindVertexArray(0);
-		}
-	}
 }
 
 void Scene::drawLights() {
@@ -242,8 +147,17 @@ void Scene::drawLights() {
 	}
 }
 
+void Scene::drawItems() {
+	for (std::map<std::string, iGameItem*>::iterator i = gameItems.begin();
+		i != gameItems.end(); i++)
+	{
+		i->second->draw();
+	}
+}
+
 void Scene::drawScene() {
-	drawObjects();
+	//drawObjects();
+	drawItems();
 	drawLights();
 }
 

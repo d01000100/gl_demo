@@ -12,7 +12,7 @@ SceneEditor* SceneEditor::getTheEditor() {
 }
 
 void SceneEditor::init(Scene* scene) {
-    objects = scene->getGameObjects();
+    //objects = scene->getGameObjects();
 	selectedObj = objects.begin();
 	lights = scene->getLights();
 	selectedLight = lights.begin();
@@ -21,7 +21,7 @@ void SceneEditor::init(Scene* scene) {
 	debugRenderer = new cDebugRenderer();
 	debugRenderer->initialize();
 	Camera* theCamera = Camera::getTheCamera();
-	theCamera->setTarget((*selectedObj)->position);
+	//theCamera->setTarget((*selectedObj)->position);
 }
 
 cDebugRenderer* SceneEditor::getDebugRenderer() {
@@ -43,7 +43,7 @@ void SceneEditor::setEditMode(eEditMode m) {
 	editMode = m;
 	Camera* theCamera = Camera::getTheCamera();
 	if (m == OBJS) {
-		glm::vec3 objPos = (*selectedObj)->position;
+		glm::vec3 objPos = (*selectedObj)->getPos();
 		theCamera->setTarget(objPos);
 		//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
 	}
@@ -64,7 +64,7 @@ void SceneEditor::nextObject() {
 		selectedObj = objects.begin();
 	}
 	Camera* theCamera = Camera::getTheCamera();
-	glm::vec3 objPos = (*selectedObj)->position;
+	glm::vec3 objPos = (*selectedObj)->getPos();
 	theCamera->setTarget(objPos);
 	//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
 }
@@ -75,7 +75,7 @@ void SceneEditor::previousObject() {
 	}
 	selectedObj--;
 	Camera* theCamera = Camera::getTheCamera();
-	glm::vec3 objPos = (*selectedObj)->position;
+	glm::vec3 objPos = (*selectedObj)->getPos();
 	theCamera->setTarget(objPos);
 	//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
 }
@@ -88,7 +88,7 @@ void SceneEditor::translateObject(glm::vec3 deltaTranslation) {
 	glm::vec3 pos;
 	switch (editMode) {
 	case OBJS:
-		pos = (*selectedObj)->position;
+		pos = (*selectedObj)->getPos();
 		break;
 	case LIGHTS:
 		pos = (*selectedLight)->pos;
@@ -101,7 +101,7 @@ void SceneEditor::translateObject(glm::vec3 deltaTranslation) {
 
 	switch (editMode) {
 	case OBJS:
-		(*selectedObj)->position = pos;
+		//(*selectedObj)->position = pos;
 		break;
 	case LIGHTS:
 		(*selectedLight)->pos = pos;
@@ -112,7 +112,7 @@ void SceneEditor::translateObject(glm::vec3 deltaTranslation) {
 void SceneEditor::rotateObject(glm::vec3 deltaRotation) {
 	switch (editMode) {
 	case OBJS:
-		(*selectedObj)->rotationXYZ += deltaRotation;
+		//(*selectedObj)->rotationXYZ += deltaRotation;
 		break;
 	case LIGHTS:
 		(*selectedLight)->direction = glm::normalize((*selectedLight)->direction + deltaRotation);
@@ -123,7 +123,7 @@ void SceneEditor::rotateObject(glm::vec3 deltaRotation) {
 void SceneEditor::scaleObject(float deltaScale) {
 	switch (editMode) {
 	case OBJS:
-		(*selectedObj)->scale *= deltaScale;
+		//(*selectedObj)->scale *= deltaScale;
 		break;
 	case LIGHTS:
 		(*selectedLight)->linearAtten *= deltaScale;
@@ -132,7 +132,7 @@ void SceneEditor::scaleObject(float deltaScale) {
 }
 
 void SceneEditor::objectDebug() {
-	glm::vec3 pos = (**selectedObj).position;
+	glm::vec3 pos = (**selectedObj).getPos();
 	switch (objectMode) {
 	case TRANS:
 		debugTranslation(pos);

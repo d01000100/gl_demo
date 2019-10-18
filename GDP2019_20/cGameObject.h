@@ -5,6 +5,8 @@
 #include <glm/vec3.hpp>
 #include <string>
 #include "cMesh.h"
+#include "GLCommon.h"
+#include "GameItemFactory/iGameItem.h"
 
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
@@ -32,7 +34,7 @@ struct sPhysicsObject {
 	cMesh* mesh;
 };
 
-class cGameObject
+class cGameObject : public iGameItem
 {
 public:
 	cGameObject();
@@ -64,6 +66,10 @@ public:
 	void setDebugRenderer(iDebugRenderer* pDebugRenderer);
 
 	glm::mat4 calculateTransformationMatrix();
+
+	void draw();
+	std::string getName();
+	glm::vec3 getPos();
 
 private:
 	// this variable is static, so common to all objects.

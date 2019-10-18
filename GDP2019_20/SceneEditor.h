@@ -1,8 +1,9 @@
 #pragma once
-#include "cGameObject.h"
+
 #include "cLight.h"
 #include "Scene.h"
 #include "DebugRenderer/cDebugRenderer.h"
+#include "GameItemFactory/iGameItem.h"
 #include <vector>
 
 enum eObjectMode {
@@ -16,8 +17,8 @@ enum eEditMode {
 class SceneEditor
 {
 private:
-	std::vector<cGameObject*>::iterator selectedObj;
-	std::vector<cGameObject*> objects;
+	std::vector<iGameItem*>::iterator selectedObj;
+	std::vector<iGameItem*> objects;
 	std::vector<cLight*>::iterator selectedLight;
 	std::vector<cLight*> lights;
 	cDebugRenderer* debugRenderer;

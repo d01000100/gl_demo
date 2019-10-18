@@ -1,45 +1,98 @@
 {
-  "Meshes": [
-    {
-      "name": "large_bunny",
-      "filename": "assets/models/Large_Physics_Bunny_XYZ_N.ply"
-    },
-    {
-      "name": "terrain",
-      "filename": "assets/models/Terrain_XYZ_n.ply"
-    }
-  ],
-  "Objects": [
-    {
-      "name": "cool_object",
-      "mesh": "pretty_mesh",
-      "position": [ 1.0, 4.0, -5.0 ],
-      "rotation": [ 0.0, 90.0, 0.0 ],
-      "scale": 1.0,
-      "diffuseColor": [ 1.0, 0.0, 1.0 ],
-      "specularColor": [ 1.0, 1.0, 0.0, 50.0 ],
-      "isVisible": true,
-      "front": [ 0.0, 0.0, -1.0 ],
-      "Physics": {
-        "gravity": true,
-        "velocityDir": [ 5.0, 0.0, 0.0 ],
-        "speed": 5.0,
-        "acceleration": 0.0,
-        "collider": "sphere",
-        "radius": 4.0
-      }
-    }
-  ],
-  "Lights": [
-    {
-      "name": "shiny_light",
-      "position": [ 10.0, 5.0, 10.0 ],
-      "type": "point", 
-      "linearAtten": 0.003,
-      "quadAtten": 0.5,
-      "direction": [ 1.0, 1.0, 1.0 ], 
-      "innerRad": 2.0,
-      "outerRad": 3.0
-    }
-  ]
+    "Lights": [
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "direction": [
+                0.11157132685184479,
+                -0.8131065368652344,
+                -0.5713227987289429
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.015311043709516525,
+            "name": "shiny_light",
+            "outerAngle": 0.0,
+            "position": [
+                10.0,
+                50.0,
+                10.0
+            ],
+            "quadAtten": 1.3486052552469374e-11,
+            "specularColor": [
+                1.0,
+                1.0,
+                1.0,
+                50.0
+            ],
+            "type": "directional"
+        }
+    ],
+    "Meshes": [
+        {
+            "filename": "assets/models/Large_Physics_Bunny_XYZ_N.ply",
+            "name": "large_bunny"
+        },
+        {
+            "filename": "assets/models/Terrain_XYZ_n.ply",
+            "name": "terrain"
+        }
+    ],
+    "Objects": [
+        {
+            "Physics": {
+                "acceleration": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "gravity": false,
+                "radius": 4.0,
+                "shape": "???",
+                "velocity": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            },
+            "diffuseColor": [
+                1.0,
+                0.0,
+                1.0
+            ],
+            "front": [
+                0.0,
+                0.0,
+                -1.0
+            ],
+            "isVisible": true,
+            "mesh": "large_bunny",
+            "name": "cool_object",
+            "position": [
+                1.0,
+                4.0,
+                -5.0
+            ],
+            "rotation": [
+                0.0,
+                90.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "specularColor": [
+                1.0,
+                1.0,
+                0.0,
+                50.0
+            ]
+        },
+        {
+            "mesh": "terrain",
+            "position": [0.0, -10, 0]
+        }
+    ]
 }

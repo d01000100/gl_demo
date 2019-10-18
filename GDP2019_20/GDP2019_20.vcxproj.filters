@@ -22,14 +22,17 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{ff392894-8907-4e3d-8033-dd497b22c6a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="LightManager">
       <UniqueIdentifier>{4d24adbe-4aca-4875-8dab-0666c5843151}</UniqueIdentifier>
     </Filter>
     <Filter Include="LowPassFilter">
       <UniqueIdentifier>{90db0187-9f5a-4e25-917c-0920eed7abc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameItem %28Factory%29">
+      <UniqueIdentifier>{8a4cd80a-c9f7-4d5c-9aec-d834e1d28014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameItem %28Factory%29\GameObject">
+      <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -67,7 +70,7 @@
       <Filter>DebugRenderer</Filter>
     </ClCompile>
     <ClCompile Include="cGameObject.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>GameItem %28Factory%29\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsStuff.cpp">
       <Filter>Physics</Filter>
@@ -105,6 +108,9 @@
     <ClCompile Include="SceneEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameItemFactory\GameItemFactory.cpp">
+      <Filter>GameItem %28Factory%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -141,7 +147,7 @@
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="cGameObject.h">
-      <Filter>GameObject</Filter>
+      <Filter>GameItem %28Factory%29\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsStuff.h">
       <Filter>Physics</Filter>
@@ -175,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="SceneEditor.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameItemFactory\iGameItem.h">
+      <Filter>GameItem %28Factory%29</Filter>
+    </ClInclude>
+    <ClInclude Include="GameItemFactory\GameItemFactory.h">
+      <Filter>GameItem %28Factory%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

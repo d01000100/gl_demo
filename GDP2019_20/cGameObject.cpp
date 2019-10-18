@@ -1,10 +1,12 @@
 #include "cGameObject.h"
+#include "globalStuff.h"
 
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp> // glm::vec3
 #include <glm/vec4.hpp> // glm::vec4
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 
 cGameObject::cGameObject()
 {
@@ -38,6 +40,12 @@ void cGameObject::setDebugRenderer(iDebugRenderer* pDebugRenderer)
 	this->m_pDebugRenderer = pDebugRenderer;
 	return;
 }
+
+std::string cGameObject::getName() {
+	return friendlyName;
+}
+
+glm::vec3 cGameObject::getPos() { return position; }
 
 glm::mat4 cGameObject::calculateTransformationMatrix() {
 
@@ -78,7 +86,52 @@ glm::mat4 cGameObject::calculateTransformationMatrix() {
 	return m;
 }
 
+void cGameObject::draw() 
+{
+	GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 
+	sModelDrawInfo drawInfo;
+	if (::theVAOManager->FindDrawInfoByModelName(meshName, drawInfo))
+	{
+		glm::mat4 m = calculateTransformationMatrix();
+
+		GLint matModel_UL = glGetUniformLocation(programID, "matModel");
+		glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
+
+		// Calcualte the inverse transpose of the model matrix and pass that...
+		// Stripping away scaling and translation, leaving only rotation
+		// Because the normal is only a direction, really
+		GLint matModelIT_UL = glGetUniformLocation(programID, "matModelInverseTranspose");
+		glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(m));
+		glUniformMatrix4fv(matModelIT_UL, 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
+
+		GLint diffuseColour_UL = glGetUniformLocation(programID, "diffuseColour");
+		glUniform4f(diffuseColour_UL,
+			diffuseColor.r,
+			diffuseColor.g,
+			diffuseColor.b,
+			diffuseColor.a);
+
+		GLint specularColour_UL = glGetUniformLocation(programID, "specularColour");
+		glUniform4f(specularColour_UL,
+			specularColor.r,
+			specularColor.g,
+			specularColor.b,
+			1000.0f);	// Specular "power" (how shinny the object is)
+						// 1.0 to really big (10000.0f)
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
+		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
+		glEnable(GL_DEPTH);								// Write to depth buffer
+
+		glBindVertexArray(drawInfo.VAO_ID);
+		glDrawElements(GL_TRIANGLES,
+			drawInfo.numberOfIndices,
+			GL_UNSIGNED_INT,
+			0);
+		glBindVertexArray(0);
+	}
+}
 // this variable is static, so common to all objects.
 // When the object is created, the unique ID is set, and 
 //	the next unique ID is incremented

@@ -6,6 +6,7 @@
 #include <glm/vec4.hpp> // glm::vec4
 
 #include "cMesh.h"
+#include "GameItemFactory/GameItemFactory.h"
 
 using json = nlohmann::json;
 
@@ -50,7 +51,7 @@ std::vector<meshSettings>* readMeshes(std::string filename) {
 	return vMeshes;
 }
 
-std::map<std::string, cGameObject*>* readObjects(std::string filename) {
+std::map<std::string, iGameItem*>* readItems(std::string filename) {
 	std::ifstream i;
 	i.open(filename);
 
@@ -68,169 +69,18 @@ std::map<std::string, cGameObject*>* readObjects(std::string filename) {
 		return NULL;
 	}
 
-	std::map<std::string, cGameObject*>* mObjects = new std::map<std::string, cGameObject*>();
+	std::map<std::string, iGameItem*>* mItems = new std::map<std::string, iGameItem*>();
+
+
 	for (json::iterator jObj = jObjects->begin();
 		jObj != jObjects->end(); jObj++) {
 
-		cGameObject* gameObj = new cGameObject();
-		
-		if (jObj->find("mesh") == jObj->end()) {
-			printf("Object without mesh!!\n");
-			return NULL;
-		}
-		else {
-			gameObj->meshName = (*jObj)["mesh"].get<std::string>();
-		}
+		iGameItem* gameItem = createGameItem("Object", *jObj);
 
-		if (jObj->find("name") != jObj->end()) {
-			gameObj->friendlyName = (*jObj)["name"].get<std::string>();
-		}
-		else {
-			gameObj->friendlyName = std::to_string(gameObj->getUniqueID());
-		}
-
-		if (jObj->find("position") != jObj->end()) {
-			float x = (*jObj)["position"][0].get<float>();
-			float y = (*jObj)["position"][1].get<float>();
-			float z = (*jObj)["position"][2].get<float>();
-			gameObj->position = glm::vec3(x, y, z);
-		}
-		else {
-			gameObj->position = glm::vec3(0.0f, 0.0f, 0.0f);
-		}
-
-		if (jObj->find("rotation") != jObj->end()) {
-			float x = glm::radians((*jObj)["rotation"][0].get<float>());
-			float y = glm::radians((*jObj)["rotation"][1].get<float>());
-			float z = glm::radians((*jObj)["rotation"][2].get<float>());
-			gameObj->rotationXYZ = glm::vec3(x, y, z);
-		}
-		else {
-			gameObj->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-		}
-
-		if (jObj->find("scale") != jObj->end()) {
-			gameObj->scale = (*jObj)["scale"].get<float>();
-		}
-		else {
-			gameObj->scale = 1.0f;
-		}
-
-		if (jObj->find("diffuseColor") != jObj->end()) {
-			float x = (*jObj)["diffuseColor"][0].get<float>();
-			float y = (*jObj)["diffuseColor"][1].get<float>();
-			float z = (*jObj)["diffuseColor"][2].get<float>();
-			gameObj->diffuseColor = glm::vec4(x, y, z, 1.0f);
-		}
-		else {
-			gameObj->diffuseColor = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
-		}
-
-		if (jObj->find("specularColor") != jObj->end()) {
-			float x = (*jObj)["specularColor"][0].get<float>();
-			float y = (*jObj)["specularColor"][1].get<float>();
-			float z = (*jObj)["specularColor"][2].get<float>();
-			float w = (*jObj)["specularColor"][3].get<float>();
-			gameObj->specularColor = glm::vec4(x, y, z, w);
-		}
-		else {
-			gameObj->specularColor = glm::vec4(1.0f, 1.0f, 1.0f, 50.0f);
-		}
-
-		if (jObj->find("isVisible") != jObj->end()) {
-			gameObj->isVisible = (*jObj)["isVisible"].get<bool>();
-		}
-		else {
-			gameObj->isVisible = true;
-		}
-
-		if (jObj->find("front") != jObj->end()) {
-			float x = (*jObj)["front"][0].get<float>();
-			float y = (*jObj)["front"][1].get<float>();
-			float z = (*jObj)["front"][2].get<float>();
-			gameObj->front = glm::vec3(x, y, z);
-		}
-		else {
-			gameObj->front = glm::normalize(glm::vec3(1.0f, 0.0f, 0.0f));
-		}
-		
-		if (jObj->find("Physics") != jObj->end()) {
-
-			sPhysicsObject *physics = new sPhysicsObject();
-			json jPhysics = (*jObj)["Physics"];
-
-			if (jPhysics.find("gravity") != jPhysics.end()) {
-				physics->gravity = jPhysics["gravity"].get<bool>();
-			}
-			else {
-				physics->gravity = false;
-			}
-
-			if (jPhysics.find("speed") != jPhysics.end()) {
-				physics->speed = jPhysics["speed"].get<float>();
-			}
-			else {
-				physics->speed = 0.0f;
-			}
-
-			if (jPhysics.find("acceleration") != jPhysics.end()) {
-				float x = jPhysics["acceleration"][0].get<float>();
-				float y = jPhysics["acceleration"][1].get<float>();
-				float z = jPhysics["acceleration"][2].get<float>();
-				physics->acceleration = glm::vec3(x, y, z);
-			}
-			else {
-				physics->acceleration = glm::vec3(0.0f);
-			}
-
-			if (jPhysics.find("velocity") != jPhysics.end()) {
-				float x = jPhysics["velocity"][0].get<float>();
-				float y = jPhysics["velocity"][1].get<float>();
-				float z = jPhysics["velocity"][2].get<float>();
-				physics->velocity = glm::vec3(x, y, z);
-			}
-			else {
-				physics->velocity = glm::vec3(0.0f);
-			}
-
-			if (jPhysics.find("shape") != jPhysics.end()) {
-				std::string shape = jPhysics["shape"].get<std::string>();
-				if (shape == "sphere") {
-					physics->shape = SPHERE;
-				}
-				else if (shape == "mesh") {
-					physics->shape = MESH;
-				}
-				else if (shape == "aabb") {
-					physics->shape = AABB;
-				}
-				else if (shape == "capsule") {
-					physics->shape = CAPSULE;
-				}
-				else if (shape == "plane") {
-					physics->shape = PLANE;
-				}
-				else {
-					physics->shape = UNKNOWN;
-				}
-			}
-			else {
-				physics->shape = UNKNOWN;
-			}
-			
-			if (jPhysics.find("radius") != jPhysics.end()) {
-				physics->radius = jPhysics["radius"].get<float>();
-			}
-
-			gameObj->physics = physics;
-		}
-
-		(*mObjects)[gameObj->friendlyName] = gameObj;
+		(*mItems)[gameItem->getName()] = gameItem;
 	}
 
-	i.close();
-
-	return mObjects;
+	return mItems;
 }
 
 std::map<std::string, cLight*>* readLights(std::string filename) {
@@ -364,90 +214,91 @@ std::map<std::string, cLight*>* readLights(std::string filename) {
 	return mLights;
 }
 
-nlohmann::json serializeObjects(std::vector<cGameObject*> objs) {
-	json jObjs_v;
-	
-	for (int i = 0; i < objs.size(); i++) {
-		json jObj;
-		cGameObject* gameObj = objs[i];
+//nlohmann::json serializeObjects(std::vector<cGameObject*> objs) {
 
-		jObj["mesh"] = gameObj->meshName;
-
-		jObj["name"] = gameObj->friendlyName;
-
-		jObj["position"][0] = gameObj->position.x; 
-		jObj["position"][1] = gameObj->position.y; 
-		jObj["position"][2] = gameObj->position.z;
-
-		jObj["rotation"][0] = glm::degrees(gameObj->rotationXYZ.x); 
-		jObj["rotation"][1] = glm::degrees(gameObj->rotationXYZ.y); 
-		jObj["rotation"][2] = glm::degrees(gameObj->rotationXYZ.z);
-
-		std::cout << "Object: " << gameObj->friendlyName << " rotation: "
-			<< jObj["rotation"] << "\n";
-
-		jObj["scale"] = gameObj->scale;
-
-		jObj["diffuseColor"][0] = gameObj->diffuseColor.x; 
-		jObj["diffuseColor"][1] = gameObj->diffuseColor.y; 
-		jObj["diffuseColor"][2] = gameObj->diffuseColor.z;
-
-		jObj["specularColor"][0] = gameObj->specularColor.x; 
-		jObj["specularColor"][1] = gameObj->specularColor.y; 
-		jObj["specularColor"][2] = gameObj->specularColor.z;
-		jObj["specularColor"][3] = gameObj->specularColor.a;
-
-		jObj["isVisible"] = gameObj->isVisible;
-
-		jObj["front"][0] = gameObj->front.x; 
-		jObj["front"][1] = gameObj->front.y; 
-		jObj["front"][2] = gameObj->front.z;
-
-		if (gameObj->physics) 
-		{
-			json jPhysics;
-			sPhysicsObject *physics = gameObj->physics;
-			
-			jPhysics["gravity"] = physics->gravity;
-
-			jPhysics["acceleration"][0] = physics->acceleration.x; 
-			jPhysics["acceleration"][1] = physics->acceleration.y; 
-			jPhysics["acceleration"][2] = physics->acceleration.z;
-
-			jPhysics["velocity"][0] = physics->velocity.x; 
-			jPhysics["velocity"][1] = physics->velocity.y; 
-			jPhysics["velocity"][2] = physics->velocity.z;
-
-			eShapeTypes shape = physics->shape;
-			if (shape == SPHERE) {
-				jPhysics["shape"] = "sphere";
-			}
-			else if (shape == MESH) {
-				jPhysics["shape"] = "mesh";
-			}
-			else if (shape == AABB) {
-				jPhysics["shape"] = "aabb";
-			}
-			else if (shape == CAPSULE) {
-				jPhysics["shape"] = "capsule";
-			}
-			else if (shape == PLANE) {
-				jPhysics["shape"] = "plane";
-			}
-			else {
-				jPhysics["shape"] = "???";
-			}
-
-			jPhysics["radius"] = physics->radius;
-
-			jObj["Physics"] = jPhysics;
-		}
-
-		jObjs_v[i] = jObj;
-	}
-
-	return jObjs_v;
-}
+//	json jObjs_v;
+//	
+//	for (int i = 0; i < objs.size(); i++) {
+//		json jObj;
+//		cGameObject* gameObj = objs[i];
+//
+//		jObj["mesh"] = gameObj->meshName;
+//
+//		jObj["name"] = gameObj->friendlyName;
+//
+//		jObj["position"][0] = gameObj->position.x; 
+//		jObj["position"][1] = gameObj->position.y; 
+//		jObj["position"][2] = gameObj->position.z;
+//
+//		jObj["rotation"][0] = glm::degrees(gameObj->rotationXYZ.x); 
+//		jObj["rotation"][1] = glm::degrees(gameObj->rotationXYZ.y); 
+//		jObj["rotation"][2] = glm::degrees(gameObj->rotationXYZ.z);
+//
+//		std::cout << "Object: " << gameObj->friendlyName << " rotation: "
+//			<< jObj["rotation"] << "\n";
+//
+//		jObj["scale"] = gameObj->scale;
+//
+//		jObj["diffuseColor"][0] = gameObj->diffuseColor.x; 
+//		jObj["diffuseColor"][1] = gameObj->diffuseColor.y; 
+//		jObj["diffuseColor"][2] = gameObj->diffuseColor.z;
+//
+//		jObj["specularColor"][0] = gameObj->specularColor.x; 
+//		jObj["specularColor"][1] = gameObj->specularColor.y; 
+//		jObj["specularColor"][2] = gameObj->specularColor.z;
+//		jObj["specularColor"][3] = gameObj->specularColor.a;
+//
+//		jObj["isVisible"] = gameObj->isVisible;
+//
+//		jObj["front"][0] = gameObj->front.x; 
+//		jObj["front"][1] = gameObj->front.y; 
+//		jObj["front"][2] = gameObj->front.z;
+//
+//		if (gameObj->physics) 
+//		{
+//			json jPhysics;
+//			sPhysicsObject *physics = gameObj->physics;
+//			
+//			jPhysics["gravity"] = physics->gravity;
+//
+//			jPhysics["acceleration"][0] = physics->acceleration.x; 
+//			jPhysics["acceleration"][1] = physics->acceleration.y; 
+//			jPhysics["acceleration"][2] = physics->acceleration.z;
+//
+//			jPhysics["velocity"][0] = physics->velocity.x; 
+//			jPhysics["velocity"][1] = physics->velocity.y; 
+//			jPhysics["velocity"][2] = physics->velocity.z;
+//
+//			eShapeTypes shape = physics->shape;
+//			if (shape == SPHERE) {
+//				jPhysics["shape"] = "sphere";
+//			}
+//			else if (shape == MESH) {
+//				jPhysics["shape"] = "mesh";
+//			}
+//			else if (shape == AABB) {
+//				jPhysics["shape"] = "aabb";
+//			}
+//			else if (shape == CAPSULE) {
+//				jPhysics["shape"] = "capsule";
+//			}
+//			else if (shape == PLANE) {
+//				jPhysics["shape"] = "plane";
+//			}
+//			else {
+//				jPhysics["shape"] = "???";
+//			}
+//
+//			jPhysics["radius"] = physics->radius;
+//
+//			jObj["Physics"] = jPhysics;
+//		}
+//
+//		jObjs_v[i] = jObj;
+//	}
+//
+//	return jObjs_v;
+//}
 
 json serializeLights(std::map<std::string,cLight*> lights) {
 	json jvLights;
@@ -533,7 +384,7 @@ void saveScene(Scene* scene, std::string filename) {
 	json jScene;
 
 	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
-	jScene["Objects"] = serializeObjects(scene->getGameObjects());
+	//jScene["Objects"] = serializeObjects(scene->getGameObjects());
 	jScene["Lights"] = serializeLights(scene->getLightsMap());
 
 	file << jScene;

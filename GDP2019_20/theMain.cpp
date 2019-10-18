@@ -31,12 +31,13 @@
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
 std::string scene_filename = "assets/scene1.json";
+cVAOManager* theVAOManager = new cVAOManager();
 
 int main(void)
 {
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = Camera::getTheCamera();
-	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
+	//SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	theCamera->setPosition(glm::vec3(0.0, 80.0, 10.0));
 	theCamera->setTarget(glm::vec3(0.0, 20.0, 0.0));
 
@@ -83,7 +84,7 @@ int main(void)
 									 
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
-	sceneEditor->init(theScene);
+	//sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -95,8 +96,6 @@ int main(void)
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
-
-	theCamera->setTarget(theScene->findGameObject("TheBowl")->position);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -148,11 +147,11 @@ int main(void)
 		theScene->drawScene();
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
-		pPhysics->TestForCollisions(theScene->getGameObjects());
+		//pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
+		//pPhysics->TestForCollisions(theScene->getGameObjects());
 		
-		sceneEditor->drawDebug();	
-		sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
+		//sceneEditor->drawDebug();	
+		//sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
