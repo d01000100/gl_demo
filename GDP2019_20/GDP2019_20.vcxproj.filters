@@ -34,6 +34,9 @@
     <Filter Include="GameItem %28Factory%29\GameObject">
       <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Messages">
+      <UniqueIdentifier>{65290bae-4b4a-420c-abeb-83016807c2ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -187,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="GameItemFactory\GameItemFactory.h">
       <Filter>GameItem %28Factory%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Messages\iMessagable.h">
+      <Filter>Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="Messages\Message.h">
+      <Filter>Messages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

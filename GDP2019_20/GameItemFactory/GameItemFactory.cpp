@@ -90,4 +90,8 @@ iGameItem* createGameItem(std::string type, json info) {
 
 		return gameObj;
 	}
+	else {
+		printf("Unrecognized GameItem %s\n", type.c_str());
+		return NULL;
+	}
 }

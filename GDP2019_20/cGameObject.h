@@ -71,6 +71,9 @@ public:
 	std::string getName();
 	glm::vec3 getPos();
 
+	void recieveMessage(sMessage message);
+	std::string getType();
+
 private:
 	// this variable is static, so common to all objects.
 	// When the object is created, the unique ID is set, and 

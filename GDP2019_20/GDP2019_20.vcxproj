@@ -191,6 +191,8 @@
     <ClInclude Include="globalStuff.h" />
     <ClInclude Include="JSON_IO.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
+    <ClInclude Include="Messages\iMessagable.h" />
+    <ClInclude Include="Messages\Message.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEditor.h" />

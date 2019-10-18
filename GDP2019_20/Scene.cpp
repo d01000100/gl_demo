@@ -21,6 +21,16 @@ Scene* Scene::getTheScene() {
 	return theScene;
 }
 
+std::vector<iGameItem*> Scene::getItems() {
+	std::vector<iGameItem*> vs;
+	for (std::map<std::string, iGameItem*>::iterator i = gameItems.begin();
+		i != gameItems.end(); i++)
+	{
+		vs.push_back(i->second);
+	}
+	return vs;
+}
+
 std::vector<cLight*> Scene::getLights() {
 
 	std::vector<cLight*> vs;
@@ -72,11 +82,28 @@ bool Scene::loadMeshes(std::string filename) {
 
 bool Scene::loadLights(std::string filename) {
 
-	std::map<std::string, cLight*>* read_lights = readLights(filename);
+	//std::map<std::string, cLight*>* read_lights = readLights(filename);
 
-	if (!read_lights) {	return false; }
+	//if (!read_lights) {	return false; }
 
-	lights = *read_lights;
+	//lights = *read_lights;
+
+	// TODO: Patch while the ItemFactory doesn't have lights
+	cLight* theLight = new cLight();
+	theLight->pos = glm::vec3(10.0,
+		50.0,
+		10.0);
+	theLight->diffuseColor = glm::vec3(1.0f);
+	theLight->linearAtten = 0.01f;
+	theLight->quadAtten = 0.00000000001f;
+	theLight->specularColor = glm::vec4(1.0f, 1.0f, 1.0f, 50.0f);
+	theLight->type = DIRECTIONAL;
+	theLight->direction = glm::vec3(0.11157132685184479,
+		-0.8131065368652344,
+		-0.5713227987289429);
+	lights["theLight"] = theLight;
+
+	return true;
 }
 
 bool Scene::loadScene(std::string filename) {
@@ -86,6 +113,7 @@ bool Scene::loadScene(std::string filename) {
 	return true;
 }
 
+// will not reload Meshes
 bool Scene::reloadScene(std::string filename) {
 	//if (!loadObjects(filename)) { return false; }
 

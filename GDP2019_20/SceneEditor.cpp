@@ -12,7 +12,7 @@ SceneEditor* SceneEditor::getTheEditor() {
 }
 
 void SceneEditor::init(Scene* scene) {
-    //objects = scene->getGameObjects();
+    objects = scene->getItems();
 	selectedObj = objects.begin();
 	lights = scene->getLights();
 	selectedLight = lights.begin();
@@ -21,7 +21,7 @@ void SceneEditor::init(Scene* scene) {
 	debugRenderer = new cDebugRenderer();
 	debugRenderer->initialize();
 	Camera* theCamera = Camera::getTheCamera();
-	//theCamera->setTarget((*selectedObj)->position);
+	theCamera->setTarget((*selectedObj)->getPos());
 }
 
 cDebugRenderer* SceneEditor::getDebugRenderer() {
@@ -54,10 +54,6 @@ void SceneEditor::setEditMode(eEditMode m) {
 	}
 }
 
-eEditMode SceneEditor::getEditMode() {
-	return editMode;
-}
-
 void SceneEditor::nextObject() {
 	selectedObj++;
 	if (selectedObj == objects.end()) {
@@ -78,57 +74,6 @@ void SceneEditor::previousObject() {
 	glm::vec3 objPos = (*selectedObj)->getPos();
 	theCamera->setTarget(objPos);
 	//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
-}
-
-void SceneEditor::setObjectMode(eObjectMode m) {
-	objectMode = m;
-}
-
-void SceneEditor::translateObject(glm::vec3 deltaTranslation) {
-	glm::vec3 pos;
-	switch (editMode) {
-	case OBJS:
-		pos = (*selectedObj)->getPos();
-		break;
-	case LIGHTS:
-		pos = (*selectedLight)->pos;
-		break;
-	}
-	pos += deltaTranslation;
-	Camera* theCamera = Camera::getTheCamera();
-	theCamera->setTarget(pos);
-	theCamera->setPosition(theCamera->getPosition() + deltaTranslation);
-
-	switch (editMode) {
-	case OBJS:
-		//(*selectedObj)->position = pos;
-		break;
-	case LIGHTS:
-		(*selectedLight)->pos = pos;
-		break;
-	}
-}
-
-void SceneEditor::rotateObject(glm::vec3 deltaRotation) {
-	switch (editMode) {
-	case OBJS:
-		//(*selectedObj)->rotationXYZ += deltaRotation;
-		break;
-	case LIGHTS:
-		(*selectedLight)->direction = glm::normalize((*selectedLight)->direction + deltaRotation);
-		break;
-	}
-}
-
-void SceneEditor::scaleObject(float deltaScale) {
-	switch (editMode) {
-	case OBJS:
-		//(*selectedObj)->scale *= deltaScale;
-		break;
-	case LIGHTS:
-		(*selectedLight)->linearAtten *= deltaScale;
-		break;
-	}
 }
 
 void SceneEditor::objectDebug() {
@@ -254,10 +199,6 @@ void SceneEditor::previousLight() {
 	//theCamera->setPosition(LightPos + glm::vec3(0.0f, 0.0f, -50.0f));
 }
 
-void SceneEditor::translateLight(glm::vec3 deltaTranslation){ }
-void SceneEditor::rotateLight(glm::vec3 deltaRotation){ }
-void SceneEditor::changeLinearAtten(float deltaScale){ 
-}
 void SceneEditor::changeQuadAtten(float deltaScale) { 
 	(*selectedLight)->quadAtten *= deltaScale;
 }
@@ -291,5 +232,152 @@ void SceneEditor::LightDebug(){
 		debugRenderer->addLine(pos, pos + leftInner * 10.0f, glm::vec3(1.0, 1.0, 1.0), 0.1f);
 		debugRenderer->addLine(pos, pos + rightInner * 10.0f, glm::vec3(1.0, 1.0, 1.0), 0.1f);
 		break;
+	}
+}
+
+void SceneEditor::recieveMessage(sMessage message) {
+
+	if (message.name == "simple press") {
+		if (message.sValue == "down") {
+			switch (editMode) {
+			case OBJS:
+				nextObject();
+				break;
+			case LIGHTS:
+				nextLight();
+				break;
+			}
+		}
+
+		if (message.sValue == "up") {
+			switch (editMode) {
+			case OBJS:
+				theEditor->previousObject();
+				break;
+			case LIGHTS:
+				theEditor->previousLight();
+				break;
+			}
+		}
+
+		// Individual obj mode
+		if (message.sValue == "t") {
+			objectMode = TRANS;
+		}
+
+		if (message.sValue == "r") {
+			objectMode = ROT;
+		}
+
+		if (message.sValue == "z") {
+			objectMode = SCALE;
+		}
+
+		if (message.sValue == "v"
+			&& editMode == LIGHTS) {
+			objectMode = ANGLES;
+		}
+
+		if (message.sValue == "space" &&
+			editMode == LIGHTS) {
+			(*selectedLight)->isOn = !(*selectedLight)->isOn;
+		}
+
+		// General edition mode
+		if (message.sValue == "o") {
+			setEditMode(OBJS);
+		}
+		if (message.sValue == "l") {
+			setEditMode(LIGHTS);
+		}
+	}
+	else if (message.name == "press with shift") {
+		sMessage itemMessage;
+
+		switch (objectMode) {
+		case TRANS:
+			itemMessage.name = "translate";
+
+			if (message.sValue == "a")
+			{
+				itemMessage.v3Value = glm::vec3(-1.0f, 0.0f, 0.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "d")
+			{
+				itemMessage.v3Value = glm::vec3(1.0f, 0.0f, 0.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "q")
+			{
+				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, -1.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "e")
+			{
+				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, 1.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "w")
+			{
+				itemMessage.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "s")
+			{
+				itemMessage.v3Value = glm::vec3(0.0f, -1.0f, 0.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			break;
+		case ROT:
+			itemMessage.name = "rotate";
+
+			if (message.sValue == "a")
+			{
+				itemMessage.v3Value = glm::vec3(0.0f, -1.0f, 0.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "d")
+			{
+				itemMessage.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "q")
+			{
+				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, -1.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "e")
+			{
+				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, 1.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "w")
+			{
+				itemMessage.v3Value = glm::vec3(-1.0f, 0.0f, 0.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "s")
+			{
+				itemMessage.v3Value = glm::vec3(1.0f, 0.0f, 0.0f);
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			break;
+		}
+	}
+	else {
+		printf("Unrecognized Message by SceneEditor: %s\n", message.name.c_str());
 	}
 }

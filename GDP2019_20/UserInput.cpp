@@ -27,7 +27,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	Camera* theCamera = Camera::getTheCamera();
 	Scene* theScene = Scene::getTheScene();
-	SceneEditor* theEditor = SceneEditor::getTheEditor();
+	iMessagable* theEditor = SceneEditor::getTheEditor();
 
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
@@ -57,56 +57,54 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
-			switch (theEditor->getEditMode()) {
-			case OBJS:
-				theEditor->nextObject();
-				break;
-			case LIGHTS:
-				theEditor->nextLight();
-				break;
-			}
+			sMessage message; 
+			message.name = "simple press";
+			message.sValue = "down";
+			theEditor->recieveMessage(message);
 		}
 
 		if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
-			switch (theEditor->getEditMode()) {
-			case OBJS:
-				theEditor->previousObject();
-				break;
-			case LIGHTS:
-				theEditor->previousLight();
-				break;
-			}
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "up";
+			theEditor->recieveMessage(message);
 		}
 
 		// Individual obj mode
 		if (key == GLFW_KEY_T && action == GLFW_PRESS) {
-			theEditor->setObjectMode(TRANS);
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "t";
+			theEditor->recieveMessage(message);
 		}
 
 		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-			theEditor->setObjectMode(ROT);
-		}
-
-		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
-			theEditor->setObjectMode(SCALE);
-		}
-
-		if (key == GLFW_KEY_V && action == GLFW_PRESS) {
-			theEditor->setObjectMode(ANGLES);
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "r";
+			theEditor->recieveMessage(message);
 		}
 
 		if (key == GLFW_KEY_SPACE && 
-			action == GLFW_PRESS && 
-			theEditor->getEditMode() == LIGHTS) {
-			theEditor->toggleLight();
+			action == GLFW_PRESS) {
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "space";
+			theEditor->recieveMessage(message);
 		}
 
 		// General edition mode
 		if (key == GLFW_KEY_O && action == GLFW_PRESS) {
-			theEditor->setEditMode(OBJS);
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "o";
+			theEditor->recieveMessage(message);
 		}
 		if (key == GLFW_KEY_L && action == GLFW_PRESS) {
-			theEditor->setEditMode(LIGHTS);
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "l";
+			theEditor->recieveMessage(message);
 		}
 
 		if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
@@ -121,104 +119,47 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// Edit mode
 	if (isShiftKeyDownByAlone(mods))
 	{
-		switch (theEditor->objectMode) {
-			case TRANS: {
-				glm::vec3 direction = glm::vec3(0.0f);
-				if (key == GLFW_KEY_A)
-				{
-					direction = glm::vec3(-1.0f, 0.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_D)
-				{
-					direction = glm::vec3(1.0f, 0.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_Q)
-				{
-					direction = glm::vec3(0.0f, 0.0f, -1.0f);
-				}
-				if (key == GLFW_KEY_E)
-				{
-					direction = glm::vec3(0.0f, 0.0f, 1.0f);
-				}
-				if (key == GLFW_KEY_W)
-				{
-					direction = glm::vec3(0.0f, 1.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_S)
-				{
-					direction = glm::vec3(0.0f, -1.0f, 0.0f); 
-				}
-				theEditor->translateObject(direction * TRANSLATION_STEP);
-				break;
-			}
-			case ROT: {
-				glm::vec3 rotation = glm::vec3(0.0f);
-				if (key == GLFW_KEY_A)
-				{
-					rotation = glm::vec3(0.0f, 1.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_D)
-				{
-					rotation = glm::vec3(0.0f, -1.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_Q)
-				{
-					rotation = glm::vec3(0.0f, 0.0f, -1.0f);
-				}
-				if (key == GLFW_KEY_E)
-				{
-					rotation = glm::vec3(0.0f, 0.0f, 1.0f);
-				}
-				if (key == GLFW_KEY_W)
-				{
-					rotation = glm::vec3(-1.0f, 0.0f, 0.0f);
-				}
-				if (key == GLFW_KEY_S)
-				{
-					rotation = glm::vec3(1.0f, 0.0f, 0.0f);
-				}
-				theEditor->rotateObject(rotation * ROTATION_STEP);
-				break;
-			}
-			case SCALE: {
-				if (key == GLFW_KEY_W)
-				{
-					theEditor->scaleObject(1.1f);
-				}
-				if (key == GLFW_KEY_S)
-				{
-					theEditor->scaleObject(0.9f); 
-				}
-				if (key == GLFW_KEY_A && theEditor->getEditMode() == LIGHTS)
-				{
-					theEditor->changeQuadAtten(1.1f);
-				}
-				if (key == GLFW_KEY_D && theEditor->getEditMode() == LIGHTS)
-				{
-					theEditor->changeQuadAtten(0.9f);
-				}
-				break;
-			case ANGLES:
-				if (theEditor->getEditMode() == LIGHTS) {
-					if (key == GLFW_KEY_W)
-					{
-						theEditor->changeOuterAngle(1.02f);
-					}
-					if (key == GLFW_KEY_S)
-					{
-						theEditor->changeOuterAngle(0.98f);
-					}
-					if (key == GLFW_KEY_A)
-					{
-						theEditor->changeInnerAngle(0.98f);
-					}
-					if (key == GLFW_KEY_D)
-					{
-						theEditor->changeInnerAngle(1.02f);
-					}
-					break;
-				}
-			}
+		if (key == GLFW_KEY_A)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "a";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_D)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "d";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_Q)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "q";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_E)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "e";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_W)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "w";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_S)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "s";
+			theEditor->recieveMessage(message);
 		}
 	}//if (isShiftKeyDownByAlone(mods))
 

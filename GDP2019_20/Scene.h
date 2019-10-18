@@ -22,6 +22,7 @@ private:
 
 public:
 	static Scene* getTheScene();
+	std::vector<iGameItem*> getItems();
 	std::vector<cLight*> getLights();
 	std::map<std::string, cLight*> getLightsMap();
 	std::map<std::string, cMesh*> getMeshesMap();

@@ -132,6 +132,24 @@ void cGameObject::draw()
 		glBindVertexArray(0);
 	}
 }
+
+void cGameObject::recieveMessage(sMessage message) {
+
+	float translationStep = 0.1f;
+	float rotationStep = 0.02;
+
+	if (message.name == "translate") {
+		position += glm::normalize(message.v3Value) * translationStep;
+	}
+	else if (message.name == "rotate") {
+		rotationXYZ += glm::normalize(message.v3Value) * rotationStep;
+	} else {
+		printf("Unrecognized Message to GameObject: %s\n", message.name.c_str());
+	}
+}
+
+std::string cGameObject::getType() { return "Object"; }
+
 // this variable is static, so common to all objects.
 // When the object is created, the unique ID is set, and 
 //	the next unique ID is incremented
