@@ -50,12 +50,12 @@
                     0.0,
                     0.0
                 ],
-                "gravity": false,
+                "gravity": true,
                 "radius": 4.0,
                 "shape": "???",
                 "velocity": [
                     0.0,
-                    0.0,
+                    50.0,
                     0.0
                 ]
             },

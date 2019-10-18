@@ -16,7 +16,6 @@ private:
 	Scene();
 	bool loadMeshes(std::string filename);
 	bool loadLights(std::string filename);
-	void drawObjects();
 	void drawLights();
 	void drawItems();
 
@@ -30,4 +29,5 @@ public:
 	bool reloadScene(std::string filename);
 	void saveScene(std::string filename);
 	void drawScene();
+	void IntegrationStep(float deltaTime);
 };

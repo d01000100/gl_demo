@@ -147,6 +147,7 @@ int main(void)
 		theScene->drawScene();
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		theScene->IntegrationStep(averageDeltaTime);
 		//pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
 		//pPhysics->TestForCollisions(theScene->getGameObjects());
 		

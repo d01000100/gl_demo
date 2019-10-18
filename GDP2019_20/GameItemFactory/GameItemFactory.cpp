@@ -4,6 +4,76 @@
 
 using namespace nlohmann;
 
+sPhysicsObject* buildPhysicsObject(json jPhysics) {
+
+	sPhysicsObject* physics = new sPhysicsObject();
+
+	if (jPhysics.find("gravity") != jPhysics.end()) {
+		physics->gravity = jPhysics["gravity"].get<bool>();
+	}
+	else {
+		physics->gravity = false;
+	}
+
+	if (jPhysics.find("speed") != jPhysics.end()) {
+		physics->speed = jPhysics["speed"].get<float>();
+	}
+	else {
+		physics->speed = 0.0f;
+	}
+
+	if (jPhysics.find("acceleration") != jPhysics.end()) {
+		float x = jPhysics["acceleration"][0].get<float>();
+		float y = jPhysics["acceleration"][1].get<float>();
+		float z = jPhysics["acceleration"][2].get<float>();
+		physics->acceleration = glm::vec3(x, y, z);
+	}
+	else {
+		physics->acceleration = glm::vec3(0.0f);
+	}
+
+	if (jPhysics.find("velocity") != jPhysics.end()) {
+		float x = jPhysics["velocity"][0].get<float>();
+		float y = jPhysics["velocity"][1].get<float>();
+		float z = jPhysics["velocity"][2].get<float>();
+		physics->velocity = glm::vec3(x, y, z);
+	}
+	else {
+		physics->velocity = glm::vec3(0.0f);
+	}
+
+	if (jPhysics.find("shape") != jPhysics.end()) {
+		std::string shape = jPhysics["shape"].get<std::string>();
+		if (shape == "sphere") {
+			physics->shape = SPHERE;
+		}
+		else if (shape == "mesh") {
+			physics->shape = MESH;
+		}
+		else if (shape == "aabb") {
+			physics->shape = AABB;
+		}
+		else if (shape == "capsule") {
+			physics->shape = CAPSULE;
+		}
+		else if (shape == "plane") {
+			physics->shape = PLANE;
+		}
+		else {
+			physics->shape = UNKNOWN;
+		}
+	}
+	else {
+		physics->shape = UNKNOWN;
+	}
+
+	if (jPhysics.find("radius") != jPhysics.end()) {
+		physics->radius = jPhysics["radius"].get<float>();
+	}
+
+	return physics;
+}
+
 iGameItem* createGameItem(std::string type, json info) {
 	if (type == "Object") {
 		cGameObject* gameObj = new cGameObject();
@@ -86,6 +156,10 @@ iGameItem* createGameItem(std::string type, json info) {
 		}
 		else {
 			gameObj->front = glm::normalize(glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+
+		if (info.find("Physics") != info.end()) {
+			gameObj->physics = buildPhysicsObject(info["Physics"]);
 		}
 
 		return gameObj;

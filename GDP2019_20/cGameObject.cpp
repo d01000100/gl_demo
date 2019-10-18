@@ -143,12 +143,30 @@ void cGameObject::recieveMessage(sMessage message) {
 	}
 	else if (message.name == "rotate") {
 		rotationXYZ += glm::normalize(message.v3Value) * rotationStep;
-	} else {
+	} 
+	else if (message.name == "integration step") {
+		IntegrationStep(message.fValue);
+	}
+	else {
 		printf("Unrecognized Message to GameObject: %s\n", message.name.c_str());
 	}
 }
 
 std::string cGameObject::getType() { return "Object"; }
+
+void cGameObject::IntegrationStep(float deltaTime) {
+	if (physics)
+	{
+		if (physics->gravity) {
+			physics->acceleration += glm::vec3(0.0f, -1.0f, 0.0f);
+		}
+
+		// Forward Explicit Euler Inetegration
+		//NewVelocty += Velocity + ( Ax * DeltaTime )
+		physics->velocity += physics->acceleration * deltaTime;
+		position += physics->velocity * deltaTime;
+	}
+}
 
 // this variable is static, so common to all objects.
 // When the object is created, the unique ID is set, and 

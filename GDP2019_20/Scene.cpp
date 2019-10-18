@@ -192,3 +192,11 @@ void Scene::drawScene() {
 void Scene::saveScene(std::string filename) {
 
 }
+
+void Scene::IntegrationStep(float deltaTime) {
+	for (std::map<std::string, iGameItem*>::iterator itItem = gameItems.begin();
+		itItem != gameItems.end(); itItem++) {
+		sMessage m; m.name = "integration step"; m.fValue = deltaTime;
+		itItem->second->recieveMessage(m);
+	}
+}

@@ -50,7 +50,6 @@ public:
 
 	glm::mat4 matWorld;
 
-	//glm::vec4  objectColourRGBA;	
 	glm::vec4 diffuseColor;		// Colour of the object
 	glm::vec4 specularColor;		// Colour of the HIGHLIGHT + Shininess
 	                                // RGB - colour
@@ -82,6 +81,8 @@ private:
 	unsigned int m_uniqueID;
 
 	iDebugRenderer* m_pDebugRenderer;
+
+	void IntegrationStep(float deltaTime);
 };
 
 #endif
