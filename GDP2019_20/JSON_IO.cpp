@@ -63,19 +63,32 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 	json jFile;
 	i >> jFile;
 
+	std::map<std::string, iGameItem*>* mItems = new std::map<std::string, iGameItem*>();
+
+	// create GameObjects
 	json::iterator jObjects = jFile.find("Objects");
 	if (jObjects == jFile.end()) {
 		printf("No Objects found!!\n");
 		return NULL;
 	}
-
-	std::map<std::string, iGameItem*>* mItems = new std::map<std::string, iGameItem*>();
-
-
 	for (json::iterator jObj = jObjects->begin();
 		jObj != jObjects->end(); jObj++) {
 
 		iGameItem* gameItem = createGameItem("Object", *jObj);
+
+		(*mItems)[gameItem->getName()] = gameItem;
+	}
+
+	// create Lights
+	json::iterator jLights = jFile.find("Lights");
+	if (jLights == jFile.end()) {
+		printf("No Lights found!!\n");
+		return NULL;
+	}
+	for (json::iterator jLight = jLights->begin();
+		jLight != jLights->end(); jLight++) {
+
+		iGameItem* gameItem = createGameItem("Light", *jLight);
 
 		(*mItems)[gameItem->getName()] = gameItem;
 	}

@@ -1,6 +1,7 @@
 #include "GameItemFactory.h"
 #include "iGameItem.h"
 #include "../cGameObject.h"
+#include "../cLight.h"
 
 using namespace nlohmann;
 
@@ -163,6 +164,108 @@ iGameItem* createGameItem(std::string type, json info) {
 		}
 
 		return gameObj;
+	}
+	else if (type == "Light") {
+		cLight* light = new cLight();
+
+		if (info.find("name") == info.end()) {
+			light->name = "light_" + std::to_string(light->getUniqueId());
+		}
+		else {
+			light->name = info["name"].get<std::string>();
+		}
+
+		if (info.find("position") != info.end()) {
+			float x = info["position"][0].get<float>();
+			float y = info["position"][1].get<float>();
+			float z = info["position"][2].get<float>();
+			light->pos = glm::vec3(x, y, z);
+		}
+		else {
+			light->pos = glm::vec3(0.0f, 0.0f, 0.0f);
+		}
+
+		if (info.find("diffuseColor") != info.end()) {
+			float x = info["diffuseColor"][0].get<float>();
+			float y = info["diffuseColor"][1].get<float>();
+			float z = info["diffuseColor"][2].get<float>();
+			light->diffuseColor = glm::vec3(x, y, z);
+		}
+		else {
+			light->diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+		}
+
+		if (info.find("specularColor") != info.end()) {
+			float x = info["specularColor"][0].get<float>();
+			float y = info["specularColor"][1].get<float>();
+			float z = info["specularColor"][2].get<float>();
+			float w = info["specularColor"][3].get<float>();
+			light->specularColor = glm::vec4(x, y, z, w);
+		}
+		else {
+			light->specularColor = glm::vec4(1.0f, 1.0f, 1.0f, 50.0f);
+		}
+
+		if (info.find("linearAtten") != info.end()) {
+			light->linearAtten = info["linearAtten"].get<float>();
+		}
+		else {
+			light->linearAtten = 0.05f;
+		}
+
+		if (info.find("quadAtten") != info.end()) {
+			light->quadAtten = info["quadAtten"].get<float>();
+		}
+		else {
+			light->quadAtten = 0.05f;
+		}
+
+		if (info.find("cutOffDist") != info.end()) {
+			light->cutOffDist = info["cutOffDist"].get<float>();
+		}
+		else {
+			light->cutOffDist = 50.0f;
+		}
+
+		if (info.find("type") != info.end()) {
+			std::string type = info["type"].get<std::string>();
+			if (type == "point") {
+				light->type = POINT;
+			}
+			if (type == "spotlight") {
+				light->type = SPOT;
+			}
+			if (type == "directional") {
+				light->type = DIRECTIONAL;
+			}
+		}
+		else {
+			light->type = POINT;
+		}
+
+		if (info.find("isOn") != info.end()) {
+			light->isOn = info["isOn"].get<bool>();
+		}
+		else {
+			light->isOn = true;
+		}
+
+		if (info.find("direction") != info.end()) {
+			float x = info["direction"][0].get<float>();
+			float y = info["direction"][1].get<float>();
+			float z = info["direction"][2].get<float>();
+			light->direction = glm::normalize(glm::vec3(x,y,z));
+		}
+
+		if (info.find("innerAngle") != info.end()) {
+			light->innerAngle = info["innerAngle"].get<float>();
+		}
+
+		if (info.find("outerAngle") != info.end()) {
+			light->outerAngle = info["outerAngle"].get<float>();
+		}
+
+		return light;
 	}
 	else {
 		printf("Unrecognized GameItem %s\n", type.c_str());

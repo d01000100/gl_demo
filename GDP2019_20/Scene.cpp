@@ -186,7 +186,7 @@ void Scene::drawItems() {
 void Scene::drawScene() {
 	//drawObjects();
 	drawItems();
-	drawLights();
+	//drawLights();
 }
 
 void Scene::saveScene(std::string filename) {
