@@ -85,6 +85,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			theEditor->recieveMessage(message);
 		}
 
+		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "z";
+			theEditor->recieveMessage(message);
+		}
+
 		if (key == GLFW_KEY_SPACE && 
 			action == GLFW_PRESS) {
 			sMessage message;

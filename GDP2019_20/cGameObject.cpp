@@ -137,13 +137,17 @@ void cGameObject::recieveMessage(sMessage message) {
 
 	float translationStep = 0.1f;
 	float rotationStep = 0.02;
+	float scaleStep = 0.1f;
 
 	if (message.name == "translate") {
 		position += glm::normalize(message.v3Value) * translationStep;
 	}
 	else if (message.name == "rotate") {
 		rotationXYZ += glm::normalize(message.v3Value) * rotationStep;
-	} 
+	}
+	else if (message.name == "scale") {
+		scale += message.fValue * scaleStep;
+	}
 	else if (message.name == "integration step") {
 		IntegrationStep(message.fValue);
 	}

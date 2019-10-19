@@ -375,6 +375,22 @@ void SceneEditor::recieveMessage(sMessage message) {
 				return;
 			}
 			break;
+		case SCALE:
+			itemMessage.name = "scale";
+
+			if (message.sValue == "w")
+			{
+				itemMessage.fValue = 1.0f;
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "s")
+			{
+				itemMessage.fValue = -1.0f;
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			break;
 		}
 	}
 	else {
