@@ -94,5 +94,28 @@
             "mesh": "terrain",
             "position": [0.0, -10, 0]
         }
+    ], 
+    "Sounds": [
+        {
+            "name": "zombie sounds",
+            "position": [20.0, 0.0, 15.0],        
+            "audios": [
+                "assets/audios/zombies.mp3",
+                "assets/audios/gravel.mp3",
+                "assets/audios/cave.mp3"
+            ],
+            "volume": 0.0
+        },
+        {
+            "name": "battle sounds",
+            "position": [-20.0, 0.0, 15.0],        
+            "audios": [
+                "assets/audios/arrow.wav",
+                "assets/audios/magic-missiles.wav",
+                "assets/audios/sword-combo.wav",
+                "assets/audios/battle.mp3"
+            ],
+            "volume": 1.0
+        }
     ]
 }

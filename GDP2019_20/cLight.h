@@ -41,6 +41,8 @@ public:
 	virtual void recieveMessage(sMessage message) ;
 	virtual std::string getType() ;
 
+	std::string getInfo();
+
 private:
 	static int next_unique_id;
 	int unique_id;

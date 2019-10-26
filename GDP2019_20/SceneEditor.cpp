@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include "Scene.h"
 #include <glm/gtx/rotate_vector.hpp>
+#include <sstream>
+#include "globalStuff.h"
 
 SceneEditor::SceneEditor() {}
 
@@ -14,14 +16,13 @@ SceneEditor* SceneEditor::getTheEditor() {
 void SceneEditor::init(Scene* scene) {
     objects = scene->getItems();
 	selectedObj = objects.begin();
-	lights = scene->getLights();
-	selectedLight = lights.begin();
-	editMode = OBJS;
 	objectMode = TRANS;
+	editMode = OBJS;
 	debugRenderer = new cDebugRenderer();
 	debugRenderer->initialize();
 	Camera* theCamera = Camera::getTheCamera();
 	theCamera->setTarget((*selectedObj)->getPos());
+	changeObject();
 }
 
 cDebugRenderer* SceneEditor::getDebugRenderer() {
@@ -54,15 +55,18 @@ void SceneEditor::setEditMode(eEditMode m) {
 	}
 }
 
+void SceneEditor::changeObject() {
+	Camera* theCamera = Camera::getTheCamera();
+	glm::vec3 objPos = (*selectedObj)->getPos();
+	theCamera->setTarget(objPos);
+}
+
 void SceneEditor::nextObject() {
 	selectedObj++;
 	if (selectedObj == objects.end()) {
 		selectedObj = objects.begin();
 	}
-	Camera* theCamera = Camera::getTheCamera();
-	glm::vec3 objPos = (*selectedObj)->getPos();
-	theCamera->setTarget(objPos);
-	//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
+	changeObject();
 }
 
 void SceneEditor::previousObject() {
@@ -70,10 +74,7 @@ void SceneEditor::previousObject() {
 		selectedObj = objects.end();
 	}
 	selectedObj--;
-	Camera* theCamera = Camera::getTheCamera();
-	glm::vec3 objPos = (*selectedObj)->getPos();
-	theCamera->setTarget(objPos);
-	//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
+	changeObject();
 }
 
 void SceneEditor::objectDebug() {
@@ -89,6 +90,8 @@ void SceneEditor::objectDebug() {
 		debugScale(pos);
 		break;
 	}
+
+	glfwSetWindowTitle(::window, (*selectedObj)->getInfo().c_str());
 }
 
 void SceneEditor::debugTranslation(glm::vec3 pos) {
@@ -235,29 +238,33 @@ void SceneEditor::LightDebug(){
 	}
 }
 
+void SceneEditor::printInfo() {
+	for (std::vector<iGameItem*>::iterator i = objects.begin();
+		i != objects.end(); i++)
+	{
+		printf("%s: %s\n", (*i)->getType().c_str(), (*i)->getName().c_str());
+	}
+
+	printf("selected item: %s %s\n",
+		(*selectedObj)->getType().c_str(),
+		(*selectedObj)->getName().c_str());
+
+	printf("active mode %d\n", objectMode);
+}
+
 void SceneEditor::recieveMessage(sMessage message) {
 
 	if (message.name == "simple press") {
+		if (message.sValue == "f1") {
+			printInfo();
+		}
+
 		if (message.sValue == "down") {
-			switch (editMode) {
-			case OBJS:
-				nextObject();
-				break;
-			case LIGHTS:
-				nextLight();
-				break;
-			}
+			nextObject();
 		}
 
 		if (message.sValue == "up") {
-			switch (editMode) {
-			case OBJS:
-				theEditor->previousObject();
-				break;
-			case LIGHTS:
-				theEditor->previousLight();
-				break;
-			}
+			previousObject();
 		}
 
 		// Individual obj mode
@@ -287,9 +294,6 @@ void SceneEditor::recieveMessage(sMessage message) {
 		if (message.sValue == "o") {
 			setEditMode(OBJS);
 		}
-		if (message.sValue == "l") {
-			setEditMode(LIGHTS);
-		}
 	}
 	else if (message.name == "press with shift") {
 		sMessage itemMessage;
@@ -302,36 +306,42 @@ void SceneEditor::recieveMessage(sMessage message) {
 			{
 				itemMessage.v3Value = glm::vec3(-1.0f, 0.0f, 0.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
+				changeObject();
 				return;
 			}
 			if (message.sValue == "d")
 			{
 				itemMessage.v3Value = glm::vec3(1.0f, 0.0f, 0.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
+				changeObject();
 				return;
 			}
 			if (message.sValue == "q")
 			{
 				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, -1.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
+				changeObject();
 				return;
 			}
 			if (message.sValue == "e")
 			{
 				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, 1.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
+				changeObject();
 				return;
 			}
 			if (message.sValue == "w")
 			{
 				itemMessage.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
+				changeObject();
 				return;
 			}
 			if (message.sValue == "s")
 			{
 				itemMessage.v3Value = glm::vec3(0.0f, -1.0f, 0.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
+				changeObject();
 				return;
 			}
 			break;

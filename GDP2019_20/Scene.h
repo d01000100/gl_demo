@@ -30,4 +30,5 @@ public:
 	void saveScene(std::string filename);
 	void drawScene();
 	void IntegrationStep(float deltaTime);
+	std::vector<iGameItem*> getItemsPerType(std::string type);
 };

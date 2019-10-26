@@ -93,6 +93,20 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 		(*mItems)[gameItem->getName()] = gameItem;
 	}
 
+	// create Lights
+	json::iterator jAudios = jFile.find("Sounds");
+	if (jAudios == jFile.end()) {
+		printf("No Sounds found!!\n");
+		return NULL;
+	}
+	for (json::iterator jAudio = jAudios->begin();
+		jAudio != jAudios->end(); jAudio++) {
+
+		iGameItem* gameItem = createGameItem("sound", *jAudio);
+
+		(*mItems)[gameItem->getName()] = gameItem;
+	}
+
 	return mItems;
 }
 

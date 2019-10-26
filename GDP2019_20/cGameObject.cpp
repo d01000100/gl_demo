@@ -7,6 +7,7 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include <sstream>
 
 cGameObject::cGameObject()
 {
@@ -157,6 +158,11 @@ void cGameObject::recieveMessage(sMessage message) {
 }
 
 std::string cGameObject::getType() { return "Object"; }
+std::string cGameObject::getInfo() {
+	std::stringstream ss;
+	ss << getType() << " - " << getName();
+	return ss.str();
+};
 
 void cGameObject::IntegrationStep(float deltaTime) {
 	if (physics)

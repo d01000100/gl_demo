@@ -1,6 +1,7 @@
 #include "cLight.h"
 #include <glm/mat4x4.hpp>
 #include "globalStuff.h"
+#include <sstream>
 
 int cLight::next_unique_id = 0;
 
@@ -74,3 +75,9 @@ glm::vec3 cLight::getPos() { return pos; }
 void cLight::recieveMessage(sMessage message){ }
 std::string cLight::getType() { return "Light"; }
 int cLight::getUniqueId() { return unique_id; }
+
+std::string cLight::getInfo() {
+	std::stringstream ss;
+	ss << getType() << " - " << getName();
+	return ss.str();
+};

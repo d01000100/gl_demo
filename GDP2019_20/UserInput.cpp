@@ -121,6 +121,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
 			theScene->reloadScene(::scene_filename);
 		}
+
+		if (key == GLFW_KEY_F1 && action == GLFW_PRESS) {
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "f1";
+			theEditor->recieveMessage(message);
+		}
 	}
 
 	// Edit mode

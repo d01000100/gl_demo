@@ -28,20 +28,51 @@
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
 
+// audio things
+#include "audio_item.h"
+#include "audio_listener.h"
+
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
 std::string scene_filename = "assets/scene1.json";
 cVAOManager* theVAOManager = new cVAOManager();
+GLFWwindow* ::window = 0;
+
+// audio globals
+FMOD::System *::fmod_system = 0;
+
+bool init_fmod() {
+	//Create system
+	error_check(FMOD::System_Create(&::fmod_system));
+	//Init system
+	error_check(::fmod_system->init(32, FMOD_INIT_NORMAL, 0));
+
+	////create echo dsp
+	//_result = _system->createDSPByType(FMOD_DSP_TYPE_ECHO, &_dsp_echo);
+	//error_check(_result);
+
+	////create tremolo dsp
+	//_result = _system->createDSPByType(FMOD_DSP_TYPE_TREMOLO, &_dsp_tremolo);
+	//error_check(_result);
+
+	// initialize audio listener
+	//_listener = new AudioListener(_system);
+
+	error_check(::fmod_system->set3DSettings(1.0f, 1.0f, 1.0f));
+
+	return true;
+}
 
 int main(void)
 {
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = Camera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
+	init_fmod();
+	theCamera->init();
 	theCamera->setPosition(glm::vec3(0.0, 80.0, 10.0));
 	theCamera->setTarget(glm::vec3(0.0, 20.0, 0.0));
 
-	GLFWwindow* window;
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -52,15 +83,15 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	window = glfwCreateWindow(1600, 800, "SimpleGame", NULL, NULL);
-	if (!window)
+	::window = glfwCreateWindow(1600, 800, "SimpleGame", NULL, NULL);
+	if (!::window)
 	{
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
 
-	glfwSetKeyCallback(window, key_callback);
-	glfwMakeContextCurrent(window);
+	glfwSetKeyCallback(::window, key_callback);
+	glfwMakeContextCurrent(::window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
 
@@ -156,6 +187,8 @@ int main(void)
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		error_check(::fmod_system->update());
 	}
 	glfwDestroyWindow(window);
 	glfwTerminate();

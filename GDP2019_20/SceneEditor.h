@@ -24,9 +24,11 @@ private:
 	eObjectMode objectMode;
 	eEditMode editMode;
 	cDebugRenderer* debugRenderer;
+	void printInfo();
 
 	std::vector<iGameItem*>::iterator selectedObj;
 	std::vector<iGameItem*> objects;
+	void changeObject();
 	void nextObject();
 	void previousObject();
 	std::vector<cLight*>::iterator selectedLight;

@@ -13,6 +13,10 @@ Camera::Camera() {
 	upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
+void Camera::init() {
+	audioListener = new AudioListener(::fmod_system);
+}
+
 glm::vec3 Camera::direction() {
 	return pos - target;
 }
@@ -31,6 +35,7 @@ void Camera::setTarget(glm::vec3 p_target) {
 
 void Camera::setPosition(glm::vec3 position) {
 	pos = position;
+	audioListener->setPosition(glm_2_fmod_vec(position));
 }
 
 glm::vec3 Camera::getPosition() {
@@ -38,24 +43,24 @@ glm::vec3 Camera::getPosition() {
 }
 
 void Camera::moveUp(float angle) {
-	pos = glm::rotate(direction(), -angle, right()) + target;
+	setPosition(glm::rotate(direction(), -angle, right()) + target);
 }
 
 void Camera::moveDown(float angle) {
-	pos = glm::rotate(direction(), angle, right()) + target;
+	setPosition(glm::rotate(direction(), angle, right()) + target);
 }
 
 void Camera::moveRight(float angle) {
-	pos = glm::rotate(direction(), angle, upVector) + target;
+	setPosition(glm::rotate(direction(), angle, upVector) + target);
 }
 
 void Camera::moveLeft(float angle) {
-	pos = glm::rotate(direction(), -angle, upVector) + target;
+	setPosition(glm::rotate(direction(), -angle, upVector) + target);
 }
 
 void Camera::zoom(float distance) {
 	glm::vec3 newDirection = direction() + distance * glm::normalize(direction());
-	pos = target + newDirection;
+	setPosition(target + newDirection);
 }
 
 glm::mat4 Camera::lookAt() {

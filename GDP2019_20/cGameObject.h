@@ -72,6 +72,7 @@ public:
 
 	void recieveMessage(sMessage message);
 	std::string getType();
+	std::string getInfo();
 
 private:
 	// this variable is static, so common to all objects.
