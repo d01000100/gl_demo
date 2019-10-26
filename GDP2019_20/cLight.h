@@ -42,6 +42,7 @@ public:
 	virtual std::string getType() ;
 
 	std::string getInfo();
+	json toJSON();
 
 private:
 	static int next_unique_id;

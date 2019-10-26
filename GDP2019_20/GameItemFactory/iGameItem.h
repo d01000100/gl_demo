@@ -5,6 +5,9 @@
 #include <string>
 #include "../GLCommon.h"
 #include "../Messages/iMessagable.h"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 class iGameItem : public iMessagable {
 public:
@@ -17,4 +20,6 @@ public:
 	virtual void draw() = 0;
 
 	virtual std::string getInfo() = 0;
+
+	virtual json toJSON() = 0;
 };

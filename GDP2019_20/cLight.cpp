@@ -81,3 +81,52 @@ std::string cLight::getInfo() {
 	ss << getType() << " - " << getName();
 	return ss.str();
 };
+
+json cLight::toJSON() {
+	json jLight;
+
+	jLight["name"] = name;
+		
+	jLight["position"][0] = pos.x; 
+	jLight["position"][1] = pos.y; 
+	jLight["position"][2] = pos.z; 
+
+	jLight["diffuseColor"][0] = diffuseColor.x;
+	jLight["diffuseColor"][1] = diffuseColor.y;
+	jLight["diffuseColor"][2] = diffuseColor.z;
+
+	jLight["specularColor"][0] = specularColor.x;
+	jLight["specularColor"][1] = specularColor.y;
+	jLight["specularColor"][2] = specularColor.z;
+	jLight["specularColor"][3] = specularColor.w;
+
+	jLight["linearAtten"] = linearAtten;
+
+	jLight["quadAtten"] = quadAtten;
+
+	jLight["cutOffDist"] = cutOffDist;
+
+	switch (type) {
+		case POINT:
+			jLight["type"] = "point";
+			break;
+		case SPOT:
+			jLight["type"] = "spot";
+			break;
+		case DIRECTIONAL:
+			jLight["type"] = "directional";
+			break;
+	}
+
+	jLight["isOn"] = isOn;
+
+	jLight["direction"][0] = direction.x;
+	jLight["direction"][1] = direction.y;
+	jLight["direction"][2] = direction.z;
+
+	jLight["innerAngle"] = innerAngle;
+
+	jLight["outerAngle"] = outerAngle;
+
+	return jLight;
+}

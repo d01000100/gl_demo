@@ -22,8 +22,10 @@ void cGameAudio::recieveMessage(sMessage message){
 	if (message.name == "speed") {
 
 	}
-	if (message.name == "pause") {
-
+	if (message.name == "toggle") {
+		bool is_paused;
+		channel_group->getPaused(&is_paused);
+		channel_group->setPaused(!is_paused);
 	}
 	if (message.name == "dsp") {
 
@@ -52,4 +54,22 @@ void cGameAudio::setPos(glm::vec3 pos) {
 	}
 
 	::fmod_system->update();
+}
+
+json cGameAudio::toJSON() {
+	json jAudio;
+
+	jAudio["name"] = name;
+	jAudio["volume"] = volume;
+
+	jAudio["position"][0] = position.x;
+	jAudio["position"][1] = position.y;
+	jAudio["position"][2] = position.z;
+
+	for (int i = 0; i < audios.size(); i++)
+	{
+		jAudio["audios"][i] = audios[i]->path;
+	}
+
+	return jAudio;
 }

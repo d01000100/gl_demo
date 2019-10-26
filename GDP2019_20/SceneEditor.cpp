@@ -285,9 +285,11 @@ void SceneEditor::recieveMessage(sMessage message) {
 			objectMode = ANGLES;
 		}
 
-		if (message.sValue == "space" &&
-			editMode == LIGHTS) {
-			(*selectedLight)->isOn = !(*selectedLight)->isOn;
+		if (message.sValue == "space") {
+			sMessage itemMessage;
+			itemMessage.name = "toggle";
+			(*selectedObj)->recieveMessage(itemMessage);
+			return;
 		}
 
 		// General edition mode

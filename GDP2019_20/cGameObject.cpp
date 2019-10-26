@@ -183,3 +183,77 @@ void cGameObject::IntegrationStep(float deltaTime) {
 //	the next unique ID is incremented
 //static 
 unsigned int cGameObject::next_uniqueID = 1000;	// Starting at 1000, just because
+
+json cGameObject::toJSON() {
+	json jObj;
+
+	jObj["mesh"] = meshName;
+
+	jObj["name"] = friendlyName;
+
+	jObj["position"][0] = position.x;
+	jObj["position"][1] = position.y;
+	jObj["position"][2] = position.z;
+
+	jObj["rotation"][0] = glm::degrees(rotationXYZ.x);
+	jObj["rotation"][1] = glm::degrees(rotationXYZ.y);
+	jObj["rotation"][2] = glm::degrees(rotationXYZ.z);
+
+	jObj["scale"] = scale;
+
+	jObj["diffuseColor"][0] = diffuseColor.x;
+	jObj["diffuseColor"][1] = diffuseColor.y;
+	jObj["diffuseColor"][2] = diffuseColor.z;
+
+	jObj["specularColor"][0] = specularColor.x;
+	jObj["specularColor"][1] = specularColor.y;
+	jObj["specularColor"][2] = specularColor.z;
+	jObj["specularColor"][3] = specularColor.a;
+
+	jObj["isVisible"] = isVisible;
+
+	jObj["front"][0] = front.x;
+	jObj["front"][1] = front.y;
+	jObj["front"][2] = front.z;
+
+	if (physics)
+	{
+		json jPhysics;
+
+		jPhysics["gravity"] = physics->gravity;
+
+		jPhysics["acceleration"][0] = physics->acceleration.x;
+		jPhysics["acceleration"][1] = physics->acceleration.y;
+		jPhysics["acceleration"][2] = physics->acceleration.z;
+
+		jPhysics["velocity"][0] = physics->velocity.x;
+		jPhysics["velocity"][1] = physics->velocity.y;
+		jPhysics["velocity"][2] = physics->velocity.z;
+
+		eShapeTypes shape = physics->shape;
+		if (shape == SPHERE) {
+			jPhysics["shape"] = "sphere";
+		}
+		else if (shape == MESH) {
+			jPhysics["shape"] = "mesh";
+		}
+		else if (shape == AABB) {
+			jPhysics["shape"] = "aabb";
+		}
+		else if (shape == CAPSULE) {
+			jPhysics["shape"] = "capsule";
+		}
+		else if (shape == PLANE) {
+			jPhysics["shape"] = "plane";
+		}
+		else {
+			jPhysics["shape"] = "???";
+		}
+
+		jPhysics["radius"] = physics->radius;
+
+		jObj["Physics"] = jPhysics;
+	}
+
+	return jObj;
+}

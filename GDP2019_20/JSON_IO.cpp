@@ -242,6 +242,57 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 //	return mLights;
 //}
 
+json serializeMeshes(std::map<std::string, cMesh*> meshes) {
+	json jvMeshes;
+	int i;
+	std::map<std::string, cMesh*>::iterator iMesh;
+	for (iMesh = meshes.begin(), i = 0;
+		iMesh != meshes.end(); iMesh++, i++) {
+
+		cMesh* mesh = iMesh->second;
+		json jMesh;
+
+		jMesh["name"] = iMesh->first;
+		jMesh["filename"] = mesh->filename;
+
+		jvMeshes[i] = jMesh;
+	}
+
+	return jvMeshes;
+}
+
+void saveScene(Scene* scene, std::string filename) {
+	std::vector<iGameItem*> items = scene->getItems();
+
+	json jObjs, jLights, jSounds, jScene;
+
+	for (int i = 0, light = 0, sound = 0, obj = 0; i < items.size(); i++) {
+		iGameItem* item = items[i];
+
+		if (item->getType() == "Object") {
+			jObjs[obj] = item->toJSON();
+			obj++;
+		}
+		if (item->getType() == "Light") {
+			jLights[light] = item->toJSON();
+			light++;
+		}
+		if (item->getType() == "audio") {
+			jSounds[sound] = item->toJSON();
+			sound++;
+		}
+	}
+
+	jScene["Lights"] = jLights; jScene["Objects"] = jObjs; jScene["Sounds"] = jSounds;
+	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
+
+	std::ofstream file(filename);
+
+	file << jScene;
+
+	file.close();
+}
+
 //nlohmann::json serializeObjects(std::vector<cGameObject*> objs) {
 
 //	json jObjs_v;
@@ -388,36 +439,3 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 //	return jvLights;
 //}
 
-//json serializeMeshes(std::map<std::string,cMesh*> meshes) {
-
-//	json jvMeshes;
-//	int i;
-//	std::map<std::string,cMesh*>::iterator iMesh;
-//	for (iMesh = meshes.begin(), i = 0;
-//		iMesh != meshes.end(); iMesh++, i++) {
-//
-//		cMesh *mesh = iMesh->second;
-//		json jMesh;
-//
-//		jMesh["name"] = iMesh->first;
-//		jMesh["filename"] = mesh->filename;
-//
-//		jvMeshes[i] = jMesh;
-//	}
-//
-//	return jvMeshes;
-//}
-//
-//void saveScene(Scene* scene, std::string filename) {
-//	std::ofstream file(filename);
-//
-//	json jScene;
-//
-//	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
-//	//jScene["Objects"] = serializeObjects(scene->getGameObjects());
-//	jScene["Lights"] = serializeLights(scene->getLightsMap());
-//
-//	file << jScene;
-//
-//	file.close();
-//}

@@ -28,5 +28,6 @@ public:
 	void recieveMessage(sMessage message);
 	std::string getType();
 	std::string getInfo();
+	json toJSON();
 };
 
