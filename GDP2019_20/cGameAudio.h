@@ -12,13 +12,16 @@ FMOD_VECTOR glm_2_fmod_vec(glm::vec3);
 class cGameAudio : public iGameItem
 {
 private:
+	FMOD::DSP *dsp_echo, *dsp_distortion, *dsp_chorus, *dsp_tremolo;
 public:
+	cGameAudio();
+	void applyDSPs();
 	FMOD::ChannelGroup* channel_group;
 	std::vector<AudioItem*> audios;
 	glm::vec3 position;
 	FMOD_VECTOR fmod_pos, fmod_vel;
 	std::string name;
-	float volume;
+	float volume, pitch;
 	// from iGameItem
 	glm::mat4x4 calculateTransformationMatrix();
 	void draw();

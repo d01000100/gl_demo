@@ -128,6 +128,32 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			message.sValue = "f1";
 			theEditor->recieveMessage(message);
 		}
+
+		// dsp controls
+		if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "1";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "2";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "3";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "4";
+			theEditor->recieveMessage(message);
+		}
 	}
 
 	// Edit mode
@@ -173,6 +199,36 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			sMessage message;
 			message.name = "press with shift";
 			message.sValue = "s";
+			theEditor->recieveMessage(message);
+		}
+
+		// audio controls
+		if (key == GLFW_KEY_LEFT)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "left";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_UP)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "up";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_RIGHT)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "right";
+			theEditor->recieveMessage(message);
+		}
+		if (key == GLFW_KEY_DOWN)
+		{
+			sMessage message;
+			message.name = "press with shift";
+			message.sValue = "down";
 			theEditor->recieveMessage(message);
 		}
 	}//if (isShiftKeyDownByAlone(mods))

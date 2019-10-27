@@ -309,6 +309,8 @@ iGameItem* createGameItem(std::string type, json info) {
 
 		error_check(gameAudio->channel_group->setVolume(gameAudio->volume));
 
+		gameAudio->applyDSPs();
+
 		return gameAudio;
 	}
 	else {

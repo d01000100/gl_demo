@@ -254,6 +254,8 @@ void SceneEditor::printInfo() {
 
 void SceneEditor::recieveMessage(sMessage message) {
 
+	//printf("Editor recieving message %s with %f\n", message.name.c_str(), message.fValue);
+
 	if (message.name == "simple press") {
 		if (message.sValue == "f1") {
 			printInfo();
@@ -295,6 +297,32 @@ void SceneEditor::recieveMessage(sMessage message) {
 		// General edition mode
 		if (message.sValue == "o") {
 			setEditMode(OBJS);
+		}
+
+		// dsp controls
+		if (message.sValue == "1") {
+			sMessage itemMessage;
+			itemMessage.name = "dsp";
+			itemMessage.iValue = 1;
+			(*selectedObj)->recieveMessage(itemMessage);
+		}
+		if (message.sValue == "2") {
+			sMessage itemMessage;
+			itemMessage.name = "dsp";
+			itemMessage.iValue = 2;
+			(*selectedObj)->recieveMessage(itemMessage);
+		}
+		if (message.sValue == "3") {
+			sMessage itemMessage;
+			itemMessage.name = "dsp";
+			itemMessage.iValue = 3;
+			(*selectedObj)->recieveMessage(itemMessage);
+		}
+		if (message.sValue == "4") {
+			sMessage itemMessage;
+			itemMessage.name = "dsp";
+			itemMessage.iValue = 4;
+			(*selectedObj)->recieveMessage(itemMessage);
 		}
 	}
 	else if (message.name == "press with shift") {
@@ -403,6 +431,34 @@ void SceneEditor::recieveMessage(sMessage message) {
 				return;
 			}
 			break;
+		}
+
+		if (message.sValue == "up") {
+			itemMessage.name = "volume";
+			itemMessage.fValue = 1.0f;
+			(*selectedObj)->recieveMessage(itemMessage);
+			return;
+		}
+
+		if (message.sValue == "down") {
+			itemMessage.name = "volume";
+			itemMessage.fValue = -1.0f;
+			(*selectedObj)->recieveMessage(itemMessage);
+			return;
+		}
+
+		if (message.sValue == "left") {
+			itemMessage.name = "pitch";
+			itemMessage.fValue = -1.0f;
+			(*selectedObj)->recieveMessage(itemMessage);
+			return;
+		}
+
+		if (message.sValue == "right") {
+			itemMessage.name = "pitch";
+			itemMessage.fValue = 1.0f;
+			(*selectedObj)->recieveMessage(itemMessage);
+			return;
 		}
 	}
 	else {
