@@ -136,9 +136,9 @@ void cGameObject::draw()
 
 void cGameObject::recieveMessage(sMessage message) {
 
-	float translationStep = 0.1f;
+	float translationStep = 1.0f;
 	float rotationStep = 0.02;
-	float scaleStep = 0.1f;
+	float scaleStep = 0.001f;
 
 	if (message.name == "translate") {
 		position += glm::normalize(message.v3Value) * translationStep;

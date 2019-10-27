@@ -33,27 +33,31 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (key == GLFW_KEY_A)
 		{
-			theCamera->moveLeft(CAMERAROTATIONSPEED);
+			//theCamera->moveLeft(CAMERAROTATIONSPEED);
+			theCamera->translate(glm::vec3(0.0f, 0.0f, 1.0f));
 		}
 		if (key == GLFW_KEY_D)
 		{
-			theCamera->moveRight(CAMERAROTATIONSPEED);
+			//theCamera->moveRight(CAMERAROTATIONSPEED);
+			theCamera->translate(glm::vec3(0.0f, 0.0f, -1.0f));
 		}
 		if (key == GLFW_KEY_Q)
 		{
-			theCamera->zoom(CAMERAZOOMSPEED);
+			//theCamera->zoom(CAMERAZOOMSPEED);
 		}
 		if (key == GLFW_KEY_E)
 		{
-			theCamera->zoom(-CAMERAZOOMSPEED);
+			//theCamera->zoom(-CAMERAZOOMSPEED);
 		}
 		if (key == GLFW_KEY_W)
 		{
-			theCamera->moveUp(CAMERAROTATIONSPEED);
+			//theCamera->moveUp(CAMERAROTATIONSPEED);
+			theCamera->translate(glm::vec3(1.0f, 0.0f, 0.0f));
 		}
 		if (key == GLFW_KEY_S)
 		{
-			theCamera->moveDown(CAMERAROTATIONSPEED);
+			//theCamera->moveDown(CAMERAROTATIONSPEED);
+			theCamera->translate(glm::vec3(-1.0f, 0.0f, 0.0f));
 		}
 
 		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
@@ -130,28 +134,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 		// dsp controls
-		if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+		if ((key >= GLFW_KEY_1 && key <= GLFW_KEY_9) 
+			&& action == GLFW_PRESS) 
+		{
 			sMessage message;
-			message.name = "simple press";
-			message.sValue = "1";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-			sMessage message;
-			message.name = "simple press";
-			message.sValue = "2";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-			sMessage message;
-			message.name = "simple press";
-			message.sValue = "3";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-			sMessage message;
-			message.name = "simple press";
-			message.sValue = "4";
+			message.name = "number";
+			message.iValue = key - GLFW_KEY_0;
 			theEditor->recieveMessage(message);
 		}
 	}

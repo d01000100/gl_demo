@@ -201,13 +201,13 @@ void Scene::IntegrationStep(float deltaTime) {
 	}
 }
 
-std::vector<iGameItem*> Scene::getItemsPerType(std::string type) {
+std::vector<iGameItem*> Scene::getItemsByType(std::string type) {
 	std::vector<iGameItem*> vs;
 	for (std::map<std::string, iGameItem*>::iterator i = gameItems.begin();
 		i != gameItems.end(); i++)
 	{
 		iGameItem* item = i->second;
-		if (item->getName() == type) {
+		if (item->getType() == type) {
 			vs.push_back(i->second);
 		}
 	}

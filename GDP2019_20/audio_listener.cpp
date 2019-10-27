@@ -6,7 +6,7 @@ AudioListener::AudioListener(FMOD::System* system)
 	last_position = { 0.0f, 0.0f, 0.0f };
 	position = { 0.0f, 0.0f, 0.0f };
 	up = { 0.0f, 1.0f, 0.0f }; 
-	forward = { 0.0f, 0.0f, 1.0f };
+	forward = { 1.0f, 0.0f, 0.0f };
 	velocity = {0.0f, 0.0f, 0.0f };
 	stepsize = 1.0f;
 	_result = ::fmod_system->set3DListenerAttributes(0,

@@ -9,9 +9,15 @@
 
 FMOD_VECTOR glm_2_fmod_vec(glm::vec3);
 
+struct sEffect {
+	FMOD::DSP* dsp = NULL;
+	const char* name = "";
+};
+
 class cGameAudio : public iGameItem
 {
 private:
+	sEffect effects[9];
 	FMOD::DSP *dsp_echo, *dsp_distortion, *dsp_chorus, *dsp_tremolo;
 public:
 	cGameAudio();

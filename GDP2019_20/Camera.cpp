@@ -63,6 +63,12 @@ void Camera::zoom(float distance) {
 	setPosition(target + newDirection);
 }
 
+void Camera::translate(glm::vec3 transDir) {
+	float step = 1.0f;
+	setPosition(pos + transDir * step);
+	target += transDir * step;
+}
+
 glm::mat4 Camera::lookAt() {
 
 	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);

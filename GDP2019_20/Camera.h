@@ -14,6 +14,7 @@ private:
 	Camera();
 	glm::vec3 direction();
 	glm::vec3 right();
+	void updateListener();
 public:
 	static Camera* getTheCamera();
 	void init();
@@ -24,6 +25,7 @@ public:
 	void moveDown(float angle);
 	void moveRight(float angle);
 	void moveLeft(float angle);
+	void translate(glm::vec3);
 	void zoom(float distance);
 	glm::mat4 lookAt();
 };

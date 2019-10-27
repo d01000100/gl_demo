@@ -14,14 +14,12 @@ SceneEditor* SceneEditor::getTheEditor() {
 }
 
 void SceneEditor::init(Scene* scene) {
-    objects = scene->getItems();
+    objects = scene->getItemsByType("audio");
 	selectedObj = objects.begin();
 	objectMode = TRANS;
 	editMode = OBJS;
 	debugRenderer = new cDebugRenderer();
 	debugRenderer->initialize();
-	Camera* theCamera = Camera::getTheCamera();
-	theCamera->setTarget((*selectedObj)->getPos());
 	changeObject();
 }
 
@@ -58,7 +56,7 @@ void SceneEditor::setEditMode(eEditMode m) {
 void SceneEditor::changeObject() {
 	Camera* theCamera = Camera::getTheCamera();
 	glm::vec3 objPos = (*selectedObj)->getPos();
-	theCamera->setTarget(objPos);
+	//theCamera->setTarget(objPos);
 }
 
 void SceneEditor::nextObject() {
@@ -256,6 +254,13 @@ void SceneEditor::recieveMessage(sMessage message) {
 
 	//printf("Editor recieving message %s with %f\n", message.name.c_str(), message.fValue);
 
+	if (message.name == "number") {
+		// dsp controls
+		sMessage itemMessage;
+		itemMessage.name = "dsp";
+		itemMessage.iValue = message.iValue;
+		(*selectedObj)->recieveMessage(itemMessage);
+	}
 	if (message.name == "simple press") {
 		if (message.sValue == "f1") {
 			printInfo();
@@ -297,32 +302,6 @@ void SceneEditor::recieveMessage(sMessage message) {
 		// General edition mode
 		if (message.sValue == "o") {
 			setEditMode(OBJS);
-		}
-
-		// dsp controls
-		if (message.sValue == "1") {
-			sMessage itemMessage;
-			itemMessage.name = "dsp";
-			itemMessage.iValue = 1;
-			(*selectedObj)->recieveMessage(itemMessage);
-		}
-		if (message.sValue == "2") {
-			sMessage itemMessage;
-			itemMessage.name = "dsp";
-			itemMessage.iValue = 2;
-			(*selectedObj)->recieveMessage(itemMessage);
-		}
-		if (message.sValue == "3") {
-			sMessage itemMessage;
-			itemMessage.name = "dsp";
-			itemMessage.iValue = 3;
-			(*selectedObj)->recieveMessage(itemMessage);
-		}
-		if (message.sValue == "4") {
-			sMessage itemMessage;
-			itemMessage.name = "dsp";
-			itemMessage.iValue = 4;
-			(*selectedObj)->recieveMessage(itemMessage);
 		}
 	}
 	else if (message.name == "press with shift") {

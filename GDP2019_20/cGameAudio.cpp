@@ -5,28 +5,32 @@
 
 cGameAudio::cGameAudio() {
 	pitch = 1.0f;
-	dsp_echo = 0;
-	dsp_distortion = 0;
-	dsp_chorus = 0;
-	dsp_tremolo = 0;
-
 }
 
 void cGameAudio::applyDSPs() {
-	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_ECHO, &dsp_echo));
-	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_DISTORTION, &dsp_distortion));
-	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_CHORUS, &dsp_chorus));
-	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_TREMOLO, &dsp_tremolo));
+	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_ECHO, &effects[0].dsp));
+	effects[0].name = "ECHO";
+	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_TREMOLO, &effects[1].dsp));
+	effects[1].name = "TREMOLO";
+	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_CHORUS, &effects[2].dsp));
+	effects[2].name = "CHORUS";
+	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_DELAY , &effects[3].dsp));
+	effects[3].name = "DELAY";
+	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_PITCHSHIFT, &effects[4].dsp));
+	effects[4].name = "PITCHSHIFT";
+	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_SFXREVERB, &effects[5].dsp));
+	effects[5].name = "SFXRVERB";
+	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_CONVOLUTIONREVERB, &effects[6].dsp));
+	effects[6].name = "CONVOLUTION REVERB";
+	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_FLANGE, &effects[7].dsp));
+	effects[7].name = "FLANGE";
+	::error_check(::fmod_system->createDSPByType(FMOD_DSP_TYPE_OSCILLATOR, &effects[8].dsp));
+	effects[8].name = "OSCILLATOR";
 
-	channel_group->addDSP(0, dsp_echo);
-	channel_group->addDSP(0, dsp_distortion);
-	channel_group->addDSP(0, dsp_chorus);
-	channel_group->addDSP(0, dsp_tremolo);
-
-	dsp_echo->setBypass(true);
-	dsp_distortion->setBypass(true);
-	dsp_chorus->setBypass(true);
-	dsp_tremolo->setBypass(true);
+	for (int i = 0; i < 9; i++) {
+		channel_group->addDSP(0, effects[i].dsp);
+		effects[i].dsp->setBypass(true);
+	}
 }
 
 glm::mat4x4 cGameAudio::calculateTransformationMatrix() { return glm::lowp_mat4x4(1.0f); }
@@ -37,7 +41,7 @@ std::string cGameAudio::getType() { return "audio"; }
 
 void cGameAudio::recieveMessage(sMessage message){ 
 	float translationStep = 1.0f, step;
-	//printf("Sound recieving message %s with %f\n", message.name.c_str(), message.fValue);
+	//printf("Sound recieving message %s with %d\n", message.name.c_str(), message.iValue);
 	if (message.name == "translate") {
 		setPos(position + glm::normalize(message.v3Value) * translationStep);
 	}
@@ -65,29 +69,28 @@ void cGameAudio::recieveMessage(sMessage message){
 	}
 	if (message.name == "dsp") {
 		bool bypass;
-		switch (message.iValue) {
-		case 1:
-			dsp_echo->getBypass(&bypass);
-			dsp_echo->setBypass(!bypass);
-			break;
-		case 2:
-			dsp_tremolo->getBypass(&bypass);
-			dsp_tremolo->setBypass(!bypass);
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		}
+		effects[message.iValue - 1].dsp->getBypass(&bypass);
+		effects[message.iValue - 1].dsp->setBypass(!bypass);
 	}
 }
 
 std::string cGameAudio::getInfo() {
 	std::stringstream ss;
+	ss.precision(2);
 	FMOD_VECTOR the_actual_pos;
 	audios[0]->channel->get3DAttributes(&the_actual_pos, &fmod_vel);
 	ss << getType() << " - " << name
-		<< " position: (" << the_actual_pos.x  << "," << the_actual_pos.y << "," << the_actual_pos.z << ")";
+		<< " position: (" << the_actual_pos.x << "," << the_actual_pos.y << "," << the_actual_pos.z << ")";
+	bool is_paused;
+	channel_group->getPaused(&is_paused);
+	ss << (is_paused ? ", is paused" : ", is playing");
+	ss << ", volume: " << volume << ", pitch: " << pitch
+		<< ", activeDSPs: ";
+	for (int i = 0; i < 9; i++) {
+		bool bypass;
+		effects[i].dsp->getBypass(&bypass);
+		if (!bypass) { ss << effects[i].name << ", "; }
+	}
 	return ss.str();
 }
 
