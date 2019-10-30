@@ -70,7 +70,7 @@ int main(void)
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	init_fmod();
 	theCamera->init();
-	theCamera->setPosition(glm::vec3(-50.0, 5.0, 0.0));
+	theCamera->setPosition(glm::vec3(-100.0, 5.0, 0.0));
 	theCamera->setTarget(glm::vec3(0.0, 5.0, 0.0));
 
 

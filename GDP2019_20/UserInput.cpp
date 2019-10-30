@@ -34,12 +34,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_A)
 		{
 			//theCamera->moveLeft(CAMERAROTATIONSPEED);
-			theCamera->translate(glm::vec3(0.0f, 0.0f, 1.0f));
+			theCamera->translate(glm::vec3(0.0f, 0.0f, -1.0f));
 		}
 		if (key == GLFW_KEY_D)
 		{
 			//theCamera->moveRight(CAMERAROTATIONSPEED);
-			theCamera->translate(glm::vec3(0.0f, 0.0f, -1.0f));
+			theCamera->translate(glm::vec3(0.0f, 0.0f, 1.0f));
 		}
 		if (key == GLFW_KEY_Q)
 		{
