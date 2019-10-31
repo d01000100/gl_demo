@@ -51,6 +51,63 @@ std::vector<meshSettings>* readMeshes(std::string filename) {
 	return vMeshes;
 }
 
+std::map<std::string, sCameraSettings*>* readCameras(std::string filename) {
+	std::ifstream i;
+	i.open(filename);
+
+	if (!i.is_open()) {
+		printf("Didn't found %s file \n", filename.c_str());
+		return NULL;
+	}
+
+	json jFile;
+	i >> jFile;
+
+	std::map<std::string, sCameraSettings*>* mCameras = new std::map<std::string, sCameraSettings*>();
+
+	json::iterator jCameras = jFile.find("Cameras");
+	if (jCameras == jFile.end()) {
+		printf("No Cameras found!!\n");
+	}
+	else 
+	{
+		for (json::iterator itCameras = jCameras->begin();
+			itCameras != jCameras->end(); itCameras++) {
+
+			sCameraSettings* cameraSetting = new sCameraSettings();
+			if (itCameras->find("name") == itCameras->end()) {
+				printf("Camera without name!!\n");
+				continue;
+			}
+			cameraSetting->name = (*itCameras)["name"].get<std::string>();
+
+			if (itCameras->find("position") != itCameras->end()) {
+				cameraSetting->position.x = (*itCameras)["position"][0].get<float>();
+				cameraSetting->position.y = (*itCameras)["position"][1].get<float>();
+				cameraSetting->position.z = (*itCameras)["position"][2].get<float>();
+			}
+			else {
+				cameraSetting->position = glm::vec3(1.0f) * 50.0f;
+			}
+
+			if (itCameras->find("target") != itCameras->end()) {
+				cameraSetting->target.x = (*itCameras)["target"][0].get<float>();
+				cameraSetting->target.y = (*itCameras)["target"][1].get<float>();
+				cameraSetting->target.z = (*itCameras)["target"][2].get<float>();
+			}
+			else {
+				cameraSetting->target = glm::vec3(0.0f);
+			}
+
+			(*mCameras)[cameraSetting->name] = cameraSetting;
+		}
+	}
+
+	i.close();
+
+	return mCameras;
+}
+
 std::map<std::string, iGameItem*>* readItems(std::string filename) {
 	std::ifstream i;
 	i.open(filename);
@@ -69,42 +126,45 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 	json::iterator jObjects = jFile.find("Objects");
 	if (jObjects == jFile.end()) {
 		printf("No Objects found!!\n");
-		return NULL;
 	}
-	for (json::iterator jObj = jObjects->begin();
-		jObj != jObjects->end(); jObj++) {
+	else {	
+		for (json::iterator jObj = jObjects->begin();
+			jObj != jObjects->end(); jObj++) {
 
-		iGameItem* gameItem = createGameItem("Object", *jObj);
+			iGameItem* gameItem = createGameItem("Object", *jObj);
 
-		(*mItems)[gameItem->getName()] = gameItem;
+			(*mItems)[gameItem->getName()] = gameItem;
+		}
 	}
 
 	// create Lights
 	json::iterator jLights = jFile.find("Lights");
 	if (jLights == jFile.end()) {
 		printf("No Lights found!!\n");
-		return NULL;
 	}
-	for (json::iterator jLight = jLights->begin();
-		jLight != jLights->end(); jLight++) {
+	else {
+		for (json::iterator jLight = jLights->begin();
+			jLight != jLights->end(); jLight++) {
 
-		iGameItem* gameItem = createGameItem("Light", *jLight);
+			iGameItem* gameItem = createGameItem("Light", *jLight);
 
-		(*mItems)[gameItem->getName()] = gameItem;
+			(*mItems)[gameItem->getName()] = gameItem;
+		}
 	}
 
 	// create Lights
 	json::iterator jAudios = jFile.find("Sounds");
 	if (jAudios == jFile.end()) {
 		printf("No Sounds found!!\n");
-		return NULL;
 	}
-	for (json::iterator jAudio = jAudios->begin();
-		jAudio != jAudios->end(); jAudio++) {
+	else {
+		for (json::iterator jAudio = jAudios->begin();
+			jAudio != jAudios->end(); jAudio++) {
 
-		iGameItem* gameItem = createGameItem("sound", *jAudio);
+			iGameItem* gameItem = createGameItem("sound", *jAudio);
 
-		(*mItems)[gameItem->getName()] = gameItem;
+			(*mItems)[gameItem->getName()] = gameItem;
+		}
 	}
 
 	return mItems;
@@ -261,6 +321,30 @@ json serializeMeshes(std::map<std::string, cMesh*> meshes) {
 	return jvMeshes;
 }
 
+json serializeCameras(std::map<std::string, sCameraSettings*> cameras) {
+	json jCameras;
+	int i;
+	std::map<std::string, sCameraSettings*>::iterator itCameras;
+	for (itCameras = cameras.begin(), i = 0;
+		itCameras != cameras.end(); itCameras++, i++) {
+
+		sCameraSettings* camera = itCameras->second;
+		json jCamera;
+
+		jCamera["name"] = camera->name;
+		jCamera["position"][0] = camera->position.x;
+		jCamera["position"][1] = camera->position.y;
+		jCamera["position"][2] = camera->position.z;
+		jCamera["target"][0] = camera->target.x;
+		jCamera["target"][1] = camera->target.y;
+		jCamera["target"][2] = camera->target.z;
+
+		jCameras[i] = jCamera;
+	}
+
+	return jCameras;
+}
+
 void saveScene(Scene* scene, std::string filename) {
 	std::vector<iGameItem*> items = scene->getItems();
 
@@ -285,6 +369,7 @@ void saveScene(Scene* scene, std::string filename) {
 
 	jScene["Lights"] = jLights; jScene["Objects"] = jObjs; jScene["Sounds"] = jSounds;
 	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
+	jScene["Cameras"] = serializeCameras(scene->getCamerasMap());
 
 	std::ofstream file(filename);
 

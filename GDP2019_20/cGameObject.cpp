@@ -7,6 +7,7 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include <glm/gtx/string_cast.hpp>
 #include <sstream>
 
 cGameObject::cGameObject()
@@ -138,7 +139,7 @@ void cGameObject::recieveMessage(sMessage message) {
 
 	float translationStep = 1.0f;
 	float rotationStep = 0.02;
-	float scaleStep = 0.001f;
+	float scaleStep = 0.05f;
 
 	if (message.name == "translate") {
 		position += glm::normalize(message.v3Value) * translationStep;
@@ -147,20 +148,23 @@ void cGameObject::recieveMessage(sMessage message) {
 		rotationXYZ += glm::normalize(message.v3Value) * rotationStep;
 	}
 	else if (message.name == "scale") {
-		scale += message.fValue * scaleStep;
+		if (message.fValue > 0) {
+			scale *= 1.05;
+		}
+		if (message.fValue < 0) {
+			scale *= 0.95;
+		}
 	}
 	else if (message.name == "integration step") {
 		IntegrationStep(message.fValue);
-	}
-	else {
-		printf("Unrecognized Message to GameObject: %s\n", message.name.c_str());
 	}
 }
 
 std::string cGameObject::getType() { return "Object"; }
 std::string cGameObject::getInfo() {
 	std::stringstream ss;
-	ss << getType() << " - " << getName();
+	ss << getType() << " - " << getName() <<
+		" color: " << glm::to_string(diffuseColor);
 	return ss.str();
 };
 
@@ -201,13 +205,13 @@ json cGameObject::toJSON() {
 
 	jObj["scale"] = scale;
 
-	jObj["diffuseColor"][0] = diffuseColor.x;
-	jObj["diffuseColor"][1] = diffuseColor.y;
-	jObj["diffuseColor"][2] = diffuseColor.z;
+	jObj["diffuseColor"][0] = diffuseColor.x * 255.f;
+	jObj["diffuseColor"][1] = diffuseColor.y * 255.f;
+	jObj["diffuseColor"][2] = diffuseColor.z * 255.f;
 
-	jObj["specularColor"][0] = specularColor.x;
-	jObj["specularColor"][1] = specularColor.y;
-	jObj["specularColor"][2] = specularColor.z;
+	jObj["specularColor"][0] = specularColor.x * 255.f;
+	jObj["specularColor"][1] = specularColor.y * 255.f;
+	jObj["specularColor"][2] = specularColor.z * 255.f;
 	jObj["specularColor"][3] = specularColor.a;
 
 	jObj["isVisible"] = isVisible;

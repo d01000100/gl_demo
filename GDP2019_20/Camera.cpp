@@ -8,9 +8,9 @@
 Camera* Camera::theCamera = new Camera();
 
 Camera::Camera() {
-	pos = glm::vec3(0.0, 80.0, -80.0);
+	pos = glm::vec3(1.0f) * 180.0f;
 	target = glm::vec3(0.0f, 0.0, 0.0f);
-	upVector = glm::vec3(0.0f, 1.0f, 0.0f);
+	upVector = glm::vec3(0.0f, 0.0f, 1.0f);
 }
 
 void Camera::init() {
@@ -41,6 +41,8 @@ void Camera::setPosition(glm::vec3 position) {
 glm::vec3 Camera::getPosition() {
 	return pos;
 }
+glm::vec3 Camera::getTarget() { return target; }
+
 
 void Camera::moveUp(float angle) {
 	setPosition(glm::rotate(direction(), -angle, right()) + target);

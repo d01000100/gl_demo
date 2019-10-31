@@ -97,9 +97,16 @@ bool cVAOManager::LoadModelIntoVAO(
 		drawInfo.pVertices[index].b = 1.0f;
 		drawInfo.pVertices[index].a = 1.0f;		// Again, if not sure, set to 1.0f
 
-		drawInfo.pVertices[index].nx = theMesh.vecVertices[index].nx;
-		drawInfo.pVertices[index].ny = theMesh.vecVertices[index].ny;
-		drawInfo.pVertices[index].nz = theMesh.vecVertices[index].nz;
+		glm::vec3 normal;
+		normal.x = theMesh.vecVertices[index].nx;
+		normal.y = theMesh.vecVertices[index].ny;
+		normal.z = theMesh.vecVertices[index].nz;
+
+		normal = glm::normalize(normal);
+
+		drawInfo.pVertices[index].nx = normal.x;
+		drawInfo.pVertices[index].ny = normal.y;
+		drawInfo.pVertices[index].nz = normal.z;
 		drawInfo.pVertices[index].nw = 1.0f;		// if unsure, set to 1.0f
 
 		// These are the "texture coordinates", and we aren't loading them, yet
@@ -107,7 +114,6 @@ bool cVAOManager::LoadModelIntoVAO(
 		drawInfo.pVertices[index].v0 = 1.0f;
 		drawInfo.pVertices[index].u1 = 1.0f;
 		drawInfo.pVertices[index].v1 = 1.0f;	
-
 	}
 
 	// Now copy the index information, too

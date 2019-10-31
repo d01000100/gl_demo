@@ -94,7 +94,7 @@ iGameItem* createGameItem(std::string type, json info) {
 			gameObj->friendlyName = info["name"].get<std::string>();
 		}
 		else {
-			gameObj->friendlyName = std::to_string(gameObj->getUniqueID());
+			gameObj->friendlyName = gameObj->meshName + "_" + std::to_string(gameObj->getUniqueID());
 		}
 
 		if (info.find("position") != info.end()) {
@@ -125,9 +125,9 @@ iGameItem* createGameItem(std::string type, json info) {
 		}
 
 		if (info.find("diffuseColor") != info.end()) {
-			float x = info["diffuseColor"][0].get<float>();
-			float y = info["diffuseColor"][1].get<float>();
-			float z = info["diffuseColor"][2].get<float>();
+			float x = info["diffuseColor"][0].get<float>() / 255.0f;
+			float y = info["diffuseColor"][1].get<float>() / 255.0f;
+			float z = info["diffuseColor"][2].get<float>() / 255.0f;
 			gameObj->diffuseColor = glm::vec4(x, y, z, 1.0f);
 		}
 		else {
@@ -135,9 +135,9 @@ iGameItem* createGameItem(std::string type, json info) {
 		}
 
 		if (info.find("specularColor") != info.end()) {
-			float x = info["specularColor"][0].get<float>();
-			float y = info["specularColor"][1].get<float>();
-			float z = info["specularColor"][2].get<float>();
+			float x = info["specularColor"][0].get<float>() / 255.0f;
+			float y = info["specularColor"][1].get<float>() / 255.0f;
+			float z = info["specularColor"][2].get<float>() / 255.0f;
 			float w = info["specularColor"][3].get<float>();
 			gameObj->specularColor = glm::vec4(x, y, z, w);
 		}
@@ -189,9 +189,9 @@ iGameItem* createGameItem(std::string type, json info) {
 		}
 
 		if (info.find("diffuseColor") != info.end()) {
-			float x = info["diffuseColor"][0].get<float>();
-			float y = info["diffuseColor"][1].get<float>();
-			float z = info["diffuseColor"][2].get<float>();
+			float x = info["diffuseColor"][0].get<float>() / 255.0f;
+			float y = info["diffuseColor"][1].get<float>() / 255.0f;
+			float z = info["diffuseColor"][2].get<float>() / 255.0f;
 			light->diffuseColor = glm::vec3(x, y, z);
 		}
 		else {
@@ -199,9 +199,9 @@ iGameItem* createGameItem(std::string type, json info) {
 		}
 
 		if (info.find("specularColor") != info.end()) {
-			float x = info["specularColor"][0].get<float>();
-			float y = info["specularColor"][1].get<float>();
-			float z = info["specularColor"][2].get<float>();
+			float x = info["specularColor"][0].get<float>() / 255.0f;
+			float y = info["specularColor"][1].get<float>() / 255.0f;
+			float z = info["specularColor"][2].get<float>() / 255.0f;
 			float w = info["specularColor"][3].get<float>();
 			light->specularColor = glm::vec4(x, y, z, w);
 		}
@@ -257,7 +257,7 @@ iGameItem* createGameItem(std::string type, json info) {
 			float x = info["direction"][0].get<float>();
 			float y = info["direction"][1].get<float>();
 			float z = info["direction"][2].get<float>();
-			light->direction = glm::normalize(glm::vec3(x,y,z));
+			light->direction = glm::vec3(x,y,z);
 		}
 
 		if (info.find("innerAngle") != info.end()) {

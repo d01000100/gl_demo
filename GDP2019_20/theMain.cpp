@@ -14,6 +14,7 @@
 #include <map>			// Map aka "dictonary" 
 #include "cShaderManager.h"
 #include <sstream>
+#include "util.h"
 
 // The Physics function
 #include "PhysicsStuff.h"
@@ -24,6 +25,7 @@
 #include "Camera.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
+#include "cLight.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -47,17 +49,6 @@ bool init_fmod() {
 	//Init system
 	error_check(::fmod_system->init(32, FMOD_INIT_NORMAL, 0));
 
-	////create echo dsp
-	//_result = _system->createDSPByType(FMOD_DSP_TYPE_ECHO, &_dsp_echo);
-	//error_check(_result);
-
-	////create tremolo dsp
-	//_result = _system->createDSPByType(FMOD_DSP_TYPE_TREMOLO, &_dsp_tremolo);
-	//error_check(_result);
-
-	// initialize audio listener
-	//_listener = new AudioListener(_system);
-
 	error_check(::fmod_system->set3DSettings(1.0f, 1.0f, 1.0f));
 
 	return true;
@@ -70,9 +61,6 @@ int main(void)
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	init_fmod();
 	theCamera->init();
-	theCamera->setPosition(glm::vec3(-50.0, 5.0, 0.0));
-	theCamera->setTarget(glm::vec3(0.0, 5.0, 0.0));
-
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -115,7 +103,7 @@ int main(void)
 									 
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
-	sceneEditor->init(theScene);
+	//sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -127,6 +115,7 @@ int main(void)
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
+	double flickerTimer = 0;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -175,6 +164,22 @@ int main(void)
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
+		// flicker skull lights
+		float minAtten = 0.0001f, maxAtten = 0.1f, atten = 0.0f;
+		flickerTimer += deltaTime;
+		if (flickerTimer > 0.01f) {
+			atten = randInRange(minAtten, maxAtten);
+			cLight* light = (cLight*)theScene->findItem("skull left");
+			if (light) {
+				light->linearAtten = atten;
+			}
+			light = (cLight*)theScene->findItem("skull right");
+			if (light) {
+				light->linearAtten = atten;
+			}
+			flickerTimer = 0.0;
+		}
+
 		theScene->drawScene();
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
@@ -182,13 +187,16 @@ int main(void)
 		//pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
 		//pPhysics->TestForCollisions(theScene->getGameObjects());
 		
-		sceneEditor->drawDebug();	
-		sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
+		sceneEditor->drawDebug();
+		if (sceneEditor->getDebugRenderer()) {
+			sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
+		}
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
 		error_check(::fmod_system->update());
+
 	}
 	glfwDestroyWindow(window);
 	glfwTerminate();

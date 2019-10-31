@@ -42,12 +42,6 @@ private:
 	void debugRotation(glm::vec3 pos);
 	void debugScale(glm::vec3 pos);
 	void objectDebug();
-	void LightDebug();
-
-	void toggleLight();
-	void changeQuadAtten(float deltaScale);
-	void changeInnerAngle(float deltaScale);
-	void changeOuterAngle(float deltaScale);
 public:
 	static SceneEditor* getTheEditor();
 	void init(Scene* scene);

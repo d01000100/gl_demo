@@ -21,6 +21,7 @@ public:
 	void setTarget(glm::vec3 target);
 	void setPosition(glm::vec3 pos);
 	glm::vec3 getPosition();
+	glm::vec3 getTarget();
 	void moveUp(float angle);
 	void moveDown(float angle);
 	void moveRight(float angle);

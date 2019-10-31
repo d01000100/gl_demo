@@ -23,43 +23,85 @@ const float CAMERAZOOMSPEED = 2.0f;
 const float TRANSLATION_STEP = 0.5f;
 const float ROTATION_STEP = glm::radians(0.5f);
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	Camera* theCamera = Camera::getTheCamera();
-	Scene* theScene = Scene::getTheScene();
-	iMessagable* theEditor = SceneEditor::getTheEditor();
+Camera* theCamera = Camera::getTheCamera();
+Scene* theScene = Scene::getTheScene();
+SceneEditor* theEditor = SceneEditor::getTheEditor();
 
-	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
-	{
+void camera_translate(int key, int action, int mods) {
+	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods)) {
 		if (key == GLFW_KEY_A)
 		{
-			//theCamera->moveLeft(CAMERAROTATIONSPEED);
 			theCamera->translate(glm::vec3(0.0f, 0.0f, 1.0f));
 		}
 		if (key == GLFW_KEY_D)
 		{
-			//theCamera->moveRight(CAMERAROTATIONSPEED);
 			theCamera->translate(glm::vec3(0.0f, 0.0f, -1.0f));
-		}
-		if (key == GLFW_KEY_Q)
-		{
-			//theCamera->zoom(CAMERAZOOMSPEED);
-		}
-		if (key == GLFW_KEY_E)
-		{
-			//theCamera->zoom(-CAMERAZOOMSPEED);
 		}
 		if (key == GLFW_KEY_W)
 		{
-			//theCamera->moveUp(CAMERAROTATIONSPEED);
 			theCamera->translate(glm::vec3(1.0f, 0.0f, 0.0f));
 		}
 		if (key == GLFW_KEY_S)
 		{
-			//theCamera->moveDown(CAMERAROTATIONSPEED);
 			theCamera->translate(glm::vec3(-1.0f, 0.0f, 0.0f));
 		}
+	}
+}
 
+void camera_orbit(int key, int action, int mods) {
+	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods))
+	{
+		if (key == GLFW_KEY_A)
+		{
+			theCamera->moveLeft(CAMERAROTATIONSPEED);
+		}
+		if (key == GLFW_KEY_D)
+		{
+			theCamera->moveRight(CAMERAROTATIONSPEED);
+		}
+		if (key == GLFW_KEY_Q)
+		{
+			theCamera->zoom(CAMERAZOOMSPEED);
+		}
+		if (key == GLFW_KEY_E)
+		{
+			theCamera->zoom(-CAMERAZOOMSPEED);
+		}
+		if (key == GLFW_KEY_W)
+		{
+			theCamera->moveUp(CAMERAROTATIONSPEED);
+		}
+		if (key == GLFW_KEY_S)
+		{
+			theCamera->moveDown(CAMERAROTATIONSPEED);
+		}
+	}
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	camera_orbit(key, action, mods);
+	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
+	{		
+		// save camera
+		if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+			theScene->storeCurrentCamera();
+		}
+
+		if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
+			theScene->changeCamera();
+		}
+		if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+			theScene->setCamera("skull cam");
+		}
+		if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+			theScene->setCamera("cave cam");
+		}
+		if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+			theScene->setCamera("all scene");
+		}
+
+		// to sceneEditor
 		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
 			sMessage message; 
 			message.name = "simple press";
@@ -96,6 +138,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			theEditor->recieveMessage(message);
 		}
 
+		if (key == GLFW_KEY_V && action == GLFW_PRESS) {
+			sMessage message;
+			message.name = "simple press";
+			message.sValue = "v";
+			theEditor->recieveMessage(message);
+		}
+
 		if (key == GLFW_KEY_SPACE && 
 			action == GLFW_PRESS) {
 			sMessage message;
@@ -124,6 +173,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
 			theScene->reloadScene(::scene_filename);
+			theEditor->init(theScene);
 		}
 
 		if (key == GLFW_KEY_F1 && action == GLFW_PRESS) {

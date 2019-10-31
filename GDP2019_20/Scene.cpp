@@ -3,6 +3,7 @@
 #include "cModelLoader.h"
 #include "globalStuff.h"
 #include "JSON_IO.h"
+#include "Camera.h"
 
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp> // glm::vec3
@@ -11,6 +12,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include <glm/gtx/string_cast.hpp>
 
 Scene* Scene::theScene = new Scene();
 
@@ -43,10 +45,8 @@ std::vector<cLight*> Scene::getLights() {
 }
 
 std::map<std::string, cLight*> Scene::getLightsMap() { return lights;  }
-
-std::map<std::string, cMesh*> Scene::getMeshesMap() {
-	return meshes;
-}
+std::map<std::string, cMesh*> Scene::getMeshesMap() { return meshes; }
+std::map<std::string, sCameraSettings*> Scene::getCamerasMap() { return cameras; }
 
 bool Scene::loadMeshes(std::string filename) {
 	std::vector<meshSettings>* vMeshes = readMeshes(filename);
@@ -80,30 +80,34 @@ bool Scene::loadMeshes(std::string filename) {
 	return true;
 }
 
-bool Scene::loadLights(std::string filename) {
+void Scene::lookAtActiveCamera() {
+	if (activeCamera != cameras.end()) {
+		sCameraSettings* settings = activeCamera->second;
+		Camera* theCamera = Camera::getTheCamera();
+		theCamera->setPosition(settings->position);
+		theCamera->setTarget(settings->target);
+	}
+}
 
-	//std::map<std::string, cLight*>* read_lights = readLights(filename);
-
-	//if (!read_lights) {	return false; }
-
-	//lights = *read_lights;
-
-	// TODO: Patch while the ItemFactory doesn't have lights
-	cLight* theLight = new cLight();
-	theLight->pos = glm::vec3(10.0,
-		50.0,
-		10.0);
-	theLight->diffuseColor = glm::vec3(1.0f);
-	theLight->linearAtten = 0.01f;
-	theLight->quadAtten = 0.00000000001f;
-	theLight->specularColor = glm::vec4(1.0f, 1.0f, 1.0f, 50.0f);
-	theLight->type = DIRECTIONAL;
-	theLight->direction = glm::vec3(0.11157132685184479,
-		-0.8131065368652344,
-		-0.5713227987289429);
-	lights["theLight"] = theLight;
-
+bool Scene::loadCameras(std::string filename) {
+	std::map<std::string, sCameraSettings*>* loaded_cameras = readCameras(filename);
+	if (loaded_cameras == NULL) { return false; }
+	else {
+		cameras = *loaded_cameras;
+	}
+	if (cameras.begin() != cameras.end()) {
+		activeCamera = cameras.begin();
+		lookAtActiveCamera();
+	}
 	return true;
+}
+
+void Scene::changeCamera() {
+	activeCamera++;
+	if (activeCamera == cameras.end()) {
+		activeCamera = cameras.begin();
+	}
+	lookAtActiveCamera();
 }
 
 bool Scene::loadScene(std::string filename) {
@@ -115,64 +119,17 @@ bool Scene::loadScene(std::string filename) {
 
 // will not reload Meshes
 bool Scene::reloadScene(std::string filename) {
-	//if (!loadObjects(filename)) { return false; }
-
+	printf("%s\n", filename.c_str());
 	std::map<std::string, iGameItem*>* loaded_items = readItems(filename);
-	if (loaded_items == NULL) { return false; }
+	if (loaded_items == NULL) {return false;  }
 	else {
+		gameItems.clear();
 		gameItems = *loaded_items;
+		printf("total items: %d\n", gameItems.size());
 	}
 
-	if (!loadLights(filename)) { return false; }
+	if (!loadCameras(filename)) { return false; }
 	return true;
-}
-
-void Scene::drawLights() {
-
-	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
-
-	std::map<std::string, cLight*>::iterator iLight;
-	int index;
-	for (iLight = lights.begin(), index = 0; iLight != lights.end(); iLight++, index++) {
-
-		// Set the lighting values for the shader.
-		// See fragmentShader for documentation
-		std::string prefix = "theLights[";
-		GLint L_0_position = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].position").c_str());
-		GLint L_0_diffuse = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].diffuse").c_str());
-		GLint L_0_specular = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].specular").c_str());
-		GLint L_0_atten = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].atten").c_str());
-		GLint L_0_direction = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].direction").c_str());
-		GLint L_0_param1 = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].param1").c_str());
-		GLint L_0_param2 = glGetUniformLocation(shaderProgID, (prefix + std::to_string(index) + "].param2").c_str());
-
-		cLight* light = iLight->second;
-
-		glUniform4f(L_0_position,
-			light->pos.x,
-			light->pos.y,
-			light->pos.z,
-			1.0f);
-		glUniform4f(L_0_diffuse, light->diffuseColor.r, light->diffuseColor.g, light->diffuseColor.b, 1.0f);	
-		glUniform4f(L_0_specular, light->specularColor.r, light->specularColor.g, light->specularColor.b, light->specularColor.a);	
-		glUniform4f(L_0_atten, light->constAtten,  
-					light->linearAtten, 
-					light->quadAtten,	
-					light->cutOffDist);	
-
-		// x = lightType, y = inner angle, z = outer angle, w = TBD
-		// 0 = pointlight
-		// 1 = spot light
-		// 2 = directional light
-		glUniform4f(L_0_param1, light->type /*POINT light*/, light->innerAngle, light->outerAngle, 1.0f);
-		glUniform4f(L_0_param2, light->isOn /*Light is on*/, 0.0f, 0.0f, 1.0f);
-
-		glUniform4f(L_0_direction, 
-					light->direction.x,
-					light->direction.y,
-					light->direction.z,
-					1.0f );	
-	}
 }
 
 void Scene::drawItems() {
@@ -186,7 +143,6 @@ void Scene::drawItems() {
 void Scene::drawScene() {
 	//drawObjects();
 	drawItems();
-	//drawLights();
 }
 
 void Scene::saveScene(std::string filename) {
@@ -212,4 +168,33 @@ std::vector<iGameItem*> Scene::getItemsByType(std::string type) {
 		}
 	}
 	return vs;
+}
+
+void Scene::storeCurrentCamera() {
+
+	Camera* theCamera = Camera::getTheCamera();
+
+	sCameraSettings* settings = new sCameraSettings();
+	settings->name = glm::to_string(theCamera->getPosition()) +
+		" -> " + glm::to_string(theCamera->getTarget());
+	settings->position = theCamera->getPosition();
+	settings->target = theCamera->getTarget();
+
+	cameras[settings->name] = settings;
+}
+
+iGameItem* Scene::findItem(std::string name) {
+	if (gameItems.find(name) != gameItems.end()) {
+		return gameItems[name];
+	}
+	else {
+		return NULL;
+	}
+}
+
+void Scene::setCamera(std::string name) {
+	if (cameras.find(name) != cameras.end()) {
+		activeCamera = cameras.find(name);
+	}
+	lookAtActiveCamera();
 }

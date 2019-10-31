@@ -185,11 +185,13 @@
     <ClCompile Include="SceneEditor.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="UserInput.cpp" />
+    <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio_item.h" />
     <ClInclude Include="audio_listener.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraSettings.h" />
     <ClInclude Include="cGameAudio.h" />
     <ClInclude Include="cGameObject.h" />
     <ClInclude Include="cLight.h" />
@@ -218,6 +220,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEditor.h" />
     <ClInclude Include="UserInput.h" />
+    <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl" />

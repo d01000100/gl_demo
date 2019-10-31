@@ -5,16 +5,19 @@
 #include <sstream>
 #include "globalStuff.h"
 
-SceneEditor::SceneEditor() {}
-
 SceneEditor* SceneEditor::theEditor = new SceneEditor();
 
 SceneEditor* SceneEditor::getTheEditor() {
 	return theEditor;
 }
 
+SceneEditor::SceneEditor() {
+	selectedObj = objects.end();
+	debugRenderer = NULL;
+}
+
 void SceneEditor::init(Scene* scene) {
-    objects = scene->getItemsByType("audio");
+    objects = scene->getItems();
 	selectedObj = objects.begin();
 	objectMode = TRANS;
 	editMode = OBJS;
@@ -28,14 +31,7 @@ cDebugRenderer* SceneEditor::getDebugRenderer() {
 }
 
 void SceneEditor::drawDebug() {
-	switch (editMode) {
-	case OBJS:
-		objectDebug();
-		break;
-	case LIGHTS:
-		LightDebug();
-		break;
-	}
+	objectDebug();
 }
 
 void SceneEditor::setEditMode(eEditMode m) {
@@ -44,19 +40,19 @@ void SceneEditor::setEditMode(eEditMode m) {
 	if (m == OBJS) {
 		glm::vec3 objPos = (*selectedObj)->getPos();
 		theCamera->setTarget(objPos);
-		//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
+		theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
 	}
 	if (m == LIGHTS) {
 		glm::vec3 objPos = (*selectedLight)->pos;
 		theCamera->setTarget(objPos);
-		//theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
+		theCamera->setPosition(objPos + glm::vec3(0.0f, 0.0f, -50.0f));
 	}
 }
 
 void SceneEditor::changeObject() {
 	Camera* theCamera = Camera::getTheCamera();
 	glm::vec3 objPos = (*selectedObj)->getPos();
-	//theCamera->setTarget(objPos);
+	theCamera->setTarget(objPos);
 }
 
 void SceneEditor::nextObject() {
@@ -76,24 +72,26 @@ void SceneEditor::previousObject() {
 }
 
 void SceneEditor::objectDebug() {
-	glm::vec3 pos = (**selectedObj).getPos();
-	switch (objectMode) {
-	case TRANS:
-		debugTranslation(pos);
-		break;
-	case ROT:
-		debugRotation(pos);
-		break;
-	case SCALE:
-		debugScale(pos);
-		break;
-	}
+	if (debugRenderer) {
+		glm::vec3 pos = (**selectedObj).getPos();
+		switch (objectMode) {
+		case TRANS:
+			debugTranslation(pos);
+			break;
+		case ROT:
+			debugRotation(pos);
+			break;
+		case SCALE:
+			debugScale(pos);
+			break;
+		}
 
-	glfwSetWindowTitle(::window, (*selectedObj)->getInfo().c_str());
+		glfwSetWindowTitle(::window, (*selectedObj)->getInfo().c_str());
+	}
 }
 
-void SceneEditor::debugTranslation(glm::vec3 pos) {
-
+void SceneEditor::debugTranslation(glm::vec3 pos) 
+{
 	debugRenderer->addLine(pos, pos + glm::vec3(5.0, 0.0, 0.0), glm::vec3(1.0, 0.0, 0.0), 0.1f);
 	debugRenderer->addLine(pos, pos + glm::vec3(0.0, 5.0, 0.0), glm::vec3(0.0, 1.0, 0.0), 0.1f);
 	debugRenderer->addLine(pos, pos + glm::vec3(0.0, 0.0, 5.0), glm::vec3(0.0, 0.0, 1.0), 0.1f);
@@ -186,7 +184,7 @@ void SceneEditor::nextLight() {
 	Camera* theCamera = Camera::getTheCamera();
 	glm::vec3 LightPos = (*selectedLight)->pos;
 	theCamera->setTarget(LightPos);
-	//theCamera->setPosition(LightPos + glm::vec3(0.0f, 0.0f, -50.0f));
+	theCamera->setPosition(LightPos + glm::vec3(0.0f, 0.0f, -50.0f));
 }
 
 void SceneEditor::previousLight() {
@@ -200,59 +198,28 @@ void SceneEditor::previousLight() {
 	//theCamera->setPosition(LightPos + glm::vec3(0.0f, 0.0f, -50.0f));
 }
 
-void SceneEditor::changeQuadAtten(float deltaScale) { 
-	(*selectedLight)->quadAtten *= deltaScale;
-}
-void SceneEditor::changeInnerAngle(float deltaScale) {
-	(*selectedLight)->innerAngle *= deltaScale;
-}
-void SceneEditor::changeOuterAngle(float deltaScale){ 
-	(*selectedLight)->outerAngle *= deltaScale;
-}
-
-void SceneEditor::toggleLight() {
-	(*selectedLight)->isOn = !(*selectedLight)->isOn; 
-}
-
-void SceneEditor::LightDebug(){ 
-	glm::vec3 pos  = (*selectedLight)->pos;
-	glm::vec3 dir = (*selectedLight)->direction;
-	switch (objectMode) {
-	case TRANS: 
-		debugTranslation(pos);
-		break;
-	case ROT:
-		debugRenderer->addLine(pos, pos + dir * 10.0f, glm::vec3(1.0, 1.0, 1.0), 0.1f);
-		break;
-	case SCALE:		
-		debugScale(pos);
-		break;
-	case ANGLES:
-		glm::vec3 leftInner = glm::rotate(dir, (*selectedLight)->innerAngle * 0.5f, glm::vec3(0.0, 1.0f, 0.0f));
-		glm::vec3 rightInner = glm::rotate(dir, (*selectedLight)->innerAngle * -0.5f, glm::vec3(0.0, 1.0f, 0.0f));
-		debugRenderer->addLine(pos, pos + leftInner * 10.0f, glm::vec3(1.0, 1.0, 1.0), 0.1f);
-		debugRenderer->addLine(pos, pos + rightInner * 10.0f, glm::vec3(1.0, 1.0, 1.0), 0.1f);
-		break;
-	}
-}
-
 void SceneEditor::printInfo() {
 	for (std::vector<iGameItem*>::iterator i = objects.begin();
 		i != objects.end(); i++)
 	{
 		printf("%s: %s\n", (*i)->getType().c_str(), (*i)->getName().c_str());
 	}
-
-	printf("selected item: %s %s\n",
-		(*selectedObj)->getType().c_str(),
-		(*selectedObj)->getName().c_str());
+	
+	if (*selectedObj) {
+		printf("selected item: %s %s\n",
+			(*selectedObj)->getType().c_str(),
+			(*selectedObj)->getName().c_str());
+	}
 
 	printf("active mode %d\n", objectMode);
 }
 
-void SceneEditor::recieveMessage(sMessage message) {
-
+void SceneEditor::recieveMessage(sMessage message) 
+{
 	//printf("Editor recieving message %s with %f\n", message.name.c_str(), message.fValue);
+	if (selectedObj == objects.end()) {
+		return;
+	}
 
 	if (message.name == "number") {
 		// dsp controls
@@ -287,8 +254,7 @@ void SceneEditor::recieveMessage(sMessage message) {
 			objectMode = SCALE;
 		}
 
-		if (message.sValue == "v"
-			&& editMode == LIGHTS) {
+		if (message.sValue == "v") {
 			objectMode = ANGLES;
 		}
 
@@ -327,28 +293,28 @@ void SceneEditor::recieveMessage(sMessage message) {
 			}
 			if (message.sValue == "q")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, -1.0f);
+				itemMessage.v3Value = glm::vec3(0.0f, -1.0f, -0.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
 				changeObject();
 				return;
 			}
 			if (message.sValue == "e")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, 1.0f);
+				itemMessage.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
 				changeObject();
 				return;
 			}
 			if (message.sValue == "w")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
+				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, 1.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
 				changeObject();
 				return;
 			}
 			if (message.sValue == "s")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, -1.0f, 0.0f);
+				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, -1.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
 				changeObject();
 				return;
@@ -406,6 +372,50 @@ void SceneEditor::recieveMessage(sMessage message) {
 			if (message.sValue == "s")
 			{
 				itemMessage.fValue = -1.0f;
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "a")
+			{
+				itemMessage.fValue = 1.0f;
+				itemMessage.name = "quadAtten";
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "d")
+			{
+				itemMessage.fValue = -1.0f;
+				itemMessage.name = "quadAtten";
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			break;
+		case ANGLES:
+			if (message.sValue == "w")
+			{
+				itemMessage.name = "innerAngle";
+				itemMessage.fValue = 1.0f;
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "s")
+			{
+				itemMessage.name = "innerAngle";
+				itemMessage.fValue = -1.0f;
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "a")
+			{
+				itemMessage.name = "outerAngle";
+				itemMessage.fValue = -1.0f;
+				(*selectedObj)->recieveMessage(itemMessage);
+				return;
+			}
+			if (message.sValue == "d")
+			{
+				itemMessage.name = "outerAngle";
+				itemMessage.fValue = 1.0f;
 				(*selectedObj)->recieveMessage(itemMessage);
 				return;
 			}
