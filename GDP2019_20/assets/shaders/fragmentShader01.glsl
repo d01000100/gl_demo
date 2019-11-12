@@ -14,6 +14,14 @@ uniform bool bDoNotLight;
 
 uniform vec4 eyeLocation;
 
+// Texture samplers
+uniform sampler2D textSamp00;
+uniform sampler2D textSamp01;
+uniform sampler2D textSamp02;
+uniform sampler2D textSamp03;
+uniform vec4 tex_0_3_ratio;
+uniform bool hasTextures;
+
 out vec4 pixelColour;			// RGB A   (0 to 1) 
 
 // Fragment shader
@@ -35,7 +43,6 @@ const int POINT_LIGHT_TYPE = 0;
 const int SPOT_LIGHT_TYPE = 1;
 const int DIRECTIONAL_LIGHT_TYPE = 2;
 
-//const int NUMBEROFLIGHTS = 10;
 const int NUMBEROFLIGHTS = 100;
 uniform sLight theLights[NUMBEROFLIGHTS];  	// 80 uniforms
 
@@ -59,25 +66,31 @@ void main()
 		pixelColour.a = 1.0f;				// NOT transparent
 		return;
 	}
-	
-	
-	vec4 materialColour = diffuseColour;
-//	vec4 materialColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-//	vec4 specColour = vec4(0.0f,0.0f,0.0f,1.0f);// materialColour;
-	
 
-	vec4 outColour = calcualteLightContrib( materialColour.rgb, fNormal.xyz, 
-	                                        fVertWorldLocation.xyz, specularColour );
+	vec4 outColour;
+	
+	if (hasTextures) {
+		vec3 tex0_RGB = texture( textSamp00, fUVx2.st ).rgb;
+		vec3 tex1_RGB = texture( textSamp01, fUVx2.st ).rgb;
+		vec3 tex2_RGB = texture( textSamp02, fUVx2.st ).rgb;
+		vec3 tex3_RGB = texture( textSamp03, fUVx2.st ).rgb;
+			
+		vec3 texRGB =   ( tex_0_3_ratio.x * tex0_RGB ) 
+					+ ( tex_0_3_ratio.y * tex1_RGB )
+					+ ( tex_0_3_ratio.z * tex2_RGB )
+					+ ( tex_0_3_ratio.w * tex3_RGB );
 
-											
+		outColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
+												fVertWorldLocation.xyz, specularColour );
+	} else {
+		outColour = calcualteLightContrib( diffuseColour.rgb, fNormal.xyz, 
+												fVertWorldLocation.xyz, specularColour );
+	}
+
 	pixelColour = outColour;
+	pixelColour.a = diffuseColour.a;
 	
-//	pixelColour.rgb += vec3(0.5f, 0.5f, 0.5f);
-	
-//	pixelColour.rgb += fNormal.xyz;
-//	pixelColour.rgb += fVertWorldLocation.xyz;
-	
-}	// Ooops
+}	// main
 
 
 vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal, 
