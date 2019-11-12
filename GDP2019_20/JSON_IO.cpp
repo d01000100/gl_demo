@@ -1,4 +1,5 @@
 #include "JSON_IO.h"
+#include "globalStuff.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
@@ -9,6 +10,8 @@
 #include "GameItemFactory/GameItemFactory.h"
 
 using json = nlohmann::json;
+
+json loaded_textures;
 
 std::vector<meshSettings>* readMeshes(std::string filename) {
 	std::ifstream i;
@@ -49,6 +52,44 @@ std::vector<meshSettings>* readMeshes(std::string filename) {
 	i.close();
 
 	return vMeshes;
+}
+
+bool readTextures(std::string filename) {
+	std::ifstream i;
+	i.open(filename);
+
+	if (!i.is_open()) {
+		printf("Didn't found %s file \n", filename.c_str());
+		return false;
+	}
+
+	json jFile;
+	i >> jFile;
+
+	json::iterator jTextures = jFile.find("Textures");
+
+	if (jTextures == jFile.end()) {
+		printf("No textures\n");
+		i.close();
+		return true;
+	}
+
+	loaded_textures = (*jTextures);
+
+	::g_pTextureManager->SetBasePath("assets/textures");
+
+	for (json::iterator itTexture = jTextures->begin();
+		itTexture != jTextures->end(); itTexture++) {
+		if (!::g_pTextureManager->Create2DTextureFromBMPFile((*itTexture).get<std::string>(), true)) {
+			printf("error while reading texture %s\n", (*itTexture).get<std::string>().c_str());
+			i.close();
+			return false;
+		}
+	}
+
+	i.close();
+
+	return true;
 }
 
 std::map<std::string, sCameraSettings*>* readCameras(std::string filename) {
@@ -132,6 +173,7 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 			jObj != jObjects->end(); jObj++) {
 
 			iGameItem* gameItem = createGameItem("Object", *jObj);
+
 
 			(*mItems)[gameItem->getName()] = gameItem;
 		}
@@ -370,6 +412,7 @@ void saveScene(Scene* scene, std::string filename) {
 	jScene["Lights"] = jLights; jScene["Objects"] = jObjs; jScene["Sounds"] = jSounds;
 	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
 	jScene["Cameras"] = serializeCameras(scene->getCamerasMap());
+	jScene["Textures"] = loaded_textures;
 
 	std::ofstream file(filename);
 

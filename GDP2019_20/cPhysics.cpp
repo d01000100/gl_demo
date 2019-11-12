@@ -59,9 +59,9 @@ void cPhysics::GetClosestTriangleToPoint(Point pointXYZ, cMesh& mesh, glm::vec3&
 		sPlyTriangle& curTriangle = mesh.vecTriangles[triIndex];
 
 		// Get the vertices of the triangle
-		sPlyVertexXYZ_N triVert1 = mesh.vecVertices[curTriangle.vert_index_1];
-		sPlyVertexXYZ_N triVert2 = mesh.vecVertices[curTriangle.vert_index_2];
-		sPlyVertexXYZ_N triVert3 = mesh.vecVertices[curTriangle.vert_index_3];
+		sPlyVertex triVert1 = mesh.vecVertices[curTriangle.vert_index_1];
+		sPlyVertex triVert2 = mesh.vecVertices[curTriangle.vert_index_2];
+		sPlyVertex triVert3 = mesh.vecVertices[curTriangle.vert_index_3];
 
 		Point triVertPoint1;
 		triVertPoint1.x = triVert1.x;
@@ -281,7 +281,7 @@ cMesh cPhysics::transformMesh(cMesh mesh, glm::mat4 tMat) {
 	// Using the same thing that happens in the shader, 
 	// we transform the vertices of the mesh by the world matrix
 
-	for (std::vector<sPlyVertexXYZ_N>::iterator itVert = mesh.vecVertices.begin();
+	for (std::vector<sPlyVertex>::iterator itVert = mesh.vecVertices.begin();
 		itVert != mesh.vecVertices.end(); itVert++)
 	{
 		glm::vec4 vertex = glm::vec4(itVert->x, itVert->y, itVert->z, 1.0f);

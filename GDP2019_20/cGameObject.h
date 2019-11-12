@@ -34,6 +34,11 @@ struct sPhysicsObject {
 	cMesh* mesh;
 };
 
+struct sTextureSpec {
+	std::string textureName;
+	float weight = 1.0f;
+};
+
 class cGameObject : public iGameItem
 {
 public:
@@ -42,11 +47,12 @@ public:
 	std::string meshName;
 	cMesh* mesh;
 	std::string friendlyName;
+	std::vector<sTextureSpec> textures;
 
 	glm::vec3  position;
 	glm::vec3  rotationXYZ;
 	glm::vec3 front;
-	float scale;
+	float scale, alpha;
 
 	glm::mat4 matWorld;
 

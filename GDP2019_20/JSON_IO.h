@@ -12,6 +12,8 @@ struct meshSettings {
 
 std::vector<meshSettings>* readMeshes(std::string f);
 
+bool readTextures(std::string f);
+
 std::map<std::string, sCameraSettings*>* readCameras(std::string filename);
 
 std::map<std::string, iGameItem*>* readItems(std::string filename);

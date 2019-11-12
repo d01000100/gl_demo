@@ -39,6 +39,7 @@ std::string shader_name = "SimpleShader";
 std::string scene_filename = "assets/scene1.json";
 cVAOManager* theVAOManager = new cVAOManager();
 GLFWwindow* ::window = 0;
+cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 
 // audio globals
 FMOD::System *::fmod_system = 0;
@@ -100,10 +101,11 @@ int main(void)
 	}
 
 	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
-									 
+	
+	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
-	//sceneEditor->init(theScene);
+	sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -116,6 +118,8 @@ int main(void)
 	// Get the initial time
 	double lastTime = glfwGetTime();
 	double flickerTimer = 0;
+
+	theCamera->setTarget(glm::vec3(0.0f));
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -163,22 +167,6 @@ int main(void)
 
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
-
-		// flicker skull lights
-		float minAtten = 0.0001f, maxAtten = 0.1f, atten = 0.0f;
-		flickerTimer += deltaTime;
-		if (flickerTimer > 0.01f) {
-			atten = randInRange(minAtten, maxAtten);
-			cLight* light = (cLight*)theScene->findItem("skull left");
-			if (light) {
-				light->linearAtten = atten;
-			}
-			light = (cLight*)theScene->findItem("skull right");
-			if (light) {
-				light->linearAtten = atten;
-			}
-			flickerTimer = 0.0;
-		}
 
 		theScene->drawScene();
 

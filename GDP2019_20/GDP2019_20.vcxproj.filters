@@ -43,6 +43,12 @@
     <Filter Include="AudioItems">
       <UniqueIdentifier>{9f51edd6-465d-495e-8cb0-8ba3c9f49b4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{3fb7f4e8-9598-4934-8ef5-6371375f7b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JSONLoader">
+      <UniqueIdentifier>{de1de2e1-2827-47a9-add7-e081e05bb403}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -111,9 +117,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JSON_IO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SceneEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -137,6 +140,21 @@
     </ClCompile>
     <ClCompile Include="util.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C24BitBMPpixel.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="cBasicTextureManager.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextureFromBMP.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="cGLColourHelper.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="JSON_IO.cpp">
+      <Filter>JSONLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,9 +221,6 @@
     <ClInclude Include="UserInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="JSON_IO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SceneEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -238,6 +253,21 @@
     </ClInclude>
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C24BitBMPpixel.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="cBasicTextureManager.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="cGLColourHelper.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextureFromBMP.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="JSON_IO.h">
+      <Filter>JSONLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

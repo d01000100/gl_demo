@@ -162,8 +162,36 @@ iGameItem* createGameItem(std::string type, json info) {
 			gameObj->front = glm::normalize(glm::vec3(1.0f, 0.0f, 0.0f));
 		}
 
+		if (info.find("alpha") != info.end()) {
+			gameObj->alpha = info["alpha"].get<float>();
+		}
+
 		if (info.find("Physics") != info.end()) {
 			gameObj->physics = buildPhysicsObject(info["Physics"]);
+		}
+
+		if (info.find("textures") != info.end()) {
+			for (json::iterator itJText = info["textures"].begin();
+				itJText != info["textures"].end(); itJText++) 
+			{
+				sTextureSpec textSpec;
+
+				if (gameObj->textures.size() == 4) {
+					printf("%s already has 4 textures\n", gameObj->friendlyName.c_str());
+					break;
+				}
+
+				if ((*itJText).find("textureName") != (*itJText).end()) {
+					textSpec.textureName = (*itJText)["textureName"].get<std::string>();
+
+					if ((*itJText).find("weight") != (*itJText).end()) {
+						textSpec.weight = (*itJText)["weight"].get<float>();
+					}
+
+					gameObj->textures.push_back(textSpec);
+				}
+
+			}
 		}
 
 		return gameObj;

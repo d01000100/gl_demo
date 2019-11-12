@@ -28,6 +28,8 @@ cGameObject::cGameObject()
 
 	this->m_pDebugRenderer = NULL;
 
+	alpha = 1.0f;
+
 	return;
 }
 
@@ -112,19 +114,49 @@ void cGameObject::draw()
 			diffuseColor.r,
 			diffuseColor.g,
 			diffuseColor.b,
-			diffuseColor.a);
+			alpha);
 
 		GLint specularColour_UL = glGetUniformLocation(programID, "specularColour");
 		glUniform4f(specularColour_UL,
 			specularColor.r,
 			specularColor.g,
 			specularColor.b,
-			1000.0f);	// Specular "power" (how shinny the object is)
-						// 1.0 to really big (10000.0f)
+			specularColor.a);	// Specular "power" (how shinny the object is)
+								// 1.0 to really big (10000.0f)
+
+		glUniform1f(glGetUniformLocation(programID, "hasTextures"),
+			(float)!textures.empty());
+		if (!textures.empty()) 
+		{
+			glm::vec4 textureWeights = glm::vec4(0.0f);
+			for (int t = 0; t < textures.size(); t++)
+			{
+				GLuint textureId_UL = ::g_pTextureManager->getTextureIDFromName(textures[t].textureName);
+				glActiveTexture(GL_TEXTURE0 + t);				
+				glBindTexture(GL_TEXTURE_2D, textureId_UL);
+
+				// Tie the texture units to the samplers in the shader
+				GLint textSamp_UL = glGetUniformLocation(programID, ("textSamp0" + std::to_string(t)).c_str());
+				glUniform1i(textSamp_UL, t);
+
+				textureWeights[t] = textures[t].weight;
+			}
+
+			textureWeights = glm::normalize(textureWeights);
+			glUniform4f(glGetUniformLocation(programID, "tex_0_3_ratio"),
+				textureWeights[0],		
+				textureWeights[1],
+				textureWeights[2],
+				textureWeights[3]);
+
+		}
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
 		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
 		glEnable(GL_DEPTH);								// Write to depth buffer
+		// transparency configs
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glBindVertexArray(drawInfo.VAO_ID);
 		glDrawElements(GL_TRIANGLES,
@@ -164,7 +196,8 @@ std::string cGameObject::getType() { return "Object"; }
 std::string cGameObject::getInfo() {
 	std::stringstream ss;
 	ss << getType() << " - " << getName() <<
-		" color: " << glm::to_string(diffuseColor);
+		" color: " << glm::to_string(diffuseColor) <<
+		" alpha: " << alpha;
 	return ss.str();
 };
 
@@ -204,6 +237,7 @@ json cGameObject::toJSON() {
 	jObj["rotation"][2] = glm::degrees(rotationXYZ.z);
 
 	jObj["scale"] = scale;
+	jObj["alpha"] = alpha;
 
 	jObj["diffuseColor"][0] = diffuseColor.x * 255.f;
 	jObj["diffuseColor"][1] = diffuseColor.y * 255.f;
@@ -257,6 +291,15 @@ json cGameObject::toJSON() {
 		jPhysics["radius"] = physics->radius;
 
 		jObj["Physics"] = jPhysics;
+	}
+
+	if (!textures.empty()) {
+		json jvTextures;
+		for (int t = 0; t < textures.size(); t++) {
+			jvTextures[t]["textureName"] = textures[t].textureName;
+			jvTextures[t]["weight"] = textures[t].weight;
+		}
+		jObj["textures"] = jvTextures;
 	}
 
 	return jObj;

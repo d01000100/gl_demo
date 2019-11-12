@@ -4,6 +4,7 @@
 #include "globalStuff.h"
 #include "JSON_IO.h"
 #include "Camera.h"
+#include "cGameObject.h"
 
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp> // glm::vec3
@@ -133,15 +134,39 @@ bool Scene::reloadScene(std::string filename) {
 }
 
 void Scene::drawItems() {
+
+	std::map<double, cGameObject*> transparentsByDistance;
+	Camera* theCamera = Camera::getTheCamera();
+
 	for (std::map<std::string, iGameItem*>::iterator i = gameItems.begin();
 		i != gameItems.end(); i++)
 	{
-		i->second->draw();
+		if (i->second->getType() != "Object") {
+			i->second->draw();
+		}
+		// We exclude objects because we need to consider transparency on thise
+		else {
+			cGameObject* gameObj = (cGameObject*)i->second;
+			// if they are opaque, we draw can draw them
+			if (gameObj->alpha == 1) {
+				gameObj->draw();
+			}
+			// if they are transparent, we sort them by the distance to the camera
+			// from farthest to closest.
+			else {
+				double distance = glm::distance(theCamera->getPosition(), gameObj->getPos());
+				transparentsByDistance[-distance] = gameObj;
+			}
+		}
 	}
+
+	// we draw the transparent objects from farthest to closest
+	for (std::map<double, cGameObject*>::iterator itTransparent = transparentsByDistance.begin();
+		itTransparent != transparentsByDistance.end(); itTransparent++)
+		itTransparent->second->draw();
 }
 
 void Scene::drawScene() {
-	//drawObjects();
 	drawItems();
 }
 
