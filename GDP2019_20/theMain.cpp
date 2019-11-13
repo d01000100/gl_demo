@@ -26,6 +26,7 @@
 #include "SceneEditor.h"
 #include "JSON_IO.h"
 #include "cLight.h"
+#include "SkyBox.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -62,6 +63,8 @@ int main(void)
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	init_fmod();
 	theCamera->init();
+	SkyBox theSkyBox;
+
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -100,10 +103,20 @@ int main(void)
 		return -1;
 	}
 
+
 	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
+
+	theSkyBox.init(
+		"city_rt.bmp",
+		"city_lf.bmp",
+		"city_up.bmp",
+		"city_dn.bmp",
+		"city_ft.bmp",
+		"city_bk.bmp",
+		"sphere_model");
 
 	sceneEditor->init(theScene);
 
@@ -167,6 +180,8 @@ int main(void)
 
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
+
+		theSkyBox.draw();
 
 		theScene->drawScene();
 

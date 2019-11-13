@@ -293,28 +293,28 @@ void SceneEditor::recieveMessage(sMessage message)
 			}
 			if (message.sValue == "q")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, -1.0f, -0.0f);
+				itemMessage.v3Value = glm::vec3(0.0f, -0.0f, -1.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
 				changeObject();
 				return;
 			}
 			if (message.sValue == "e")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
+				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, -1.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
 				changeObject();
 				return;
 			}
 			if (message.sValue == "w")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, 1.0f);
+				itemMessage.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
 				changeObject();
 				return;
 			}
 			if (message.sValue == "s")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, -1.0f);
+				itemMessage.v3Value = glm::vec3(0.0f, -1.0f, -0.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
 				changeObject();
 				return;

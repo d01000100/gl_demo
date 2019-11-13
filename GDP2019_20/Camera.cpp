@@ -10,7 +10,7 @@ Camera* Camera::theCamera = new Camera();
 Camera::Camera() {
 	pos = glm::vec3(1.0f) * 180.0f;
 	target = glm::vec3(0.0f, 0.0, 0.0f);
-	upVector = glm::vec3(0.0f, 0.0f, 1.0f);
+	upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 void Camera::init() {

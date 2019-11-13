@@ -45,11 +45,15 @@
         {
             "filename": "assets/models/teapot.ply",
             "name": "teapot_model"
+        },
+        {
+            "filename": "assets/models/sphere.ply",
+            "name": "sphere_model"
         }
     ],
     "Objects": [
         {
-            "alpha": 0.2,
+            "alpha": 0.20000000298023224,
             "diffuseColor": [
                 255.0,
                 10.0,
@@ -88,7 +92,7 @@
             ]
         },
         {
-            "alpha": 0.2,
+            "alpha": 0.20000000298023224,
             "diffuseColor": [
                 255.0,
                 10.0,
@@ -127,7 +131,7 @@
             ]
         },
         {
-            "alpha": 0.7,
+            "alpha": 0.699999988079071,
             "diffuseColor": [
                 204.0,
                 204.0,
@@ -142,7 +146,7 @@
             "mesh": "teapot_model",
             "name": "teapot_model_1000",
             "position": [
-                38.0,
+                -69.0,
                 0.0,
                 0.0
             ],

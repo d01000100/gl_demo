@@ -156,6 +156,9 @@
     <ClCompile Include="JSON_IO.cpp">
       <Filter>JSONLoader</Filter>
     </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="JSON_IO.h">
       <Filter>JSONLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

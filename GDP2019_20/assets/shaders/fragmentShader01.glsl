@@ -9,8 +9,8 @@ uniform vec4 diffuseColour;
 uniform vec4 specularColour;
 
 // Used to draw debug (or unlit) objects
-uniform vec4 debugColour;			
-uniform bool bDoNotLight;		
+uniform vec4 debugColour;
+uniform bool bDoNotLight;
 
 uniform vec4 eyeLocation;
 
@@ -23,6 +23,10 @@ uniform vec4 tex_0_3_ratio;
 uniform bool hasTextures;
 
 out vec4 pixelColour;			// RGB A   (0 to 1) 
+
+// just skybox things
+uniform samplerCube skyBox;
+uniform bool bIsSkyBox;
 
 // Fragment shader
 struct sLight
@@ -60,9 +64,20 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	 
 void main()  
 {
+	if ( bIsSkyBox )
+	{
+		// I sample the skybox using the normal from the surface
+		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
+		pixelColour.rgb = skyColour.rgb;
+		pixelColour.a = 1.0f;				// NOT transparent
+		
+		// pixelColour.rgb *= 1.5f;		// Make it a little brighter
+		return;
+	}
+
 	if ( bDoNotLight )
 	{
-		pixelColour.rgb = debugColour.rgb;
+		pixelColour.rgb = diffuseColour.rgb;
 		pixelColour.a = 1.0f;				// NOT transparent
 		return;
 	}

@@ -187,6 +187,7 @@
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneEditor.cpp" />
+    <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="util.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEditor.h" />
+    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="UserInput.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
