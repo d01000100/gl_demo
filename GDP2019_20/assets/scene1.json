@@ -4,26 +4,367 @@
         {
             "cutOffDist": 50.0,
             "diffuseColor": [
-                240.0,
-                255.0,
-                189.0
+                100.0,
+                100.0,
+                255.0
             ],
             "direction": [
-                -0.48923203349113464,
-                0.21993404626846313,
-                -0.8439674377441406
+                0.0,
+                0.0,
+                1.0
             ],
             "innerAngle": 0.0,
             "isOn": true,
-            "linearAtten": 0.0029732421971857548,
+            "linearAtten": 0.016958553344011307,
+            "name": "charge-mother-ship",
+            "outerAngle": 0.0,
+            "position": [
+                -2.0,
+                98.0,
+                2.0
+            ],
+            "quadAtten": 2.536649787998613e-07,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                10.0,
+                10.0,
+                255.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.002247523283585906,
+            "name": "charge-small-ship",
+            "outerAngle": 0.0,
+            "position": [
+                6.0,
+                21.0,
+                213.0
+            ],
+            "quadAtten": 0.00014663174806628376,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                255.0
+            ],
+            "direction": [
+                0.015005857683718204,
+                -0.36823150515556335,
+                0.9296129941940308
+            ],
+            "innerAngle": 125.0,
+            "isOn": true,
+            "linearAtten": 0.01622771844267845,
+            "name": "cruise-spotlight",
+            "outerAngle": 30.0,
+            "position": [
+                4.0,
+                4.0,
+                -58.0
+            ],
+            "quadAtten": 0.00024378972011618316,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "spotlight"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                10.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.0002944905427284539,
+            "name": "cruiser-thruster-1",
+            "outerAngle": 0.0,
+            "position": [
+                9.0,
+                -14.0,
+                -104.0
+            ],
+            "quadAtten": 0.007217385806143284,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                10.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.0002944905427284539,
+            "name": "cruiser-thruster-2",
+            "outerAngle": 0.0,
+            "position": [
+                -12.0,
+                -13.0,
+                -104.0
+            ],
+            "quadAtten": 0.007217385806143284,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                10.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.0002944905427284539,
+            "name": "cruiser-thruster-3",
+            "outerAngle": 0.0,
+            "position": [
+                18.0,
+                -4.0,
+                -104.0
+            ],
+            "quadAtten": 0.007217385806143284,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                10.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.0002944905427284539,
+            "name": "cruiser-thruster-4",
+            "outerAngle": 0.0,
+            "position": [
+                -2.0,
+                -4.0,
+                -104.0
+            ],
+            "quadAtten": 0.007217385806143284,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                10.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.0002944905427284539,
+            "name": "cruiser-thruster-5",
+            "outerAngle": 0.0,
+            "position": [
+                9.0,
+                -4.0,
+                -104.0
+            ],
+            "quadAtten": 0.007217385806143284,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                10.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.0002944905427284539,
+            "name": "cruiser-thruster-6",
+            "outerAngle": 0.0,
+            "position": [
+                -13.0,
+                -3.0,
+                -104.0
+            ],
+            "quadAtten": 0.007217385806143284,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                10.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.0002944905427284539,
+            "name": "cruiser-thruster-7",
+            "outerAngle": 0.0,
+            "position": [
+                -4.0,
+                -14.0,
+                -104.0
+            ],
+            "quadAtten": 0.007217385806143284,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                10.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.0002944905427284539,
+            "name": "cruiser-thruster-8",
+            "outerAngle": 0.0,
+            "position": [
+                17.0,
+                -14.0,
+                -104.0
+            ],
+            "quadAtten": 0.007217385806143284,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                255.0,
+                255.0
+            ],
+            "direction": [
+                -1.0,
+                -1.0,
+                -1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.0021222189534455538,
             "name": "daylight",
             "outerAngle": 0.0,
             "position": [
-                -81.0,
-                209.0,
-                356.0
+                -162.0,
+                256.0,
+                184.0
             ],
-            "quadAtten": 1.3485997041318143e-11,
+            "quadAtten": 2.1410630213214432e-10,
             "specularColor": [
                 1.0,
                 1.0,
@@ -31,107 +372,251 @@
                 5000.0
             ],
             "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                50.0,
+                50.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.00020009910804219544,
+            "name": "explosion-big-ship",
+            "outerAngle": 0.0,
+            "position": [
+                23.0,
+                5.0,
+                -4.0
+            ],
+            "quadAtten": 0.0016728349728509784,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
+        },
+        {
+            "cutOffDist": 50.0,
+            "diffuseColor": [
+                255.0,
+                50.0,
+                50.0
+            ],
+            "direction": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "innerAngle": 0.0,
+            "isOn": true,
+            "linearAtten": 0.002247523283585906,
+            "name": "explosion-small-ship",
+            "outerAngle": 0.0,
+            "position": [
+                179.0,
+                58.0,
+                -9.0
+            ],
+            "quadAtten": 0.00014663174806628376,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "type": "point"
         }
     ],
     "Meshes": [
         {
-            "filename": "assets/models/bunny.ply",
-            "name": "bunny_model"
+            "filename": "assets/models/asteroid-a.ply",
+            "name": "asteroid-a"
         },
         {
-            "filename": "assets/models/submarine.ply",
-            "name": "submarine_model"
+            "filename": "assets/models/asteroid-b.ply",
+            "name": "asteroid-b"
         },
         {
-            "filename": "assets/models/teapot.ply",
-            "name": "teapot_model"
+            "filename": "assets/models/cilinder.ply",
+            "name": "cilinder"
+        },
+        {
+            "filename": "assets/models/drej-mothership.ply",
+            "name": "drej-mothership"
+        },
+        {
+            "filename": "assets/models/drej-stinger.ply",
+            "name": "drej-stinger"
+        },
+        {
+            "filename": "assets/models/galactica_reduced.ply",
+            "name": "galactica_reduced"
+        },
+        {
+            "filename": "assets/models/low-poly-ship.ply",
+            "name": "low-poly-ship"
         },
         {
             "filename": "assets/models/sphere.ply",
-            "name": "sphere_model"
+            "name": "sphere"
+        },
+        {
+            "filename": "assets/models/sw-storm.ply",
+            "name": "sw-storm"
+        },
+        {
+            "filename": "assets/models/ufs-ship.ply",
+            "name": "ufs-ship"
         }
     ],
     "Objects": [
         {
-            "alpha": 0.20000000298023224,
+            "alpha": 1.0,
             "diffuseColor": [
                 255.0,
-                10.0,
-                10.0
+                100.0,
+                100.0
             ],
             "front": [
                 1.0,
                 0.0,
                 0.0
             ],
+            "isLit": false,
             "isVisible": true,
-            "mesh": "bunny_model",
-            "name": "bunny_model_1001",
+            "mesh": "cilinder",
+            "name": "cilinder_1057",
             "position": [
-                43.0,
-                -87.0,
-                26.0
+                179.0,
+                55.0,
+                10.0
             ],
             "rotation": [
-                0.0,
-                0.0,
-                0.0
+                8.021407127380371,
+                356.37945556640625,
+                6.875493049621582
             ],
-            "scale": 0.2622041404247284,
+            "scale": 0.4632912278175354,
             "specularColor": [
                 255.0,
                 255.0,
                 255.0,
                 5000.0
-            ],
-            "textures": [
-                {
-                    "textureName": "submarine.bmp",
-                    "weight": 1.0
-                }
             ]
         },
         {
-            "alpha": 0.20000000298023224,
+            "alpha": 1.0,
             "diffuseColor": [
                 255.0,
-                10.0,
-                10.0
+                100.0,
+                100.0
             ],
             "front": [
                 1.0,
                 0.0,
                 0.0
             ],
+            "isLit": false,
             "isVisible": true,
-            "mesh": "bunny_model",
-            "name": "bunny_model_1002",
+            "mesh": "cilinder",
+            "name": "cilinder_1071",
             "position": [
-                34.0,
-                126.0,
-                26.0
+                -1.0,
+                -20.0,
+                232.0
             ],
             "rotation": [
-                0.0,
-                0.0,
-                0.0
+                -92.81910705566406,
+                375.8600158691406,
+                -3.43774676322937
             ],
-            "scale": 0.2773895561695099,
+            "scale": 0.4632912278175354,
             "specularColor": [
                 255.0,
                 255.0,
                 255.0,
                 5000.0
-            ],
-            "textures": [
-                {
-                    "textureName": "grass.bmp",
-                    "weight": 1.0
-                }
             ]
         },
         {
-            "alpha": 0.699999988079071,
+            "alpha": 1.0,
+            "diffuseColor": [
+                100.0,
+                100.0,
+                255.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": false,
+            "isVisible": true,
+            "mesh": "cilinder",
+            "name": "cilinder_1110",
+            "position": [
+                -117.0,
+                48.0,
+                -12.0
+            ],
+            "rotation": [
+                -17.18873405456543,
+                271.581787109375,
+                0.0
+            ],
+            "scale": 0.4632912278175354,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                5000.0
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                100.0,
+                100.0,
+                255.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": false,
+            "isVisible": true,
+            "mesh": "cilinder",
+            "name": "cilinder_1111",
+            "position": [
+                -16.0,
+                6.0,
+                -152.0
+            ],
+            "rotation": [
+                -13.75098705291748,
+                189.075927734375,
+                0.0
+            ],
+            "scale": 0.4632912278175354,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                5000.0
+            ]
+        },
+        {
+            "alpha": 0.6000000238418579,
             "diffuseColor": [
                 204.0,
                 204.0,
@@ -142,32 +627,728 @@
                 0.0,
                 0.0
             ],
+            "isLit": true,
             "isVisible": true,
-            "mesh": "teapot_model",
-            "name": "teapot_model_1000",
+            "mesh": "drej-mothership",
+            "name": "drej-mothership_1001",
             "position": [
-                -69.0,
+                -2.0,
+                148.0,
+                0.0
+            ],
+            "rotation": [
+                -90.52728271484375,
                 0.0,
+                0.0
+            ],
+            "scale": 1.1973870992660522,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50000000.0
+            ],
+            "textures": [
+                {
+                    "textureName": "blue-gem.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 0.800000011920929,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "drej-stinger",
+            "name": "drej-stinger_1002",
+            "position": [
+                -154.0,
+                58.0,
+                -11.0
+            ],
+            "rotation": [
+                -65.3171615600586,
+                81.3599624633789,
+                9.16732406616211
+            ],
+            "scale": 0.893508791923523,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "drej.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 0.800000011920929,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "drej-stinger",
+            "name": "drej-stinger_1026",
+            "position": [
+                179.0,
+                58.0,
+                -9.0
+            ],
+            "rotation": [
+                -84.7977066040039,
+                -76.77630615234375,
+                9.16732406616211
+            ],
+            "scale": 0.893508791923523,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "drej.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "galactica_reduced",
+            "name": "cruiseship",
+            "position": [
+                0.0,
+                -2.0,
                 0.0
             ],
             "rotation": [
                 0.0,
                 0.0,
-                81.3599624633789
+                -183.3463592529297
             ],
-            "scale": 1.1691768169403076,
+            "scale": 1.0,
             "specularColor": [
                 255.0,
                 255.0,
                 255.0,
-                5000.0
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "cross-metal.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "low-poly-ship",
+            "name": "low-poly-ship_1024",
+            "position": [
+                179.0,
+                49.0,
+                43.0
+            ],
+            "rotation": [
+                -85.94361877441406,
+                0.0,
+                0.0
+            ],
+            "scale": 1.326744794845581,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "low-poly-ship.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 0.7,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "cruise-explosion-3",
+            "position": [
+                25.0,
+                4.0,
+                -2.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 9.177652359008789,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "fire.bmp",
+                    "weight": 1.0
+                },
+                {
+                    "textureName": "smoke.bmp",
+                    "weight": 2.0
+                }
+            ]
+        },
+        {
+            "alpha": 0.5,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "cruise-explosion-2",
+            "position": [
+                24.0,
+                4.0,
+                -15.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 4.54343843460083,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "fire.bmp",
+                    "weight": 1.0
+                },
+                {
+                    "textureName": "smoke.bmp",
+                    "weight": 2.0
+                }
+            ]
+        },
+        {
+            "alpha": 0.75,
+            "diffuseColor": [
+                10.0,
+                10.0,
+                255.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "sphere_1041",
+            "position": [
+                -2.0,
+                99.0,
+                2.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 5.791816711425781,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ]
+        },
+        {
+            "alpha": 0.5,
+            "diffuseColor": [
+                10.0,
+                10.0,
+                255.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "sphere_1087",
+            "position": [
+                6.0,
+                21.0,
+                213.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 3.22510027885437,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ]
+        },
+        {
+            "alpha": 0.5,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "dreg-explosion",
+            "position": [
+                179.0,
+                59.0,
+                -9.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 4.635338306427002,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "fire.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 0.5,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "sphere",
+            "name": "cruise-explosion-1",
+            "position": [
+                24.0,
+                4.0,
+                -23.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 6.84850549697876,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "fire.bmp",
+                    "weight": 1.0
+                },
+                {
+                    "textureName": "smoke.bmp",
+                    "weight": 2.0
+                }
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "sw-storm",
+            "name": "sw-storm_1008",
+            "position": [
+                8.0,
+                24.0,
+                237.0
+            ],
+            "rotation": [
+                -104.27825927734375,
+                223.45338439941406,
+                -6.875493049621582
+            ],
+            "scale": 3.1453733444213867,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "grey-metal.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "sw-storm",
+            "name": "sw-storm_1016",
+            "position": [
+                -20.0,
+                14.0,
+                -182.0
+            ],
+            "rotation": [
+                -115.7374038696289,
+                55.003929138183594,
+                0.0
+            ],
+            "scale": 1.795856237411499,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "ufs-ship",
+            "name": "ufs-ship_1007",
+            "position": [
+                0.0,
+                64.0,
+                0.0
+            ],
+            "rotation": [
+                -88.2354507446289,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "shiny-metal.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "ufs-ship",
+            "name": "ufs-ship_1011",
+            "position": [
+                0.0,
+                64.0,
+                0.0
+            ],
+            "rotation": [
+                -88.2354507446289,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "shiny-metal.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "ufs-ship",
+            "name": "ufs-ship_1017",
+            "position": [
+                73.0,
+                4.0,
+                -172.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "blue-metal.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "ufs-ship",
+            "name": "ufs-ship_1036",
+            "position": [
+                -2.0,
+                -47.0,
+                234.0
+            ],
+            "rotation": [
+                -124.90472412109375,
+                -8.021408081054688,
+                -88.2354507446289
+            ],
+            "scale": 1.4774553775787354,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "gold-metal.bmp",
+                    "weight": 1.0
+                }
+            ]
+        },
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "front": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "isLit": true,
+            "isVisible": true,
+            "mesh": "ufs-ship",
+            "name": "ufs-ship_1121",
+            "position": [
+                -26.0,
+                6.0,
+                44.0
+            ],
+            "rotation": [
+                -2.2918312549591064,
+                83.65179443359375,
+                83.65179443359375
+            ],
+            "scale": 1.0,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "metallic.bmp",
+                    "weight": 1.0
+                }
             ]
         }
     ],
     "Sounds": null,
     "Textures": [
+        "blue-gem.bmp",
+        "blue-metal.bmp",
+        "cross-metal.bmp",
+        "dots.bmp",
+        "drej.bmp",
+        "fence.bmp",
+        "fire.bmp",
+        "gold-metal.bmp",
         "grass.bmp",
-        "pizza.bmp",
-        "submarine.bmp"
+        "grey-metal.bmp",
+        "ground-dark.bmp",
+        "ground-light.bmp",
+        "low-poly-ship.bmp",
+        "metallic.bmp",
+        "pebbles.bmp",
+        "purple-gem.bmp",
+        "shiny-metal.bmp",
+        "smoke.bmp"
     ]
 }

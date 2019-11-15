@@ -110,13 +110,22 @@ int main(void)
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
 	theSkyBox.init(
-		"city_rt.bmp",
-		"city_lf.bmp",
-		"city_up.bmp",
-		"city_dn.bmp",
-		"city_ft.bmp",
-		"city_bk.bmp",
-		"sphere_model");
+		"SpaceBox_right1_posX.bmp",
+		"SpaceBox_left2_negX.bmp",
+		"SpaceBox_top3_posY.bmp",
+		"SpaceBox_bottom4_negY.bmp",
+		"SpaceBox_front5_posZ.bmp",
+		"SpaceBox_back6_negZ.bmp",
+		"sphere");
+
+	//theSkyBox.init(
+	//	"city_rt.bmp",
+	//	"city_lf.bmp",
+	//	"city_up.bmp",
+	//	"city_dn.bmp",
+	//	"city_ft.bmp",
+	//	"city_bk.bmp",
+	//	"sphere");
 
 	sceneEditor->init(theScene);
 
