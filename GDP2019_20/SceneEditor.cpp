@@ -300,7 +300,7 @@ void SceneEditor::recieveMessage(sMessage message)
 			}
 			if (message.sValue == "e")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, -1.0f);
+				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, 1.0f);
 				(*selectedObj)->recieveMessage(itemMessage);
 				changeObject();
 				return;

@@ -62,7 +62,7 @@ public:
 	                                // 4th value (a or w) is the "power"
 	                                // 1.0 to 10,000.0f 
 	bool isWireframe;
-	bool isVisible;
+	bool isVisible, isLit;
 
 	sPhysicsObject* physics;
 

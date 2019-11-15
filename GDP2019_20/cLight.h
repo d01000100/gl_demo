@@ -44,6 +44,8 @@ public:
 	std::string getInfo();
 	json toJSON();
 
+	static void resetIds();
+
 private:
 	static int next_unique_id;
 	int unique_id;

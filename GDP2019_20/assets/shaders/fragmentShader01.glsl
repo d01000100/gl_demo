@@ -28,6 +28,10 @@ out vec4 pixelColour;			// RGB A   (0 to 1)
 uniform samplerCube skyBox;
 uniform bool bIsSkyBox;
 
+// hole texture
+uniform sampler2D dotsSampler;
+uniform bool isHoled;
+
 // Fragment shader
 struct sLight
 {
@@ -64,14 +68,19 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	 
 void main()  
 {
+	if (isHoled ) {
+		vec3 dotsColor = texture(dotsSampler, fUVx2.st).rgb;
+		if (dotsColor.r < 0.7f) {
+			discard;
+		}
+	}
+
 	if ( bIsSkyBox )
 	{
 		// I sample the skybox using the normal from the surface
 		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
 		pixelColour.rgb = skyColour.rgb;
-		pixelColour.a = 1.0f;				// NOT transparent
-		
-		// pixelColour.rgb *= 1.5f;		// Make it a little brighter
+		pixelColour.a = 1.0f;	// NOT transparent
 		return;
 	}
 
@@ -81,8 +90,6 @@ void main()
 		pixelColour.a = 1.0f;				// NOT transparent
 		return;
 	}
-
-	vec4 outColour;
 	
 	if (hasTextures) {
 		vec3 tex0_RGB = texture( textSamp00, fUVx2.st ).rgb;
@@ -95,14 +102,12 @@ void main()
 					+ ( tex_0_3_ratio.z * tex2_RGB )
 					+ ( tex_0_3_ratio.w * tex3_RGB );
 
-		outColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
+		pixelColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
 												fVertWorldLocation.xyz, specularColour );
-	} else {
-		outColour = calcualteLightContrib( diffuseColour.rgb, fNormal.xyz, 
+		} else {
+			pixelColour = calcualteLightContrib( diffuseColour.rgb, fNormal.xyz, 
 												fVertWorldLocation.xyz, specularColour );
 	}
-
-	pixelColour = outColour;
 	pixelColour.a = diffuseColour.a;
 	
 }	// main

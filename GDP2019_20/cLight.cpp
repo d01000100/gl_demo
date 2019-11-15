@@ -8,6 +8,8 @@
 
 int cLight::next_unique_id = 0;
 
+void cLight::resetIds() { next_unique_id = 0; }
+
 cLight::cLight() {
 	type = SPOT;
 	pos = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -63,8 +65,8 @@ void cLight::draw() {
 	// 0 = pointlight
 	// 1 = spot light
 	// 2 = directional light
-	glUniform4f(L_0_param1, type , innerAngle, outerAngle, 1.0f);
-	glUniform4f(L_0_param2, isOn , 0.0f, 0.0f, 1.0f);
+	glUniform4f(L_0_param1, type, innerAngle, outerAngle, 1.0f);
+	glUniform4f(L_0_param2, isOn, 0.0f, 0.0f, 1.0f);
 
 	glUniform4f(L_0_direction,
 		direction.x,

@@ -6,3 +6,5 @@
 #include "iGameItem.h"
 
 iGameItem* createGameItem(std::string type, nlohmann::json info);
+
+void resetFactory(std::string);

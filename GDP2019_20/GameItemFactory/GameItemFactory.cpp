@@ -152,6 +152,13 @@ iGameItem* createGameItem(std::string type, json info) {
 			gameObj->isVisible = true;
 		}
 
+		if (info.find("isLit") != info.end()) {
+			gameObj->isLit = info["isLit"].get<bool>();
+		}
+		else {
+			gameObj->isLit = true;
+		}
+
 		if (info.find("front") != info.end()) {
 			float x = info["front"][0].get<float>();
 			float y = info["front"][1].get<float>();
@@ -345,4 +352,8 @@ iGameItem* createGameItem(std::string type, json info) {
 		printf("Unrecognized GameItem %s\n", type.c_str());
 		return NULL;
 	}
+}
+
+void resetFactory(std::string type) {
+	if (type == "Light") { cLight::resetIds(); }
 }

@@ -185,6 +185,7 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 		printf("No Lights found!!\n");
 	}
 	else {
+		resetFactory("Light");
 		for (json::iterator jLight = jLights->begin();
 			jLight != jLights->end(); jLight++) {
 
@@ -194,7 +195,7 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 		}
 	}
 
-	// create Lights
+	// create Sounds
 	json::iterator jAudios = jFile.find("Sounds");
 	if (jAudios == jFile.end()) {
 		printf("No Sounds found!!\n");

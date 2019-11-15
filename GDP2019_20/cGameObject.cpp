@@ -29,6 +29,7 @@ cGameObject::cGameObject()
 	this->m_pDebugRenderer = NULL;
 
 	alpha = 1.0f;
+	isLit = true;
 
 	return;
 }
@@ -92,78 +93,100 @@ glm::mat4 cGameObject::calculateTransformationMatrix() {
 
 void cGameObject::draw() 
 {
-	GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
+	if (isVisible) {
+		GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 
-	sModelDrawInfo drawInfo;
-	if (::theVAOManager->FindDrawInfoByModelName(meshName, drawInfo))
-	{
-		glm::mat4 m = calculateTransformationMatrix();
-
-		GLint matModel_UL = glGetUniformLocation(programID, "matModel");
-		glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
-
-		// Calcualte the inverse transpose of the model matrix and pass that...
-		// Stripping away scaling and translation, leaving only rotation
-		// Because the normal is only a direction, really
-		GLint matModelIT_UL = glGetUniformLocation(programID, "matModelInverseTranspose");
-		glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(m));
-		glUniformMatrix4fv(matModelIT_UL, 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
-
-		GLint diffuseColour_UL = glGetUniformLocation(programID, "diffuseColour");
-		glUniform4f(diffuseColour_UL,
-			diffuseColor.r,
-			diffuseColor.g,
-			diffuseColor.b,
-			alpha);
-
-		GLint specularColour_UL = glGetUniformLocation(programID, "specularColour");
-		glUniform4f(specularColour_UL,
-			specularColor.r,
-			specularColor.g,
-			specularColor.b,
-			specularColor.a);	// Specular "power" (how shinny the object is)
-								// 1.0 to really big (10000.0f)
-
-		glUniform1f(glGetUniformLocation(programID, "hasTextures"),
-			(float)!textures.empty());
-		if (!textures.empty()) 
+		sModelDrawInfo drawInfo;
+		if (::theVAOManager->FindDrawInfoByModelName(meshName, drawInfo))
 		{
-			glm::vec4 textureWeights = glm::vec4(0.0f);
-			for (int t = 0; t < textures.size(); t++)
+			glm::mat4 m = calculateTransformationMatrix();
+
+			GLint matModel_UL = glGetUniformLocation(programID, "matModel");
+			glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
+
+			// Calcualte the inverse transpose of the model matrix and pass that...
+			// Stripping away scaling and translation, leaving only rotation
+			// Because the normal is only a direction, really
+			GLint matModelIT_UL = glGetUniformLocation(programID, "matModelInverseTranspose");
+			glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(m));
+			glUniformMatrix4fv(matModelIT_UL, 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
+
+			GLint diffuseColour_UL = glGetUniformLocation(programID, "diffuseColour");
+			glUniform4f(diffuseColour_UL,
+				diffuseColor.r,
+				diffuseColor.g,
+				diffuseColor.b,
+				alpha);
+
+			GLint specularColour_UL = glGetUniformLocation(programID, "specularColour");
+			glUniform4f(specularColour_UL,
+				specularColor.r,
+				specularColor.g,
+				specularColor.b,
+				specularColor.a);	// Specular "power" (how shinny the object is)
+									// 1.0 to really big (10000.0f)
+
+			glUniform1f(glGetUniformLocation(programID, "bDoNotLight"),
+				(float)!isLit);
+
+			glUniform1f(glGetUniformLocation(programID, "hasTextures"),
+				(float)!textures.empty());
+			if (!textures.empty())
 			{
-				GLuint textureId_UL = ::g_pTextureManager->getTextureIDFromName(textures[t].textureName);
-				glActiveTexture(GL_TEXTURE0 + t);				
+				glm::vec4 textureWeights = glm::vec4(0.0f);
+				for (int t = 0; t < textures.size(); t++)
+				{
+					GLuint textureId_UL = ::g_pTextureManager->getTextureIDFromName(textures[t].textureName);
+					glActiveTexture(GL_TEXTURE0 + t);
+					glBindTexture(GL_TEXTURE_2D, textureId_UL);
+
+					// Tie the texture units to the samplers in the shader
+					GLint textSamp_UL = glGetUniformLocation(programID, ("textSamp0" + std::to_string(t)).c_str());
+					glUniform1i(textSamp_UL, t);
+
+					textureWeights[t] = textures[t].weight;
+				}
+
+				textureWeights = glm::normalize(textureWeights);
+				glUniform4f(glGetUniformLocation(programID, "tex_0_3_ratio"),
+					textureWeights[0],
+					textureWeights[1],
+					textureWeights[2],
+					textureWeights[3]);
+
+			}
+
+			// Super hack for doing holes in the ship
+			bool hasHoles = (friendlyName.find("cruiseship") != std::string::npos);
+
+			// This surely just needs to be done once
+			if (hasHoles) {
+				GLuint textureId_UL = ::g_pTextureManager->getTextureIDFromName("dots.bmp");
+				glActiveTexture(GL_TEXTURE10);
 				glBindTexture(GL_TEXTURE_2D, textureId_UL);
 
 				// Tie the texture units to the samplers in the shader
-				GLint textSamp_UL = glGetUniformLocation(programID, ("textSamp0" + std::to_string(t)).c_str());
-				glUniform1i(textSamp_UL, t);
-
-				textureWeights[t] = textures[t].weight;
+				GLint textSamp_UL = glGetUniformLocation(programID, "dotsSampler");
+				glUniform1i(textSamp_UL, 10);
 			}
 
-			textureWeights = glm::normalize(textureWeights);
-			glUniform4f(glGetUniformLocation(programID, "tex_0_3_ratio"),
-				textureWeights[0],		
-				textureWeights[1],
-				textureWeights[2],
-				textureWeights[3]);
+			GLint isHoled_UL = glGetUniformLocation(programID, "isHoled");
+			glUniform1i(isHoled_UL, hasHoles);
 
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
+			glEnable(GL_DEPTH_TEST);						// Turn ON depth test
+			glEnable(GL_DEPTH);								// Write to depth buffer
+			// transparency configs
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			glBindVertexArray(drawInfo.VAO_ID);
+			glDrawElements(GL_TRIANGLES,
+				drawInfo.numberOfIndices,
+				GL_UNSIGNED_INT,
+				0);
+			glBindVertexArray(0);
 		}
-
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
-		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
-		glEnable(GL_DEPTH);								// Write to depth buffer
-		// transparency configs
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		glBindVertexArray(drawInfo.VAO_ID);
-		glDrawElements(GL_TRIANGLES,
-			drawInfo.numberOfIndices,
-			GL_UNSIGNED_INT,
-			0);
-		glBindVertexArray(0);
 	}
 }
 
@@ -249,6 +272,7 @@ json cGameObject::toJSON() {
 	jObj["specularColor"][3] = specularColor.a;
 
 	jObj["isVisible"] = isVisible;
+	jObj["isLit"] = isLit;
 
 	jObj["front"][0] = front.x;
 	jObj["front"][1] = front.y;
