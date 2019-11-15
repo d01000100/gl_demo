@@ -41,6 +41,7 @@ std::string scene_filename = "assets/scene1.json";
 cVAOManager* theVAOManager = new cVAOManager();
 GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
+bool ::debugMode = false;
 
 // audio globals
 FMOD::System *::fmod_system = 0;

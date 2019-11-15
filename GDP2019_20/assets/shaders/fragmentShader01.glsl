@@ -10,6 +10,7 @@ uniform vec4 specularColour;
 
 // Used to draw debug (or unlit) objects
 uniform vec4 debugColour;
+uniform bool debugMode;
 uniform bool bDoNotLight;
 
 uniform vec4 eyeLocation;
@@ -68,6 +69,16 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	 
 void main()  
 {
+	// #1 To show the wireframe
+	if (debugMode) {
+		pixelColour.r = 1.0f;
+		pixelColour.g = 1.0f;
+		pixelColour.b = 1.0f;
+		pixelColour.a = 1.0f;
+		return;
+	}
+
+	// #2 Make transparencies according to dotsSampler
 	if (isHoled ) {
 		vec3 dotsColor = texture(dotsSampler, fUVx2.st).rgb;
 		if (dotsColor.r < 0.7f) {
@@ -75,6 +86,7 @@ void main()
 		}
 	}
 
+	// #3 For skyboxes
 	if ( bIsSkyBox )
 	{
 		// I sample the skybox using the normal from the surface
@@ -84,6 +96,7 @@ void main()
 		return;
 	}
 
+	// #4 Objects not affected by lights (lasers)
 	if ( bDoNotLight )
 	{
 		pixelColour.rgb = diffuseColour.rgb;
@@ -91,6 +104,7 @@ void main()
 		return;
 	}
 	
+	// #5 Objects with textures
 	if (hasTextures) {
 		vec3 tex0_RGB = texture( textSamp00, fUVx2.st ).rgb;
 		vec3 tex1_RGB = texture( textSamp01, fUVx2.st ).rgb;
@@ -104,9 +118,11 @@ void main()
 
 		pixelColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
 												fVertWorldLocation.xyz, specularColour );
-		} else {
-			pixelColour = calcualteLightContrib( diffuseColour.rgb, fNormal.xyz, 
-												fVertWorldLocation.xyz, specularColour );
+	}
+	// #6 Objects with plain colors 
+	else {
+		pixelColour = calcualteLightContrib( diffuseColour.rgb, fNormal.xyz, 
+											fVertWorldLocation.xyz, specularColour );
 	}
 	pixelColour.a = diffuseColour.a;
 	

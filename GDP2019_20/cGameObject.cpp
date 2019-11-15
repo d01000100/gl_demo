@@ -186,6 +186,25 @@ void cGameObject::draw()
 				GL_UNSIGNED_INT,
 				0);
 			glBindVertexArray(0);
+
+			// debug Mode
+			glUniform1i(glGetUniformLocation(programID, "debugMode"), ::debugMode);
+
+			if (::debugMode) {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		// SOLID
+				glEnable(GL_DEPTH_TEST);						// Turn ON depth test
+				glEnable(GL_DEPTH);								// Write to depth buffer
+				// transparency configs
+				glDisable(GL_BLEND);
+
+				glBindVertexArray(drawInfo.VAO_ID);
+				glDrawElements(GL_TRIANGLES,
+					drawInfo.numberOfIndices,
+					GL_UNSIGNED_INT,
+					0);
+				glBindVertexArray(0);
+			}
+			glUniform1i(glGetUniformLocation(programID, "debugMode"), false);
 		}
 	}
 }

@@ -38,7 +38,7 @@
 - *Explosiones pegadas (transparencias multiples)
 - *Mezclar fuego y humo (solo en la nave)
 - *Agujerear la nave con una textura
-- Agregar debbugging
+- *Agregar debbugging
   - SceneEditor. Agregar rotacion de luces?? 
 - 4 shaders
   1. Textura

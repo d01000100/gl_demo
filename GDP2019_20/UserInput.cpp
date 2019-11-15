@@ -88,17 +88,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			theScene->storeCurrentCamera();
 		}
 
-		if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
-			theScene->changeCamera();
-		}
-		if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-			theScene->setCamera("skull cam");
-		}
-		if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-			theScene->setCamera("cave cam");
-		}
-		if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-			theScene->setCamera("all scene");
+		//if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
+		//	theScene->changeCamera();
+		//}
+		//if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+		//	theScene->setCamera("skull cam");
+		//}
+		//if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+		//	theScene->setCamera("cave cam");
+		//}
+		//if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+		//	theScene->setCamera("all scene");
+		//}
+		if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
+			::debugMode = !::debugMode;
 		}
 
 		// to sceneEditor

@@ -15,6 +15,7 @@ extern FMOD::System* fmod_system;
 extern GLFWwindow* window;
 
 extern cBasicTextureManager* g_pTextureManager;
+extern bool debugMode;
 
 FMOD_VECTOR glm_2_fmod_vec(glm::vec3 v);
 glm::vec3 fmod_vec_2_glm(FMOD_VECTOR);

@@ -770,7 +770,7 @@
             ],
             "textures": [
                 {
-                    "textureName": "cross-metal.bmp",
+                    "textureName": "grey-metal.bmp",
                     "weight": 1.0
                 }
             ]
@@ -811,7 +811,11 @@
             "textures": [
                 {
                     "textureName": "low-poly-ship.bmp",
-                    "weight": 1.0
+                    "weight": 2.0
+                },
+                {
+                    "textureName": "shiny-metal.bmp",
+                    "weight": 0.5
                 }
             ]
         },
@@ -1285,7 +1289,7 @@
             "textures": [
                 {
                     "textureName": "gold-metal.bmp",
-                    "weight": 1.0
+                    "weight": 2.0
                 }
             ]
         },
