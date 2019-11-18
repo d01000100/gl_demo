@@ -48,6 +48,7 @@ public:
 	cMesh* mesh;
 	std::string friendlyName;
 	std::vector<sTextureSpec> textures;
+	std::vector<glm::vec3> collision_points;
 
 	glm::vec3  position;
 	glm::vec3  rotationXYZ;

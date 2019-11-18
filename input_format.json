@@ -56,6 +56,11 @@
               "textureName": "submarine.bmp",
               "weight": 1.0
           }
+      ],
+      // relative to the object position
+      "collision_points": [
+          [8, 0, 16],
+          [-8, 0, 16]
       ]
     }
   ],

@@ -7,7 +7,7 @@
                 255,255,255
             ],
             "direction": [
-                -1,-1,-1
+                -1,-1,1
             ],
             "innerAngle": 0.0,
             "isOn": true,
@@ -31,10 +31,6 @@
     ],
     "Meshes": [
         {
-            "filename": "assets/models/galactica_reduced.ply",
-            "name": "cruiseship_model"
-        },
-        {
             "filename": "assets/models/sphere.ply",
             "name": "sphere_model"
         },
@@ -46,15 +42,24 @@
     "Objects": [
         {
             "mesh": "drej_model",
-            "name": "player",
+            "name": "aaaaaplayer",
             "textures": [
                 {
                     "textureName": "drej.bmp"
                 }
             ],
             "collision_points": [
-                [8, 0, 16],
-                [-8, 0, 16]
+                [4.5, 0.5, 13],
+                [8, 4, 3],
+                [4, 7, 3],
+                [2, -1, -8],
+                [2.5, -2.8, -6.75],
+
+                [-4.5, 0.5, 13],
+                [-8, 4, 3],
+                [-4, 7, 3],
+                [-2, -1, -8],
+                [-2.5, -2.8, -6.75]
             ]
         }
     ],

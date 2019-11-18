@@ -10,6 +10,8 @@
 #include <glm/gtx/string_cast.hpp>
 #include <sstream>
 
+#include "colors.h"
+
 cGameObject::cGameObject()
 {
 	this->scale = 0.0f;
@@ -91,6 +93,19 @@ glm::mat4 cGameObject::calculateTransformationMatrix() {
 	return m;
 }
 
+void drawPoint(glm::vec3 point)
+{
+	::g_pDebugRenderer->addLine(
+		point - glm::vec3(2.0, 0.0, 0.0),
+		point + glm::vec3(2.0, 0.0, 0.0), Colors::orange, 0.001f);
+	::g_pDebugRenderer->addLine(
+		point - glm::vec3(0.0, 2.0, 0.0),
+		point + glm::vec3(0.0, 2.0, 0.0), Colors::orange, 0.001f);
+	::g_pDebugRenderer->addLine(
+		point - glm::vec3(0.0, 0.0, 2.0),
+		point + glm::vec3(0.0, 0.0, 2.0), Colors::orange, 0.001f);
+}
+
 void cGameObject::draw() 
 {
 	if (isVisible) {
@@ -157,7 +172,7 @@ void cGameObject::draw()
 			}
 
 			// Super hack for doing holes in the ship
-			bool hasHoles = (friendlyName.find("cruiseship") != std::string::npos);
+			bool hasHoles = false; //  (friendlyName.find("cruiseship") != std::string::npos);
 
 			// This surely just needs to be done once
 			if (hasHoles) {
@@ -186,6 +201,9 @@ void cGameObject::draw()
 				GL_UNSIGNED_INT,
 				0);
 			glBindVertexArray(0);
+
+			for (int p = 0; p < collision_points.size(); p++)
+				drawPoint(collision_points[p]);
 		}
 	}
 }
@@ -324,6 +342,16 @@ json cGameObject::toJSON() {
 			jvTextures[t]["weight"] = textures[t].weight;
 		}
 		jObj["textures"] = jvTextures;
+	}
+
+	if (!collision_points.empty()) {
+		json jvPoints;
+		for (int t = 0; t < collision_points.size(); t++) {
+			jvPoints[t][0] = collision_points[t].x;
+			jvPoints[t][1] = collision_points[t].y;
+			jvPoints[t][2] = collision_points[t].z;
+		}
+		jObj["collision_points"] = jvPoints;
 	}
 
 	return jObj;

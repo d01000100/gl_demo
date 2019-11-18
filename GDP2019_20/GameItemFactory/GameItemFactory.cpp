@@ -201,6 +201,15 @@ iGameItem* createGameItem(std::string type, json info) {
 			}
 		}
 
+		if (info.find("collision_points") != info.end()) {
+			for (json::iterator itPoints = info["collision_points"].begin();
+				itPoints != info["collision_points"].end(); itPoints++)
+			{
+				glm::vec3 point((*itPoints)[0], (*itPoints)[1], (*itPoints)[2]);
+				gameObj->collision_points.push_back(point);
+			}
+		}
+
 		return gameObj;
 	}
 	else if (type == "Light") {
