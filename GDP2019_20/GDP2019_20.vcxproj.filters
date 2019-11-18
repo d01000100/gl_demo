@@ -49,6 +49,9 @@
     <Filter Include="JSONLoader">
       <UniqueIdentifier>{de1de2e1-2827-47a9-add7-e081e05bb403}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BroadFaceCollision">
+      <UniqueIdentifier>{c98997a0-7f2b-48d1-bb63-e42e9e561698}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -157,6 +160,15 @@
       <Filter>JSONLoader</Filter>
     </ClCompile>
     <ClCompile Include="SkyBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cAABB.cpp">
+      <Filter>BroadFaceCollision</Filter>
+    </ClCompile>
+    <ClCompile Include="AABBGrid.cpp">
+      <Filter>BroadFaceCollision</Filter>
+    </ClCompile>
+    <ClCompile Include="colors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -273,6 +285,15 @@
       <Filter>JSONLoader</Filter>
     </ClInclude>
     <ClInclude Include="SkyBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cAABB.h">
+      <Filter>BroadFaceCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="AABBGrid.h">
+      <Filter>BroadFaceCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="colors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

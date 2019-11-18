@@ -101,6 +101,32 @@ bool cModelLoader::LoadPlyModel(
 
 		// Add this triangle
 		theMesh.vecTriangles.push_back(tempTriangle);
+
+		sNiceTriangle* niceTri = new sNiceTriangle();
+		sPlyVertex plyA, plyB, plyC;
+		plyA = theMesh.vecVertices[tempTriangle.vert_index_1];
+		plyB = theMesh.vecVertices[tempTriangle.vert_index_2];
+		plyC = theMesh.vecVertices[tempTriangle.vert_index_3];
+
+		niceTri->a.x = plyA.x;
+		niceTri->a.y = plyA.y;
+		niceTri->a.z = plyA.z;
+			   
+		niceTri->b.x = plyB.x;
+		niceTri->b.y = plyB.y;
+		niceTri->b.z = plyB.z;
+			   
+		niceTri->c.x = plyC.x;
+		niceTri->c.y = plyC.y;
+		niceTri->c.z = plyC.z;
+
+		niceTri->normal = glm::vec3(plyA.nx, plyA.ny, plyA.nz) +
+			glm::vec3(plyB.nx, plyB.ny, plyB.nz) +
+			glm::vec3(plyC.nx, plyC.ny, plyC.nz);
+		niceTri->normal /= 3.0f;
+		niceTri->normal = glm::normalize(niceTri->normal);
+
+		theMesh.niceTriangles.push_back(niceTri);
 	}
 
 

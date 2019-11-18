@@ -155,9 +155,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABBGrid.cpp" />
     <ClCompile Include="audio_item.cpp" />
     <ClCompile Include="audio_listener.cpp" />
     <ClCompile Include="C24BitBMPpixel.cpp" />
+    <ClCompile Include="cAABB.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="cBasicTextureManager.cpp" />
     <ClCompile Include="cGameAudio.cpp" />
@@ -166,6 +168,7 @@
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
+    <ClCompile Include="colors.cpp" />
     <ClCompile Include="cPhysics.cpp" />
     <ClCompile Include="cPhysics_Ericson.cpp" />
     <ClCompile Include="cShader.cpp" />
@@ -193,9 +196,11 @@
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABBGrid.h" />
     <ClInclude Include="audio_item.h" />
     <ClInclude Include="audio_listener.h" />
     <ClInclude Include="C24BitBMPpixel.h" />
+    <ClInclude Include="cAABB.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraSettings.h" />
     <ClInclude Include="cBasicTextureManager.h" />
@@ -206,6 +211,7 @@
     <ClInclude Include="cLowPassFilter.h" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cModelLoader.h" />
+    <ClInclude Include="colors.h" />
     <ClInclude Include="cPhysics.h" />
     <ClInclude Include="cShaderManager.h" />
     <ClInclude Include="CTextureFromBMP.h" />

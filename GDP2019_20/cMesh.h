@@ -2,6 +2,7 @@
 #define _cMesh_HG_
 
 #include <vector>		// "smart array"
+#include <string>
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 
@@ -21,6 +22,11 @@ struct sPlyTriangle
 	unsigned int vert_index_3;
 };
 
+struct sNiceTriangle
+{
+	glm::vec3 a, b, c, normal;
+};
+
 class cMesh
 {
 public:
@@ -33,6 +39,7 @@ public:
 	// Store the triangles
 	std::vector<sPlyTriangle> vecTriangles;
 
+	std::vector<sNiceTriangle*> niceTriangles;
 };
 
 #endif 

@@ -18,7 +18,7 @@ bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
 
 const float CAMERAROTATIONSPEED = 0.05f; // glm::radians(0.1f);
-const float CAMERAZOOMSPEED = 2.0f;
+const float CAMERAZOOMSPEED = 10.0f;
 
 const float TRANSLATION_STEP = 0.5f;
 const float ROTATION_STEP = glm::radians(0.5f);
