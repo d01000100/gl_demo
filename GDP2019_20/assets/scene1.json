@@ -4,14 +4,10 @@
         {
             "cutOffDist": 50.0,
             "diffuseColor": [
-                240.0,
-                255.0,
-                189.0
+                255,255,255
             ],
             "direction": [
-                -0.48923203349113464,
-                0.21993404626846313,
-                -0.8439674377441406
+                -1,-1,-1
             ],
             "innerAngle": 0.0,
             "isOn": true,
@@ -30,137 +26,35 @@
                 1.0,
                 5000.0
             ],
-            "type": "point"
+            "type": "directional"
         }
     ],
     "Meshes": [
         {
-            "filename": "assets/models/bunny.ply",
-            "name": "bunny_model"
-        },
-        {
-            "filename": "assets/models/submarine.ply",
-            "name": "submarine_model"
-        },
-        {
-            "filename": "assets/models/teapot.ply",
-            "name": "teapot_model"
+            "filename": "assets/models/galactica_reduced.ply",
+            "name": "cruiseship_model"
         },
         {
             "filename": "assets/models/sphere.ply",
             "name": "sphere_model"
+        },
+        {
+            "filename": "assets/models/drej-stinger-complex.ply",
+            "name": "drej_model"
         }
     ],
     "Objects": [
         {
-            "alpha": 0.20000000298023224,
-            "diffuseColor": [
-                255.0,
-                10.0,
-                10.0
-            ],
-            "front": [
-                1.0,
-                0.0,
-                0.0
-            ],
-            "isVisible": true,
-            "mesh": "bunny_model",
-            "name": "bunny_model_1001",
-            "position": [
-                43.0,
-                -87.0,
-                26.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 0.2622041404247284,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                5000.0
-            ],
+            "mesh": "drej_model",
+            "name": "player",
             "textures": [
                 {
-                    "textureName": "submarine.bmp",
-                    "weight": 1.0
+                    "textureName": "drej.bmp"
                 }
-            ]
-        },
-        {
-            "alpha": 0.20000000298023224,
-            "diffuseColor": [
-                255.0,
-                10.0,
-                10.0
             ],
-            "front": [
-                1.0,
-                0.0,
-                0.0
-            ],
-            "isVisible": true,
-            "mesh": "bunny_model",
-            "name": "bunny_model_1002",
-            "position": [
-                34.0,
-                126.0,
-                26.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 0.2773895561695099,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                5000.0
-            ],
-            "textures": [
-                {
-                    "textureName": "grass.bmp",
-                    "weight": 1.0
-                }
-            ]
-        },
-        {
-            "alpha": 0.699999988079071,
-            "diffuseColor": [
-                204.0,
-                204.0,
-                204.0
-            ],
-            "front": [
-                1.0,
-                0.0,
-                0.0
-            ],
-            "isVisible": true,
-            "mesh": "teapot_model",
-            "name": "teapot_model_1000",
-            "position": [
-                -69.0,
-                0.0,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                81.3599624633789
-            ],
-            "scale": 1.1691768169403076,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                5000.0
+            "collision_points": [
+                [8, 0, 16],
+                [-8, 0, 16]
             ]
         }
     ],
@@ -168,6 +62,7 @@
     "Textures": [
         "grass.bmp",
         "pizza.bmp",
-        "submarine.bmp"
+        "submarine.bmp",
+        "drej.bmp"
     ]
 }
