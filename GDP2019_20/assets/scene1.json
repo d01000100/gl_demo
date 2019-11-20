@@ -31,6 +31,10 @@
     ],
     "Meshes": [
         {
+            "filename": "assets/models/galactica_reduced.ply",
+            "name": "galactica_model"
+        },
+        {
             "filename": "assets/models/sphere.ply",
             "name": "sphere_model"
         },
@@ -41,8 +45,11 @@
     ],
     "Objects": [
         {
+            "mesh": "galactica_model"
+        },
+        {
             "mesh": "drej_model",
-            "name": "aaaaaplayer",
+            "name": "player",
             "textures": [
                 {
                     "textureName": "drej.bmp"
@@ -60,7 +67,10 @@
                 [-4, 7, 3],
                 [-2, -1, -8],
                 [-2.5, -2.8, -6.75]
-            ]
+            ],
+            "Physics": {
+                "gravity": false
+            }
         }
     ],
     "Sounds": null,
