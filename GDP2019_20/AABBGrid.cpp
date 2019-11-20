@@ -94,7 +94,7 @@ std::vector<sNiceTriangle> sliceTriangle(sNiceTriangle triangle)
 	return res;
 }
 
-void getTriangleHashes(std::vector<unsigned long long>* res, sNiceTriangle triangle)
+void getTriangleHashes(std::set<unsigned long long>* res, sNiceTriangle triangle)
 {
 	float AABBlength = 110; // TODO: hardcoded
 	if (glm::distance(triangle.a, triangle.b) > AABBlength ||
@@ -109,15 +109,15 @@ void getTriangleHashes(std::vector<unsigned long long>* res, sNiceTriangle trian
 	}
 	else
 	{
-		res->push_back(AABBHash(triangle.a));
-		res->push_back(AABBHash(triangle.b));
-		res->push_back(AABBHash(triangle.c));
+		res->insert(AABBHash(triangle.a));
+		res->insert(AABBHash(triangle.b));
+		res->insert(AABBHash(triangle.c));
 		return;
 	}
 }
 
-std::vector<unsigned long long> getTriangleHashes(sNiceTriangle* triangle) {
-	std::vector<unsigned long long> res;
+std::set<unsigned long long> getTriangleHashes(sNiceTriangle* triangle) {
+	std::set<unsigned long long> res;
 	getTriangleHashes(&res, *triangle);
 	return res;
 }
@@ -128,13 +128,13 @@ void AABBGrid::filterTriangles(cMesh* mesh)
 	for (int t = 0; t < mesh->niceTriangles.size(); t++)
 	{
 		sNiceTriangle* triangle = mesh->niceTriangles[t];
-		std::vector<unsigned long long> tHashes = getTriangleHashes(triangle);
-		for(int h = 0; h < tHashes.size(); h++) 
+		std::set<unsigned long long> tHashes = getTriangleHashes(triangle);
+		for(std::set<unsigned long long>::iterator h = tHashes.begin();
+			h != tHashes.end(); h++)
 		{
-			unsigned long long hash = tHashes[h];
-			if (this->grid.find(hash) != this->grid.end())
+			if (this->grid.find(*h) != this->grid.end())
 			{
-				grid[hash]->triangles.push_back(triangle);
+				grid[*h]->triangles.insert(triangle);
 			}
 		}
 		
@@ -160,5 +160,15 @@ void AABBGrid::filterTriangles(cMesh* mesh)
 		{
 			this->grid[hashC]->triangles.push_back(triangle);
 		}*/
+	}
+
+	for (std::map<unsigned long long, cAABB*>::iterator itGrid = grid.begin();
+		itGrid != grid.end(); itGrid++)
+	{
+		if (itGrid->second->triangles.empty())
+		{
+			delete itGrid->second;
+			grid.erase(itGrid->first);
+		}
 	}
 }

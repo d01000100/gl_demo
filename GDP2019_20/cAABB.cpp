@@ -62,6 +62,9 @@ void cAABB::Draw()
 	::g_pDebugRenderer->addLine(maxXmins, minYmaxs, Colors::white, 0.01f);
 	::g_pDebugRenderer->addLine(maxXmins, minZmaxs, Colors::white, 0.01f);
 
-	for (int t = 0; t < triangles.size(); t++)
-		drawTriangle(triangles[t]);
+	for (std::set<sNiceTriangle*>::iterator t = triangles.begin();
+		t != triangles.end(); t++) {
+
+		//drawTriangle(*t);
+	}
 }

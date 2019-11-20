@@ -1,11 +1,11 @@
 #pragma once
 #include <map>
-#include <vector>
+#include <set>
 
 #include "cAABB.h"
 #include "cMesh.h"
 
-std::vector<unsigned long long> getTriangleHashes(sNiceTriangle* triangle);
+std::set<unsigned long long> getTriangleHashes(sNiceTriangle* triangle);
 
 class AABBGrid
 {
