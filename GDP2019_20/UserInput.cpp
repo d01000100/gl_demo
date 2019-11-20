@@ -78,9 +78,46 @@ void camera_orbit(int key, int action, int mods) {
 	}
 }
 
+void thrusterControls(int key, int action, int mods)
+{
+	iGameItem* player = theScene->findItem("player");
+	if (player && !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods)) {
+		sMessage messageToObject; messageToObject.name = "apply velocity";
+		float playerAccel = 1.0f;
+		switch (key)
+		{
+		case GLFW_KEY_W:
+			messageToObject.v3Value = glm::vec3(0, playerAccel, 0);
+			player->recieveMessage(messageToObject);
+			break;
+		case GLFW_KEY_S:
+			messageToObject.v3Value = glm::vec3(0, -playerAccel, 0);
+			player->recieveMessage(messageToObject);
+			break;
+		case GLFW_KEY_A:
+			messageToObject.v3Value = glm::vec3(playerAccel, 0, 0);
+			player->recieveMessage(messageToObject);
+			break;
+		case GLFW_KEY_D:
+			messageToObject.v3Value = glm::vec3(-playerAccel, 0, 0);
+			player->recieveMessage(messageToObject);
+			break;
+		case GLFW_KEY_Q:
+			messageToObject.v3Value = glm::vec3(0, 0, -playerAccel);
+			player->recieveMessage(messageToObject);
+			break;
+		case GLFW_KEY_E:
+			messageToObject.v3Value = glm::vec3(0, 0, playerAccel);
+			player->recieveMessage(messageToObject);
+			break;
+		}
+	}
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	camera_orbit(key, action, mods);
+	//camera_orbit(key, action, mods);
+	thrusterControls(key, action, mods);
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{		
 		// save camera

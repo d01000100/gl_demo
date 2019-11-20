@@ -248,6 +248,12 @@ void cGameObject::recieveMessage(sMessage message) {
 	else if (message.name == "integration step") {
 		IntegrationStep(message.fValue);
 	}
+	else if (message.name == "apply velocity") {
+		if (physics) {
+			if (physics->velocity.length() < 5)
+				physics->velocity += message.v3Value;
+		}
+	}
 }
 
 std::string cGameObject::getType() { return "Object"; }
