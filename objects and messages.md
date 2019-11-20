@@ -14,3 +14,11 @@
 - "speed"
 - "pause"
 - "dsp": recieves an integer (1-3) choosing which effect to toggle ?? or string ??
+
+## Objects
+
+- "apply velocity"
+- "integration step"
+- "translate"
+- "rotate"
+- "scale"

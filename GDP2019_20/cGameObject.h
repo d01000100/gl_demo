@@ -72,6 +72,7 @@ public:
 	void setDebugRenderer(iDebugRenderer* pDebugRenderer);
 
 	glm::mat4 calculateTransformationMatrix();
+	std::vector<glm::vec3> getTransformedCollisionPoints();
 
 	void draw();
 	std::string getName();

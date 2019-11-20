@@ -120,11 +120,12 @@ bool cModelLoader::LoadPlyModel(
 		niceTri->c.y = plyC.y;
 		niceTri->c.z = plyC.z;
 
-		niceTri->normal = glm::vec3(plyA.nx, plyA.ny, plyA.nz) +
+		// Normal are commented because I won't need them yet
+		/*niceTri->normal = glm::vec3(plyA.nx, plyA.ny, plyA.nz) +
 			glm::vec3(plyB.nx, plyB.ny, plyB.nz) +
 			glm::vec3(plyC.nx, plyC.ny, plyC.nz);
 		niceTri->normal /= 3.0f;
-		niceTri->normal = glm::normalize(niceTri->normal);
+		niceTri->normal = glm::normalize(niceTri->normal);*/
 
 		theMesh.niceTriangles.push_back(niceTri);
 	}

@@ -56,14 +56,14 @@
 - *Busqueda de AABB segun una posicion
 - Meter triangulos
   - Subdividir triángulos
-## Puntos de colision
-- Los GameObjects pueden tener subobjetos
-- Mover game object mueve los objetos
-- ? Escalar game object mueve los objetos
-- ? Rotar game object mueve los objetos
-## Mover nave
-- Poner cámara detrás de nave y que la siga (estáticamente)
-- Mover nave con fuerzas.
+## *Puntos de colision
+- *Los GameObjects pueden tener subobjetos
+- *Mover game object mueve los objetos
+- ? *Escalar game object mueve los objetos
+- ? *Rotar game object mueve los objetos
+## *Mover nave
+- *Poner cámara detrás de nave y que la siga (estáticamente)
+- *Mover nave con fuerzas.
 ## Colisionar nave
 - Obtener AABB que contiene a la nave
 - Detectar colisiones en cada uno de los objetos de colisión de la nave

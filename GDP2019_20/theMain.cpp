@@ -27,6 +27,8 @@
 #include "JSON_IO.h"
 #include "cLight.h"
 #include "SkyBox.h"
+#include "AABBGrid.h"
+#include "colors.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -41,6 +43,8 @@ std::string scene_filename = "assets/scene1.json";
 cVAOManager* theVAOManager = new cVAOManager();
 GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
+cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
+AABBGrid* pAABBgrid = new AABBGrid();
 
 // audio globals
 FMOD::System *::fmod_system = 0;
@@ -58,13 +62,27 @@ bool init_fmod() {
 
 int main(void)
 {
+	//AABBHash(glm::vec3(-4580.1546, -0.1579, 126.12));
+	//std::vector<int> v1, v2;
+	//v1.push_back(1); v1.push_back(4); v1.push_back(5);
+	//v2.push_back(4); v2.push_back(5);
+	//stdVecConc(&v1, &v2);
+	//for (int i = 0; i < v1.size(); i++)
+	//	printf("%d, ", v1[i]);
+	//sNiceTriangle* tri = new sNiceTriangle();
+	//tri->a = glm::vec3(0);
+	//tri->b = glm::vec3(0,0,500);
+	//tri->c = glm::vec3(500);
+	//std::vector<unsigned long long> hashes = getTriangleHashes(tri);
+	//return 0;
+
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = Camera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	init_fmod();
 	theCamera->init();
 	SkyBox theSkyBox;
-
+	glm::vec3 cameraOffset(0,30,-50);
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -89,6 +107,7 @@ int main(void)
 
 	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 	pDebugRenderer->initialize();
+	::g_pDebugRenderer->initialize();
 
 	cShaderManager::cShader vertexShad;
 	vertexShad.fileName = "assets/shaders/vertexShader01.glsl";
@@ -132,8 +151,6 @@ int main(void)
 	double lastTime = glfwGetTime();
 	double flickerTimer = 0;
 
-	theCamera->setTarget(glm::vec3(0.0f));
-
 	while (!glfwWindowShouldClose(window))
 	{
 		// Get the initial time
@@ -164,14 +181,14 @@ int main(void)
 		p = glm::perspective(0.6f,		// FOV
 							 ratio,			// Aspect ratio
 							 0.1f,			// Near clipping plane
-							 1000.0f);		// Far clipping plane
+							 10000.0f);		// Far clipping plane
 
 		v = theCamera->lookAt();
 
 		glViewport(0, 0, width, height);
 
 		// Clear both the colour buffer (what we see) and the 
-		//  depth (or z) buffer.
+		//  depth (or z) buffer. 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -181,20 +198,28 @@ int main(void)
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
-		theSkyBox.draw();
-
-		theScene->drawScene();
-
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		//theScene->IntegrationStep(averageDeltaTime);
+		theScene->IntegrationStep(averageDeltaTime);
 		//pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
 		//pPhysics->TestForCollisions(theScene->getGameObjects());
+
+		iGameItem* player = theScene->findItem("player");
+		if (player) {
+			theCamera->setTarget(player->getPos());
+			theCamera->setPosition(player->getPos() + cameraOffset);
+		}
 		
+		//theSkyBox.draw();
+		//pAABBgrid->Draw();
+		//pAABBgrid->Draw(theScene->findItem("player")->getPos());
+
+		theScene->drawScene();
 		sceneEditor->drawDebug();
 		if (sceneEditor->getDebugRenderer()) {
 			sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
 		}
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
+		::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 

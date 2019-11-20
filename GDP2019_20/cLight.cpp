@@ -82,7 +82,7 @@ void cLight::recieveMessage(sMessage message){
 	float rotationStep = 0.02;
 	float scaleStep = 0.001f;
 
-	printf("Light recieving message %s with %f\n", message.name.c_str(), message.fValue);
+	//printf("Light recieving message %s with %f\n", message.name.c_str(), message.fValue);
 
 	if (message.name == "translate") {
 		pos += glm::normalize(message.v3Value) * translationStep;

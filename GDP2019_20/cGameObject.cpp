@@ -93,6 +93,19 @@ glm::mat4 cGameObject::calculateTransformationMatrix() {
 	return m;
 }
 
+std::vector<glm::vec3> cGameObject::getTransformedCollisionPoints()
+{
+	glm::mat4 transMat = calculateTransformationMatrix();
+	std::vector<glm::vec3> res(collision_points);
+	for (int p = 0; p < res.size(); p++)
+	{
+		glm::vec4 temp(res[p], 1);
+		temp = transMat * temp;
+		res[p] = temp;
+	}
+	return res;
+}
+
 void drawPoint(glm::vec3 point)
 {
 	::g_pDebugRenderer->addLine(
@@ -112,9 +125,9 @@ void cGameObject::draw()
 		GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 
 		sModelDrawInfo drawInfo;
+		glm::mat4 m = calculateTransformationMatrix();
 		if (::theVAOManager->FindDrawInfoByModelName(meshName, drawInfo))
 		{
-			glm::mat4 m = calculateTransformationMatrix();
 
 			GLint matModel_UL = glGetUniformLocation(programID, "matModel");
 			glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
@@ -202,8 +215,12 @@ void cGameObject::draw()
 				0);
 			glBindVertexArray(0);
 
-			for (int p = 0; p < collision_points.size(); p++)
-				drawPoint(collision_points[p]);
+			std::vector<glm::vec3> points = getTransformedCollisionPoints();
+			for (int p = 0; p < points.size(); p++)
+			{
+				drawPoint(points[p]);
+			}
+
 		}
 	}
 }
