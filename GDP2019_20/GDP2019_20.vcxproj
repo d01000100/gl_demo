@@ -158,6 +158,7 @@
     <ClCompile Include="AABBGrid.cpp" />
     <ClCompile Include="audio_item.cpp" />
     <ClCompile Include="audio_listener.cpp" />
+    <ClCompile Include="BroadCollision.cpp" />
     <ClCompile Include="C24BitBMPpixel.cpp" />
     <ClCompile Include="cAABB.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="AABBGrid.h" />
     <ClInclude Include="audio_item.h" />
     <ClInclude Include="audio_listener.h" />
+    <ClInclude Include="BroadCollision.h" />
     <ClInclude Include="C24BitBMPpixel.h" />
     <ClInclude Include="cAABB.h" />
     <ClInclude Include="Camera.h" />

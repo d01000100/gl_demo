@@ -1085,9 +1085,17 @@ void cDebugRenderer::addPoint(glm::vec3 xyz, glm::vec3 colour, float lifeTime/*=
 	return;
 }
 
-void cDebugRenderer::addPoint(drPoint &point)
+void cDebugRenderer::addPoint(drPoint& point)
 {
-	this->m_vecPoints.push_back(point);
+	addLine(
+		point.xyz - glm::vec3(point.pointSize / 2, 0.0, 0.0),
+		point.xyz + glm::vec3(point.pointSize / 2, 0.0, 0.0), point.colour, point.lifeTime);
+	addLine(
+		point.xyz - glm::vec3(0.0, point.pointSize / 2, 0.0),
+		point.xyz + glm::vec3(0.0, point.pointSize / 2, 0.0), point.colour, point.lifeTime);
+	addLine(
+		point.xyz - glm::vec3(0.0, 0.0, point.pointSize / 2),
+		point.xyz + glm::vec3(0.0, 0.0, point.pointSize / 2), point.colour, point.lifeTime);
 	return;
 }
 

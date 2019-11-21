@@ -29,6 +29,7 @@
 #include "SkyBox.h"
 #include "AABBGrid.h"
 #include "colors.h"
+#include "BroadCollision.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -82,7 +83,7 @@ int main(void)
 	init_fmod();
 	theCamera->init();
 	SkyBox theSkyBox;
-	glm::vec3 cameraOffset(0,30,-50);
+	glm::vec3 cameraOffset(0, 30 ,-50);
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -127,14 +128,18 @@ int main(void)
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
+	cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
+	if (cruiseship) {
+		pAABBgrid->filterTriangles(cruiseship);
+	}
 
 	theSkyBox.init(
-		"city_rt.bmp",
-		"city_lf.bmp",
-		"city_up.bmp",
-		"city_dn.bmp",
-		"city_ft.bmp",
-		"city_bk.bmp",
+		"SpaceBox_right1_posX.bmp",
+		"SpaceBox_left2_negX.bmp",
+		"SpaceBox_top3_posY.bmp",
+		"SpaceBox_bottom4_negY.bmp",
+		"SpaceBox_front5_posZ.bmp",
+		"SpaceBox_back6_negZ.bmp",
 		"sphere_model");
 
 	sceneEditor->init(theScene);
@@ -200,18 +205,18 @@ int main(void)
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		theScene->IntegrationStep(averageDeltaTime);
-		//pPhysics->IntegrationStep(theScene->getGameObjects(), (float)averageDeltaTime);
-		//pPhysics->TestForCollisions(theScene->getGameObjects());
 
 		iGameItem* player = theScene->findItem("player");
 		if (player) {
 			theCamera->setTarget(player->getPos());
 			theCamera->setPosition(player->getPos() + cameraOffset);
+
+			BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player);
+			
 		}
 		
-		//theSkyBox.draw();
+		theSkyBox.draw();
 		//pAABBgrid->Draw();
-		//pAABBgrid->Draw(theScene->findItem("player")->getPos());
 
 		theScene->drawScene();
 		sceneEditor->drawDebug();

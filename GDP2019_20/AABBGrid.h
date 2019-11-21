@@ -17,5 +17,7 @@ public:
 	void filterTriangles(cMesh* mesh);
 	void Draw();
 	void Draw(glm::vec3);
+
+	cAABB* findAABB(glm::vec3);
 };
 

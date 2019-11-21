@@ -171,6 +171,9 @@
     <ClCompile Include="colors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BroadCollision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -294,6 +297,9 @@
       <Filter>BroadFaceCollision</Filter>
     </ClInclude>
     <ClInclude Include="colors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BroadCollision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

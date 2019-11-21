@@ -172,3 +172,14 @@ void AABBGrid::filterTriangles(cMesh* mesh)
 		}
 	}
 }
+
+cAABB* AABBGrid::findAABB(glm::vec3 pos)
+{
+	unsigned long long hash = AABBHash(pos);
+	if (grid.find(hash) != grid.end()) {
+		return grid[hash];
+	}
+	else {
+		return NULL;
+	}
+}

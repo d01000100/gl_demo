@@ -50,6 +50,7 @@
         {
             "mesh": "drej_model",
             "name": "player",
+            "position": [0, 200, 0],
             "textures": [
                 {
                     "textureName": "drej.bmp"

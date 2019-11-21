@@ -11,6 +11,28 @@
 
 #include "DebugRenderer/cDebugRenderer.h"
 
+struct sPhysicsSphere
+{
+	glm::vec3 c;
+	float r;
+};
+
+struct sPhysicsTriangle
+{
+	glm::vec3 verts[3];
+	glm::vec3 normal;
+};
+
+struct sCollisionInfo
+{
+	glm::vec3 closestPoint;
+	glm::vec3 directionOfApproach;
+	float penetrationDistance;
+	glm::vec3 adjustmentVector;
+	unsigned int Object1_ID;		// Shpere
+	unsigned int Object2_ID;		// Sphere or Triangle
+};
+
 class cPhysics
 {
 public:
@@ -20,28 +42,6 @@ public:
 	typedef glm::vec3 Point;
 	typedef glm::vec3 Vector;
 	cDebugRenderer* debugRenderer;
-
-	struct Sphere
-	{
-		glm::vec3 c;
-		float r;
-	};	
-
-	struct sPhysicsTriangle
-	{
-		glm::vec3 verts[3];
-		glm::vec3 normal;
-	};
-
-	struct sCollisionInfo
-	{
-		glm::vec3 closestPoint;
-		glm::vec3 directionOfApproach;
-		float penetrationDistance;
-		glm::vec3 adjustmentVector;
-		unsigned int Object1_ID;		// Shpere
-		unsigned int Object2_ID;		// Sphere or Triangle
-	};
 	
 	// This "moves" the objects based on the inegration step
 	void IntegrationStep( std::vector<cGameObject*> vec_pGameObjects,
@@ -59,7 +59,7 @@ public:
 
 	// Taken from Ericson's book:
 	Point ClosestPtPointTriangle(Point p, Point a, Point b, Point c);
-	int TestSphereTriangle(Sphere s, Point a, Point b, Point c, Point& p);
+	int TestSphereTriangle(sPhysicsSphere s, Point a, Point b, Point c, Point& p);
 
 	void setGravity( glm::vec3 newGravityValue );
 	glm::vec3 getGravity(void);

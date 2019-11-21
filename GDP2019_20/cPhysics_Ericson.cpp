@@ -56,7 +56,7 @@ cPhysics::Point cPhysics::ClosestPtPointTriangle(Point p, Point a, Point b, Poin
 
 
 
-int cPhysics::TestSphereTriangle(Sphere s, Point a, Point b, Point c, Point& p)
+int cPhysics::TestSphereTriangle(sPhysicsSphere s, Point a, Point b, Point c, Point& p)
 {
 	// Find point P on triangle ABC closest to sphere center
 	p = this->ClosestPtPointTriangle(s.c, a, b, c);
