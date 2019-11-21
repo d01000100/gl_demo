@@ -8,6 +8,7 @@
 #include "GFLW_callbacks.h"
 #include "globalStuff.h"			// for find object
 #include "Camera.h"
+#include "FollowCamera.h"
 #include "Scene.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
@@ -23,7 +24,7 @@ const float CAMERAZOOMSPEED = 10.0f;
 const float TRANSLATION_STEP = 0.5f;
 const float ROTATION_STEP = glm::radians(0.5f);
 
-Camera* theCamera = Camera::getTheCamera();
+Camera* theCamera = FollowCamera::getPhysicsCamera();
 Scene* theScene = Scene::getTheScene();
 SceneEditor* theEditor = SceneEditor::getTheEditor();
 
@@ -81,7 +82,7 @@ void camera_orbit(int key, int action, int mods) {
 void thrusterControls(int key, int action, int mods)
 {
 	iGameItem* player = theScene->findItem("player");
-	if (player && !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods)) {
+	if (player && isShiftKeyDownByAlone(mods)) {
 		sMessage messageToObject; messageToObject.name = "apply velocity";
 		float playerAccel = 1.0f;
 		switch (key)
@@ -110,13 +111,17 @@ void thrusterControls(int key, int action, int mods)
 			messageToObject.v3Value = glm::vec3(0, 0, playerAccel);
 			player->recieveMessage(messageToObject);
 			break;
+		case GLFW_KEY_SPACE:
+			messageToObject.name = "stop";
+			player->recieveMessage(messageToObject);
+			break;
 		}
 	}
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	//camera_orbit(key, action, mods);
+	camera_orbit(key, action, mods);
 	thrusterControls(key, action, mods);
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{		

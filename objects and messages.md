@@ -17,7 +17,8 @@
 
 ## Objects
 
-- "apply velocity"
+- "apply velocity
+- "stop" set vel to 0
 - "integration step"
 - "translate"
 - "rotate"

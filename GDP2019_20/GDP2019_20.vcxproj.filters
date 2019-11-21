@@ -52,6 +52,9 @@
     <Filter Include="BroadFaceCollision">
       <UniqueIdentifier>{c98997a0-7f2b-48d1-bb63-e42e9e561698}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Cameras">
+      <UniqueIdentifier>{4b4b13de-8d19-427f-b491-982abb6bd707}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -117,9 +120,6 @@
     <ClCompile Include="cLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SceneEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -172,7 +172,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BroadCollision.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>BroadFaceCollision</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowCamera.cpp">
+      <Filter>Cameras</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -233,9 +239,6 @@
     <ClInclude Include="cLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UserInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -264,9 +267,6 @@
       <Filter>AudioItems</Filter>
     </ClInclude>
     <ClInclude Include="cGameAudio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="util.h">
@@ -300,7 +300,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BroadCollision.h">
-      <Filter>Header Files</Filter>
+      <Filter>BroadFaceCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSettings.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowCamera.h">
+      <Filter>Cameras</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,7 @@
 #include "DebugRenderer/cDebugRenderer.h"
 #include "Scene.h"
 #include "Camera.h"
+#include "FollowCamera.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
 #include "cLight.h"
@@ -78,10 +79,9 @@ int main(void)
 	//return 0;
 
 	Scene* theScene = Scene::getTheScene();
-	Camera* theCamera = Camera::getTheCamera();
+	FollowCamera* theCamera = FollowCamera::getPhysicsCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	init_fmod();
-	theCamera->init();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
 
@@ -131,6 +131,11 @@ int main(void)
 	cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
 	if (cruiseship) {
 		pAABBgrid->filterTriangles(cruiseship);
+	}
+
+	iGameItem* player = theScene->findItem("player");
+	if (player) {
+		theCamera->init(player, glm::vec3(0, 30, -50));
 	}
 
 	theSkyBox.init(
@@ -205,14 +210,11 @@ int main(void)
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		theScene->IntegrationStep(averageDeltaTime);
+		theCamera->reposition();
 
 		iGameItem* player = theScene->findItem("player");
 		if (player) {
-			theCamera->setTarget(player->getPos());
-			theCamera->setPosition(player->getPos() + cameraOffset);
-
 			BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player);
-			
 		}
 		
 		theSkyBox.draw();

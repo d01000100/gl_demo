@@ -254,6 +254,11 @@ void cGameObject::recieveMessage(sMessage message) {
 				physics->velocity += message.v3Value;
 		}
 	}
+	else if (message.name == "stop") {
+		if (physics) {
+			physics->velocity = glm::vec3(0);
+		}
+	}
 }
 
 std::string cGameObject::getType() { return "Object"; }
