@@ -163,12 +163,17 @@ void AABBGrid::filterTriangles(cMesh* mesh)
 	}
 
 	for (std::map<unsigned long long, cAABB*>::iterator itGrid = grid.begin();
-		itGrid != grid.end(); itGrid++)
+		itGrid != grid.end();)
 	{
 		if (itGrid->second->triangles.empty())
 		{
-			delete itGrid->second;
-			grid.erase(itGrid->first);
+			std::map<unsigned long long, cAABB*>::iterator toDelete = itGrid;
+			itGrid++;
+			delete toDelete->second;
+			grid.erase(toDelete->first);
+		}
+		else {
+			itGrid++;
 		}
 	}
 }
