@@ -223,10 +223,12 @@ void cGameObject::draw()
 				0);
 			glBindVertexArray(0);
 
-			std::vector<glm::vec3> points = getTransformedCollisionPoints();
-			for (int p = 0; p < points.size(); p++)
-			{
-				drawPoint(points[p]);
+			if (::isDebug) {
+				std::vector<glm::vec3> points = getTransformedCollisionPoints();
+				for (int p = 0; p < points.size(); p++)
+				{
+					drawPoint(points[p]);
+				}
 			}
 
 		}
@@ -290,9 +292,10 @@ void cGameObject::IntegrationStep(float deltaTime) {
 	if (physics)
 	{
 		if (physics->gravity) {
-			physics->acceleration += glm::vec3(0.0f, -1.0f, 0.0f);
+			physics->acceleration += glm::vec3(0.0f, -1.0f, 0.0f) * deltaTime;
 		}
 
+		printf("deltaTime: %f\n", deltaTime);
 		// Forward Explicit Euler Inetegration
 		//NewVelocty += Velocity + ( Ax * DeltaTime )
 		physics->velocity += physics->acceleration * deltaTime;

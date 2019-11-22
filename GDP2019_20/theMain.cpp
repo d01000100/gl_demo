@@ -47,6 +47,7 @@ GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 AABBGrid* pAABBgrid = new AABBGrid();
+bool ::isDebug = false;
 
 // audio globals
 FMOD::System *::fmod_system = 0;
@@ -228,8 +229,10 @@ int main(void)
 		if (sceneEditor->getDebugRenderer()) {
 			sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
 		}
-		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
-		::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
+		if (::isDebug) {
+			::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
+			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
+		}
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 

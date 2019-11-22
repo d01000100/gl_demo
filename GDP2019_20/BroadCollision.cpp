@@ -3,8 +3,10 @@
 #include "colors.h"
 #include "Scene.h"
 
+#include <glm/gtx/projection.hpp>
+
 cPhysics BroadCollision::physicsStuff;
-float BroadCollision::collisionPointSize = 0.1f;
+float BroadCollision::collisionPointSize = 1.0f;
 
 std::vector<sCollisionInfo> BroadCollision::detectCollisions(AABBGrid* grid, cGameObject* mobile)
 {
@@ -62,7 +64,7 @@ std::vector<sCollisionInfo> BroadCollision::detectCollisions(AABBGrid* grid, cGa
 
 					glm::vec3 velocity = glm::normalize(mobile->physics->velocity);
 					float speed = glm::length(mobile->physics->velocity);
-					collisionInfo.reflection = speed * glm::reflect(velocity, glm::normalize((*itT)->normal));
+					collisionInfo.normal = (*itT)->normal;
 
 					res.push_back(collisionInfo);
 				}
@@ -75,17 +77,19 @@ std::vector<sCollisionInfo> BroadCollision::detectCollisions(AABBGrid* grid, cGa
 
 void BroadCollision::collisionsReact(std::vector<sCollisionInfo> collisions, cGameObject* mobile)
 {
-	if (!collisions.empty()) {
+	if (!collisions.empty()) 
+	{
 		glm::vec3 reflection(0);
 		for (int c = 0; c < collisions.size(); c++)
 		{
 			mobile->position += collisions[c].adjustmentVector;
-			reflection += collisions[c].reflection;
+			//mobile->physics->velocity = glm::proj(mobile->physics->velocity, collisions[c].normal);
 		}
-		reflection /= collisions.size();
+
+		//reflection /= collisions.size();
 		//sMessage toObject; toObject.name = "stop";
 		//mobile->recieveMessage(toObject);
-		mobile->physics->velocity = reflection;
+		//mobile->physics->velocity = reflection;
 	}
 	return;
 }
