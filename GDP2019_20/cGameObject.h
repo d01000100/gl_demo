@@ -53,7 +53,7 @@ public:
 	glm::vec3  position;
 	glm::vec3  rotationXYZ;
 	glm::vec3 front;
-	float scale, alpha;
+	float scale, alpha, lifeTime;
 
 	glm::mat4 matWorld;
 

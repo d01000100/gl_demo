@@ -176,9 +176,27 @@ void Scene::saveScene(std::string filename) {
 
 void Scene::IntegrationStep(float deltaTime) {
 	for (std::map<std::string, iGameItem*>::iterator itItem = gameItems.begin();
-		itItem != gameItems.end(); itItem++) {
+		itItem != gameItems.end();) {
 		sMessage m; m.name = "integration step"; m.fValue = deltaTime;
-		itItem->second->recieveMessage(m);
+		iGameItem* currentItem = itItem->second;
+		currentItem->recieveMessage(m);
+
+		if (currentItem->getType() == "Object")
+		{
+			cGameObject* currentObject = (cGameObject*)currentItem;
+
+			if (currentObject->lifeTime != 0.0f &&
+				currentObject->lifeTime < 0.0f)
+			{
+				delete currentObject;
+				std::map<std::string, iGameItem*>::iterator toDelete = itItem;
+				itItem++;
+				gameItems.erase(toDelete);
+				continue;
+			}
+		}
+
+		itItem++;
 	}
 }
 
@@ -222,4 +240,9 @@ void Scene::setCamera(std::string name) {
 		activeCamera = cameras.find(name);
 	}
 	lookAtActiveCamera();
+}
+
+void Scene::addItem(iGameItem* newItem)
+{
+	gameItems[newItem->getName()] = newItem;
 }

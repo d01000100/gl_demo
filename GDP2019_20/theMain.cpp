@@ -214,7 +214,9 @@ int main(void)
 
 		iGameItem* player = theScene->findItem("player");
 		if (player) {
-			BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player);
+			BroadCollision::collisionsReact(
+				BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player),
+				(cGameObject*)player);
 		}
 		
 		theSkyBox.draw();

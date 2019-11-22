@@ -1,6 +1,7 @@
 #include "BroadCollision.h"
 #include "globalStuff.h"
 #include "colors.h"
+#include "Scene.h"
 
 cPhysics BroadCollision::physicsStuff;
 float BroadCollision::collisionPointSize = 0.1f;
@@ -35,8 +36,19 @@ std::vector<sCollisionInfo> BroadCollision::detectCollisions(AABBGrid* grid, cGa
 				// TODO: Check also if we're on the "outside" of the mesh
 				if (distanceToTriangle <= collisionPointSize)
 				{
-					::g_pDebugRenderer->addPoint(collisionPoint, Colors::red, 3.0f, 3.0f);
+					//::g_pDebugRenderer->addPoint(collisionPoint, Colors::red, 3.0f, 3.0f);
 					::g_pDebugRenderer->addTriangle((*itT)->a, (*itT)->b, (*itT)->c, Colors::blue, 3.0f);
+					cGameObject* explosion = new cGameObject();
+					explosion->meshName = "sphere_model";
+					explosion->friendlyName = explosion->meshName + " " + std::to_string(explosion->getUniqueID());
+					explosion->diffuseColor = Colors::red;
+					explosion->alpha = 0.7f;
+					explosion->scale = 5.0f;
+					explosion->lifeTime = 3.0f;
+					explosion->position = pointInTriangle;
+
+					Scene::getTheScene()->addItem(explosion);
+
 					sCollisionInfo collisionInfo;
 
 					glm::vec3 collisionDir = pointInTriangle - collisionPoint;
@@ -44,6 +56,13 @@ std::vector<sCollisionInfo> BroadCollision::detectCollisions(AABBGrid* grid, cGa
 					collisionInfo.closestPoint = pointInTriangle;
 					collisionInfo.directionOfApproach = glm::normalize(pointInTriangle - collisionPoint);
 					collisionInfo.penetrationDistance = collisionPointSize - distanceToTriangle;
+					collisionInfo.adjustmentVector = 
+						collisionInfo.penetrationDistance *
+						-collisionInfo.directionOfApproach;
+
+					glm::vec3 velocity = glm::normalize(mobile->physics->velocity);
+					float speed = glm::length(mobile->physics->velocity);
+					collisionInfo.reflection = speed * glm::reflect(velocity, glm::normalize((*itT)->normal));
 
 					res.push_back(collisionInfo);
 				}
@@ -54,7 +73,19 @@ std::vector<sCollisionInfo> BroadCollision::detectCollisions(AABBGrid* grid, cGa
 	return res;
 }
 
-void BroadCollision::collisionsReact(std::vector<sCollisionInfo>, cGameObject* mobile)
+void BroadCollision::collisionsReact(std::vector<sCollisionInfo> collisions, cGameObject* mobile)
 {
+	if (!collisions.empty()) {
+		glm::vec3 reflection(0);
+		for (int c = 0; c < collisions.size(); c++)
+		{
+			mobile->position += collisions[c].adjustmentVector;
+			reflection += collisions[c].reflection;
+		}
+		reflection /= collisions.size();
+		//sMessage toObject; toObject.name = "stop";
+		//mobile->recieveMessage(toObject);
+		mobile->physics->velocity = reflection;
+	}
 	return;
 }

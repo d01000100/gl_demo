@@ -41,4 +41,5 @@ public:
 	void storeCurrentCamera();
 	void setCamera(std::string);
 	iGameItem* findItem(std::string);
+	void addItem(iGameItem* newItem);
 };

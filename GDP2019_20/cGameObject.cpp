@@ -9,12 +9,13 @@
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <glm/gtx/string_cast.hpp>
 #include <sstream>
+#include <algorithm>
 
 #include "colors.h"
 
 cGameObject::cGameObject()
 {
-	this->scale = 0.0f;
+	this->scale = 1.0f;
 	this->isVisible = true;
 
 	this->isWireframe = false;
@@ -29,9 +30,16 @@ cGameObject::cGameObject()
 	cGameObject::next_uniqueID++;
 
 	this->m_pDebugRenderer = NULL;
+	position = glm::vec3(0);
+	rotationXYZ = glm::vec3(0);
+	front = glm::vec3(1.0f, 0.0f, 0.0f);
 
 	alpha = 1.0f;
 	isLit = true;
+	lifeTime = 0.0f;
+
+	diffuseColor = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
+	specularColor = glm::vec4(1.0f, 1.0f, 1.0f, 50.0f);
 
 	return;
 }
@@ -250,8 +258,11 @@ void cGameObject::recieveMessage(sMessage message) {
 	}
 	else if (message.name == "apply velocity") {
 		if (physics) {
-			if (physics->velocity.length() < 5)
-				physics->velocity += message.v3Value;
+
+			glm::vec3 newVel = physics->velocity + message.v3Value;
+			float newSpeed = std::min(glm::length(newVel), 20.0f);
+			newVel = glm::normalize(newVel) * newSpeed;
+			physics->velocity = newVel;
 		}
 	}
 	else if (message.name == "stop") {
@@ -282,6 +293,8 @@ void cGameObject::IntegrationStep(float deltaTime) {
 		physics->velocity += physics->acceleration * deltaTime;
 		position += physics->velocity * deltaTime;
 	}
+	if (lifeTime != 0.0f)
+		lifeTime -= deltaTime;
 }
 
 // this variable is static, so common to all objects.

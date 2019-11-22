@@ -29,6 +29,7 @@ struct sCollisionInfo
 	glm::vec3 directionOfApproach;
 	float penetrationDistance;
 	glm::vec3 adjustmentVector;
+	glm::vec3 reflection;
 	unsigned int Object1_ID;		// Shpere
 	unsigned int Object2_ID;		// Sphere or Triangle
 };
