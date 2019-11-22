@@ -27,9 +27,9 @@ unsigned long long AABBHash(glm::vec3 testLocation)
 	unsigned long long ID;		// x, y, z
 
 	// truncate to nearest lesser 100 multiple
-	unsigned long long ulX = ((unsigned long long) fabs(floor(testLocation.x / 100.0f))) * 100; 
-	unsigned long long ulY = ((unsigned long long) fabs(floor(testLocation.y / 100.0f))) * 100;
-	unsigned long long ulZ = ((unsigned long long) fabs(floor(testLocation.z / 100.0f))) * 100;
+	unsigned long long ulX = ((unsigned long long) fabs(floor(testLocation.x / 10.0f))) * 10; 
+	unsigned long long ulY = ((unsigned long long) fabs(floor(testLocation.y / 10.0f))) * 10;
+	unsigned long long ulZ = ((unsigned long long) fabs(floor(testLocation.z / 10.0f))) * 10;
 	//printf("truncate to nearest 100: X: %llu; Y: %llu; Z: %llu\n", ulX, ulY, ulZ);
 
 	// Are these negative

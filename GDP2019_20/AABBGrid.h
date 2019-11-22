@@ -11,6 +11,8 @@ class AABBGrid
 {
 private:
 	std::map<unsigned long long, cAABB*> grid;
+	glm::vec3 mins, maxs;
+	float AABBsize;
 public:
 	AABBGrid();
 

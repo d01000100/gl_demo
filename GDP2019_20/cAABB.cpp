@@ -50,9 +50,9 @@ void cAABB::Draw()
 	::g_pDebugRenderer->addLine(mins, maxZmins, Colors::white, 0.01f);
 
 	// edges that touch maxs
-	::g_pDebugRenderer->addLine(maxs, minXmaxs, Colors::white, 0.01f);
-	::g_pDebugRenderer->addLine(maxs, minYmaxs, Colors::white, 0.01f);
-	::g_pDebugRenderer->addLine(maxs, minZmaxs, Colors::white, 0.01f);
+	::g_pDebugRenderer->addLine(maxs, minXmaxs, Colors::red, 0.01f);
+	::g_pDebugRenderer->addLine(maxs, minYmaxs, Colors::red, 0.01f);
+	::g_pDebugRenderer->addLine(maxs, minZmaxs, Colors::red, 0.01f);
 
 	// other edges
 	::g_pDebugRenderer->addLine(maxYmins, minXmaxs, Colors::white, 0.01f);
@@ -65,6 +65,6 @@ void cAABB::Draw()
 	for (std::set<sNiceTriangle*>::iterator t = triangles.begin();
 		t != triangles.end(); t++) {
 
-		//drawTriangle(*t);
+		drawTriangle(*t);
 	}
 }

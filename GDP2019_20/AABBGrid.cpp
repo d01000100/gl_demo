@@ -6,8 +6,8 @@
 AABBGrid::AABBGrid()
 {
 	// things that work for the battlestar galactica model
-	float AABBsize = 100.0f;
-	int gridSize = 13; // we'll have 13 AABBs on each side of the Grid
+	float AABBsize = 10.0f;
+	int gridSize = 130; // we'll have 13 AABBs on each side of the Grid
 	glm::vec3 mins = glm::vec3(-200, -200, -600);
 	// min coordinates of the battlestar galactica model: (-195,-107,-516)
 	// the maximun AABB will end at: 13*100 + mins
@@ -24,7 +24,7 @@ AABBGrid::AABBGrid()
 					mins.z + (z * AABBsize)
 				);
 
-				cAABB* pAABB = new cAABB(AABBpos);
+				cAABB* pAABB = new cAABB(AABBpos, AABBsize);
 
 				grid[AABBHash(AABBpos)] = pAABB;
 
@@ -96,7 +96,7 @@ std::vector<sNiceTriangle> sliceTriangle(sNiceTriangle triangle)
 
 void getTriangleHashes(std::set<unsigned long long>* res, sNiceTriangle triangle)
 {
-	float AABBlength = 110; // TODO: hardcoded
+	float AABBlength = 10; // TODO: hardcoded
 	if (glm::distance(triangle.a, triangle.b) > AABBlength ||
 		glm::distance(triangle.a, triangle.c) > AABBlength || 
 		glm::distance(triangle.c, triangle.b) > AABBlength)

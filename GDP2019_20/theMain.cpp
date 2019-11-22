@@ -147,7 +147,7 @@ int main(void)
 		"SpaceBox_back6_negZ.bmp",
 		"sphere_model");
 
-	sceneEditor->init(theScene);
+	//sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -217,10 +217,11 @@ int main(void)
 			BroadCollision::collisionsReact(
 				BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player),
 				(cGameObject*)player);
+			//pAABBgrid->Draw(player->getPos());
 		}
-		
-		theSkyBox.draw();
 		//pAABBgrid->Draw();
+
+		theSkyBox.draw();
 
 		theScene->drawScene();
 		sceneEditor->drawDebug();

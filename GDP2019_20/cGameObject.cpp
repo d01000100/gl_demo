@@ -261,8 +261,13 @@ void cGameObject::recieveMessage(sMessage message) {
 
 			glm::vec3 newVel = physics->velocity + message.v3Value;
 			float newSpeed = std::min(glm::length(newVel), 20.0f);
-			newVel = glm::normalize(newVel) * newSpeed;
-			physics->velocity = newVel;
+			if (newSpeed < 0.1f) {
+				physics->velocity = glm::vec3(0);
+			}
+			else {
+				newVel = glm::normalize(newVel) * newSpeed;
+				physics->velocity = newVel;
+			}
 		}
 	}
 	else if (message.name == "stop") {
