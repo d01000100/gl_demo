@@ -24,7 +24,7 @@ const float CAMERAZOOMSPEED = 10.0f;
 const float TRANSLATION_STEP = 0.5f;
 const float ROTATION_STEP = glm::radians(0.5f);
 
-Camera* theCamera = FollowCamera::getPhysicsCamera();
+Camera* theCamera = Camera::getTheCamera();
 Scene* theScene = Scene::getTheScene();
 SceneEditor* theEditor = SceneEditor::getTheEditor();
 
@@ -122,7 +122,7 @@ void thrusterControls(int key, int action, int mods)
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	camera_orbit(key, action, mods);
-	thrusterControls(key, action, mods);
+	//thrusterControls(key, action, mods);
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{		
 		// save camera

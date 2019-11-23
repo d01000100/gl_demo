@@ -3,6 +3,8 @@
 
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
+#include <glm/gtc/quaternion.hpp>
+
 #include <string>
 #include "cMesh.h"
 #include "GLCommon.h"
@@ -51,7 +53,6 @@ public:
 	std::vector<glm::vec3> collision_points;
 
 	glm::vec3  position;
-	glm::vec3  rotationXYZ;
 	glm::vec3 front;
 	float scale, alpha, lifeTime;
 
@@ -83,6 +84,13 @@ public:
 	std::string getInfo();
 	json toJSON();
 
+	glm::quat getOrientationQ();
+	glm::vec3 getOrientationEuler();
+	void setOrientation(glm::quat newQOrientation);
+	void setOrientation(glm::vec3 newEulerOrientation);
+	void addOrientation(glm::quat deltaQOrientation);
+	void addOrientation(glm::vec3 deltaEulerOrientation);
+
 private:
 	// this variable is static, so common to all objects.
 	// When the object is created, the unique ID is set, and 
@@ -93,6 +101,7 @@ private:
 	iDebugRenderer* m_pDebugRenderer;
 
 	void IntegrationStep(float deltaTime);
+	glm::quat orientation;
 };
 
 #endif

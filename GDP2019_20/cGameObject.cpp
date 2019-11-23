@@ -31,7 +31,7 @@ cGameObject::cGameObject()
 
 	this->m_pDebugRenderer = NULL;
 	position = glm::vec3(0);
-	rotationXYZ = glm::vec3(0);
+	orientation = glm::quat(0,0,0,1);
 	front = glm::vec3(1.0f, 0.0f, 0.0f);
 
 	alpha = 1.0f;
@@ -75,20 +75,20 @@ glm::mat4 cGameObject::calculateTransformationMatrix() {
 	m = m * matTrans;
 
 	//// ******* ROTATION TRANSFORM *********
-	glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-		rotationXYZ.z,	// Angle 
-		glm::vec3(0.0f, 0.0f, 1.0f));
-	m = m * rotateZ;
+	//glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
+	//	rotationXYZ.z,	// Angle 
+	//	glm::vec3(0.0f, 0.0f, 1.0f));
+	//m = m * rotateZ;
+	//glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
+	//	rotationXYZ.y,
+	//	glm::vec3(0.0f, 1.0f, 0.0f));
+	//m = m * rotateY;
+	//glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
+	//	rotationXYZ.x,
+	//	glm::vec3(1.0f, 0.0f, 0.0f));
+	//m = m * rotateX;
 
-	glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
-		rotationXYZ.y,
-		glm::vec3(0.0f, 1.0f, 0.0f));
-	m = m * rotateY;
-
-	glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
-		rotationXYZ.x,
-		glm::vec3(1.0f, 0.0f, 0.0f));
-	m = m * rotateX;
+	m *= glm::mat4(orientation);
 
 	// ******* SCALE TRANSFORM *********
 	glm::mat4 matScale = glm::scale(glm::mat4(1.0f),
@@ -238,14 +238,18 @@ void cGameObject::draw()
 void cGameObject::recieveMessage(sMessage message) {
 
 	float translationStep = 1.0f;
-	float rotationStep = 0.02;
+	float rotationStep = 5;
 	float scaleStep = 0.05f;
+
+	//printf("recieved %s message with v3Value: %s\n",
+	//	message.name.c_str(),
+	//	glm::to_string(message.v3Value).c_str());
 
 	if (message.name == "translate") {
 		position += glm::normalize(message.v3Value) * translationStep;
 	}
 	else if (message.name == "rotate") {
-		rotationXYZ += glm::normalize(message.v3Value) * rotationStep;
+		addOrientation(glm::normalize(message.v3Value) * rotationStep);
 	}
 	else if (message.name == "scale") {
 		if (message.fValue > 0) {
@@ -283,6 +287,7 @@ std::string cGameObject::getType() { return "Object"; }
 std::string cGameObject::getInfo() {
 	std::stringstream ss;
 	ss << getType() << " - " << getName() <<
+		" orientation: " << glm::to_string(getOrientationEuler()) <<
 		" color: " << glm::to_string(diffuseColor) <<
 		" alpha: " << alpha;
 	return ss.str();
@@ -322,6 +327,7 @@ json cGameObject::toJSON() {
 	jObj["position"][1] = position.y;
 	jObj["position"][2] = position.z;
 
+	glm::vec3 rotationXYZ = getOrientationEuler();
 	jObj["rotation"][0] = glm::degrees(rotationXYZ.x);
 	jObj["rotation"][1] = glm::degrees(rotationXYZ.y);
 	jObj["rotation"][2] = glm::degrees(rotationXYZ.z);
@@ -404,4 +410,24 @@ json cGameObject::toJSON() {
 	}
 
 	return jObj;
+}
+
+glm::quat cGameObject::getOrientationQ() { return orientation; }
+glm::vec3 cGameObject::getOrientationEuler() { return glm::eulerAngles(orientation); }
+
+void cGameObject::setOrientation(glm::quat newQOrientation) { 
+	orientation = newQOrientation; 
+}
+void cGameObject::setOrientation(glm::vec3 newEulerOrientation) { 
+	orientation = glm::quat(newEulerOrientation);
+}
+void cGameObject::addOrientation(glm::quat deltaQOrientation) {
+	//glm::quat newOrientation = orientation * deltaQOrientation;
+	//printf("Recieved %s. New orientation: %s\n",
+	//	glm::to_string(deltaQOrientation).c_str(),
+	//	glm::to_string(newOrientation).c_str());
+	this->orientation = orientation * deltaQOrientation;
+}
+void cGameObject::addOrientation(glm::vec3 deltaEulerOrientation) {
+	addOrientation(glm::quat(glm::radians(deltaEulerOrientation)));
 }

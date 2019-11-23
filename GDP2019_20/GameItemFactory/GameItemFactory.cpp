@@ -111,10 +111,7 @@ iGameItem* createGameItem(std::string type, json info) {
 			float x = glm::radians(info["rotation"][0].get<float>());
 			float y = glm::radians(info["rotation"][1].get<float>());
 			float z = glm::radians(info["rotation"][2].get<float>());
-			gameObj->rotationXYZ = glm::vec3(x, y, z);
-		}
-		else {
-			gameObj->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+			gameObj->setOrientation(glm::vec3(x, y, z));
 		}
 
 		if (info.find("scale") != info.end()) {

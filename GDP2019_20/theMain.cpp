@@ -80,7 +80,7 @@ int main(void)
 	//return 0;
 
 	Scene* theScene = Scene::getTheScene();
-	FollowCamera* theCamera = FollowCamera::getPhysicsCamera();
+	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	init_fmod();
 	SkyBox theSkyBox;
@@ -134,10 +134,10 @@ int main(void)
 		pAABBgrid->filterTriangles(cruiseship);
 	}
 
-	iGameItem* player = theScene->findItem("player");
-	if (player) {
-		theCamera->init(player, glm::vec3(0, 30, -50));
-	}
+	//iGameItem* player = theScene->findItem("player");
+	//if (player) {
+	//	theCamera->init(player, glm::vec3(0, 30, -50));
+	//}
 
 	theSkyBox.init(
 		"SpaceBox_right1_posX.bmp",
@@ -148,7 +148,7 @@ int main(void)
 		"SpaceBox_back6_negZ.bmp",
 		"sphere_model");
 
-	//sceneEditor->init(theScene);
+	sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -210,14 +210,14 @@ int main(void)
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		theScene->IntegrationStep(averageDeltaTime);
-		theCamera->reposition();
+		//theScene->IntegrationStep(averageDeltaTime);
+		//theCamera->reposition();
 
 		iGameItem* player = theScene->findItem("player");
 		if (player) {
-			BroadCollision::collisionsReact(
-				BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player),
-				(cGameObject*)player);
+			//BroadCollision::collisionsReact(
+			//	BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player),
+			//	(cGameObject*)player);
 			//pAABBgrid->Draw(player->getPos());
 		}
 		//pAABBgrid->Draw();

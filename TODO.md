@@ -34,7 +34,7 @@
     - Si trae "Skybox" activar el skybox
     - Leer la locación de las texturas
     - Volver a escribirlo porque ctm
-## Project
+## *Project
 - *Explosiones pegadas (transparencias multiples)
 - *Mezclar fuego y humo (solo en la nave)
 - *Agujerear la nave con una textura
@@ -46,7 +46,7 @@
   3. Sin dibujar
   4. Textura con hoyos
 - ? Mas luces
-# Physics
+# *Physics
 ## AABBs
 - *Buscar modelo de escena: Battlestar galactica
   (-195,-107,-516) -> (232, 53, 531): 427, 161, 1047 ~ 500, 200, 1100
@@ -71,16 +71,43 @@
   - Detener la nave
   - !? Empujarla hacia afuera de la pared
 # Engine
+## Pre requisitos
+  - Aplicar quaterniones en game objects
+    - Cambiar propiedad
+    - Setter(euler), set(quad), quat getOrientationQuad, vec3 getOrientationEuler, update(quat), update(euler)
+    - Update transformMatrix (using the quat)
+    - Draw correctly
+  - Aplicar cuaterniones en luces
+  - Hacer la camara un gameItem
+    - Cambiar posiscion
+    - Cambiar orientacion
 ## iCommand
-- Interfaz
-- MoveTo
-- RotateTo
-- ScaleTo
-- Serial
-- Parallel
+  - Interfaz
+    - bool isDone
+    - void Update
+    - int getID
+    - string getTag
+    - string getName
+    - ? void Init
+
+  - MoveTo
+    - targetPos, time, easeInFraction, easeOutFraction
+  - OrientTo
+    - targetOrientation, time, ?easeInFraction, ?easeOutFraction
+  - ScaleTo
+    - targetScale, time, easeInFraction, easeOutFraction
+
+  - FollowObject
+    - targetObject, maxVel, innerRad, outerRad
+  - Serial
+  - Parallel
+  - FollowCurve
+    - targetPos, curveyPoints ???
+  - Trigger
+    - AABB (mins, maxs), triggerCommand
 ## Leer guion
-## Bonus
-- FollowCurve (porque no tengo ni idea)
+- Integrar Lua
+- Factory con Lua
 
 # Pendientes
 - Incluir navigation camera de Feeney
