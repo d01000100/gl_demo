@@ -53,7 +53,6 @@ public:
 	std::vector<glm::vec3> collision_points;
 
 	glm::vec3  position;
-	glm::vec3 front;
 	float scale, alpha, lifeTime;
 
 	glm::mat4 matWorld;

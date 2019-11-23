@@ -31,7 +31,6 @@ cGameObject::cGameObject()
 
 	this->m_pDebugRenderer = NULL;
 	position = glm::vec3(0);
-	front = glm::vec3(1.0f, 0.0f, 0.0f);
 
 	alpha = 1.0f;
 	isLit = true;
@@ -346,6 +345,7 @@ json cGameObject::toJSON() {
 	jObj["isVisible"] = isVisible;
 	jObj["isLit"] = isLit;
 
+	glm::vec3 front = getBaseDirection();
 	jObj["front"][0] = front.x;
 	jObj["front"][1] = front.y;
 	jObj["front"][2] = front.z;

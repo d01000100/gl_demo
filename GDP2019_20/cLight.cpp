@@ -21,6 +21,7 @@ cLight::cLight() {
 	specularColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	cutOffDist = 1000000.0f;
 	isOn = true;
+	setBaseDirection(glm::vec3(0, -1, 0));
 
 	// for spotlights
 	innerAngle = 0.0f;
@@ -177,6 +178,10 @@ json cLight::toJSON() {
 	jLight["isOn"] = isOn;
 
 	glm::vec3 direction = getDirection();
+	//printf("Writing direction of light %s to %s\n",
+	//	name.c_str(),
+	//	glm::to_string(direction).c_str());
+
 	jLight["direction"][0] = direction.x;
 	jLight["direction"][1] = direction.y;
 	jLight["direction"][2] = direction.z;

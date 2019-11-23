@@ -183,6 +183,9 @@
     <ClCompile Include="GameItemFactory\iGameItem.cpp">
       <Filter>GameItem %28Factory%29</Filter>
     </ClCompile>
+    <ClCompile Include="quaternions_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="FollowCamera.h">
       <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="quaternions_utils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

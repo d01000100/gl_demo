@@ -1,8 +1,12 @@
 #include "iGameItem.h"
 
+#include <glm/gtx/string_cast.hpp>
+
+#include "../quaternions_utils.h"
+
 iGameItem::iGameItem()
 {
-	//orientation = glm::quat(0, 0, 0, 1);
+	orientation = glm::quat(glm::vec3(0, 0, 0));
 }
 
 glm::quat iGameItem::getOrientationQ() { return orientation; }
@@ -29,5 +33,18 @@ void iGameItem::setBaseDirection(glm::vec3 d) { baseDirection = glm::normalize(d
 
 glm::vec3 iGameItem::getDirection() 
 {
-	return baseDirection * orientation;
+	return orientation * baseDirection;
+}
+
+glm::vec3 iGameItem::getBaseDirection() { return baseDirection; }
+
+void iGameItem::setDirection(glm::vec3 dir)
+{
+	this->orientation = RotationBetweenVectors(this->baseDirection, dir);
+	//printf("Setting direction of %s at: %s. quat: %s\nOriginally looking at %s\nNow looking at %s\n\n",
+	//	getName().c_str(),
+	//	glm::to_string(dir).c_str(),
+	//	glm::to_string(this->orientation).c_str(),
+	//	glm::to_string(this->baseDirection).c_str(),
+	//	glm::to_string(getDirection()).c_str());
 }

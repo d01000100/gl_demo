@@ -33,5 +33,7 @@ public:
 	void addOrientation(glm::quat deltaQOrientation);
 	void addOrientation(glm::vec3 deltaEulerOrientation);
 	void setBaseDirection(glm::vec3 dir);
+	void setDirection(glm::vec3 dir);
+	glm::vec3 getBaseDirection();
 	glm::vec3 getDirection();
 };

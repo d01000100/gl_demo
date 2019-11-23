@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include <glm/gtx/string_cast.hpp>
 
 #include <stdlib.h>		// c libs
 #include <stdio.h>		// c libs
@@ -31,6 +32,7 @@
 #include "AABBGrid.h"
 #include "colors.h"
 #include "BroadCollision.h"
+#include "quaternions_utils.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -77,6 +79,19 @@ int main(void)
 	//tri->b = glm::vec3(0,0,500);
 	//tri->c = glm::vec3(500);
 	//std::vector<unsigned long long> hashes = getTriangleHashes(tri);
+	
+	//glm::vec3 vector(1, 2, 2);-
+	//glm::quat orientation(glm::vec3(0,1.6,0));
+
+
+	//glm::vec3 v1(0, -1, 0), v2(-1, -1, -1);
+	//glm::quat rotation = RotationBetweenVectors(v1, v2);
+	//printf("Setting direction of test at: %s. quat: %s\nOriginally looking at %s\nNow looking at %s\n\n",
+	//	glm::to_string(v2).c_str(),
+	//	glm::to_string(rotation).c_str(),
+	//	glm::to_string(v1).c_str(),
+	//	glm::to_string(rotation * v1).c_str());
+
 	//return 0;
 
 	Scene* theScene = Scene::getTheScene();

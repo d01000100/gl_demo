@@ -160,10 +160,10 @@ iGameItem* createGameItem(std::string type, json info) {
 			float x = info["front"][0].get<float>();
 			float y = info["front"][1].get<float>();
 			float z = info["front"][2].get<float>();
-			gameObj->front = glm::vec3(x, y, z);
+			gameObj->setBaseDirection(glm::vec3(x, y, z));
 		}
 		else {
-			gameObj->front = glm::normalize(glm::vec3(1.0f, 0.0f, 0.0f));
+			gameObj->setBaseDirection(glm::vec3(0.0f, 0.0f, 1.0f));
 		}
 
 		if (info.find("alpha") != info.end()) {
@@ -298,11 +298,10 @@ iGameItem* createGameItem(std::string type, json info) {
 			float x = info["direction"][0].get<float>();
 			float y = info["direction"][1].get<float>();
 			float z = info["direction"][2].get<float>();
-			light->setBaseDirection(glm::vec3(x, y, z));
+			light->setDirection(glm::vec3(x, y, z));
 		}
-		else
-		{
-			light->setBaseDirection(glm::vec3(-1, -1, -1));
+		else {
+			light->setDirection(glm::vec3(0,-1,0));
 		}
 
 		if (info.find("innerAngle") != info.end()) {
