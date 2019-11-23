@@ -84,13 +84,6 @@ public:
 	std::string getInfo();
 	json toJSON();
 
-	glm::quat getOrientationQ();
-	glm::vec3 getOrientationEuler();
-	void setOrientation(glm::quat newQOrientation);
-	void setOrientation(glm::vec3 newEulerOrientation);
-	void addOrientation(glm::quat deltaQOrientation);
-	void addOrientation(glm::vec3 deltaEulerOrientation);
-
 private:
 	// this variable is static, so common to all objects.
 	// When the object is created, the unique ID is set, and 
@@ -101,7 +94,6 @@ private:
 	iDebugRenderer* m_pDebugRenderer;
 
 	void IntegrationStep(float deltaTime);
-	glm::quat orientation;
 };
 
 #endif

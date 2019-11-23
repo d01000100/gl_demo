@@ -26,7 +26,6 @@ public:
 	std::string name;
 
 	// for spotlights
-	glm::vec3 direction;
 	float innerAngle;
 	float outerAngle;
 

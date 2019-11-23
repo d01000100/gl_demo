@@ -23,7 +23,6 @@ cLight::cLight() {
 	isOn = true;
 
 	// for spotlights
-	direction = glm::vec3(0.0f, 0.0f, 1.0f);
 	innerAngle = 0.0f;
 	outerAngle = 0.0f;
 
@@ -48,7 +47,7 @@ void cLight::draw() {
 	GLint L_0_direction = glGetUniformLocation(shaderProgID, (prefix + "direction").c_str());
 	GLint L_0_param1 = glGetUniformLocation(shaderProgID, (prefix + "param1").c_str());
 	GLint L_0_param2 = glGetUniformLocation(shaderProgID, (prefix + "param2").c_str());
-
+	
 	glUniform4f(L_0_position,
 		pos.x,
 		pos.y,
@@ -68,6 +67,7 @@ void cLight::draw() {
 	glUniform4f(L_0_param1, type, innerAngle, outerAngle, 1.0f);
 	glUniform4f(L_0_param2, isOn, 0.0f, 0.0f, 1.0f);
 
+	glm::vec3 direction = getDirection();
 	glUniform4f(L_0_direction,
 		direction.x,
 		direction.y,
@@ -79,7 +79,7 @@ std::string cLight::getName() { return name; }
 glm::vec3 cLight::getPos() { return pos; }
 void cLight::recieveMessage(sMessage message){ 
 	float translationStep = 1.0f;
-	float rotationStep = 0.02;
+	float rotationStep = 1;
 	float scaleStep = 0.001f;
 
 	//printf("Light recieving message %s with %f\n", message.name.c_str(), message.fValue);
@@ -88,8 +88,7 @@ void cLight::recieveMessage(sMessage message){
 		pos += glm::normalize(message.v3Value) * translationStep;
 	}
 	else if (message.name == "rotate") {
-		this->direction += glm::normalize(message.v3Value) * rotationStep;
-		direction = glm::normalize(direction);
+		addOrientation(glm::normalize(message.v3Value) * rotationStep);
 	}
 	else if (message.name == "scale") {
 		float linearStep = 0.1f;
@@ -129,7 +128,7 @@ std::string cLight::getInfo() {
 	std::stringstream ss;
 	ss << getType() << " - " << getName() <<
 		" pos: " << pos.x << ", " << pos.z << ", " << pos.z << ", " <<
-		" dir: " << direction.x << ", " << direction.y << ", " << direction.z << ", " << 
+		" dir: " << glm::to_string(getDirection()).c_str() << ", " << 
 		" color: " << glm::to_string(diffuseColor) <<
 		" linearAttern: " << linearAtten << " quadAtten: " << quadAtten;
 	if (type == SPOT) {
@@ -177,6 +176,7 @@ json cLight::toJSON() {
 
 	jLight["isOn"] = isOn;
 
+	glm::vec3 direction = getDirection();
 	jLight["direction"][0] = direction.x;
 	jLight["direction"][1] = direction.y;
 	jLight["direction"][2] = direction.z;

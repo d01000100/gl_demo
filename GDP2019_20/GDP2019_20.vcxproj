@@ -182,6 +182,7 @@
     <ClCompile Include="DebugRenderer\cGLRenderStateHelper.cpp" />
     <ClCompile Include="DebugRenderer\COpenGLError.cpp" />
     <ClCompile Include="GameItemFactory\GameItemFactory.cpp" />
+    <ClCompile Include="GameItemFactory\iGameItem.cpp" />
     <ClCompile Include="GFLW_callbacks.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="globalStuff.cpp" />

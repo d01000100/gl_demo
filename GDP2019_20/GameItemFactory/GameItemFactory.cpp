@@ -298,7 +298,11 @@ iGameItem* createGameItem(std::string type, json info) {
 			float x = info["direction"][0].get<float>();
 			float y = info["direction"][1].get<float>();
 			float z = info["direction"][2].get<float>();
-			light->direction = glm::vec3(x,y,z);
+			light->setBaseDirection(glm::vec3(x, y, z));
+		}
+		else
+		{
+			light->setBaseDirection(glm::vec3(-1, -1, -1));
 		}
 
 		if (info.find("innerAngle") != info.end()) {
