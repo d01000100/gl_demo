@@ -12,13 +12,14 @@ protected:
 		easeInEnd, easeOutStart,
 		distance,
 		maxVel;
-	iGameItem* gameItem;
+	aGameItem* gameItem;
 	bool hasInitialized;
 
 	void init();
 public:
 	MoveCommand(
-		iGameItem* gameItem, 
+		aGameItem* gameItem,
+		glm::vec3 startPos,
 		glm::vec3 finalPos, 
 		float totalTime,
 		float easeInDuration,
