@@ -55,6 +55,9 @@
     <Filter Include="Cameras">
       <UniqueIdentifier>{4b4b13de-8d19-427f-b491-982abb6bd707}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{9d2b0555-a1bf-49ba-851f-f36f5c1a68c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -184,6 +187,18 @@
       <Filter>GameItem %28Factory%29</Filter>
     </ClCompile>
     <ClCompile Include="quaternions_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -318,6 +333,18 @@
       <Filter>Cameras</Filter>
     </ClInclude>
     <ClInclude Include="quaternions_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

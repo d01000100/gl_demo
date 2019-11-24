@@ -33,6 +33,7 @@
 #include "colors.h"
 #include "BroadCollision.h"
 #include "quaternions_utils.h"
+#include "ScriptBuilder.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -92,6 +93,13 @@ int main(void)
 	//	glm::to_string(v1).c_str(),
 	//	glm::to_string(rotation * v1).c_str());
 
+	//float min = 5.0f, max = 15.0f;
+	//for (float val = min; val <= max; val += 0.1f) {
+	//	float step = glm::smoothstep(max, min, val);
+	//	printf("min %f, max %f, value %f, result %f\n",
+	//		min, max, val, step);
+	//}
+
 	//return 0;
 
 	Scene* theScene = Scene::getTheScene();
@@ -144,10 +152,11 @@ int main(void)
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
-	cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
-	if (cruiseship) {
-		pAABBgrid->filterTriangles(cruiseship);
-	}
+	iCommand* cutscene = TestScript();
+	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
+	//if (cruiseship) {
+	//	pAABBgrid->filterTriangles(cruiseship);
+	//}
 
 	//iGameItem* player = theScene->findItem("player");
 	//if (player) {
@@ -236,6 +245,8 @@ int main(void)
 			//pAABBgrid->Draw(player->getPos());
 		}
 		//pAABBgrid->Draw();
+
+		cutscene->update(averageDeltaTime);
 
 		theSkyBox.draw();
 

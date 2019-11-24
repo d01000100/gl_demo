@@ -18,6 +18,7 @@ protected:
 	iGameItem();
 public:
 	virtual glm::vec3 getPos() = 0;
+	virtual void setPos(glm::vec3) = 0;
 	virtual std::string getName() = 0;
 	virtual void recieveMessage(sMessage message) = 0;
 	virtual std::string getType() = 0;

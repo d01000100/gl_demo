@@ -60,6 +60,8 @@ std::string cGameObject::getName() {
 
 glm::vec3 cGameObject::getPos() { return position; }
 
+void cGameObject::setPos(glm::vec3 pos) { position = pos; }
+
 glm::mat4 cGameObject::calculateTransformationMatrix() {
 
 	glm::mat4 m = glm::mat4(1.0f);
@@ -285,6 +287,7 @@ std::string cGameObject::getType() { return "Object"; }
 std::string cGameObject::getInfo() {
 	std::stringstream ss;
 	ss << getType() << " - " << getName() <<
+		" pos: " << glm::to_string(getPos()) <<
 		" orientation: " << glm::to_string(getOrientationEuler()) <<
 		" color: " << glm::to_string(diffuseColor) <<
 		" alpha: " << alpha;

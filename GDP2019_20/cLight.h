@@ -37,6 +37,7 @@ public:
 	virtual void draw() ;
 	virtual std::string getName() ;
 	virtual glm::vec3 getPos() ;
+	void setPos(glm::vec3);
 	virtual void recieveMessage(sMessage message) ;
 	virtual std::string getType() ;
 

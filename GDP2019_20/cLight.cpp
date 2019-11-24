@@ -78,6 +78,7 @@ void cLight::draw() {
 
 std::string cLight::getName() { return name; }
 glm::vec3 cLight::getPos() { return pos; }
+void cLight::setPos(glm::vec3 p) { pos = p; }
 void cLight::recieveMessage(sMessage message){ 
 	float translationStep = 1.0f;
 	float rotationStep = 1;

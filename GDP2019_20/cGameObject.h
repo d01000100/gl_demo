@@ -77,6 +77,7 @@ public:
 	void draw();
 	std::string getName();
 	glm::vec3 getPos();
+	void setPos(glm::vec3);
 
 	void recieveMessage(sMessage message);
 	std::string getType();

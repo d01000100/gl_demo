@@ -72,17 +72,17 @@
   - !? Empujarla hacia afuera de la pared
 # Engine
 ## Pre requisitos
-  - Aplicar quaterniones en game objects
+  - *Aplicar quaterniones en game objects
     - Cambiar propiedad
     - Setter(euler), set(quad), quat getOrientationQuad, vec3 getOrientationEuler, update(quat), update(euler)
     - Update transformMatrix (using the quat)
     - Draw correctly
-  - Aplicar cuaterniones en luces
+  - *Aplicar cuaterniones en luces
   - Hacer la camara un gameItem
     - Cambiar posiscion
     - Cambiar orientacion
 ## iCommand
-  - Interfaz
+  - *Interfaz
     - bool isDone
     - void Update
     - int getID
@@ -90,7 +90,7 @@
     - string getName
     - ? void Init
 
-  - MoveTo
+  - *MoveTo
     - targetPos, time, easeInFraction, easeOutFraction
   - OrientTo
     - targetOrientation, time, ?easeInFraction, ?easeOutFraction
@@ -99,7 +99,7 @@
 
   - FollowObject
     - targetObject, maxVel, innerRad, outerRad
-  - Serial
+  - *Serial
   - Parallel
   - FollowCurve
     - targetPos, curveyPoints ???
