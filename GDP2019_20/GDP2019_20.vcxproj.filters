@@ -201,6 +201,9 @@
     <ClCompile Include="SerialCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ParallelCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -345,6 +348,9 @@
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="SerialCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParallelCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

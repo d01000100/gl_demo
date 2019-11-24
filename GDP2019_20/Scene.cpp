@@ -24,9 +24,9 @@ Scene* Scene::getTheScene() {
 	return theScene;
 }
 
-std::vector<iGameItem*> Scene::getItems() {
-	std::vector<iGameItem*> vs;
-	for (std::map<std::string, iGameItem*>::iterator i = gameItems.begin();
+std::vector<aGameItem*> Scene::getItems() {
+	std::vector<aGameItem*> vs;
+	for (std::map<std::string, aGameItem*>::iterator i = gameItems.begin();
 		i != gameItems.end(); i++)
 	{
 		vs.push_back(i->second);
@@ -121,7 +121,7 @@ bool Scene::loadScene(std::string filename) {
 // will not reload Meshes
 bool Scene::reloadScene(std::string filename) {
 	printf("%s\n", filename.c_str());
-	std::map<std::string, iGameItem*>* loaded_items = readItems(filename);
+	std::map<std::string, aGameItem*>* loaded_items = readItems(filename);
 	if (loaded_items == NULL) {return false;  }
 	else {
 		gameItems.clear();
@@ -138,7 +138,7 @@ void Scene::drawItems() {
 	std::map<double, cGameObject*> transparentsByDistance;
 	Camera* theCamera = Camera::getTheCamera();
 
-	for (std::map<std::string, iGameItem*>::iterator i = gameItems.begin();
+	for (std::map<std::string, aGameItem*>::iterator i = gameItems.begin();
 		i != gameItems.end(); i++)
 	{
 		if (i->second->getType() != "Object") {
@@ -175,10 +175,10 @@ void Scene::saveScene(std::string filename) {
 }
 
 void Scene::IntegrationStep(float deltaTime) {
-	for (std::map<std::string, iGameItem*>::iterator itItem = gameItems.begin();
+	for (std::map<std::string, aGameItem*>::iterator itItem = gameItems.begin();
 		itItem != gameItems.end();) {
 		sMessage m; m.name = "integration step"; m.fValue = deltaTime;
-		iGameItem* currentItem = itItem->second;
+		aGameItem* currentItem = itItem->second;
 		currentItem->recieveMessage(m);
 
 		if (currentItem->getType() == "Object")
@@ -189,7 +189,7 @@ void Scene::IntegrationStep(float deltaTime) {
 				currentObject->lifeTime < 0.0f)
 			{
 				delete currentObject;
-				std::map<std::string, iGameItem*>::iterator toDelete = itItem;
+				std::map<std::string, aGameItem*>::iterator toDelete = itItem;
 				itItem++;
 				gameItems.erase(toDelete);
 				continue;
@@ -200,12 +200,12 @@ void Scene::IntegrationStep(float deltaTime) {
 	}
 }
 
-std::vector<iGameItem*> Scene::getItemsByType(std::string type) {
-	std::vector<iGameItem*> vs;
-	for (std::map<std::string, iGameItem*>::iterator i = gameItems.begin();
+std::vector<aGameItem*> Scene::getItemsByType(std::string type) {
+	std::vector<aGameItem*> vs;
+	for (std::map<std::string, aGameItem*>::iterator i = gameItems.begin();
 		i != gameItems.end(); i++)
 	{
-		iGameItem* item = i->second;
+		aGameItem* item = i->second;
 		if (item->getType() == type) {
 			vs.push_back(i->second);
 		}
@@ -226,7 +226,7 @@ void Scene::storeCurrentCamera() {
 	cameras[settings->name] = settings;
 }
 
-iGameItem* Scene::findItem(std::string name) {
+aGameItem* Scene::findItem(std::string name) {
 	if (gameItems.find(name) != gameItems.end()) {
 		return gameItems[name];
 	}
@@ -242,7 +242,7 @@ void Scene::setCamera(std::string name) {
 	lookAtActiveCamera();
 }
 
-void Scene::addItem(iGameItem* newItem)
+void Scene::addItem(aGameItem* newItem)
 {
 	gameItems[newItem->getName()] = newItem;
 }

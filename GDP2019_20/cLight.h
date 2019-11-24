@@ -11,7 +11,7 @@ enum lightType {
 	DIRECTIONAL = 2,
 };
 
-class cLight : public iGameItem
+class cLight : public aGameItem
 {
 public:
 	lightType type;

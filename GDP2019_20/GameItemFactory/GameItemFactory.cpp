@@ -78,7 +78,7 @@ sPhysicsObject* buildPhysicsObject(json jPhysics) {
 	return physics;
 }
 
-iGameItem* createGameItem(std::string type, json info) {
+aGameItem* createGameItem(std::string type, json info) {
 	if (type == "Object") {
 		cGameObject* gameObj = new cGameObject();
 
@@ -154,16 +154,6 @@ iGameItem* createGameItem(std::string type, json info) {
 		}
 		else {
 			gameObj->isLit = true;
-		}
-
-		if (info.find("front") != info.end()) {
-			float x = info["front"][0].get<float>();
-			float y = info["front"][1].get<float>();
-			float z = info["front"][2].get<float>();
-			gameObj->setBaseDirection(glm::vec3(x, y, z));
-		}
-		else {
-			gameObj->setBaseDirection(glm::vec3(0.0f, 0.0f, 1.0f));
 		}
 
 		if (info.find("alpha") != info.end()) {

@@ -12,7 +12,7 @@ class Scene
 private:
 	std::map<std::string, cMesh*> meshes;
 	std::map<std::string, cLight*> lights;
-	std::map<std::string, iGameItem*> gameItems;
+	std::map<std::string, aGameItem*> gameItems;
 	std::map<std::string, sCameraSettings*> cameras;
 	std::map<std::string, sCameraSettings*>::iterator activeCamera;
 	static Scene* theScene;
@@ -26,7 +26,7 @@ private:
 
 public:
 	static Scene* getTheScene();
-	std::vector<iGameItem*> getItems();
+	std::vector<aGameItem*> getItems();
 	std::vector<cLight*> getLights();
 	std::map<std::string, cLight*> getLightsMap();
 	std::map<std::string, cMesh*> getMeshesMap();
@@ -37,9 +37,9 @@ public:
 	void saveScene(std::string filename);
 	void drawScene();
 	void IntegrationStep(float deltaTime);
-	std::vector<iGameItem*> getItemsByType(std::string type);
+	std::vector<aGameItem*> getItemsByType(std::string type);
 	void storeCurrentCamera();
 	void setCamera(std::string);
-	iGameItem* findItem(std::string);
-	void addItem(iGameItem* newItem);
+	aGameItem* findItem(std::string);
+	void addItem(aGameItem* newItem);
 };

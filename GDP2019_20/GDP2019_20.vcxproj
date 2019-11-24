@@ -190,6 +190,7 @@
     <ClCompile Include="JSON_IO.cpp" />
     <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="ParallelCommand.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="Messages\iMessagable.h" />
     <ClInclude Include="Messages\Message.h" />
     <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="ParallelCommand.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="PhysicsStuff.h" />

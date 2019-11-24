@@ -21,7 +21,6 @@ cLight::cLight() {
 	specularColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	cutOffDist = 1000000.0f;
 	isOn = true;
-	setBaseDirection(glm::vec3(0, -1, 0));
 
 	// for spotlights
 	innerAngle = 0.0f;

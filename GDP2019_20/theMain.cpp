@@ -237,7 +237,7 @@ int main(void)
 		//theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
 
-		iGameItem* player = theScene->findItem("player");
+		aGameItem* player = theScene->findItem("player");
 		if (player) {
 			//BroadCollision::collisionsReact(
 			//	BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player),
@@ -255,8 +255,8 @@ int main(void)
 		if (sceneEditor->getDebugRenderer()) {
 			sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
 		}
+		::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		if (::isDebug) {
-			::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		}
 		glfwSwapBuffers(window);

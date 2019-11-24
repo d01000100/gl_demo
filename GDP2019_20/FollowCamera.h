@@ -11,11 +11,11 @@ class FollowCamera : public Camera
 private:
 	static FollowCamera* theCamera;
 	glm::vec3 offset;
-	iGameItem* targetItem;
+	aGameItem* targetItem;
 	FollowCamera();
 public:
 	static FollowCamera* getPhysicsCamera();
-	void init(iGameItem* target, glm::vec3 offset = glm::vec3(0, 50, -50));
+	void init(aGameItem* target, glm::vec3 offset = glm::vec3(0, 50, -50));
 	virtual void moveUp(float angle);
 	virtual void moveDown(float angle);
 	virtual void moveRight(float angle);

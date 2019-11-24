@@ -81,7 +81,7 @@ void camera_orbit(int key, int action, int mods) {
 
 void thrusterControls(int key, int action, int mods)
 {
-	iGameItem* player = theScene->findItem("player");
+	aGameItem* player = theScene->findItem("player");
 	if (player && isShiftKeyDownByAlone(mods)) {
 		sMessage messageToObject; messageToObject.name = "apply velocity";
 		float playerAccel = 1.0f;

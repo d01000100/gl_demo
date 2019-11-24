@@ -149,7 +149,7 @@ std::map<std::string, sCameraSettings*>* readCameras(std::string filename) {
 	return mCameras;
 }
 
-std::map<std::string, iGameItem*>* readItems(std::string filename) {
+std::map<std::string, aGameItem*>* readItems(std::string filename) {
 	std::ifstream i;
 	i.open(filename);
 
@@ -161,7 +161,7 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 	json jFile;
 	i >> jFile;
 
-	std::map<std::string, iGameItem*>* mItems = new std::map<std::string, iGameItem*>();
+	std::map<std::string, aGameItem*>* mItems = new std::map<std::string, aGameItem*>();
 
 	// create GameObjects
 	json::iterator jObjects = jFile.find("Objects");
@@ -172,7 +172,7 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 		for (json::iterator jObj = jObjects->begin();
 			jObj != jObjects->end(); jObj++) {
 
-			iGameItem* gameItem = createGameItem("Object", *jObj);
+			aGameItem* gameItem = createGameItem("Object", *jObj);
 
 
 			(*mItems)[gameItem->getName()] = gameItem;
@@ -189,7 +189,7 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 		for (json::iterator jLight = jLights->begin();
 			jLight != jLights->end(); jLight++) {
 
-			iGameItem* gameItem = createGameItem("Light", *jLight);
+			aGameItem* gameItem = createGameItem("Light", *jLight);
 
 			(*mItems)[gameItem->getName()] = gameItem;
 		}
@@ -204,7 +204,7 @@ std::map<std::string, iGameItem*>* readItems(std::string filename) {
 		for (json::iterator jAudio = jAudios->begin();
 			jAudio != jAudios->end(); jAudio++) {
 
-			iGameItem* gameItem = createGameItem("sound", *jAudio);
+			aGameItem* gameItem = createGameItem("sound", *jAudio);
 
 			(*mItems)[gameItem->getName()] = gameItem;
 		}
@@ -389,12 +389,12 @@ json serializeCameras(std::map<std::string, sCameraSettings*> cameras) {
 }
 
 void saveScene(Scene* scene, std::string filename) {
-	std::vector<iGameItem*> items = scene->getItems();
+	std::vector<aGameItem*> items = scene->getItems();
 
 	json jObjs, jLights, jSounds, jScene;
 
 	for (int i = 0, light = 0, sound = 0, obj = 0; i < items.size(); i++) {
-		iGameItem* item = items[i];
+		aGameItem* item = items[i];
 
 		if (item->getType() == "Object") {
 			jObjs[obj] = item->toJSON();

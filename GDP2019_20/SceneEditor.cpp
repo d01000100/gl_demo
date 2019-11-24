@@ -99,30 +99,35 @@ void SceneEditor::debugTranslation(glm::vec3 pos)
 
 void SceneEditor::debugRotation(glm::vec3 pos) {
 
-	drLine xpos, xneg, zpos, zneg;
-	glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
-	glm::vec3 yellow = glm::vec3(1.0f, 1.0f, 0.0f);
+	//drLine xpos, xneg, zpos, zneg;
+	//glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
+	//glm::vec3 yellow = glm::vec3(1.0f, 1.0f, 0.0f);
 
-	xpos.points[0] = pos + glm::vec3(5.0f, 0.0f, 5.0f);
-	xpos.points[1] = pos + glm::vec3(5.0f, 0.0f, -5.0f);
-	xpos.colour = blue;
+	//xpos.points[0] = pos + glm::vec3(5.0f, 0.0f, 5.0f);
+	//xpos.points[1] = pos + glm::vec3(5.0f, 0.0f, -5.0f);
+	//xpos.colour = blue;
 
-	xneg.points[0] = pos + glm::vec3(-5.0f, 0.0f, 5.0f);
-	xneg.points[1] = pos + glm::vec3(-5.0f, 0.0f, -5.0f);
-	xneg.colour = blue;
+	//xneg.points[0] = pos + glm::vec3(-5.0f, 0.0f, 5.0f);
+	//xneg.points[1] = pos + glm::vec3(-5.0f, 0.0f, -5.0f);
+	//xneg.colour = blue;
 
-	zpos.points[0] = pos + glm::vec3(5.0f, 0.0f, 5.0f);
-	zpos.points[1] = pos + glm::vec3(-5.0f, 0.0f, 5.0f);
-	zpos.colour = yellow;
+	//zpos.points[0] = pos + glm::vec3(5.0f, 0.0f, 5.0f);
+	//zpos.points[1] = pos + glm::vec3(-5.0f, 0.0f, 5.0f);
+	//zpos.colour = yellow;
 
-	zneg.points[0] = pos + glm::vec3(5.0f, 0.0f, -5.0f);
-	zneg.points[1] = pos + glm::vec3(-5.0f, 0.0f, -5.0f);
-	zneg.colour = yellow;
+	//zneg.points[0] = pos + glm::vec3(5.0f, 0.0f, -5.0f);
+	//zneg.points[1] = pos + glm::vec3(-5.0f, 0.0f, -5.0f);
+	//zneg.colour = yellow;
 
-	debugRenderer->addLine(xpos);
-	debugRenderer->addLine(xneg);
-	debugRenderer->addLine(zpos);
-	debugRenderer->addLine(zneg);
+	//debugRenderer->addLine(xpos);
+	//debugRenderer->addLine(xneg);
+	//debugRenderer->addLine(zpos);
+	//debugRenderer->addLine(zneg);
+
+	if (selectedObj != objects.end())
+	{
+		(*selectedObj)->debugOrientationAxis();
+	}
 }
 
 void SceneEditor::debugScale(glm::vec3 pos) {
@@ -199,7 +204,7 @@ void SceneEditor::previousLight() {
 }
 
 void SceneEditor::printInfo() {
-	for (std::vector<iGameItem*>::iterator i = objects.begin();
+	for (std::vector<aGameItem*>::iterator i = objects.begin();
 		i != objects.end(); i++)
 	{
 		printf("%s: %s\n", (*i)->getType().c_str(), (*i)->getName().c_str());
@@ -325,38 +330,32 @@ void SceneEditor::recieveMessage(sMessage message)
 
 			if (message.sValue == "a")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, -1.0f, 0.0f);
-				(*selectedObj)->recieveMessage(itemMessage);
+				(*selectedObj)->yaw(-1.0);
 				return;
 			}
 			if (message.sValue == "d")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
-				(*selectedObj)->recieveMessage(itemMessage);
+				(*selectedObj)->yaw(1.0f);
 				return;
 			}
 			if (message.sValue == "q")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, -1.0f);
-				(*selectedObj)->recieveMessage(itemMessage);
+				(*selectedObj)->barrelRoll(-1.0f);
 				return;
 			}
 			if (message.sValue == "e")
 			{
-				itemMessage.v3Value = glm::vec3(0.0f, 0.0f, 1.0f);
-				(*selectedObj)->recieveMessage(itemMessage);
+				(*selectedObj)->barrelRoll(1.0f);
 				return;
 			}
 			if (message.sValue == "w")
 			{
-				itemMessage.v3Value = glm::vec3(-1.0f, 0.0f, 0.0f);
-				(*selectedObj)->recieveMessage(itemMessage);
+				(*selectedObj)->pitch(1.0f);
 				return;
 			}
 			if (message.sValue == "s")
 			{
-				itemMessage.v3Value = glm::vec3(1.0f, 0.0f, 0.0f);
-				(*selectedObj)->recieveMessage(itemMessage);
+				(*selectedObj)->pitch(-1.0f);
 				return;
 			}
 			break;

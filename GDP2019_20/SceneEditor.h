@@ -26,8 +26,8 @@ private:
 	cDebugRenderer* debugRenderer;
 	void printInfo();
 
-	std::vector<iGameItem*>::iterator selectedObj;
-	std::vector<iGameItem*> objects;
+	std::vector<aGameItem*>::iterator selectedObj;
+	std::vector<aGameItem*> objects;
 	void changeObject();
 	void nextObject();
 	void previousObject();

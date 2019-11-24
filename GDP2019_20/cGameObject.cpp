@@ -348,11 +348,6 @@ json cGameObject::toJSON() {
 	jObj["isVisible"] = isVisible;
 	jObj["isLit"] = isLit;
 
-	glm::vec3 front = getBaseDirection();
-	jObj["front"][0] = front.x;
-	jObj["front"][1] = front.y;
-	jObj["front"][2] = front.z;
-
 	if (physics)
 	{
 		json jPhysics;

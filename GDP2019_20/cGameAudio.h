@@ -14,7 +14,7 @@ struct sEffect {
 	const char* name = "";
 };
 
-class cGameAudio : public iGameItem
+class cGameAudio : public aGameItem
 {
 private:
 	sEffect effects[9];

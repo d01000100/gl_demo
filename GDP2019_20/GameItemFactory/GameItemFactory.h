@@ -5,6 +5,6 @@
 #include <nlohmann/json.hpp>
 #include "iGameItem.h"
 
-iGameItem* createGameItem(std::string type, nlohmann::json info);
+aGameItem* createGameItem(std::string type, nlohmann::json info);
 
 void resetFactory(std::string);

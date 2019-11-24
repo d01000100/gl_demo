@@ -14,7 +14,7 @@ FollowCamera* FollowCamera::getPhysicsCamera() {
 	return FollowCamera::theCamera;
 }
 
-void FollowCamera::init(iGameItem* targetItem, glm::vec3 offset)
+void FollowCamera::init(aGameItem* targetItem, glm::vec3 offset)
 {
 	this->targetItem = targetItem;
 	setTarget(targetItem->getPos());

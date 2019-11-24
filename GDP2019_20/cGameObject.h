@@ -41,7 +41,7 @@ struct sTextureSpec {
 	float weight = 1.0f;
 };
 
-class cGameObject : public iGameItem
+class cGameObject : public aGameItem
 {
 public:
 	cGameObject();
