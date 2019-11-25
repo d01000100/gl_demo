@@ -19,7 +19,7 @@ extern cBasicTextureManager* g_pTextureManager;
 
 extern cDebugRenderer* g_pDebugRenderer;
 
-extern bool isDebug;
+extern bool isDebug, isRunning;
 
 FMOD_VECTOR glm_2_fmod_vec(glm::vec3 v);
 glm::vec3 fmod_vec_2_glm(FMOD_VECTOR);

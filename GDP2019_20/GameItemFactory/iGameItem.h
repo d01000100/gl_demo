@@ -39,6 +39,7 @@ public:
 	void addOrientation(glm::vec3 deltaEulerOrientation);
 
 	glm::vec3 getDirection();
+	glm::vec3 getBaseDirection() { return baseDirection; }
 	glm::vec3 getUp() { return orientation * baseUp; }
 	glm::vec3 getRight() { return cross(getDirection(), getUp()); }
 	void setDirection(glm::vec3 dir);

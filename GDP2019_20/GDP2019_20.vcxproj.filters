@@ -353,6 +353,12 @@
     <ClInclude Include="ParallelCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RotateCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LookToward.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl">

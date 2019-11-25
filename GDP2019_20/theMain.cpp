@@ -50,7 +50,7 @@ GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 AABBGrid* pAABBgrid = new AABBGrid();
-bool ::isDebug = false;
+bool ::isDebug = false, ::isRunning = false;
 
 // audio globals
 FMOD::System *::fmod_system = 0;
@@ -214,9 +214,9 @@ int main(void)
 
 		// Projection matrix
 		p = glm::perspective(0.6f,		// FOV
-							 ratio,			// Aspect ratio
-							 0.1f,			// Near clipping plane
-							 10000.0f);		// Far clipping plane
+			ratio,			// Aspect ratio
+			0.1f,			// Near clipping plane
+			10000.0f);		// Far clipping plane
 
 		v = theCamera->lookAt();
 
@@ -246,24 +246,26 @@ int main(void)
 		}
 		//pAABBgrid->Draw();
 
-		cutscene->update(averageDeltaTime);
+		if (::isRunning)
+		{
+			cutscene->update(averageDeltaTime);
+		}
 
 		theSkyBox.draw();
-
 		theScene->drawScene();
+
 		sceneEditor->drawDebug();
 		if (sceneEditor->getDebugRenderer()) {
-			sceneEditor->getDebugRenderer()->RenderDebugObjects( v, p, 0.01f );
+			sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
 		}
 		::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		if (::isDebug) {
 			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		}
-		glfwSwapBuffers(window);
-		glfwPollEvents();
 
 		error_check(::fmod_system->update());
-
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 	glfwDestroyWindow(window);
 	glfwTerminate();

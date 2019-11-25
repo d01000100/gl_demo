@@ -239,6 +239,7 @@
     <ClInclude Include="iCommand.h" />
     <ClInclude Include="JSON_IO.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
+    <ClInclude Include="LookToward.h" />
     <ClInclude Include="Messages\iMessagable.h" />
     <ClInclude Include="Messages\Message.h" />
     <ClInclude Include="MoveCommand.h" />
@@ -247,6 +248,7 @@
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="quaternions_utils.h" />
+    <ClInclude Include="RotateCommand.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEditor.h" />
     <ClInclude Include="ScriptBuilder.h" />

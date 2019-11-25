@@ -163,6 +163,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			::isDebug = !::isDebug;
 		}
 
+		if (key == GLFW_KEY_PAUSE && action == GLFW_PRESS)
+		{
+			::isRunning = !::isRunning;
+		}
+
 		// Individual obj mode
 		if (key == GLFW_KEY_T && action == GLFW_PRESS) {
 			sMessage message;

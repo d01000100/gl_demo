@@ -92,15 +92,17 @@
 
   - *MoveTo
     - targetPos, time, easeInFraction, easeOutFraction
-  - OrientTo
-    - targetOrientation, time, ?easeInFraction, ?easeOutFraction
+  - *Rotate
+    - offsetRotation, time, ?easeInFraction, ?easeOutFraction
+  - *LookAt
+    - targetPos, time, easeInDur, easeOutDur
   - ScaleTo
     - targetScale, time, easeInFraction, easeOutFraction
 
   - FollowObject
     - targetObject, maxVel, innerRad, outerRad
   - *Serial
-  - Parallel
+  - *Parallel
   - FollowCurve
     - targetPos, curveyPoints ???
   - Trigger
