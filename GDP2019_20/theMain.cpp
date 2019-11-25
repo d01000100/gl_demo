@@ -249,6 +249,7 @@ int main(void)
 		if (::isRunning)
 		{
 			cutscene->update(averageDeltaTime);
+			theCamera->setTarget(theScene->findItem("ship2")->getPos());
 		}
 
 		theSkyBox.draw();

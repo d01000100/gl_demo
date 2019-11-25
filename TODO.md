@@ -103,7 +103,8 @@
     - targetObject, maxVel, innerRad, outerRad
   - *Serial
   - *Parallel
-  - FollowCurve
+  - *Follow
+  - RideCurve
     - targetPos, curveyPoints ???
   - Trigger
     - AABB (mins, maxs), triggerCommand

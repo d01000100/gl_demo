@@ -231,6 +231,7 @@
     <ClInclude Include="DebugRenderer\cGLRenderStateHelper.h" />
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
+    <ClInclude Include="FollowCommand.h" />
     <ClInclude Include="GameItemFactory\GameItemFactory.h" />
     <ClInclude Include="GameItemFactory\iGameItem.h" />
     <ClInclude Include="GFLW_callbacks.h" />

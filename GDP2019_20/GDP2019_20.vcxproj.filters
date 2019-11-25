@@ -198,11 +198,11 @@
     <ClCompile Include="MoveCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="SerialCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ParallelCommand.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialCommand.cpp">
+      <Filter>Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -350,14 +350,17 @@
     <ClInclude Include="SerialCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FollowCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
     <ClInclude Include="ParallelCommand.h">
-      <Filter>Header Files</Filter>
+      <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="RotateCommand.h">
-      <Filter>Header Files</Filter>
+      <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="LookToward.h">
-      <Filter>Header Files</Filter>
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
