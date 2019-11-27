@@ -249,6 +249,7 @@
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="quaternions_utils.h" />
+    <ClInclude Include="RideCurve.h" />
     <ClInclude Include="RotateCommand.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEditor.h" />
