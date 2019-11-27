@@ -186,6 +186,8 @@ int main(void)
 	double lastTime = glfwGetTime();
 	double flickerTimer = 0;
 
+	theCamera->setPosition(glm::vec3(0, 100, -150));
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Get the initial time

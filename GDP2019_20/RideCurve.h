@@ -10,7 +10,7 @@ private:
 	float totalDuration, currentTime,
 		easeInDuration, easeOutDuration,
 		easeOutStart,
-		t;
+		t, currentVel, maxVel;
 	aGameItem* gameItem;
 	bool isInitialized;
 public:
@@ -34,6 +34,11 @@ public:
 		t = 0;
 		this->easeOutStart = totalDuration - easeOutDuration;
 
+		float maxVelDuration = totalDuration - easeInDuration - easeOutDuration;
+		maxVelDuration = std::max(0.0001f, maxVelDuration);
+		// This was NOT trivial
+		this->maxVel = 1.0f / (maxVelDuration + easeInDuration / 2 + easeOutDuration / 2);
+
 		currentTime = 0.0f;
 		isInitialized = false;
 	}
@@ -53,24 +58,19 @@ public:
 
 		if (!isDone())
 		{
-			if (currentTime < easeInDuration)
+			if (currentTime < easeInDuration) // ease in
 			{
-				printf("ease in curve...\n");
-				float ratio = glm::smoothstep(0.0f, easeInDuration, currentTime);
-				t = (currentTime / totalDuration) * ratio;
+				currentVel = maxVel * glm::smoothstep(0.0f, easeInDuration, currentTime);
 			}
-			else if (currentTime < easeOutStart)
+			else if (currentTime < easeOutStart) // just move
 			{
-				printf("normal curve...\n");
-				t = currentTime / totalDuration;
+				currentVel = maxVel;
 			}
-			else
+			else // ease Out
 			{
-				printf("ease out curve...\n");
-				float easeOutratio = glm::smoothstep(easeOutStart, totalDuration, currentTime);
-				t = (easeOutStart / totalDuration) + (easeOutDuration / totalDuration) * easeOutratio;
+				currentVel = maxVel * glm::smoothstep(totalDuration, easeOutStart, currentTime);
 			}
-			printf("t: %f\n", t);
+			t += currentVel * deltaTime;
 			// Beizer curve equation MAGIC
 			glm::vec3 currentPos = (1 - t) * (1 - t) * start + 2 * (1 - t) * t * ctrl + t * t * end;
 
