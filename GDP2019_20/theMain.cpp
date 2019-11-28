@@ -34,6 +34,7 @@
 #include "BroadCollision.h"
 #include "quaternions_utils.h"
 #include "ScriptBuilder.h"
+#include "DollyCamera.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -50,6 +51,7 @@ GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 AABBGrid* pAABBgrid = new AABBGrid();
+DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false;
 
 // audio globals
@@ -220,7 +222,6 @@ int main(void)
 			0.1f,			// Near clipping plane
 			10000.0f);		// Far clipping plane
 
-		v = theCamera->lookAt();
 
 		glViewport(0, 0, width, height);
 
@@ -248,10 +249,13 @@ int main(void)
 		}
 		//pAABBgrid->Draw();
 
+		v = theCamera->lookAt();
+
 		if (::isRunning)
 		{
 			cutscene->update(averageDeltaTime);
-			theCamera->setTarget(theScene->findItem("ship2")->getPos());
+			//theCamera->setTarget(theScene->findItem("ship2")->getPos());
+			v = dollyCamera->lookAt();
 		}
 
 		theSkyBox.draw();

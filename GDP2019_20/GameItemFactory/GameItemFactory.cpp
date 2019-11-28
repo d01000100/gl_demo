@@ -108,10 +108,13 @@ aGameItem* createGameItem(std::string type, json info) {
 		}
 
 		if (info.find("rotation") != info.end()) {
-			float x = glm::radians(info["rotation"][0].get<float>());
-			float y = glm::radians(info["rotation"][1].get<float>());
-			float z = glm::radians(info["rotation"][2].get<float>());
+			float x = info["rotation"][0].get<float>();
+			float y = info["rotation"][1].get<float>();
+			float z = info["rotation"][2].get<float>();
 			gameObj->setOrientation(glm::vec3(x, y, z));
+		}
+		else {
+			gameObj->setOrientation(glm::vec3(0));
 		}
 
 		if (info.find("scale") != info.end()) {

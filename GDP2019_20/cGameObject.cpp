@@ -329,9 +329,9 @@ json cGameObject::toJSON() {
 	jObj["position"][2] = position.z;
 
 	glm::vec3 rotationXYZ = getOrientationEuler();
-	jObj["rotation"][0] = glm::degrees(rotationXYZ.x);
-	jObj["rotation"][1] = glm::degrees(rotationXYZ.y);
-	jObj["rotation"][2] = glm::degrees(rotationXYZ.z);
+	jObj["rotation"][0] = rotationXYZ.x;
+	jObj["rotation"][1] = rotationXYZ.y;
+	jObj["rotation"][2] = rotationXYZ.z;
 
 	jObj["scale"] = scale;
 	jObj["alpha"] = alpha;

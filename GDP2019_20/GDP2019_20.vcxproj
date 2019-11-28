@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABBGrid.cpp" />
+    <ClCompile Include="aOrientable.cpp" />
     <ClCompile Include="audio_item.cpp" />
     <ClCompile Include="audio_listener.cpp" />
     <ClCompile Include="BroadCollision.cpp" />
@@ -181,8 +182,8 @@
     <ClCompile Include="DebugRenderer\CErrorLog.cpp" />
     <ClCompile Include="DebugRenderer\cGLRenderStateHelper.cpp" />
     <ClCompile Include="DebugRenderer\COpenGLError.cpp" />
+    <ClCompile Include="DollyCamera.cpp" />
     <ClCompile Include="GameItemFactory\GameItemFactory.cpp" />
-    <ClCompile Include="GameItemFactory\iGameItem.cpp" />
     <ClCompile Include="GFLW_callbacks.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="globalStuff.cpp" />
@@ -200,12 +201,14 @@
     <ClCompile Include="ScriptBuilder.cpp" />
     <ClCompile Include="SerialCommand.cpp" />
     <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="Source.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABBGrid.h" />
+    <ClInclude Include="aOrientable.h" />
     <ClInclude Include="audio_item.h" />
     <ClInclude Include="audio_listener.h" />
     <ClInclude Include="BroadCollision.h" />
@@ -231,6 +234,7 @@
     <ClInclude Include="DebugRenderer\cGLRenderStateHelper.h" />
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
+    <ClInclude Include="DollyCamera.h" />
     <ClInclude Include="FollowCommand.h" />
     <ClInclude Include="GameItemFactory\GameItemFactory.h" />
     <ClInclude Include="GameItemFactory\iGameItem.h" />
@@ -256,6 +260,7 @@
     <ClInclude Include="ScriptBuilder.h" />
     <ClInclude Include="SerialCommand.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="TriggerCommand.h" />
     <ClInclude Include="UserInput.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>

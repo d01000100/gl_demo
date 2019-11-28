@@ -183,9 +183,6 @@
     <ClCompile Include="FollowCamera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
-    <ClCompile Include="GameItemFactory\iGameItem.cpp">
-      <Filter>GameItem %28Factory%29</Filter>
-    </ClCompile>
     <ClCompile Include="quaternions_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -203,6 +200,15 @@
     </ClCompile>
     <ClCompile Include="SerialCommand.cpp">
       <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="DollyCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="aOrientable.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -363,6 +369,15 @@
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="RideCurve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TriggerCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="aOrientable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DollyCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

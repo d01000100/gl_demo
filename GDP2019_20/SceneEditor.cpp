@@ -126,7 +126,7 @@ void SceneEditor::debugRotation(glm::vec3 pos) {
 
 	if (selectedObj != objects.end())
 	{
-		(*selectedObj)->debugOrientationAxis();
+		(*selectedObj)->debugOrientation();
 	}
 }
 

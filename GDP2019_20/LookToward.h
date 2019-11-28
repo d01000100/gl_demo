@@ -25,7 +25,7 @@ public:
 		// TODO: manage more than 180° turn rotation
 		this->gameItem = gameItem;
 		this->totalDuration = totalDuration;
-		this->endOrientation = RotationBetweenVectors(gameItem->getBaseDirection(), direction);
+		this->endOrientation = RotationBetweenVectors(gameItem->getBaseDirection(), glm::normalize(direction));
 
 		currentTime = 0.0f;
 		isInitialized = false;
