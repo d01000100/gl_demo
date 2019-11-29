@@ -34,5 +34,6 @@ public:
 	static int BuildFollowCommand(lua_State* L);
 	static int BuildRideCurve(lua_State* L);
 	static int BuildTriggerCommand(lua_State* L);
+	static int BuildLookAt(lua_State* L);
 };
 

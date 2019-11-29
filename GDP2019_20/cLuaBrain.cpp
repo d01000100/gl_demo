@@ -55,10 +55,12 @@ cLuaBrain::cLuaBrain()
 
 	lua_pushcfunction(this->m_pLuaState, ScriptBuilder::BuildRideCurve);
 	lua_setglobal(this->m_pLuaState, "BuildRideCurve");
-
+	
 	lua_pushcfunction(this->m_pLuaState, ScriptBuilder::BuildTriggerCommand);
 	lua_setglobal(this->m_pLuaState, "BuildTriggerCommand");
 
+	lua_pushcfunction(this->m_pLuaState, ScriptBuilder::BuildLookAt);
+	lua_setglobal(this->m_pLuaState, "BuildLookAt");
 
 	return;
 }

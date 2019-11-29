@@ -14,7 +14,7 @@ bool ParallelCommand::isDone() {
 
 void ParallelCommand::update(float deltaTime) 
 {
-	for (int c = 0; c < commands.size(); c++)
-		if (!commands[c]->isDone())
+	if (!isDone())
+		for (int c = 0; c < commands.size(); c++)
 			commands[c]->update(deltaTime);
 }

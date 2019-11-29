@@ -6,6 +6,7 @@
 #include "ParallelCommand.h"
 #include "RotateCommand.h"
 #include "LookToward.h"
+#include "LookAt.h"
 #include "FollowCommand.h"
 #include "RideCurve.h"
 #include "TriggerCommand.h"
@@ -357,6 +358,37 @@ int ScriptBuilder::BuildTriggerCommand(lua_State* L)
 
 	printf("Created TriggerCommand : %s\n",
 		triggerCommand->name.c_str());
+
+	return 0;
+}
+
+/*
+	1. Name of the new Command
+	2. Name of the object in scene to move
+	3. Name of the object in scene to look at
+	4. duration
+*/
+int ScriptBuilder::BuildLookAt(lua_State* L)
+{
+	string name = lua_tostring(L, 1);
+	aGameItem* gameItem = findItem(lua_tostring(L, 2));
+	aGameItem* targetItem = findItem(lua_tostring(L, 3));
+
+	iCommand* lookAtCommand = new LookAtCommand(
+		// item to be affected by command
+		gameItem,
+		// item to follow in scene
+		targetItem,
+		// duration
+		lua_tonumber(L, 4)
+	);
+
+	lookAtCommand->name = name;
+
+	ScriptBuilder::loadedCommands[name] = lookAtCommand;
+
+	printf("Created lookAtCommand : %s\n",
+		lookAtCommand->name.c_str());
 
 	return 0;
 }

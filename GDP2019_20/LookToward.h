@@ -4,6 +4,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <vector>
 #include <queue>
+#include <algorithm>
 
 #include "GameItemFactory/iGameItem.h"
 #include "quaternions_utils.h"

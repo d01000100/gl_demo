@@ -191,6 +191,7 @@
     <ClCompile Include="iCommand.cpp" />
     <ClCompile Include="JSON_IO.cpp" />
     <ClCompile Include="LightManager\cLightHelper.cpp" />
+    <ClCompile Include="LookAt.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="ParallelCommand.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
@@ -245,6 +246,7 @@
     <ClInclude Include="iCommand.h" />
     <ClInclude Include="JSON_IO.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
+    <ClInclude Include="LookAt.h" />
     <ClInclude Include="LookToward.h" />
     <ClInclude Include="Messages\iMessagable.h" />
     <ClInclude Include="Messages\Message.h" />

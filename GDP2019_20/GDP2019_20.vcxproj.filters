@@ -210,6 +210,9 @@
     <ClCompile Include="cLuaBrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LookAt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -382,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="cLuaBrain.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LookAt.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
