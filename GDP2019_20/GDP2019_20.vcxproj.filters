@@ -28,12 +28,6 @@
     <Filter Include="LowPassFilter">
       <UniqueIdentifier>{90db0187-9f5a-4e25-917c-0920eed7abc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameItem %28Factory%29">
-      <UniqueIdentifier>{8a4cd80a-c9f7-4d5c-9aec-d834e1d28014}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameItem %28Factory%29\GameObject">
-      <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Messages">
       <UniqueIdentifier>{65290bae-4b4a-420c-abeb-83016807c2ba}</UniqueIdentifier>
     </Filter>
@@ -57,6 +51,12 @@
     </Filter>
     <Filter Include="Commands">
       <UniqueIdentifier>{9d2b0555-a1bf-49ba-851f-f36f5c1a68c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameItem">
+      <UniqueIdentifier>{8a4cd80a-c9f7-4d5c-9aec-d834e1d28014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameItem\GameObject">
+      <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +94,7 @@
       <Filter>DebugRenderer</Filter>
     </ClCompile>
     <ClCompile Include="cGameObject.cpp">
-      <Filter>GameItem %28Factory%29\GameObject</Filter>
+      <Filter>GameItem\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsStuff.cpp">
       <Filter>Physics</Filter>
@@ -120,14 +120,11 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SceneEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameItemFactory\GameItemFactory.cpp">
-      <Filter>GameItem %28Factory%29</Filter>
+      <Filter>GameItem</Filter>
     </ClCompile>
     <ClCompile Include="ParticleEmitter.cpp">
       <Filter>Source Files</Filter>
@@ -137,9 +134,6 @@
     </ClCompile>
     <ClCompile Include="audio_listener.cpp">
       <Filter>AudioItems</Filter>
-    </ClCompile>
-    <ClCompile Include="cGameAudio.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="globalStuff.cpp">
       <Filter>Source Files</Filter>
@@ -201,13 +195,19 @@
     <ClCompile Include="SerialCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="DollyCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="cLight.cpp">
+      <Filter>GameItem</Filter>
     </ClCompile>
     <ClCompile Include="aOrientable.cpp">
+      <Filter>GameItem</Filter>
+    </ClCompile>
+    <ClCompile Include="cGameAudio.cpp">
+      <Filter>GameItem</Filter>
+    </ClCompile>
+    <ClCompile Include="DollyCamera.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="cLuaBrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -246,7 +246,7 @@
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="cGameObject.h">
-      <Filter>GameItem %28Factory%29\GameObject</Filter>
+      <Filter>GameItem\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsStuff.h">
       <Filter>Physics</Filter>
@@ -266,9 +266,6 @@
     <ClInclude Include="Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UserInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -276,10 +273,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameItemFactory\iGameItem.h">
-      <Filter>GameItem %28Factory%29</Filter>
+      <Filter>GameItem</Filter>
     </ClInclude>
     <ClInclude Include="GameItemFactory\GameItemFactory.h">
-      <Filter>GameItem %28Factory%29</Filter>
+      <Filter>GameItem</Filter>
     </ClInclude>
     <ClInclude Include="Messages\iMessagable.h">
       <Filter>Messages</Filter>
@@ -295,9 +292,6 @@
     </ClInclude>
     <ClInclude Include="audio_listener.h">
       <Filter>AudioItems</Filter>
-    </ClInclude>
-    <ClInclude Include="cGameAudio.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
@@ -353,9 +347,6 @@
     <ClInclude Include="MoveCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="SerialCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FollowCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
@@ -368,16 +359,28 @@
     <ClInclude Include="LookToward.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="RideCurve.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TriggerCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="aOrientable.h">
-      <Filter>Header Files</Filter>
+      <Filter>GameItem</Filter>
+    </ClInclude>
+    <ClInclude Include="cGameAudio.h">
+      <Filter>GameItem</Filter>
+    </ClInclude>
+    <ClInclude Include="cLight.h">
+      <Filter>GameItem</Filter>
     </ClInclude>
     <ClInclude Include="DollyCamera.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="RideCurve.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="TriggerCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cLuaBrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -388,5 +391,8 @@
     <None Include="assets\shaders\vertexShader01.glsl">
       <Filter>Source Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="cutscene_script.txt" />
   </ItemGroup>
 </Project>

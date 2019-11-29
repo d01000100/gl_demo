@@ -35,6 +35,7 @@
 #include "quaternions_utils.h"
 #include "ScriptBuilder.h"
 #include "DollyCamera.h"
+#include "cLuaBrain.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -110,6 +111,7 @@ int main(void)
 	init_fmod();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
+	cLuaBrain lua;
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -154,7 +156,9 @@ int main(void)
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
-	iCommand* cutscene = TestScript();
+	lua.RunFile("assets/cutscene_script.lua");
+	iCommand* cutscene = ScriptBuilder::getFinalScript();
+
 	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
 	//if (cruiseship) {
 	//	pAABBgrid->filterTriangles(cruiseship);
@@ -173,6 +177,7 @@ int main(void)
 		"SpaceBox_front5_posZ.bmp",
 		"SpaceBox_back6_negZ.bmp",
 		"sphere_model");
+
 
 	sceneEditor->init(theScene);
 
@@ -254,7 +259,7 @@ int main(void)
 		if (::isRunning)
 		{
 			cutscene->update(averageDeltaTime);
-			//theCamera->setTarget(theScene->findItem("ship2")->getPos());
+			theCamera->setTarget(theScene->findItem("player")->getPos());
 			v = dollyCamera->lookAt();
 		}
 
