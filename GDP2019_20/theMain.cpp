@@ -53,7 +53,7 @@ cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 AABBGrid* pAABBgrid = new AABBGrid();
 DollyCamera* dollyCamera = DollyCamera::getTheCamera();
-bool ::isDebug = false, ::isRunning = false;
+bool ::isDebug = false, ::isRunning = true;
 
 // audio globals
 FMOD::System *::fmod_system = 0;
@@ -259,11 +259,14 @@ int main(void)
 		if (::isRunning)
 		{
 			cutscene->update(averageDeltaTime);
-			theCamera->setTarget(theScene->findItem("player")->getPos());
+			//theCamera->setTarget(theScene->findItem("player")->getPos());
 			v = dollyCamera->lookAt();
 		}
 
 		theSkyBox.draw();
+
+		//printf("dollyCamera: %s\n\n", dollyCamera->getInfo().c_str());
+
 		theScene->drawScene();
 
 		sceneEditor->drawDebug();

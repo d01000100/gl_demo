@@ -6,7 +6,7 @@
 
 #include "globalStuff.h"
 #include "cModelLoader.h"
-#include "Camera.h"
+#include "DollyCamera.h"
 
 bool SkyBox::init(std::string posX_fileName, std::string negX_fileName,
 				std::string posY_fileName, std::string negY_fileName,
@@ -51,10 +51,10 @@ void SkyBox::draw()
 	// Tie the texture units to the samplers in the shader
 	glUniform1i(glGetUniformLocation(shaderProgID, "skyBox"), 26);	// Texture unit 26
 
-	Camera* theCamera = Camera::getTheCamera();
+	DollyCamera* theCamera = DollyCamera::getTheCamera();
 	glm::mat4x4 transformMatrix = glm::mat4(1.0f); 
-	transformMatrix = glm::translate(transformMatrix,
-		theCamera->getPosition());
+	//printf("Skybox pos: %s\n", glm::to_string(theCamera->getPos()).c_str());
+	transformMatrix = glm::scale(transformMatrix,glm::vec3(1000));
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgID, "matModel"),
 		1, GL_FALSE, glm::value_ptr(transformMatrix));
