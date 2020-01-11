@@ -123,7 +123,8 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	::window = glfwCreateWindow(1600, 800, "SimpleGame", NULL, NULL);
+	int init_width = 1600, init_height = 800;
+	::window = glfwCreateWindow(init_width, init_height, "SimpleGame", NULL, NULL);
 	if (!::window)
 	{
 		glfwTerminate();
@@ -198,7 +199,7 @@ int main(void)
 
 	cFBO *pTheFBO = new cFBO();
 	std::string FBOError;
-	if (!pTheFBO->init(1920, 1080, FBOError))
+	if (!pTheFBO->init(init_width, init_height, FBOError))
 	{
 		printf("FBOError: %s\n", FBOError.c_str());
 		return 1;
@@ -206,6 +207,14 @@ int main(void)
 
 	while (!glfwWindowShouldClose(window))
 	{
+		// Draw everything to the external frame buffer
+		// (I get the frame buffer ID, and use that)
+		glBindFramebuffer(GL_FRAMEBUFFER, pTheFBO->ID);
+		pTheFBO->clearBuffers(true, true);
+		// Set the passNumber to 0
+		GLint passNumber_UniLoc = glGetUniformLocation(shaderProgID, "passNumber");
+		glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
+
 		// Get the initial time
 		double currentTime = glfwGetTime();
 
@@ -238,12 +247,6 @@ int main(void)
 
 
 		glViewport(0, 0, width, height);
-
-		// Clear both the colour buffer (what we see) and the 
-		//  depth (or z) buffer. 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
 		GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
 		GLint matProj_UL = glGetUniformLocation(shaderProgID, "matProj");
 
@@ -282,16 +285,54 @@ int main(void)
 		//theCamera->setPosition(glm::vec3(0, 0, -100));
 		//theCamera->setTarget(glm::vec3(0));
 		//theCamera->lookAt();
+
+		// ===========================
+		// ====== Second pass ========
+		// ===========================
+
+		// 1. Disable de FBO
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// 2. Clear the ACTUAL frame buffer
+		glViewport(0, 0, width, height);
+		// Clear both the colour buffer (what we see) and the 
+		//  depth (or z) buffer. 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// 3. Use the FBO colour texture as the texture on that quad
+		glUniform1i(passNumber_UniLoc, 1);  //"passNumber"
+
+		// Tie the texture to the texture unitd
+		glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
+		glBindTexture(GL_TEXTURE_2D, pTheFBO->colourTexture_0_ID);	// Texture now assoc with texture unit 40
+		GLint textSamp00_UL = glGetUniformLocation(shaderProgID, "secondPassColourTexture");
+		glUniform1i(textSamp00_UL, 40);	// Texture unit 40
+
+		// 4. Move the camera
 		v = glm::lookAt(glm::vec3(0,0,-100), glm::vec3(0,0,0), glm::vec3(0,1,0));
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
+		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
+		// 5. Draw a single object
 		cGameObject* sceneObj = new cGameObject();
 		sceneObj->isVisible = true;
 		sceneObj->isLit = false;
-		sceneObj->meshName = "sphere_model";
+		sceneObj->meshName = "quad_model";
 		sceneObj->setPos(glm::vec3(0));
-		sceneObj->scale = 15.0f;
+		sceneObj->scale = 100.0f;
 		sceneObj->draw();
+
+		// 6. Get the screen size and send it to the shader
+		GLint screenWidth_UnitLoc = glGetUniformLocation(shaderProgID, "screenWidth");
+		GLint screenHeight_UnitLoc = glGetUniformLocation(shaderProgID, "screenHeight");
+
+		// Get the "screen" framebuffer size 
+		glfwGetFramebufferSize(window, &width, &height);
+
+		glUniform1f(screenWidth_UnitLoc, width);
+		glUniform1f(screenHeight_UnitLoc, height);
+
+		// ============= End of second pass ================
 
 		error_check(::fmod_system->update());
 		glfwSwapBuffers(window);

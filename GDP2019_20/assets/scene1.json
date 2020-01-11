@@ -80,6 +80,10 @@
         {
             "filename": "assets/models/terrain.ply",
             "name": "terrain_model"
+        },
+        {
+            "filename": "assets/models/quad.ply",
+            "name": "quad_model"
         }
     ],
     "Objects": [
