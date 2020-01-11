@@ -36,6 +36,7 @@
 #include "ScriptBuilder.h"
 #include "DollyCamera.h"
 #include "cLuaBrain.h"
+#include "cFBO.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -195,6 +196,14 @@ int main(void)
 
 	theCamera->setPosition(glm::vec3(0, 100, -150));
 
+	cFBO *pTheFBO = new cFBO();
+	std::string FBOError;
+	if (!pTheFBO->init(1920, 1080, FBOError))
+	{
+		printf("FBOError: %s\n", FBOError.c_str());
+		return 1;
+	}
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Get the initial time
@@ -238,12 +247,15 @@ int main(void)
 		GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
 		GLint matProj_UL = glGetUniformLocation(shaderProgID, "matProj");
 
+		v = theCamera->lookAt();
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		//theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
+		theSkyBox.draw();
+		theScene->drawScene();
 
 		aGameItem* player = theScene->findItem("player");
 		if (player) {
@@ -253,27 +265,33 @@ int main(void)
 			//pAABBgrid->Draw(player->getPos());
 		}
 		//pAABBgrid->Draw();
+		//if (::isRunning)
+		//{
+		//	cutscene->update(averageDeltaTime);
+		//	theCamera->setTarget(theScene->findItem("player")->getPos());
+		//	v = dollyCamera->lookAt();
+		//}
+		//sceneEditor->drawDebug();
+		//if (sceneEditor->getDebugRenderer()) {
+		//	sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
+		//}
+		//::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
+		//if (::isDebug) {
+		//	pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
+		//}
+		//theCamera->setPosition(glm::vec3(0, 0, -100));
+		//theCamera->setTarget(glm::vec3(0));
+		//theCamera->lookAt();
+		v = glm::lookAt(glm::vec3(0,0,-100), glm::vec3(0,0,0), glm::vec3(0,1,0));
+		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 
-		v = theCamera->lookAt();
-
-		if (::isRunning)
-		{
-			cutscene->update(averageDeltaTime);
-			theCamera->setTarget(theScene->findItem("player")->getPos());
-			v = dollyCamera->lookAt();
-		}
-
-		theSkyBox.draw();
-		theScene->drawScene();
-
-		sceneEditor->drawDebug();
-		if (sceneEditor->getDebugRenderer()) {
-			sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
-		}
-		::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
-		if (::isDebug) {
-			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
-		}
+		cGameObject* sceneObj = new cGameObject();
+		sceneObj->isVisible = true;
+		sceneObj->isLit = false;
+		sceneObj->meshName = "sphere_model";
+		sceneObj->setPos(glm::vec3(0));
+		sceneObj->scale = 15.0f;
+		sceneObj->draw();
 
 		error_check(::fmod_system->update());
 		glfwSwapBuffers(window);

@@ -58,6 +58,9 @@
     <Filter Include="GameItem\GameObject">
       <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FBO">
+      <UniqueIdentifier>{c4bc9bc7-c126-47f9-b896-123f33944d38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -212,6 +215,9 @@
     </ClCompile>
     <ClCompile Include="LookAt.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cFBO.cpp">
+      <Filter>FBO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,6 +394,9 @@
     </ClInclude>
     <ClInclude Include="LookAt.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cFBO.h">
+      <Filter>FBO</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
