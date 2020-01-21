@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <set>
 
 #include <string>
 #include "cMesh.h"
@@ -34,6 +35,17 @@ struct sPhysicsObject {
 	eShapeTypes shape;
 	float radius;
 	cMesh* mesh;
+	sPhysicsObject() {}
+	sPhysicsObject(sPhysicsObject* obj)
+	{
+		speed = obj->speed;
+		velocity = obj->velocity;
+		acceleration = obj->acceleration;
+		gravity = obj->gravity;
+		shape = obj->shape;
+		radius = obj->radius;
+		mesh = obj->mesh;
+	}
 };
 
 struct sTextureSpec {
@@ -45,6 +57,7 @@ class cGameObject : public aGameItem
 {
 public:
 	cGameObject();
+	cGameObject(cGameObject* obj);
 	// Used to draw this mesh
 	std::string meshName;
 	cMesh* mesh;
@@ -83,6 +96,7 @@ public:
 	std::string getType();
 	std::string getInfo();
 	json toJSON();
+	std::set<std::string> tags;
 
 private:
 	// this variable is static, so common to all objects.

@@ -35,7 +35,9 @@
 #include "quaternions_utils.h"
 #include "ScriptBuilder.h"
 #include "DollyCamera.h"
-#include "cLuaBrain.h"
+//#include "cLuaBrain.h"
+#include "UserInput.h"
+#include "NPC_AI.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -51,7 +53,7 @@ cVAOManager* theVAOManager = new cVAOManager();
 GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
-AABBGrid* pAABBgrid = new AABBGrid();
+//AABBGrid* pAABBgrid = new AABBGrid();
 DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false;
 
@@ -111,7 +113,7 @@ int main(void)
 	init_fmod();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
-	cLuaBrain lua;
+	//cLuaBrain lua;
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -122,7 +124,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	::window = glfwCreateWindow(1600, 800, "SimpleGame", NULL, NULL);
+	::window = glfwCreateWindow(900, 900, "SimpleGame", NULL, NULL);
 	if (!::window)
 	{
 		glfwTerminate();
@@ -156,8 +158,10 @@ int main(void)
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
-	lua.RunFile("assets/cutscene_script.lua");
-	iCommand* cutscene = ScriptBuilder::getFinalScript();
+	//lua.RunFile("assets/cutscene_script.lua");
+	//iCommand* cutscene = ScriptBuilder::getFinalScript();
+
+	NPC_AI* gameAI = new NPC_AI();
 
 	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
 	//if (cruiseship) {
@@ -193,7 +197,7 @@ int main(void)
 	double lastTime = glfwGetTime();
 	double flickerTimer = 0;
 
-	theCamera->setPosition(glm::vec3(0, 100, -150));
+	//theCamera->setPosition(glm::vec3(0, 100, -150));
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -242,7 +246,8 @@ int main(void)
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		//theScene->IntegrationStep(averageDeltaTime);
+		gameAI->Update(averageDeltaTime);
+		theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
 
 		aGameItem* player = theScene->findItem("player");
@@ -258,10 +263,13 @@ int main(void)
 
 		if (::isRunning)
 		{
-			cutscene->update(averageDeltaTime);
+			//cutscene->update(averageDeltaTime);
 			theCamera->setTarget(theScene->findItem("player")->getPos());
 			v = dollyCamera->lookAt();
 		}
+
+		// Listen to the controls
+		velocityControls("player", window);
 
 		theSkyBox.draw();
 		theScene->drawScene();

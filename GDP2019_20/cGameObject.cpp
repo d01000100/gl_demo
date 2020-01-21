@@ -42,6 +42,40 @@ cGameObject::cGameObject()
 	return;
 }
 
+cGameObject::cGameObject(cGameObject* obj)
+{
+	this->scale = obj->scale;
+	this->isVisible = obj->isVisible;
+
+	this->isWireframe = obj->isWireframe;
+
+	physics = new sPhysicsObject(obj->physics);
+
+	// Set the unique ID
+	// Take the value of the static int, 
+	//  set this to the instance variable
+	this->m_uniqueID = cGameObject::next_uniqueID;
+	// Then increment the static variable
+	cGameObject::next_uniqueID++;
+
+	this->m_pDebugRenderer = NULL;
+	position = obj->position;
+
+	alpha = obj->alpha;
+	isLit = obj->isLit;
+	lifeTime = obj->lifeTime;
+
+	diffuseColor = obj->diffuseColor;
+	specularColor = obj->specularColor;
+	meshName = obj->meshName;
+	friendlyName = meshName + "_" + std::to_string(m_uniqueID);
+	mesh = obj->mesh;
+	textures = obj->textures;
+	collision_points = obj->collision_points;
+	matWorld = obj->matWorld;
+	tags = obj->tags;
+}
+
 
 unsigned int cGameObject::getUniqueID(void)
 {
@@ -301,7 +335,7 @@ void cGameObject::IntegrationStep(float deltaTime) {
 			physics->acceleration += glm::vec3(0.0f, -1.0f, 0.0f) * deltaTime;
 		}
 
-		printf("deltaTime: %f\n", deltaTime);
+		//printf("deltaTime: %f\n", deltaTime);
 		// Forward Explicit Euler Inetegration
 		//NewVelocty += Velocity + ( Ax * DeltaTime )
 		physics->velocity += physics->acceleration * deltaTime;
