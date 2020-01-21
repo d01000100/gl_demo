@@ -12,6 +12,7 @@
 #include "Scene.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
+#include "cGameObject.h"
 
 #include <stdio.h>		// for fprintf()
 
@@ -119,9 +120,31 @@ void thrusterControls(int key, int action, int mods)
 	}
 }
 
+void velocityControls(std::string player_name, GLFWwindow* window)
+{
+	cGameObject* player = (cGameObject*)theScene->findItem(player_name);
+	float playerSpeed = 20.0f;
+	float pitchSpeed = 2.0f;
+	if (player && player->physics)
+	{
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			player->physics->velocity = player->getDirection() * playerSpeed;
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+			player->physics->velocity = player->getDirection() * -playerSpeed;
+		if (glfwGetKey(window, GLFW_KEY_W) != GLFW_PRESS &&
+			glfwGetKey(window, GLFW_KEY_S) != GLFW_PRESS)
+			player->physics->velocity = glm::vec3(0);
+		
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			player->yaw(pitchSpeed);
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			player->yaw(-pitchSpeed);
+	}
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	camera_orbit(key, action, mods);
+	//camera_orbit(key, action, mods);
 	//thrusterControls(key, action, mods);
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{		
