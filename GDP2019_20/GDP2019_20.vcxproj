@@ -98,7 +98,8 @@
       <AdditionalDependencies>fmodL_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(ProjectDir)lib\$(Configuration)\$(PlatformShortName)\*.dll $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -113,7 +114,8 @@
       <AdditionalDependencies>fmodL_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(ProjectDir)lib\$(Configuration)\$(PlatformShortName)\*.dll $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -132,7 +134,8 @@
       <AdditionalDependencies>fmod_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(ProjectDir)lib\$(Configuration)\$(PlatformShortName)\*.dll $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,7 +154,8 @@
       <AdditionalDependencies>lua5.3.5-static.lib;fmod_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(ProjectDir)lib\$(Configuration)\$(PlatformShortName)\*.dll $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -169,13 +173,13 @@
     <ClCompile Include="cGLColourHelper.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
-    <ClCompile Include="cLuaBrain.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
     <ClCompile Include="colors.cpp" />
     <ClCompile Include="cPhysics.cpp" />
     <ClCompile Include="cPhysics_Ericson.cpp" />
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
+    <ClCompile Include="cSteerable.cpp" />
     <ClCompile Include="CTextureFromBMP.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="DebugRenderer\cDebugRenderer.cpp" />
@@ -193,6 +197,7 @@
     <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="LookAt.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="NPC_AI.cpp" />
     <ClCompile Include="ParallelCommand.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
@@ -200,9 +205,9 @@
     <ClCompile Include="quaternions_utils.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneEditor.cpp" />
-    <ClCompile Include="ScriptBuilder.cpp" />
     <ClCompile Include="SerialCommand.cpp" />
     <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="Steerings.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="util.cpp" />
@@ -223,12 +228,12 @@
     <ClInclude Include="cGLColourHelper.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cLowPassFilter.h" />
-    <ClInclude Include="cLuaBrain.h" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cModelLoader.h" />
     <ClInclude Include="colors.h" />
     <ClInclude Include="cPhysics.h" />
     <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="cSteerable.h" />
     <ClInclude Include="CTextureFromBMP.h" />
     <ClInclude Include="cVAOManager.h" />
     <ClInclude Include="DebugRenderer\cDebugRenderer.h" />
@@ -251,6 +256,7 @@
     <ClInclude Include="Messages\iMessagable.h" />
     <ClInclude Include="Messages\Message.h" />
     <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="NPC_AI.h" />
     <ClInclude Include="ParallelCommand.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="FollowCamera.h" />
@@ -260,9 +266,9 @@
     <ClInclude Include="RotateCommand.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEditor.h" />
-    <ClInclude Include="ScriptBuilder.h" />
     <ClInclude Include="SerialCommand.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="Steerings.h" />
     <ClInclude Include="TriggerCommand.h" />
     <ClInclude Include="UserInput.h" />
     <ClInclude Include="util.h" />

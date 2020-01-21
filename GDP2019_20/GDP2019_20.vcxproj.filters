@@ -58,6 +58,9 @@
     <Filter Include="GameItem\GameObject">
       <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI_ShooterGame">
+      <UniqueIdentifier>{0e96a5e4-4217-4ec6-8810-98297fc0d077}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -180,9 +183,6 @@
     <ClCompile Include="quaternions_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScriptBuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="iCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
@@ -207,11 +207,17 @@
     <ClCompile Include="DollyCamera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
-    <ClCompile Include="cLuaBrain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LookAt.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Steerings.cpp">
+      <Filter>AI_ShooterGame</Filter>
+    </ClCompile>
+    <ClCompile Include="cSteerable.cpp">
+      <Filter>AI_ShooterGame</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC_AI.cpp">
+      <Filter>AI_ShooterGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,9 +273,6 @@
       <Filter>LowPassFilter</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UserInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneEditor.h">
@@ -344,9 +347,6 @@
     <ClInclude Include="iCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="ScriptBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MoveCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
@@ -383,11 +383,20 @@
     <ClInclude Include="TriggerCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="cLuaBrain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LookAt.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Steerings.h">
+      <Filter>AI_ShooterGame</Filter>
+    </ClInclude>
+    <ClInclude Include="cSteerable.h">
+      <Filter>AI_ShooterGame</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC_AI.h">
+      <Filter>AI_ShooterGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
