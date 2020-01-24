@@ -9,10 +9,29 @@ NPC_AI::NPC_AI()
 	if (plantilla)
 	{
 		cGameObject* enemyGO = new cGameObject(plantilla);
-		enemyGO->position += glm::vec3(-30, 0, 0);
+		enemyGO->position += glm::vec3(0, 0, 0);
 		enemyGO->isVisible = true;
 		enemyGO->tags.insert("enemy");
-		sEnemy *enemy = new sEnemy(new cSteerable(enemyGO));
+		cSteerable *pSteerable = new cSteerable(enemyGO);
+		pSteerable->maxVel = 10.0f;
+		pSteerable->wanderDistance = 5.0f;
+		pSteerable->wanderRadius = 10.0f;
+		sEnemy *enemy = new sEnemy(pSteerable);
+		enemy->type = "pursue";
+		enemies.push_back(enemy);
+		theScene->addItem(enemyGO);
+
+		enemyGO = new cGameObject(plantilla);
+		enemyGO->position += glm::vec3(0, 0, 0);
+		enemyGO->isVisible = true;
+		enemyGO->tags.insert("enemy2");
+		enemyGO->diffuseColor = Colors::red;
+		pSteerable = new cSteerable(enemyGO);
+		pSteerable->maxVel = 10.0f;
+		pSteerable->wanderDistance = 5.0f;
+		pSteerable->wanderRadius = 10.0f;
+		enemy = new sEnemy(pSteerable);
+		enemy->type = "seek";
 		enemies.push_back(enemy);
 		theScene->addItem(enemyGO);
 	}
@@ -29,8 +48,10 @@ void NPC_AI::Update(float deltaTime)
 	if (!player) { printf("Player not found\n"); return; }
 	for (itEnemies = enemies.begin(); itEnemies != enemies.end(); itEnemies++)
 	{
-		cSteerable* enemy = (*itEnemies)->pSteerable;
-		cGameObject* enemyGO = enemy->agent;
-		enemy->Seek(player, deltaTime);
+		sEnemy* enemy = *itEnemies;
+		if (enemy->type == "seek")
+			enemy->pSteerable->Flee(player, deltaTime);
+		if (enemy->type == "pursue")
+			(*itEnemies)->pSteerable->Evade(player, deltaTime);
 	}
 }

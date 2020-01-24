@@ -3,9 +3,15 @@
 class cSteerable
 {
 public:
-	float maxVel;
-	cGameObject* agent;
+	float maxVel, approachDistance, stopDistance,
+		wanderDistance, wanderRadius;
+	cGameObject* gameObject;
 	cSteerable(cGameObject *a);
 	void Seek(cGameObject* target, float deltaTime);
+	void Flee(cGameObject* target, float deltaTime);
+	void Approach(cGameObject* target, float deltaTime);
+	void Wander(float deltaTime);
+	void Pursue(cGameObject* target, float deltaTime);
+	void Evade(cGameObject* target, float deltaTime);
 };
 
