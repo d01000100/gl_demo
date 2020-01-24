@@ -2,7 +2,7 @@
   "Cameras": [
     {
       "name": "top-down",
-      "position": [0.0, 130.0, -0.10000000149011612],
+      "position": [0.0, 110.0, -0.10000000149011612],
       "target": [0.0, 0.0, 0.0]
     }
   ],
@@ -39,7 +39,7 @@
       "isVisible": true,
       "mesh": "quad_model",
       "name": "floor",
-      "position": [0.0, 0.0, 0.0],
+      "position": [0.0, -20.0, 0.0],
       "rotation": [-90.0, 0.0, 0.0],
       "scale": 84.76687622070313,
       "specularColor": [255.0, 255.0, 255.0, 50.0],
@@ -52,7 +52,7 @@
       "isVisible": false,
       "mesh": "ship_model",
       "name": "ship_template",
-      "position": [0.0, 20.0, 0.0],
+      "position": [0.0, 0.0, 0.0],
       "rotation": [0.0, -0.0, 0.0],
       "scale": 0.3304840326309204,
       "specularColor": [255.0, 255.0, 255.0, 50.0],
@@ -65,7 +65,7 @@
       "isVisible": true,
       "mesh": "ship_model",
       "name": "player",
-      "position": [0.0, 20.0, 0.0],
+      "position": [0.0, 0.0, 0.0],
       "rotation": [0.0, -0.0, 0.0],
       "scale": 0.3304840326309204,
       "specularColor": [255.0, 255.0, 255.0, 50.0],

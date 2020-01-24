@@ -9,7 +9,7 @@ NPC_AI::NPC_AI()
 	if (plantilla)
 	{
 		cGameObject* enemyGO = new cGameObject(plantilla);
-		enemyGO->position += glm::vec3(0, 0, 0);
+		enemyGO->position += glm::vec3(0, 0, 15);
 		enemyGO->isVisible = true;
 		enemyGO->tags.insert("enemy");
 		cSteerable *pSteerable = new cSteerable(enemyGO);
@@ -22,7 +22,7 @@ NPC_AI::NPC_AI()
 		theScene->addItem(enemyGO);
 
 		enemyGO = new cGameObject(plantilla);
-		enemyGO->position += glm::vec3(0, 0, 0);
+		enemyGO->position += glm::vec3(0, 0, -15);
 		enemyGO->isVisible = true;
 		enemyGO->tags.insert("enemy2");
 		enemyGO->diffuseColor = Colors::red;
@@ -50,7 +50,7 @@ void NPC_AI::Update(float deltaTime)
 	{
 		sEnemy* enemy = *itEnemies;
 		if (enemy->type == "seek")
-			enemy->pSteerable->Flee(player, deltaTime);
+			enemy->pSteerable->Wander(deltaTime);
 		if (enemy->type == "pursue")
 			(*itEnemies)->pSteerable->Evade(player, deltaTime);
 	}

@@ -37,7 +37,6 @@
 #include "DollyCamera.h"
 //#include "cLuaBrain.h"
 #include "UserInput.h"
-#include "NPC_AI.h"
 #include "Gameplay.h"
 
 // Keyboard, error, mouse, etc. are now here
@@ -163,7 +162,6 @@ int main(void)
 	//lua.RunFile("assets/cutscene_script.lua");
 	//iCommand* cutscene = ScriptBuilder::getFinalScript();
 
-	NPC_AI* gameAI = new NPC_AI();
 	gameplay.init(window);
 
 	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
@@ -249,7 +247,6 @@ int main(void)
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		gameAI->Update(averageDeltaTime);
 		theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
 

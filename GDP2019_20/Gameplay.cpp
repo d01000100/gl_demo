@@ -8,6 +8,8 @@ void Gameplay::init(GLFWwindow* w)
 	if (!player) { printf("No player in gameplay!!\n"); }
 	this->window = w;
 	shootTimer = 5.0f;
+	fireCooldown = 2.0f;
+	npc_AI = new NPC_AI();
 }
 
 void Gameplay::velocityControls()
@@ -35,18 +37,19 @@ void Gameplay::update(float deltaTime)
 {
 	velocityControls();
 	Shoot();
-
-	if (shootTimer < 4.0f) {
+	Collisions();
+	if (shootTimer < fireCooldown) {
 		shootTimer += deltaTime;
 	}
+	npc_AI->Update(deltaTime);
 }
 
 void Gameplay::Shoot()
 {
-	if (shootTimer > 4.0f &&
+	if (shootTimer > fireCooldown &&
 		glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		playerBullet = new cGameObject(player);
+		playerBullet = new cGameObject(player);	
 		playerBullet->meshName = "sphere_model";
 		playerBullet->scale = 0.5f;
 		glm::vec3 velocity = player->getDirection() * 50.0f;
@@ -56,8 +59,31 @@ void Gameplay::Shoot()
 		playerBullet->tags.insert("bullet");
 		playerBullet->textures.clear();
 		playerBullet->diffuseColor = Colors::white;
-		playerBullet->lifeTime = 4.0f;
+		playerBullet->lifeTime = fireCooldown;
 		theScene->addItem(playerBullet);
 		shootTimer = 0;
+	}
+}
+
+void Gameplay::Collisions()
+{
+	float playerRadius = 2.0f;
+	float enemyRadius = 2.0f;
+	float bulletRadius = 0.5f;
+	std::vector<sEnemy*>::iterator iterEnemies;
+	for (iterEnemies = npc_AI->enemies.begin();
+		iterEnemies != npc_AI->enemies.end();
+		iterEnemies++)
+	{
+		sEnemy* enemy = *iterEnemies;
+		cGameObject* enemyGO = enemy->pSteerable->gameObject;
+
+		if (glm::distance(enemyGO->position, player->position) < playerRadius + enemyRadius)
+		{
+			// A player has bumped into an enemy
+			player->position = glm::vec3(0);
+			player->setDirection(glm::vec3(0, 0, 1));
+			player->physics->velocity = glm::vec3(0);
+		}
 	}
 }
