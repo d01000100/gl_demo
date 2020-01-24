@@ -72,8 +72,7 @@ void Gameplay::Collisions()
 	float bulletRadius = 0.5f;
 	std::vector<sEnemy*>::iterator iterEnemies;
 	for (iterEnemies = npc_AI->enemies.begin();
-		iterEnemies != npc_AI->enemies.end();
-		iterEnemies++)
+		iterEnemies != npc_AI->enemies.end();)
 	{
 		sEnemy* enemy = *iterEnemies;
 		cGameObject* enemyGO = enemy->pSteerable->gameObject;
@@ -84,6 +83,20 @@ void Gameplay::Collisions()
 			player->position = glm::vec3(0);
 			player->setDirection(glm::vec3(0, 0, 1));
 			player->physics->velocity = glm::vec3(0);
+		}
+
+		if (playerBullet && 
+			glm::distance(playerBullet->position, enemyGO->position) < enemyRadius + bulletRadius)
+		{
+			// We've hit an enemy
+			theScene->removeItem(playerBullet->friendlyName);
+			theScene->removeItem(enemyGO->friendlyName);
+			playerBullet = NULL;
+			shootTimer = fireCooldown + 1.0f;
+			iterEnemies = npc_AI->enemies.erase(iterEnemies);
+		}
+		else {
+			iterEnemies++;
 		}
 	}
 }

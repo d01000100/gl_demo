@@ -247,3 +247,13 @@ void Scene::addItem(aGameItem* newItem)
 {
 	gameItems[newItem->getName()] = newItem;
 }
+
+bool Scene::removeItem(std::string itemName)
+{
+	if (gameItems.find(itemName) != gameItems.end()) {
+		delete gameItems[itemName];
+		gameItems.erase(itemName);
+		return true;
+	}
+	return false;
+}

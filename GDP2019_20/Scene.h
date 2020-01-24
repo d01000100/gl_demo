@@ -42,4 +42,5 @@ public:
 	void setCamera(std::string);
 	aGameItem* findItem(std::string);
 	void addItem(aGameItem* newItem);
+	bool removeItem(std::string itemName);
 };
