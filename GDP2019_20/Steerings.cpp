@@ -85,7 +85,7 @@ glm::vec3 Steerings::evade(
 {
 	float distance = glm::distance(pos, target);
 	float framesToPredict = distance / maxVel;
-	std::cout << "Distance: " << distance << " frames: " << framesToPredict << std::endl;
+	//std::cout << "Distance: " << distance << " frames: " << framesToPredict << std::endl;
 	glm::vec3 futureTarget = target + targetVel * framesToPredict;
 	g_pDebugRenderer->addLine(target, futureTarget, Colors::white, 0.01f);
 	return flee(pos, vel, futureTarget, maxVel);

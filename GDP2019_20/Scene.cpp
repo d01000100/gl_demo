@@ -189,9 +189,10 @@ void Scene::IntegrationStep(float deltaTime) {
 				currentObject->lifeTime < 0.0f)
 			{
 				delete currentObject;
+				currentObject = NULL;
 				std::map<std::string, aGameItem*>::iterator toDelete = itItem;
-				itItem++;
-				gameItems.erase(toDelete);
+				//itItem++;
+				itItem = gameItems.erase(toDelete);
 				continue;
 			}
 		}

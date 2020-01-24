@@ -219,6 +219,9 @@
     <ClCompile Include="NPC_AI.cpp">
       <Filter>AI_ShooterGame</Filter>
     </ClCompile>
+    <ClCompile Include="Gameplay.cpp">
+      <Filter>AI_ShooterGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -396,6 +399,9 @@
       <Filter>AI_ShooterGame</Filter>
     </ClInclude>
     <ClInclude Include="NPC_AI.h">
+      <Filter>AI_ShooterGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Gameplay.h">
       <Filter>AI_ShooterGame</Filter>
     </ClInclude>
   </ItemGroup>

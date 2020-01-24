@@ -17,4 +17,14 @@
 - Pursue
 - Evade
 
-## Integrate behaviours
+## Gameplay
+
+- !Shoot Bullets
+- Kill enemies
+- Kill player
+- Different types of enemies
+  - Seeks/Flees
+  - Pursue / Evade Bullet
+  - Approaches and fire
+  - Wanders 
+- Stanciate different waves

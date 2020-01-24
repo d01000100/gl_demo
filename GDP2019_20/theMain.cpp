@@ -38,6 +38,7 @@
 //#include "cLuaBrain.h"
 #include "UserInput.h"
 #include "NPC_AI.h"
+#include "Gameplay.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -114,6 +115,7 @@ int main(void)
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
 	//cLuaBrain lua;
+	Gameplay gameplay;
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -162,6 +164,7 @@ int main(void)
 	//iCommand* cutscene = ScriptBuilder::getFinalScript();
 
 	NPC_AI* gameAI = new NPC_AI();
+	gameplay.init(window);
 
 	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
 	//if (cruiseship) {
@@ -267,9 +270,7 @@ int main(void)
 			theCamera->setTarget(theScene->findItem("player")->getPos());
 			v = dollyCamera->lookAt();
 		}
-
-		// Listen to the controls
-		velocityControls("player", window);
+		gameplay.update(averageDeltaTime);
 
 		theSkyBox.draw();
 		theScene->drawScene();

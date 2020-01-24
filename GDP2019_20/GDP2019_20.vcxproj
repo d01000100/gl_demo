@@ -189,6 +189,7 @@
     <ClCompile Include="DebugRenderer\COpenGLError.cpp" />
     <ClCompile Include="DollyCamera.cpp" />
     <ClCompile Include="GameItemFactory\GameItemFactory.cpp" />
+    <ClCompile Include="Gameplay.cpp" />
     <ClCompile Include="GFLW_callbacks.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="globalStuff.cpp" />
@@ -245,6 +246,7 @@
     <ClInclude Include="FollowCommand.h" />
     <ClInclude Include="GameItemFactory\GameItemFactory.h" />
     <ClInclude Include="GameItemFactory\iGameItem.h" />
+    <ClInclude Include="Gameplay.h" />
     <ClInclude Include="GFLW_callbacks.h" />
     <ClInclude Include="GLCommon.h" />
     <ClInclude Include="globalStuff.h" />
