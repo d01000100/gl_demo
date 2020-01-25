@@ -49,19 +49,26 @@ void Gameplay::Shoot()
 	if (shootTimer > fireCooldown &&
 		glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		playerBullet = new cGameObject(player);	
-		playerBullet->meshName = "sphere_model";
-		playerBullet->scale = 0.5f;
-		glm::vec3 velocity = player->getDirection() * 50.0f;
-		playerBullet->physics->velocity = velocity;
-		playerBullet->tags.clear();
-		playerBullet->tags.insert("player");
-		playerBullet->tags.insert("bullet");
-		playerBullet->textures.clear();
-		playerBullet->diffuseColor = Colors::white;
-		playerBullet->lifeTime = fireCooldown;
-		theScene->addItem(playerBullet);
-		shootTimer = 0;
+		cGameObject* plantilla = (cGameObject*)theScene->findItem("bullet_template");
+		if (plantilla)
+		{
+			playerBullet = new cGameObject(plantilla);
+			playerBullet->friendlyName = "player_bullet";
+			glm::vec3 velocity = player->getDirection() * 30.0f;
+			playerBullet->physics->velocity = velocity;
+			playerBullet->position = player->position;
+			playerBullet->tags.insert("player");
+			playerBullet->tags.insert("bullet");
+			playerBullet->diffuseColor = Colors::white;
+			playerBullet->lifeTime = fireCooldown;
+			playerBullet->isVisible = true;
+			theScene->addItem(playerBullet);
+			shootTimer = 0;
+		}
+		else
+		{
+			printf("No bullet template!!!\n");
+		}
 	}
 }
 
@@ -83,6 +90,18 @@ void Gameplay::Collisions()
 			player->position = glm::vec3(0);
 			player->setDirection(glm::vec3(0, 0, 1));
 			player->physics->velocity = glm::vec3(0);
+		}
+
+		if (enemy->bullet &&
+			glm::distance(player->position, enemy->bullet->position) < playerRadius + bulletRadius)
+		{
+			// The player bumped into a bullet
+			player->position = glm::vec3(0);
+			player->setDirection(glm::vec3(0, 0, 1));
+			player->physics->velocity = glm::vec3(0);
+
+			theScene->removeItem(enemy->bullet->friendlyName);
+			enemy->bullet = NULL;
 		}
 
 		if (playerBullet && 

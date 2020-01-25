@@ -75,6 +75,19 @@
               "textureName": "low-poly-ship.bmp"
           }
       ]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": false,
+      "mesh": "sphere_model",
+      "name": "bullet_template",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 0.5,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "Physics": {}
     }
   ],
   "Sounds": null,

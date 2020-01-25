@@ -20,8 +20,8 @@
 ## Gameplay
 
 - !Shoot Bullets
-- Kill enemies
-- Kill player
+- !Kill enemies
+- !Kill player
 - Different types of enemies
   - Seeks/Flees
   - Pursue / Evade Bullet

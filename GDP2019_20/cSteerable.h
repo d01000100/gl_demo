@@ -4,7 +4,8 @@ class cSteerable
 {
 public:
 	float maxVel, approachDistance, stopDistance,
-		wanderDistance, wanderRadius;
+		wanderDistance, wanderRadius,
+		evadePower;
 	cGameObject* gameObject;
 	cSteerable(cGameObject *a);
 	void Seek(cGameObject* target, float deltaTime);

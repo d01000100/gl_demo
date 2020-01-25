@@ -57,6 +57,8 @@ glm::vec3 Steerings::wander(
 	double x = glm::cos(angle) * circleRadius,
 		z = glm::sin(angle) * circleRadius;
 	glm::vec3 seekPoint = circleCenter + glm::vec3(x, 0, z);
+	//g_pDebugRenderer->addLine(pos, circleCenter, Colors::white, 0.01f);
+	//g_pDebugRenderer->addLine(seekPoint, circleCenter, Colors::yellow, 0.01f);
 	// seek towards that
 	return seek(pos, vel, seekPoint, maxVel);
 }
@@ -70,9 +72,9 @@ glm::vec3 Steerings::pursue(
 {
 	float distance = glm::distance(pos, target);
 	float framesToPredict = distance / maxVel;
-	std::cout << "Distance: " << distance << " frames: "<< framesToPredict << std::endl;
+	//std::cout << "Distance: " << distance << " frames: "<< framesToPredict << std::endl;
 	glm::vec3 futureTarget = target + targetVel * framesToPredict;
-	g_pDebugRenderer->addLine(target, futureTarget, Colors::white, 0.01f);
+	//g_pDebugRenderer->addLine(target, futureTarget, Colors::white, 0.01f);
 	return seek(pos, vel, futureTarget, maxVel);
 }
 
@@ -87,6 +89,6 @@ glm::vec3 Steerings::evade(
 	float framesToPredict = distance / maxVel;
 	//std::cout << "Distance: " << distance << " frames: " << framesToPredict << std::endl;
 	glm::vec3 futureTarget = target + targetVel * framesToPredict;
-	g_pDebugRenderer->addLine(target, futureTarget, Colors::white, 0.01f);
+	//g_pDebugRenderer->addLine(target, futureTarget, Colors::white, 0.01f);
 	return flee(pos, vel, futureTarget, maxVel);
 }

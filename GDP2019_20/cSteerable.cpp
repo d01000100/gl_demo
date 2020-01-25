@@ -2,13 +2,14 @@
 #include "Steerings.h"
 #include <iostream>
 
-cSteerable::cSteerable(cGameObject *a) :
+cSteerable::cSteerable(cGameObject* a) :
 	maxVel(10.0f),
 	gameObject(a),
-	approachDistance(10.0f),
-	stopDistance(5.0f),
-	wanderDistance(7.0f),
-	wanderRadius(4.0f)
+	approachDistance(30.0f),
+	stopDistance(7.0f),
+	wanderDistance(4.0f),
+	wanderRadius(7.0f),
+	evadePower(30.0f)
 {
 }
 
@@ -74,8 +75,8 @@ void cSteerable::Pursue(cGameObject* target, float deltaTime)
 		target->physics->velocity,
 		maxVel);
 	gameObject->physics->velocity += steeringVel * deltaTime;
-	if (glm::length(gameObject->physics->velocity) > maxVel)
-		gameObject->physics->velocity = glm::normalize(gameObject->physics->velocity) * maxVel;
+	//if (glm::length(gameObject->physics->velocity) > maxVel)
+	//	gameObject->physics->velocity = glm::normalize(gameObject->physics->velocity) * maxVel;
 }
 
 void cSteerable::Evade(cGameObject* target, float deltaTime)
@@ -86,7 +87,7 @@ void cSteerable::Evade(cGameObject* target, float deltaTime)
 		target->getPos(),
 		target->physics->velocity,
 		maxVel);
-	gameObject->physics->velocity += steeringVel * deltaTime;
-	if (glm::length(gameObject->physics->velocity) > maxVel)
-		gameObject->physics->velocity = glm::normalize(gameObject->physics->velocity) * maxVel;
+	gameObject->physics->velocity += steeringVel * (deltaTime * evadePower);
+	//if (glm::length(gameObject->physics->velocity) > maxVel)
+	//	gameObject->physics->velocity = glm::normalize(gameObject->physics->velocity) * maxVel;
 }
