@@ -7,5 +7,5 @@ glm::vec4 Colors::yellow = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
 glm::vec4 Colors::blue = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 glm::vec4 Colors::purple = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
 glm::vec4 Colors::orange = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
-glm::vec4 Colors::green = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+glm::vec4 Colors::green = glm::vec4(0.0f, 153.0f / 255.0f, 51.0f / 255.f, 1.0f);
 glm::vec4 Colors::red = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);

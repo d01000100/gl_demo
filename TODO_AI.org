@@ -1,0 +1,29 @@
+* Proyect 1: Steering Behaviour
+
+** Game play
+*** Instanciar escena
+**** Piso, enemigos, jugador
+*** Camara top down
+*** Mover jugador
+**** Girar
+**** Avanzar
+*** Disparar
+
+** Steering Behaviors
+*** Seek
+*** Flee
+*** Approach
+*** Wander
+*** Pursue
+*** Evade
+
+** Gameplay
+*** DONE Shoot Bullets
+*** DONE Kill enemies
+*** DONE Kill player
+*** DONE Different types of enemies
+**** DONE Seeks/Flees - Red Blue
+**** DONE Pursue/Evade Bullet Orange - Purple
+**** DONE Approaches and fire - Yellow and Green
+**** DONE Wanders - Black Grey
+*** Stanciate different waves

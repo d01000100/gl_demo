@@ -18,6 +18,7 @@ class NPC_AI
 {
 public:
 	std::vector<sEnemy*> enemies;
+	float enemyTimer, enemyCooldown;
 	NPC_AI();
 	void Update(float deltaTime);
 private:
@@ -25,5 +26,11 @@ private:
 	void UpdateDodger(sEnemy* boo, float deltaTime);
 	void UpdateWanderer(sEnemy* wanderer, float deltaTime);
 	void UpdateShooter(sEnemy* shooter, float deltaTime);
+	glm::vec3 getSpawnLocation();
+	void createBoo();
+	void createDodger();
+	void createWanderer();
+	void createShooter();
+	void spawnEnemy();
 };
 

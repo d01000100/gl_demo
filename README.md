@@ -1,13 +1,15 @@
-# Graphics Midterm
+# Artificial Intelligence 
 
 José Daniel Casado Aguilar - 0940167
 
-Scene showing a pirate island during daytime or nightime.
+Simple 2D shooter game with AI with different behaviours.
 
-The `Answer_1.ply` model answers the **Question 1** about creating the island mesh.
+## Behaviours
 
-The `Answer_2.png` is a picture of the scene described in **Question 2.**
-You can also rename the `GDP2019_20\assets\daylight_scene.json` to `scene1.json` to load the daylight scene.
+**Seek and Flee**: This enemies *seek* the player when it faces away from them and *flee* from the player when it faces towards them. They turn *red* and *blue* respectively.
+**Pursue and Evade**: The enemy will *pursue* the player and *evade* its bullets. When it's pursuing it turns *white*, when it's evading it turns *purple*.
+**Wander and Idle**: The enemy will change between two modes: random *wandering* and not moving. When it's wandering it turns *grey* and when it's idle it turns *black*.
+**Approach and Shoot**: The enemy will approach the enemy (with a slowdown when it's at a certain distance) and turn *green*. When it's close enough it will stop, fire a bullet toward the player and turn yellow.
 
 ## Build instructions
 

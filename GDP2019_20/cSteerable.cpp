@@ -9,7 +9,7 @@ cSteerable::cSteerable(cGameObject* a) :
 	stopDistance(7.0f),
 	wanderDistance(4.0f),
 	wanderRadius(7.0f),
-	evadePower(30.0f)
+	evadePower(5.0f)
 {
 }
 
@@ -46,7 +46,8 @@ void cSteerable::Approach(cGameObject* target, float deltaTime)
 		maxVel,
 		approachDistance,
 		stopDistance);
-	gameObject->physics->velocity = steeringVel; // *deltaTime;
+	//std::cout << "Approach vel: " << glm::to_string(steeringVel) << std::endl;
+	gameObject->physics->velocity += steeringVel; // *deltaTime;
 	if (glm::length(gameObject->physics->velocity) > maxVel)
 		gameObject->physics->velocity = glm::normalize(gameObject->physics->velocity) * maxVel;
 }
@@ -61,7 +62,6 @@ void cSteerable::Wander(float deltaTime)
 		wanderDistance,
 		wanderRadius);
 	gameObject->physics->velocity += steeringVel * deltaTime;
-	gameObject->setDirection(gameObject->physics->velocity);
 	if (glm::length(gameObject->physics->velocity) > maxVel)
 		gameObject->physics->velocity = glm::normalize(gameObject->physics->velocity) * maxVel;
 }

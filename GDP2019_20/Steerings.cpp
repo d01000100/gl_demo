@@ -5,6 +5,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include "globalStuff.h"
 #include "colors.h"
+#include <algorithm>
 
 glm::vec3 Steerings::seek(glm::vec3 pos, glm::vec3 vel, glm::vec3 target, float maxVel)
 {
@@ -71,7 +72,7 @@ glm::vec3 Steerings::pursue(
 	float maxVel)
 {
 	float distance = glm::distance(pos, target);
-	float framesToPredict = distance / maxVel;
+	float framesToPredict = std::min(distance / maxVel, 120.0f);
 	//std::cout << "Distance: " << distance << " frames: "<< framesToPredict << std::endl;
 	glm::vec3 futureTarget = target + targetVel * framesToPredict;
 	//g_pDebugRenderer->addLine(target, futureTarget, Colors::white, 0.01f);
