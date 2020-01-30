@@ -1,6 +1,8 @@
 #include "cWorld.h"    // My header
 #include "nCollide.h"  // collision detection functions from
-                       // REAL-TIME COLLISION DETECTION, ERICSON
+#include <iostream>
+
+// REAL-TIME COLLISION DETECTION, ERICSON
 
 namespace phys
 {
@@ -37,7 +39,12 @@ namespace phys
 		{
 			IntegrateRigidBody(*itBodies,dt);
 		}
-		// 3) TODO: Perform collision handling on each unique pair of bodies.
+		// 3) Perform collision handling on each unique pair of bodies.
+		for (int body1 = 0; body1 < mBodies.size() - 1; body1++) {
+            for (int body2 = body1 + 1; body2 < mBodies.size(); body2++) {
+                Collide(mBodies[body1], mBodies[body2]);
+            }
+        }
 		// 4) Clear the acceleration of each rigid body.
 		for (itBodies = mBodies.begin();itBodies != mBodies.end();++itBodies)
 		{
@@ -88,103 +95,166 @@ namespace phys
 		// 3) Do some integrating!
         mIntegrator.RK4(body->mPosition, body->mVelocity, body->mAcceleration, mGravity, dt);
 		// 4) Apply some linear damping ???
+		body->mVelocity *= glm::pow(0.95f, dt);
 	}
 	bool cWorld::Collide(cRigidBody* bodyA, cRigidBody* bodyB)
 	{
-		// TODO:
-		// 
-		// 1) Based on shape type, determine which specific collision handling
-		//    method to use.
-		// 2) Cast up the shapes, call the methods, return the result.
-		return false;
+		eShapeType shapeTypeA = bodyA->GetShapeType();
+        eShapeType shapeTypeB = bodyB->GetShapeType();
+        if (shapeTypeA == phys::eShapeType::sphere &&
+            shapeTypeB == phys::eShapeType::sphere) 
+        {
+            return CollideSphereSphere(
+				bodyA, 
+				dynamic_cast<cSphere*>(bodyA->GetShape()), 
+				bodyB, 
+				dynamic_cast<cSphere*>(bodyB->GetShape())
+			);
+        }
+        else if (shapeTypeA == phys::eShapeType::sphere &&
+                 shapeTypeB == phys::eShapeType::plane) 
+        {
+            return CollideSpherePlane(
+				bodyA, 
+				dynamic_cast<cSphere*>(bodyA->GetShape()), 
+				bodyB, 
+				dynamic_cast<cPlane*>(bodyB->GetShape())
+			);
+        }
+        else if (shapeTypeA == phys::eShapeType::plane &&
+                 shapeTypeB == phys::eShapeType::sphere) 
+        {
+            return CollideSpherePlane(
+				bodyB, 
+				dynamic_cast<cSphere*>(bodyB->GetShape()),
+				bodyA, 
+				dynamic_cast<cPlane*>(bodyA->GetShape())
+			);
+        }
+        // If we don't support the collision then bail
+        else { return false; }
 	}
 
 	bool cWorld::CollideSpherePlane(cRigidBody* sphereBody, cSphere* sphereShape,
 		cRigidBody* planeBody, cPlane* planeShape)
 	{
-		// TODO:
-		// 
-		// From our textbook, REAL-TIME COLLISION DETECTION, ERICSON
-		// Use intersect_moving_sphere_plane(...inputs...outputs...)
-		// to determine if:
-		// case A: The sphere did not collide during the timestep.
-		// case B: The sphere was already colliding at the beginning of the timestep.
-		// case C: The sphere collided during the timestep.
-		//
-		// case A: Return false to indicate no collision happened.
-		//
-		// case B: Do the timestep again for this sphere after applying an
-		//         impulse that should separate it from the plane.
-		// 
-		// 1) From our textbook, use closest_point_on_plane(..inputs..) to determine the 
-		//    penetration-depth of the sphere at the beginning of the timestep.
-		//    (This penetration-depth is the distance the sphere must travel during
-		//    the timestep in order to escape the plane.)
-		// 2) Use the sphere's center and the closest point on the plane to define
-		//    the direction of our impulse vector.
-		// 3) Use (penetration-depth / DT) to define the magnitude of our impulse vector.
-		//    (The impulse vector is now distance/time ...a velocity!)
-		// 4) Apply the impulse vector to sphere velocity.
-		// 5) Reset the sphere position.
-		// 6) Re-do the integration for the timestep.
-		// 7) Return true to indicate a collision has happened.
-		// 
-		// 
-		// case C: Rewind to the point of impact, reflect, then replay.
-		//
-		// 1) Use the outputs from the Ericson function to determine
-		//    and set the sphere position to the point of impact.
-		// 2) Reflect the sphere's velocity about the plane's normal vector.
-		// 3) Apply some energy loss (to the velocity) in the direction
-		//    of the plane's normal vector.
-		// 4) Re-integrate the sphere with its new velocity over the remaining
-		//    portion of the timestep.
-		// 5) Return true to indicate a collision has happened.
-		
-		return false; // placeholder
+	    glm::vec3 c = sphereBody->mPreviousPosition;
+        float r = sphereShape->GetRadius();
+        glm::vec3 v = sphereBody->mPosition - sphereBody->mPreviousPosition,
+          n = planeShape->GetNormal();
+        float d = planeShape->GetConstant();
+        float t(0.0f);
+        glm::vec3 q; // point in the plane
+        // Chapter 5.5 of Ericson's book
+        int result = nCollide::intersect_moving_sphere_plane(c, r, v, n, d, t, q);
+        // closestPointOnPLane
+        if (result == 0)
+        {
+            //no collision
+            return false;
+        }
+        if (result == -1)
+        {
+            //already colliding at the begining of the timeStep
+            glm::vec3 pointOnPlane = nCollide::closest_point_on_plane(
+                sphereBody->mPreviousPosition,
+                planeShape->GetNormal(),
+                planeShape->GetConstant()
+            );
+        	std::cout << "Sphere clipping plane in: " << glm::to_string(pointOnPlane) << std::endl;
+            // calculate how much distance we clipped into the plane
+            float distance = glm::distance(sphereBody->mPreviousPosition, pointOnPlane);
+            float targetDistance = r;
+            // calculate how much force do we need to get out from the plane
+            glm::vec3 impulse = n * (targetDistance - distance) / mDt;
+            // rewind time
+            sphereBody->mPosition = sphereBody->mPreviousPosition;
+            // apply the impulse
+            sphereBody->mVelocity += impulse;
+            // re integrate
+            IntegrateRigidBody(sphereBody, mDt);
+            return true;
+        }
+        std::cout << "Sphere colliding plane in: " << glm::to_string(q) << std::endl;
+
+        sphereBody->mVelocity = glm::reflect(sphereBody->mVelocity, planeShape->GetNormal());
+        // To take out energy from the collision
+        // we take down a little bit from the reflected direction 
+        // in the direction of the normal. (use the vector projection for that)
+        glm::vec3 nComponent = glm::proj(sphereBody->mVelocity, planeShape->GetNormal());
+        sphereBody->mVelocity -= nComponent * 0.2f;
+
+        // We collided somewhere in the middle of the timestep
+        // We need to reintegrate the step, with the new velocity, which is reflected
+        sphereBody->mPosition = c + v * t;
+        IntegrateRigidBody(sphereBody, mDt * (1.f - t));
+        return true;
 	}
 
 	bool cWorld::CollideSphereSphere(cRigidBody* bodyA, cSphere* shapeA, 
 		cRigidBody* bodyB, cSphere* shapeB)
 	{
-		// TODO:
-		// 
-		// From our textbook, REAL-TIME COLLISION DETECTION, ERICSON
-		// Use intersect_moving_sphere_sphere(...inputs...outputs...)
-		// to determine if:
-		// case A: The spheres don't collide during the timestep.
-		// case B: The spheres were already colliding at the beginning of the timestep.
-		// case C: The spheres collided during the timestep.
-		//
-		// case A: Return false to indicate no collision happened.
-		//
-		// case B: Do the timestep again for these spheres after
-		//         applying an impulse that should separate them.
-		// 
-		// 1) Determine the penetration-depth of the spheres at the beginning of the timestep.
-		//    (This penetration-depth is the distance the spheres must travel during
-		//    the timestep in order to separate.)
-		// 2) Use the sphere's centers to define the direction of our impulse vector.
-		// 3) Use (penetration-depth / DT) to define the magnitude of our impulse vector.
-		//    (The impulse vector is now distance/time ...a velocity!)
-		// 4) Apply a portion of the impulse vector to sphereA's velocity.
-		// 5) Apply a portion of the impulse vector to sphereB's velocity.
-		//    (Be sure to apply the impulse in opposing directions.)
-		// 6) Reset the spheres' positions.
-		// 7) Re-do the integration for the timestep.
-		// 8) Return true to indicate a collision has happened.
-		// 
-		// 
-		// case C: 
-		//
-		// 1) Use the outputs from the Ericson function to determine
-		//    and set the spheres positions to the point of impact.
-		// 2) Use the inelastic collision response equations from
-		//    Wikepedia to set they're velocities post-impact.
-		// 3) Re-integrate the spheres with their new velocities
-		//    over the remaining portion of the timestep.
-		// 4) Return true to indicate a collision has happened.
-		
-		return false; // placeholder
+		glm::vec3 cA = bodyA->mPreviousPosition;
+        glm::vec3 cB = bodyB->mPreviousPosition;
+        glm::vec3 vA = bodyA->mPosition - bodyA->mPreviousPosition;
+        glm::vec3 vB = bodyB->mPosition - bodyB->mPreviousPosition;
+        float rA = shapeA->GetRadius();
+        float rB = shapeB->GetRadius();
+        float t(0.f);
+        
+        // Chapter 5.5 of Ericson's book
+        int result = nCollide::intersect_moving_sphere_sphere(
+            cA, rA, vA, cB, rB, vB, t
+        );
+        if (result == 0)
+        {
+            //Not colliding
+            return false;
+        }
+        // get the masses
+        float ma = bodyA->mMass;
+        float mb = bodyB->mMass;
+        float mt = ma + mb;
+        if (result == -1)
+        {
+        	std::cout << "Sphere clipping sphere " << std::endl;
+            // Already Colliding at the beggining of the timestep
+            // Calculate the impulse to set them apart
+            float initialDistance = glm::distance(bodyA->mPreviousPosition, bodyB->mPreviousPosition);
+            float targetDistance = shapeA->GetRadius() + shapeB->GetRadius();
+            glm::vec3 impulseToA = glm::normalize(bodyA->mPreviousPosition - bodyB->mPreviousPosition);
+            impulseToA *= (targetDistance -  initialDistance);
+            // rewind time
+            bodyA->mPosition = bodyA->mPreviousPosition;
+            bodyB->mPosition = bodyB->mPreviousPosition;
+            // apply the impulse considering the mass of each sphere
+            bodyA->mVelocity += impulseToA * (mb / mt);
+            bodyB->mVelocity -= impulseToA * (ma / mt);
+            // re integrate
+            IntegrateRigidBody(bodyA, mDt);
+            IntegrateRigidBody(bodyB, mDt);
+            return true;
+        }
+        // Collided during the timestep
+        
+        std::cout << "Sphere colliding sphere." << std::endl;
+        // rewind time to the point of collision
+        bodyA->mPosition = bodyA->mPreviousPosition + vA * t;
+        bodyB->mPosition = bodyB->mPreviousPosition + vB * t;
+
+        vA = bodyA->mVelocity;
+        vB = bodyB->mVelocity;
+
+        float c = 0.8; // how much energy will they loose
+        // TODO: Use the damping of each object
+        // float c = bodyA->elasticCoefficent * bodyB->elasticCoefficient
+        // calculate collided velocities (wikipedia)
+        bodyA->mVelocity = (c*mb*(vB - vA) + ma*vA + mb*vB) / mt;
+        bodyB->mVelocity = (c*ma*(vA - vB) + ma*vA + mb*vB) / mt;
+
+        // re integrate the rest of the timestep
+        IntegrateRigidBody(bodyA, mDt * (1.f - t));
+        IntegrateRigidBody(bodyB, mDt * (1.f - t));
+        return true;
 	}
 }

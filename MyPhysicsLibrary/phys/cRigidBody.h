@@ -63,10 +63,10 @@ namespace phys
 		// The force is applied center-mass, affecting the acceleration.
 		void ApplyForce(const glm::vec3& force);
 
-		// TODO:
 		// ApplyImpulse
 		// Apply an impulse to the center-mass of this rigid body.
-		// ApplyImpulse(const glm::vec3& impulse);
+		// The velocity will be afected directly, without considering mass.
+		void ApplyImpulse(const glm::vec3& impulse);
 
 		// IsStatic
 		// A static rigid body was created with a mass of 0.f.
@@ -82,7 +82,6 @@ namespace phys
 		// Get the type of shape of this rigid body's shape.
 		// Equivalent to GetShape()->GetShapeType()
 		inline eShapeType GetShapeType() const { return mShape->GetShapeType(); }
-
 
 		// During a timestep, the previous position is stored for collision related purposes.
 		glm::vec3 mPreviousPosition;
@@ -100,11 +99,10 @@ namespace phys
 		// Stored for convenience.
 		// If mMass is 0, mInvMass will also be 0.
 		float mInvMass;
-
-	private:
 		// My shape, expected to be valid.
 		// cRigidBody will not delete mShape in its destructor.
 		iShape* mShape;
+	private:
 		// Constructors not to be used.
 		cRigidBody() = delete;
 		cRigidBody(const cRigidBody& other) = delete;

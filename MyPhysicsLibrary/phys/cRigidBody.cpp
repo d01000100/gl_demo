@@ -31,9 +31,11 @@ namespace phys
 
 	void cRigidBody::ApplyForce(const glm::vec3& force)
 	{
-		if (!IsStatic())
-		{
-			mAcceleration += force / mMass;
-		}
+		mAcceleration += force * mInvMass;
+	}
+
+	void cRigidBody::ApplyImpulse(const glm::vec3& impulse)
+	{
+		mVelocity += impulse;
 	}
 }

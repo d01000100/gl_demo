@@ -1,20 +1,29 @@
 #pragma once
 // A single include header for everything
 // 
-// Also a handy place to put a general comments
-// and information about this library. For example: 
-// - What this library is
-// - Who created this library
-// - Dependencies of this library (ahem... I mean, glm)
-// - Why this library was created
-// - The general approach to creating this library
-//     - Are we really going for super efficiency?
-//     - Perhaps we're just going for understandability and learning..?
-// - Notes on usage
-// - Notes about any good-to-know factos or gotchas, perhaps tidbits like:
-//       "cWorld will never delete a cRigidBody"
-//       "shapes can be shared between multiple cRigidBody instances"
+// This library encapsulates the logic to simulate a collection of
+// rigid 3d bodies moving and colliding in 3d space.
 //
+// Created by José Daniel Casado Aguilar.
+//
+// It depends on the "MathIncludes" project. Which helps us to encapsulate
+// includes from glm math library.
+//
+// The library makes easy to include rigid body simulation to any other project
+// that requires it, like a 3d video game. It focuses on getting enough
+// looking gooding simulations while optimizing calculations for each frame.
+// It's also intended to create an easy-to-use interface for possible clients.
+//
+// The "cWorld" is a container for different cRigidBody's. It manages their movement
+// and collision simulation.
+//
+// The "cWorld" does not "own" the cRigidBody's. The client must create and delete
+// them on their own.
+//
+// Each "cRigidBody" contains a position in world space, a velocity, acceleration and mass
+// in order to simulate a realistic result. They also have a "eShape" in order to test for
+// collisions. The library currently supports spheres and planes.
+// 
 // All the files required to make full use of this library:
 #include "eShapeType.h"  // enum class for all supported shape types
 #include "iShape.h"      // iShape is the base interface class for all shapes
