@@ -33,16 +33,10 @@
 #include "colors.h"
 #include "BroadCollision.h"
 #include "quaternions_utils.h"
-#include "ScriptBuilder.h"
 #include "DollyCamera.h"
-#include "cLuaBrain.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
-
-// audio things
-#include "audio_item.h"
-#include "audio_listener.h"
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
@@ -54,20 +48,6 @@ cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 AABBGrid* pAABBgrid = new AABBGrid();
 DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false;
-
-// audio globals
-FMOD::System *::fmod_system = 0;
-
-bool init_fmod() {
-	//Create system
-	error_check(FMOD::System_Create(&::fmod_system));
-	//Init system
-	error_check(::fmod_system->init(32, FMOD_INIT_NORMAL, 0));
-
-	error_check(::fmod_system->set3DSettings(1.0f, 1.0f, 1.0f));
-
-	return true;
-}
 
 int main(void)
 {
@@ -108,10 +88,8 @@ int main(void)
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
-	init_fmod();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
-	cLuaBrain lua;
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -156,8 +134,6 @@ int main(void)
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
-	lua.RunFile("assets/cutscene_script.lua");
-	iCommand* cutscene = ScriptBuilder::getFinalScript();
 
 	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
 	//if (cruiseship) {
@@ -258,7 +234,6 @@ int main(void)
 
 		if (::isRunning)
 		{
-			cutscene->update(averageDeltaTime);
 			theCamera->setTarget(theScene->findItem("player")->getPos());
 			v = dollyCamera->lookAt();
 		}
@@ -275,7 +250,6 @@ int main(void)
 			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		}
 
-		error_check(::fmod_system->update());
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

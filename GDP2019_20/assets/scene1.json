@@ -66,10 +66,6 @@
     ],
     "Meshes": [
         {
-            "filename": "assets/models/drej-stinger-complex.ply",
-            "name": "drej_model"
-        },
-        {
             "filename": "assets/models/sky_ship.ply",
             "name": "sky_ship_model"
         },
@@ -105,36 +101,6 @@
                 255.0,
                 255.0,
                 50.0
-            ]
-        },
-        {
-            "alpha": 1.0,
-            "diffuseColor": [
-                204.0,
-                204.0,
-                204.0
-            ],
-            "isLit": true,
-            "isVisible": true,
-            "mesh": "drej_model",
-            "name": "player",
-            "position": [
-                34.0,
-                24.0,
-                -32.0
-            ],
-            "scale": 1.0,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                50.0
-            ],
-            "textures": [
-                {
-                    "textureName": "drej.bmp",
-                    "weight": 1.0
-                }
             ]
         },
         {
@@ -229,7 +195,6 @@
     "Textures": [
         "grass.bmp",
         "pizza.bmp",
-        "submarine.bmp",
-        "drej.bmp"
+        "submarine.bmp"
     ]
 }
