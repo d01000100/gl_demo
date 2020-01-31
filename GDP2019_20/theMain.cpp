@@ -1,24 +1,15 @@
-#include "GLCommon.h"
 #include "globalStuff.h"
 #include <glm/glm.hpp>
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <glm/gtx/string_cast.hpp>
 
 #include <stdlib.h>		// c libs
-#include <stdio.h>		// c libs
 #include <iostream>		// C++ IO standard stuff
-#include <map>			// Map aka "dictonary" 
 #include "cShaderManager.h"
-#include <sstream>
-#include "util.h"
 
 // The Physics function
-#include "PhysicsStuff.h"
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
 #include "DebugRenderer/cDebugRenderer.h"
@@ -27,13 +18,10 @@
 #include "FollowCamera.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
-#include "cLight.h"
 #include "SkyBox.h"
 #include "AABBGrid.h"
-#include "colors.h"
-#include "BroadCollision.h"
-#include "quaternions_utils.h"
 #include "DollyCamera.h"
+#include "PhysicsConfigs.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -83,7 +71,38 @@ int main(void)
 	//		min, max, val, step);
 	//}
 
-	//return 0;
+	::g_initPhysics();
+	nPhysics::sBallDef ballDef;
+	ballDef.Position = glm::vec3(0,10,0);
+	nPhysics::iBallComponent *ball = ::g_PhysicsFactory->CreateBall(ballDef);
+
+	nPhysics::sPlaneDef planeDef;
+	planeDef.Normal = glm::vec3(0, 1, 0);
+	planeDef.Point = glm::vec3(5);
+	nPhysics::iPhysicsComponent* plane = ::g_PhysicsFactory->CreatePlane(planeDef);
+
+	::g_PhysicsWorld->AddComponent(ball);
+	::g_PhysicsWorld->AddComponent(plane);
+
+	float deltaTime = 0.1f;
+
+	for (int i = 0;i < 40;i++)
+	{
+		//sphereBody.ApplyForce(glm::vec3(0,0,1));
+		::g_PhysicsWorld->Update(deltaTime);
+		std::cout << "Sphere 1: ";
+		std::cout << ball->ToString() << std::endl;
+		//std::cout << "Sphere 2: ";
+		//phys::Util::PrintRigidBody(sphere2Body);
+		printf("\n");
+	}
+	
+	::g_PhysicsWorld->RemoveComponent(ball);
+	::g_PhysicsWorld->RemoveComponent(plane);
+
+	::g_destroyPhysics();
+
+	return 0;
 
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();

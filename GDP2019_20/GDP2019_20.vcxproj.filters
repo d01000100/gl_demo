@@ -192,6 +192,9 @@
     <ClCompile Include="LookAt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsConfigs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -352,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="LookAt.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsConfigs.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

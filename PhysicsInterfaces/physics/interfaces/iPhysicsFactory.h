@@ -8,7 +8,8 @@ namespace nPhysics
 	class iPhysicsFactory
 	{
 	public:
-		virtual ~iPhysicsFactory() {}
+		//iPhysicsFactory() = default;
+		virtual ~iPhysicsFactory() = default;
 		virtual iPhysicsWorld* CreateWorld() = 0;
 		// components
 		virtual iBallComponent* CreateBall(const sBallDef& def) = 0;

@@ -7,7 +7,7 @@ namespace nPhysics
 	// in the physics simulation of "MyPhysicsLibrary".
 	// This way, the client doesn't need to know about the
 	// wrapper itself.
-	class cPhysicsFactory : iPhysicsFactory
+	class cPhysicsFactory : public iPhysicsFactory
 	{
 	public:
 		// No properties to initialize
