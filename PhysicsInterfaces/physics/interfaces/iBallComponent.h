@@ -9,6 +9,10 @@ namespace nPhysics
 		float Mass;
 		float Radius;
 		glm::vec3 Position;
+		sBallDef() :
+			Mass(1.f),
+			Radius(1.f),
+			Position(glm::vec3(0)) {}
 	};
 
 	class iBallComponent : public iPhysicsComponent
@@ -19,7 +23,6 @@ namespace nPhysics
 	protected:
 		iBallComponent() : iPhysicsComponent(eComponentType::ball) {}
 	private:
-		iBallComponent() = delete;
 		iBallComponent(const iBallComponent& other) = delete;
 		iBallComponent& operator=(const iBallComponent& other) = delete;
 	};

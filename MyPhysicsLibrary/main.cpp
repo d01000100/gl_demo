@@ -8,7 +8,7 @@ int main()
 
 	phys::sRigidBodyDef sphereBodyDef;
 	sphereBodyDef.Position = glm::vec3(0,10,0);
-	sphereBodyDef.Velocity = glm::vec3(0, -10, 0);
+	sphereBodyDef.Velocity = glm::vec3(0, 10, 0);
 	phys::cSphere sphereShape(1.0f);
 	phys::cRigidBody sphereBody(sphereBodyDef, &sphereShape);
 
@@ -26,9 +26,9 @@ int main()
 
 	phys::cWorld physWorld;
 	physWorld.AddRigidBody(&sphereBody);
-	physWorld.AddRigidBody(&sphere2Body);
-	//physWorld.AddRigidBody(&planeBody);
-	physWorld.SetGravity(glm::vec3(0,0,0));
+	//physWorld.AddRigidBody(&sphere2Body);
+	physWorld.AddRigidBody(&planeBody);
+	physWorld.SetGravity(glm::vec3(0,-1,0));
 
 	float deltaTime = 0.1f;
 
@@ -38,8 +38,8 @@ int main()
 		physWorld.Update(deltaTime);
 		std::cout << "Sphere 1: ";
 		phys::Util::PrintRigidBody(sphereBody);
-		std::cout << "Sphere 2: ";
-		phys::Util::PrintRigidBody(sphere2Body);
+		//std::cout << "Sphere 2: ";
+		//phys::Util::PrintRigidBody(sphere2Body);
 		printf("\n");
 	}
 		

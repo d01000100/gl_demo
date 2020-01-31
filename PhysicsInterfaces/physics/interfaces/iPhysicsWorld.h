@@ -4,6 +4,7 @@
 
 namespace nPhysics
 {
+	// 
 	class iPhysicsWorld
 	{
 	public:

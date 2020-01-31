@@ -15,28 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="physics\interfaces\eComponentType.h">
+    <ClCompile Include="wrapper\myPhysics\cBallComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wrapper\myPhysics\cPlaneComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wrapper\myPhysics\cPhysicsWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wrapper\myPhysics\cPhysicsFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="wrapper\myPhysics\cBallComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\interfaces\iBallComponent.h">
+    <ClInclude Include="wrapper\myPhysics\cPlaneComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\interfaces\iPhysicsComponent.h">
+    <ClInclude Include="wrapper\myPhysics\cPhysicsWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\interfaces\iPhysicsFactory.h">
+    <ClInclude Include="wrapper\myPhysics\includes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\interfaces\iPhysicsWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="physics\interfaces\iPlaneComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="physics\interfaces\iCollisionListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="physics\interfaces\iDebugRenderer.h">
+    <ClInclude Include="wrapper\myPhysics\cPhysicsFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

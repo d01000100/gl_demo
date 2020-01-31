@@ -83,6 +83,13 @@ namespace phys
 		// Equivalent to GetShape()->GetShapeType()
 		inline eShapeType GetShapeType() const { return mShape->GetShapeType(); }
 
+		// Get the current position of the rigid body in world space.
+		inline glm::vec3 GetPosition() const { return mPosition; }
+
+		// Get the current instantaneous velocity of the rigid body.
+		inline glm::vec3 GetVelocity() const { return mVelocity; }
+
+	private:
 		// During a timestep, the previous position is stored for collision related purposes.
 		glm::vec3 mPreviousPosition;
 		// Current linear position.
@@ -102,7 +109,6 @@ namespace phys
 		// My shape, expected to be valid.
 		// cRigidBody will not delete mShape in its destructor.
 		iShape* mShape;
-	private:
 		// Constructors not to be used.
 		cRigidBody() = delete;
 		cRigidBody(const cRigidBody& other) = delete;

@@ -1,5 +1,6 @@
 #pragma once
 #include <game_math.h>
+#include <string>
 #include "eComponentType.h"
 
 namespace nPhysics
@@ -11,6 +12,9 @@ namespace nPhysics
 		inline const eComponentType& GetComponentType() { return mComponentType; }
 
 		virtual void GetTransform(glm::mat4& transformOut) = 0;
+		virtual void ApplyForce(glm::vec3 force) = 0;
+		virtual std::string ToString() = 0;
+		virtual void ApplyImpulse(glm::vec3 impulse) = 0;
 
 	protected:
 		iPhysicsComponent(eComponentType componentType)

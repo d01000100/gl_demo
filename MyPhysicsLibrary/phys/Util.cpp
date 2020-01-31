@@ -14,8 +14,8 @@ std::string phys::Util::RigidBodyToString(const cRigidBody& body)
 	default:
 		res += "Unrecognized shape: ";
 	}
-	res += " pos: " + glm::to_string(body.mPosition);
-	res += " vel: " + glm::to_string(body.mVelocity);
+	res += " pos: " + glm::to_string(body.GetPosition());
+	res += " vel: " + glm::to_string(body.GetVelocity());
 	return res;
 }
 

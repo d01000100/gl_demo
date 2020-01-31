@@ -6,7 +6,7 @@ namespace nPhysics
 {
 	struct sPlaneDef
 	{
-		float Constant;
+		glm::vec3 Point;
 		glm::vec3 Normal;
 	};
 	class iPlaneComponent : public iPhysicsComponent
@@ -17,7 +17,6 @@ namespace nPhysics
 	protected:
 		iPlaneComponent() : iPhysicsComponent(eComponentType::plane) {}
 	private:
-		iPlaneComponent() = delete;
 		iPlaneComponent(const iPlaneComponent& other) = delete;
 		iPlaneComponent& operator=(const iPlaneComponent& other) = delete;
 	};
