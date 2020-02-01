@@ -12,6 +12,7 @@
 #include <algorithm>
 
 #include "colors.h"
+#include <iostream>
 
 cGameObject::cGameObject()
 {
@@ -20,7 +21,8 @@ cGameObject::cGameObject()
 
 	this->isWireframe = false;
 
-	physics = NULL;
+	physics = nullptr;
+	mPhysicsCompoment = nullptr;
 
 	// Set the unique ID
 	// Take the value of the static int, 
@@ -67,12 +69,17 @@ glm::mat4 cGameObject::calculateTransformationMatrix() {
 	glm::mat4 m = glm::mat4(1.0f);
 
 	// ******* TRANSLATION TRANSFORM *********
-	glm::mat4 matTrans
-		= glm::translate(glm::mat4(1.0f),
-			glm::vec3(position.x,
-				position.y,
-				position.z));
-	m = m * matTrans;
+	if (mPhysicsCompoment)
+	{
+		// Now we get it from the iPhysicsComponent
+		//std::cout << "Original mat:\n" << glm::to_string(m) << "\n";
+		mPhysicsCompoment->GetTransform(m);
+		//std::cout << "After physics translation mat:\n" << glm::to_string(m) << "\n\n";
+	}
+	else
+	{
+		m = glm::translate(m, position);
+	}
 
 	//// ******* ROTATION TRANSFORM *********
 	//glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),

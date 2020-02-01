@@ -12,6 +12,7 @@
 
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
+#include "physics/interfaces/iPhysicsComponent.h"
 
 enum eShapeTypes
 {
@@ -65,7 +66,8 @@ public:
 	bool isWireframe;
 	bool isVisible, isLit;
 
-	sPhysicsObject* physics;
+	sPhysicsObject *physics;
+	nPhysics::iPhysicsComponent* mPhysicsCompoment;
 
 	unsigned int getUniqueID(void);
 

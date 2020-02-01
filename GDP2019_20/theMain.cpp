@@ -39,76 +39,12 @@ bool ::isDebug = false, ::isRunning = false;
 
 int main(void)
 {
-	//AABBHash(glm::vec3(-4580.1546, -0.1579, 126.12));
-	//std::vector<int> v1, v2;
-	//v1.push_back(1); v1.push_back(4); v1.push_back(5);
-	//v2.push_back(4); v2.push_back(5);
-	//stdVecConc(&v1, &v2);
-	//for (int i = 0; i < v1.size(); i++)
-	//	printf("%d, ", v1[i]);
-	//sNiceTriangle* tri = new sNiceTriangle();
-	//tri->a = glm::vec3(0);
-	//tri->b = glm::vec3(0,0,500);
-	//tri->c = glm::vec3(500);
-	//std::vector<unsigned long long> hashes = getTriangleHashes(tri);
-	
-	//glm::vec3 vector(1, 2, 2);-
-	//glm::quat orientation(glm::vec3(0,1.6,0));
-
-
-	//glm::vec3 v1(0, -1, 0), v2(-1, -1, -1);
-	//glm::quat rotation = RotationBetweenVectors(v1, v2);
-	//printf("Setting direction of test at: %s. quat: %s\nOriginally looking at %s\nNow looking at %s\n\n",
-	//	glm::to_string(v2).c_str(),
-	//	glm::to_string(rotation).c_str(),
-	//	glm::to_string(v1).c_str(),
-	//	glm::to_string(rotation * v1).c_str());
-
-	//float min = 5.0f, max = 15.0f;
-	//for (float val = min; val <= max; val += 0.1f) {
-	//	float step = glm::smoothstep(max, min, val);
-	//	printf("min %f, max %f, value %f, result %f\n",
-	//		min, max, val, step);
-	//}
-
-	::g_initPhysics();
-	nPhysics::sBallDef ballDef;
-	ballDef.Position = glm::vec3(0,10,0);
-	nPhysics::iBallComponent *ball = ::g_PhysicsFactory->CreateBall(ballDef);
-
-	nPhysics::sPlaneDef planeDef;
-	planeDef.Normal = glm::vec3(0, 1, 0);
-	planeDef.Point = glm::vec3(5);
-	nPhysics::iPhysicsComponent* plane = ::g_PhysicsFactory->CreatePlane(planeDef);
-
-	::g_PhysicsWorld->AddComponent(ball);
-	::g_PhysicsWorld->AddComponent(plane);
-
-	float deltaTime = 0.1f;
-
-	for (int i = 0;i < 40;i++)
-	{
-		//sphereBody.ApplyForce(glm::vec3(0,0,1));
-		::g_PhysicsWorld->Update(deltaTime);
-		std::cout << "Sphere 1: ";
-		std::cout << ball->ToString() << std::endl;
-		//std::cout << "Sphere 2: ";
-		//phys::Util::PrintRigidBody(sphere2Body);
-		printf("\n");
-	}
-	
-	::g_PhysicsWorld->RemoveComponent(ball);
-	::g_PhysicsWorld->RemoveComponent(plane);
-
-	::g_destroyPhysics();
-
-	return 0;
-
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
+	::g_initPhysics();
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -188,7 +124,7 @@ int main(void)
 	double lastTime = glfwGetTime();
 	double flickerTimer = 0;
 
-	theCamera->setPosition(glm::vec3(0, 100, -150));
+	//theCamera->setPosition(glm::vec3(0, 100, -150));
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -237,6 +173,7 @@ int main(void)
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		::g_PhysicsWorld->Update(averageDeltaTime);
 		//theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
 
@@ -253,7 +190,7 @@ int main(void)
 
 		if (::isRunning)
 		{
-			theCamera->setTarget(theScene->findItem("player")->getPos());
+			//theCamera->setTarget(theScene->findItem("player")->getPos());
 			v = dollyCamera->lookAt();
 		}
 
@@ -274,6 +211,6 @@ int main(void)
 	}
 	glfwDestroyWindow(window);
 	glfwTerminate();
-
+	::g_destroyPhysics();
 	exit(EXIT_SUCCESS);
 }

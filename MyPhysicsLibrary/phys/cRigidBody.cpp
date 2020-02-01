@@ -26,7 +26,7 @@ namespace phys
 
 	void cRigidBody::GetTransform(glm::mat4& transformOut)
 	{
-		transformOut = glm::translate(glm::mat4(1),mVelocity);
+		transformOut = glm::translate(glm::mat4(1),mPosition);
 	}
 
 	void cRigidBody::ApplyForce(const glm::vec3& force)

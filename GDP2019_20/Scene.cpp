@@ -14,6 +14,7 @@
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <glm/gtx/string_cast.hpp>
+#include "PhysicsConfigs.h"
 
 Scene* Scene::theScene = new Scene();
 
@@ -244,5 +245,10 @@ void Scene::setCamera(std::string name) {
 
 void Scene::addItem(aGameItem* newItem)
 {
+	if (newItem->getType() == "Object")
+	{
+		auto newObject = static_cast<cGameObject*>(newItem);
+		::g_PhysicsWorld->AddComponent(newObject->mPhysicsCompoment);
+	}
 	gameItems[newItem->getName()] = newItem;
 }

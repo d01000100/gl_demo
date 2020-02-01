@@ -9,7 +9,7 @@ namespace phys
 	cWorld::cWorld() :
 		mDt(1.f / 60.f), // assume 60 fps simulation
 		mIntegrator(cIntegrator()),
-		mGravity(glm::vec3(0,-1,0)), // "downward" gravity
+		mGravity(glm::vec3(0,-10,0)), // "downward" gravity
 		mBodies(std::vector<cRigidBody*>()) // empty vector of rigid bodies
 	{
 	}
@@ -32,7 +32,10 @@ namespace phys
 	{
 		mDt = dt;
 		// 1) If we have no bodies, there's nothing to do... return.
-		if (mBodies.empty()) { return; }
+		if (mBodies.empty())
+		{
+			return;
+		}
 		// 2) Integrate each body.
 		auto itBodies = mBodies.begin();
 		for (;itBodies != mBodies.end();++itBodies)
@@ -161,7 +164,7 @@ namespace phys
                 planeShape->GetNormal(),
                 planeShape->GetConstant()
             );
-        	std::cout << "Sphere clipping plane in: " << glm::to_string(pointOnPlane) << std::endl;
+        	//std::cout << "Sphere clipping plane in: " << glm::to_string(pointOnPlane) << std::endl;
             // calculate how much distance we clipped into the plane
             float distance = glm::distance(sphereBody->mPreviousPosition, pointOnPlane);
             float targetDistance = r;
@@ -175,7 +178,7 @@ namespace phys
             IntegrateRigidBody(sphereBody, mDt);
             return true;
         }
-        std::cout << "Sphere colliding plane in: " << glm::to_string(q) << std::endl;
+        //std::cout << "Sphere colliding plane in: " << glm::to_string(q) << std::endl;
 
         sphereBody->mVelocity = glm::reflect(sphereBody->mVelocity, planeShape->GetNormal());
         // To take out energy from the collision
@@ -217,7 +220,7 @@ namespace phys
         float mt = ma + mb;
         if (result == -1)
         {
-        	std::cout << "Sphere clipping sphere " << std::endl;
+        	//std::cout << "Sphere clipping sphere " << std::endl;
             // Already Colliding at the beggining of the timestep
             // Calculate the impulse to set them apart
             float initialDistance = glm::distance(bodyA->mPreviousPosition, bodyB->mPreviousPosition);
@@ -237,7 +240,7 @@ namespace phys
         }
         // Collided during the timestep
         
-        std::cout << "Sphere colliding sphere." << std::endl;
+        //std::cout << "Sphere colliding sphere." << std::endl;
         // rewind time to the point of collision
         bodyA->mPosition = bodyA->mPreviousPosition + vA * t;
         bodyB->mPosition = bodyB->mPreviousPosition + vB * t;

@@ -10,18 +10,25 @@ void nPhysics::cPhysicsWorld::Update(float dt)
 
 bool nPhysics::cPhysicsWorld::AddComponent(iPhysicsComponent* component)
 {
-	cBallComponent* pBallComponent = nullptr;
-	cPlaneComponent* pPlaneComponent = nullptr;
-	switch (component->GetComponentType())
+	if (component)
 	{
-	case eComponentType::ball:
-		pBallComponent = dynamic_cast<cBallComponent*>(component);
-		return mWorld.AddRigidBody(pBallComponent->mRigidBody);
-	case eComponentType::plane:
-		pPlaneComponent = dynamic_cast<cPlaneComponent*>(component);
-		return mWorld.AddRigidBody(pPlaneComponent->mRigidBody);
-	default:
-		printf("cPhysicsWorld doesn't recognize the component type\n");
+		cBallComponent* pBallComponent = nullptr;
+		cPlaneComponent* pPlaneComponent = nullptr;
+		switch (component->GetComponentType())
+		{
+		case eComponentType::ball:
+			pBallComponent = dynamic_cast<cBallComponent*>(component);
+			return mWorld.AddRigidBody(pBallComponent->mRigidBody);
+		case eComponentType::plane:
+			pPlaneComponent = dynamic_cast<cPlaneComponent*>(component);
+			return mWorld.AddRigidBody(pPlaneComponent->mRigidBody);
+		default:
+			printf("cPhysicsWorld doesn't recognize the component type\n");
+			return false;
+		}
+	}
+	else
+	{
 		return false;
 	}
 }

@@ -4,77 +4,56 @@
 #include "iGameItem.h"
 #include "../cGameObject.h"
 #include "../cLight.h"
+#include "../PhysicsConfigs.h"
+#include <iostream>
 
 using namespace nlohmann;
 
-sPhysicsObject* buildPhysicsObject(json jPhysics) {
+iPhysicsComponent* buildPhysicsObject(json jPhysics) {
 
-	sPhysicsObject* physics = new sPhysicsObject();
-
-	if (jPhysics.find("gravity") != jPhysics.end()) {
-		physics->gravity = jPhysics["gravity"].get<bool>();
+	if (jPhysics.find("shape") == jPhysics.end()) {
+		std::cout << "Physics Object without shape!!\n";
+		return nullptr;
 	}
-	else {
-		physics->gravity = false;
-	}
-
-	if (jPhysics.find("speed") != jPhysics.end()) {
-		physics->speed = jPhysics["speed"].get<float>();
-	}
-	else {
-		physics->speed = 0.0f;
-	}
-
-	if (jPhysics.find("acceleration") != jPhysics.end()) {
-		float x = jPhysics["acceleration"][0].get<float>();
-		float y = jPhysics["acceleration"][1].get<float>();
-		float z = jPhysics["acceleration"][2].get<float>();
-		physics->acceleration = glm::vec3(x, y, z);
-	}
-	else {
-		physics->acceleration = glm::vec3(0.0f);
-	}
-
-	if (jPhysics.find("velocity") != jPhysics.end()) {
-		float x = jPhysics["velocity"][0].get<float>();
-		float y = jPhysics["velocity"][1].get<float>();
-		float z = jPhysics["velocity"][2].get<float>();
-		physics->velocity = glm::vec3(x, y, z);
-	}
-	else {
-		physics->velocity = glm::vec3(0.0f);
-	}
-
-	if (jPhysics.find("shape") != jPhysics.end()) {
-		std::string shape = jPhysics["shape"].get<std::string>();
-		if (shape == "sphere") {
-			physics->shape = SPHERE;
+	else if (jPhysics["shape"] == "sphere")
+	{
+		sBallDef ballDefs;
+		if (jPhysics.find("position") != jPhysics.end()) {
+			float x = jPhysics["position"][0].get<float>();
+			float y = jPhysics["position"][1].get<float>();
+			float z = jPhysics["position"][2].get<float>();
+			ballDefs.Position = glm::vec3(x, y, z);
 		}
-		else if (shape == "mesh") {
-			physics->shape = MESH;
+		if (jPhysics.find("radius") != jPhysics.end()) {
+			ballDefs.Radius = jPhysics["radius"].get<float>();
 		}
-		else if (shape == "aabb") {
-			physics->shape = AABB;
+		if (jPhysics.find("mass") != jPhysics.end()) {
+			ballDefs.Mass = jPhysics["mass"].get<float>();
 		}
-		else if (shape == "capsule") {
-			physics->shape = CAPSULE;
-		}
-		else if (shape == "plane") {
-			physics->shape = PLANE;
-		}
-		else {
-			physics->shape = UNKNOWN;
-		}
+		return ::g_PhysicsFactory->CreateBall(ballDefs);
 	}
-	else {
-		physics->shape = UNKNOWN;
+	else if (jPhysics["shape"] == "plane")
+	{
+		sPlaneDef planeDefs;
+		if (jPhysics.find("position") != jPhysics.end()) {
+			float x = jPhysics["position"][0].get<float>();
+			float y = jPhysics["position"][1].get<float>();
+			float z = jPhysics["position"][2].get<float>();
+			planeDefs.Point = glm::vec3(x, y, z);
+		}
+		if (jPhysics.find("normal") != jPhysics.end()) {
+			float x = jPhysics["normal"][0].get<float>();
+			float y = jPhysics["normal"][1].get<float>();
+			float z = jPhysics["normal"][2].get<float>();
+			planeDefs.Normal = glm::normalize(glm::vec3(x, y, z));
+		}
+		return ::g_PhysicsFactory->CreatePlane(planeDefs);
 	}
-
-	if (jPhysics.find("radius") != jPhysics.end()) {
-		physics->radius = jPhysics["radius"].get<float>();
+	else
+	{
+		std::cout << "Unsopported physics shape while building physics component.\n";
+		return nullptr;
 	}
-
-	return physics;
 }
 
 aGameItem* createGameItem(std::string type, json info) {
@@ -163,7 +142,7 @@ aGameItem* createGameItem(std::string type, json info) {
 		}
 
 		if (info.find("Physics") != info.end()) {
-			gameObj->physics = buildPhysicsObject(info["Physics"]);
+			gameObj->mPhysicsCompoment = buildPhysicsObject(info["Physics"]);
 		}
 
 		if (info.find("textures") != info.end()) {

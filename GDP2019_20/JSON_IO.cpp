@@ -3,11 +3,11 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
 
 #include "cMesh.h"
 #include "GameItemFactory/GameItemFactory.h"
+#include "PhysicsConfigs.h"
+#include "cGameObject.h"
 
 using json = nlohmann::json;
 
@@ -172,9 +172,9 @@ std::map<std::string, aGameItem*>* readItems(std::string filename) {
 		for (json::iterator jObj = jObjects->begin();
 			jObj != jObjects->end(); jObj++) {
 
-			aGameItem* gameItem = createGameItem("Object", *jObj);
-
-
+			cGameObject* gameItem = static_cast<cGameObject*>(createGameItem("Object", *jObj));
+			if (gameItem->mPhysicsCompoment)
+				::g_PhysicsWorld->AddComponent(gameItem->mPhysicsCompoment);
 			(*mItems)[gameItem->getName()] = gameItem;
 		}
 	}
