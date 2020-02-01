@@ -13,8 +13,6 @@
 #include "SceneEditor.h"
 #include "JSON_IO.h"
 
-#include <stdio.h>		// for fprintf()
-
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
 
@@ -24,7 +22,7 @@ const float CAMERAZOOMSPEED = 10.0f;
 const float TRANSLATION_STEP = 0.5f;
 const float ROTATION_STEP = glm::radians(0.5f);
 
-Camera* theCamera = Camera::getTheCamera();
+FollowCamera* theCamera = FollowCamera::getPhysicsCamera();
 Scene* theScene = Scene::getTheScene();
 SceneEditor* theEditor = SceneEditor::getTheEditor();
 
@@ -62,11 +60,11 @@ void camera_orbit(int key, int action, int mods) {
 		}
 		if (key == GLFW_KEY_Q)
 		{
-			theCamera->zoom(CAMERAZOOMSPEED);
+			theCamera->zoom(1.1);
 		}
 		if (key == GLFW_KEY_E)
 		{
-			theCamera->zoom(-CAMERAZOOMSPEED);
+			theCamera->zoom(0.9);
 		}
 		if (key == GLFW_KEY_W)
 		{
@@ -76,6 +74,8 @@ void camera_orbit(int key, int action, int mods) {
 		{
 			theCamera->moveDown(CAMERAROTATIONSPEED);
 		}
+		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+			theCamera->next();
 	}
 }
 

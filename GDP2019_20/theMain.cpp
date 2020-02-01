@@ -22,6 +22,7 @@
 #include "AABBGrid.h"
 #include "DollyCamera.h"
 #include "PhysicsConfigs.h"
+#include "GameItemFactory/iGameItem.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -40,8 +41,8 @@ bool ::isDebug = false, ::isRunning = false;
 int main(void)
 {
 	Scene* theScene = Scene::getTheScene();
-	Camera* theCamera = FollowCamera::getTheCamera();
-	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
+	FollowCamera* theCamera = FollowCamera::getPhysicsCamera();
+	//SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
 	::g_initPhysics();
@@ -95,10 +96,11 @@ int main(void)
 	//	pAABBgrid->filterTriangles(cruiseship);
 	//}
 
-	//iGameItem* player = theScene->findItem("player");
-	//if (player) {
-	//	theCamera->init(player, glm::vec3(0, 30, -50));
-	//}
+	aGameItem* player = theScene->findItem("player");
+	if (player) {
+		std::cout << "Setting player to camera...\n";
+		theCamera->init(glm::vec3(0, 30, -50));
+	}
 
 	theSkyBox.init(
 		"SpaceBox_right1_posX.bmp",
@@ -110,7 +112,7 @@ int main(void)
 		"sphere_model");
 
 
-	sceneEditor->init(theScene);
+	//sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -175,7 +177,7 @@ int main(void)
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		::g_PhysicsWorld->Update(averageDeltaTime);
 		//theScene->IntegrationStep(averageDeltaTime);
-		//theCamera->reposition();
+		theCamera->update();
 
 		aGameItem* player = theScene->findItem("player");
 		if (player) {
@@ -197,10 +199,6 @@ int main(void)
 		theSkyBox.draw();
 		theScene->drawScene();
 
-		sceneEditor->drawDebug();
-		if (sceneEditor->getDebugRenderer()) {
-			sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
-		}
 		::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		if (::isDebug) {
 			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);

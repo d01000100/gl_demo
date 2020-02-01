@@ -4,11 +4,9 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <string>
-#include "../GLCommon.h"
 #include "../Messages/iMessagable.h"
 #include "../aOrientable.h"
 #include <nlohmann/json.hpp>
-#include "../colors.h"
 
 using json = nlohmann::json;
 

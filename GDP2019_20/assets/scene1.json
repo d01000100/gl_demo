@@ -65,6 +65,7 @@
         },
         {
             "mesh": "sphere_model",
+            "name": "player",
             "scale": 5.0,
             "Physics": {
                 "shape": "sphere",

@@ -10,11 +10,11 @@ private:
 protected:
 	Camera();
 	glm::vec3 target;
+	void updateListener();
+public:
 	glm::vec3 upVector;
 	glm::vec3 direction();
 	glm::vec3 right();
-	void updateListener();
-public:
 	static Camera* getTheCamera();
 	void init();
 	void setTarget(glm::vec3 target);
