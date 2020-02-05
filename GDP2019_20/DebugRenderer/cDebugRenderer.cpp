@@ -703,10 +703,12 @@ cDebugRenderer::sGLDrawState::sGLDrawState()
 	this->GL_polygon_mode_state[1] = GL_FILL; /*GL_BACK*/ 				// 6914
 	this->GL_cull_face_enabled_state = GL_TRUE;
 	this->GL_cull_face_mode_state = GL_BACK;
+	this->GL_program_id = 0;
 };
 
 void cDebugRenderer::m_SaveGLState( sGLDrawState &curGLState )
 {
+	glGetIntegerv(GL_CURRENT_PROGRAM, &(curGLState.GL_program_id));
 	glGetBooleanv( GL_DEPTH_TEST, &(curGLState.GL_depth_test_state) );				// glEnable(GL_DEPTH_TEST);
 	// This returns two values, GL_FRONT and GL_BACK
 	glGetIntegerv( GL_POLYGON_MODE, curGLState.GL_polygon_mode_state );			// glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
@@ -731,6 +733,7 @@ void cDebugRenderer::m_RestoreGLState( const sGLDrawState &curGLState )
 	}
 
 	glCullFace(curGLState.GL_cull_face_mode_state);
+	glUseProgram(curGLState.GL_program_id);
 
 	if ( curGLState.GL_depth_test_state == GL_TRUE )
 	{

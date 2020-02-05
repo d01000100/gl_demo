@@ -1,9 +1,5 @@
-#include "GLCommon.h"
 #include "globalStuff.h"
 #include <glm/glm.hpp>
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
@@ -12,13 +8,9 @@
 #include <stdlib.h>		// c libs
 #include <stdio.h>		// c libs
 #include <iostream>		// C++ IO standard stuff
-#include <map>			// Map aka "dictonary" 
 #include "cShaderManager.h"
-#include <sstream>
-#include "util.h"
 
 // The Physics function
-#include "PhysicsStuff.h"
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
 #include "DebugRenderer/cDebugRenderer.h"
@@ -27,13 +19,8 @@
 #include "FollowCamera.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
-#include "cLight.h"
 #include "SkyBox.h"
 #include "AABBGrid.h"
-#include "colors.h"
-#include "BroadCollision.h"
-#include "quaternions_utils.h"
-#include "ScriptBuilder.h"
 #include "DollyCamera.h"
 #include "cLuaBrain.h"
 #include "cFBO.h"
@@ -43,7 +30,6 @@
 
 // audio things
 #include "audio_item.h"
-#include "audio_listener.h"
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
@@ -109,10 +95,9 @@ int main(void)
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
-	init_fmod();
 	SkyBox theSkyBox;
+	init_fmod();
 	glm::vec3 cameraOffset(0, 30 ,-50);
-	cLuaBrain lua;
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -158,8 +143,6 @@ int main(void)
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
-	lua.RunFile("assets/cutscene_script.lua");
-	iCommand* cutscene = ScriptBuilder::getFinalScript();
 
 	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
 	//if (cruiseship) {
@@ -260,31 +243,14 @@ int main(void)
 		theSkyBox.draw();
 		theScene->drawScene();
 
-		aGameItem* player = theScene->findItem("player");
-		if (player) {
-			//BroadCollision::collisionsReact(
-			//	BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player),
-			//	(cGameObject*)player);
-			//pAABBgrid->Draw(player->getPos());
+		sceneEditor->drawDebug();
+		if (sceneEditor->getDebugRenderer()) {
+			sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
 		}
-		//pAABBgrid->Draw();
-		//if (::isRunning)
-		//{
-		//	cutscene->update(averageDeltaTime);
-		//	theCamera->setTarget(theScene->findItem("player")->getPos());
-		//	v = dollyCamera->lookAt();
-		//}
-		//sceneEditor->drawDebug();
-		//if (sceneEditor->getDebugRenderer()) {
-		//	sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
-		//}
 		//::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		//if (::isDebug) {
 		//	pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		//}
-		//theCamera->setPosition(glm::vec3(0, 0, -100));
-		//theCamera->setTarget(glm::vec3(0));
-		//theCamera->lookAt();
 
 		// ===========================
 		// ====== Second pass ========

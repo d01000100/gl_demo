@@ -245,6 +245,7 @@ private:
 		int /*GLint*/ GL_polygon_mode_state[2];			// = { GL_FILL /*GL_FRONT*/, GL_FILL /*GL_BACK*/ };				// 6914
 		unsigned char /*GLboolean*/ GL_cull_face_enabled_state;	// = GL_TRUE;
 		int /*GLint*/ GL_cull_face_mode_state;			// = GL_BACK;
+		int /*GLint*/ GL_program_id;
 	};
 	void m_SaveGLState( sGLDrawState &curGLState );
 	void m_RestoreGLState( const sGLDrawState &curGLState );
