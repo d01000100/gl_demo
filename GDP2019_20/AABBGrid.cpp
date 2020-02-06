@@ -145,7 +145,6 @@ void AABBGrid::filterTriangles(cMesh* mesh)
 		hashB = AABBHash(triangle->b);
 		hashC = AABBHash(triangle->c);
 
-		// TODO: Manage large triangles
 		if (this->grid.find(hashA) != this->grid.end())
 		{
 			this->grid[hashA]->triangles.push_back(triangle);

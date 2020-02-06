@@ -23,7 +23,6 @@ public:
 		float easeInDuration = 0,
 		float easeOutDuration = 0)
 	{
-		// TODO: manage more than 180° turn rotation
 		this->gameItem = gameItem;
 		this->totalDuration = totalDuration;
 		this->start = start;

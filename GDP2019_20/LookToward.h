@@ -23,7 +23,7 @@ public:
 		glm::vec3 direction,
 		float totalDuration)
 	{
-		// TODO: manage more than 180° turn rotation
+
 		this->gameItem = gameItem;
 		this->totalDuration = totalDuration;
 		this->endOrientation = RotationBetweenVectors(gameItem->getBaseDirection(), glm::normalize(direction));

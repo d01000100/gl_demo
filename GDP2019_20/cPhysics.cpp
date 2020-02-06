@@ -102,7 +102,6 @@ void cPhysics::GetClosestTriangleToPoint(Point pointXYZ, cMesh& mesh, glm::vec3&
 			closestTriangle.verts[2].y = triVert3.y;
 			closestTriangle.verts[2].z = triVert3.z;
 			
-			// TODO: Copy the normal, too	
 			// Quick is to average the normal of all 3 vertices
 			glm::vec3 triVert1Norm = glm::vec3(triVert1.nx, triVert1.ny, triVert1.nz );
 			glm::vec3 triVert2Norm = glm::vec3(triVert2.nx, triVert2.ny, triVert2.nz );

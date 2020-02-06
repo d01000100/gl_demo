@@ -23,7 +23,6 @@ public:
 		iCommand* toTrigger,
 		float lifeTime)
 	{
-		// TODO: manage more than 180° turn rotation
 		this->checkItem = gameItem;
 		this->mins = mins;
 		this->maxs = maxs;
