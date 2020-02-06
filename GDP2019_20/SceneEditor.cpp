@@ -30,7 +30,7 @@ cDebugRenderer* SceneEditor::getDebugRenderer() {
 	return debugRenderer;
 }
 
-void SceneEditor::drawDebug() {
+void SceneEditor::addDebugMarkers() {
 	objectDebug();
 }
 

@@ -42,6 +42,7 @@ AABBGrid* pAABBgrid = new AABBGrid();
 DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false;
 GLuint g_programID = 0;
+glm::mat4 viewTransform = glm::mat4(1), projTransform = glm::mat4(1);
 
 // audio globals
 FMOD::System *::fmod_system = 0;
@@ -170,18 +171,17 @@ int main(void)
 
 		float ratio;
 		int width, height;
-		glm::mat4 p, v;
 
 		glfwGetFramebufferSize(window, &width, &height);
 		ratio = width / (float)height;
 
 		// Projection matrix
-		p = glm::perspective(0.6f,		// FOV
+		::projTransform = glm::perspective(0.6f,		// FOV
 			ratio,			// Aspect ratio
 			0.1f,			// Near clipping plane
 			10000.0f);		// Far clipping plane
 		GLint matProj_UL = glGetUniformLocation(g_programID, "matProj");
-		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
+		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(::projTransform));
 
 		glViewport(0, 0, width, height);
 
@@ -192,8 +192,7 @@ int main(void)
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		//theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
-
-		// TODO: add a skybox to a Scene and draw it before everything
+		sceneEditor->addDebugMarkers();
 		
 		//theScene->drawScene();
 		RenderManager::deferredDraw(
@@ -204,10 +203,9 @@ int main(void)
 		);
 
 		// TODO: A Scene has a debug that is called to draw with the Scene.
-		//sceneEditor->drawDebug();
-		//if (sceneEditor->getDebugRenderer()) {
-		//	sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
-		//}
+		if (sceneEditor->getDebugRenderer()) {
+			sceneEditor->getDebugRenderer()->RenderDebugObjects(::viewTransform, ::projTransform, 0.01f);
+		}
 		//::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		//if (::isDebug) {
 		//	pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);

@@ -47,7 +47,7 @@ public:
 	void init(Scene* scene);
 
 	cDebugRenderer* getDebugRenderer();
-	void drawDebug();
+	void addDebugMarkers();
 
 	void recieveMessage(sMessage message);
 };

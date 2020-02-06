@@ -30,16 +30,16 @@ bool RenderManager::deferredDraw(
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	// 3. Move the camera
-	glm::mat4 v = glm::lookAt(eyePos, cameraTarget, glm::vec3(0, 1, 0));
+	::viewTransform = glm::lookAt(eyePos, cameraTarget, glm::vec3(0, 1, 0));
 	glUniform4f(
 		glGetUniformLocation(g_programID, "eyeLocation") ,
 		eyePos.x, eyePos.y, eyePos.z, 1.0f
 	);
 	glUniformMatrix4fv(
 		glGetUniformLocation(g_programID, "matView"), 
-		1, GL_FALSE, glm::value_ptr(v)
+		1, GL_FALSE, glm::value_ptr(::viewTransform)
 	);
 	// 5. Draw scene
-	scene->drawScene();
+	scene->drawScene();	
 	return true;
 }
