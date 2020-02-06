@@ -16,7 +16,6 @@ private:
 	std::map<std::string, sCameraSettings*> cameras;
 	std::map<std::string, sCameraSettings*>::iterator activeCamera;
 	static Scene* theScene;
-	Scene();
 	bool loadMeshes(std::string filename);
 	bool loadCameras(std::string filename);
 	bool loadLights(std::string filename);
@@ -25,6 +24,7 @@ private:
 	void lookAtActiveCamera();
 
 public:
+	Scene();
 	static Scene* getTheScene();
 	std::vector<aGameItem*> getItems();
 	std::vector<cLight*> getLights();

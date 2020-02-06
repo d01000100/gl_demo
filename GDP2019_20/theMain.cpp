@@ -30,6 +30,7 @@
 
 // audio things
 #include "audio_item.h"
+#include "RenderManager.h"
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
@@ -41,6 +42,7 @@ cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 AABBGrid* pAABBgrid = new AABBGrid();
 DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false;
+GLuint g_programID = 0;
 
 // audio globals
 FMOD::System *::fmod_system = 0;
@@ -138,8 +140,7 @@ int main(void)
 		return -1;
 	}
 
-
-	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
+	::g_programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
@@ -190,12 +191,10 @@ int main(void)
 
 	while (!glfwWindowShouldClose(window))
 	{
-		// Draw everything to the external frame buffer
-		// (I get the frame buffer ID, and use that)
-		glBindFramebuffer(GL_FRAMEBUFFER, pTheFBO->ID);
-		pTheFBO->clearBuffers(true, true);
-		// Set the passNumber to 0
-		GLint passNumber_UniLoc = glGetUniformLocation(shaderProgID, "passNumber");
+		// Doesn't work if all the texture units aren't asigned
+		glUniform1i(glGetUniformLocation(g_programID, "skyBox"), 26);	// Texture unit 26
+	
+		GLint passNumber_UniLoc = glGetUniformLocation(g_programID, "passNumber");
 		glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
 
 		// Get the initial time
@@ -213,7 +212,7 @@ int main(void)
 
 		avgDeltaTimeThingy.addValue(deltaTime);
 
-		glUseProgram(shaderProgID);
+		glUseProgram(g_programID);
 
 		float ratio;
 		int width, height;
@@ -227,43 +226,51 @@ int main(void)
 			ratio,			// Aspect ratio
 			0.1f,			// Near clipping plane
 			10000.0f);		// Far clipping plane
-
+		GLint matProj_UL = glGetUniformLocation(g_programID, "matProj");
+		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		glViewport(0, 0, width, height);
-		GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
-		GLint matProj_UL = glGetUniformLocation(shaderProgID, "matProj");
 
-		v = theCamera->lookAt();
-		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
-		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
+		//v = theCamera->lookAt();
+		GLint matView_UL = glGetUniformLocation(g_programID, "matView");
+		//glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		//theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
-		theSkyBox.draw();
-		theScene->drawScene();
 
-		sceneEditor->drawDebug();
-		if (sceneEditor->getDebugRenderer()) {
-			sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
-		}
+		// TODO: add a skybox to a Scene and draw it before everything
+		
+		//theScene->drawScene();
+		RenderManager::deferredDraw(
+			theCamera->getPosition(),
+			theCamera->getTarget(),
+			pTheFBO,
+			theScene
+		);
+
+		// TODO: A Scene has a debug that is called to draw with the Scene.
+		//sceneEditor->drawDebug();
+		//if (sceneEditor->getDebugRenderer()) {
+		//	sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
+		//}
 		//::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		//if (::isDebug) {
 		//	pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		//}
+		
 
 		// ===========================
 		// ====== Second pass ========
 		// ===========================
 
 		// 1. Disable de FBO
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		// 2. Clear the ACTUAL frame buffer
-		glViewport(0, 0, width, height);
 		// Clear both the colour buffer (what we see) and the 
 		//  depth (or z) buffer. 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// 3. Use the FBO colour texture as the texture on that quad
 		glUniform1i(passNumber_UniLoc, 1);  //"passNumber"
@@ -271,13 +278,13 @@ int main(void)
 		// Tie the texture to the texture unitd
 		glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
 		glBindTexture(GL_TEXTURE_2D, pTheFBO->colourTexture_0_ID);	// Texture now assoc with texture unit 40
-		GLint textSamp00_UL = glGetUniformLocation(shaderProgID, "secondPassColourTexture");
+		GLint textSamp00_UL = glGetUniformLocation(g_programID, "secondPassColourTexture");
 		glUniform1i(textSamp00_UL, 40);	// Texture unit 40
 
 		// 4. Move the camera
-		v = glm::lookAt(glm::vec3(0,0,-100), glm::vec3(0,0,0), glm::vec3(0,1,0));
-		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
-		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
+		//v = glm::lookAt(glm::vec3(0,0,-100), glm::vec3(0,0,0), glm::vec3(0,1,0));
+		//glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
+		//glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		// 5. Draw a single object
 		cGameObject* sceneObj = new cGameObject();
@@ -286,15 +293,22 @@ int main(void)
 		sceneObj->meshName = "quad_model";
 		sceneObj->setPos(glm::vec3(0));
 		sceneObj->scale = 100.0f;
-		sceneObj->draw();
+		Scene* pFinalScene = new Scene();
+		pFinalScene->addItem(sceneObj);
+		pFinalScene->pSkyBox = nullptr;
+
+		RenderManager::deferredDraw(
+			glm::vec3(0, 0, -100),
+			glm::vec3(0, 0, 0),
+			nullptr,
+			pFinalScene
+		);
 
 		// 6. Get the screen size and send it to the shader
-		GLint screenWidth_UnitLoc = glGetUniformLocation(shaderProgID, "screenWidth");
-		GLint screenHeight_UnitLoc = glGetUniformLocation(shaderProgID, "screenHeight");
-
 		// Get the "screen" framebuffer size 
 		glfwGetFramebufferSize(window, &width, &height);
-
+		GLint screenWidth_UnitLoc = glGetUniformLocation(g_programID, "screenWidth");
+		GLint screenHeight_UnitLoc = glGetUniformLocation(g_programID, "screenHeight");
 		glUniform1f(screenWidth_UnitLoc, width);
 		glUniform1f(screenHeight_UnitLoc, height);
 

@@ -219,6 +219,9 @@
     <ClCompile Include="cFBO.cpp">
       <Filter>FBO</Filter>
     </ClCompile>
+    <ClCompile Include="RenderManager.cpp">
+      <Filter>FBO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -396,6 +399,9 @@
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="cFBO.h">
+      <Filter>FBO</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
       <Filter>FBO</Filter>
     </ClInclude>
   </ItemGroup>

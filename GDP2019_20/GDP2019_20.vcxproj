@@ -202,6 +202,7 @@
     <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="quaternions_utils.cpp" />
+    <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneEditor.cpp" />
     <ClCompile Include="ScriptBuilder.cpp" />
@@ -261,6 +262,7 @@
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="quaternions_utils.h" />
+    <ClInclude Include="RenderManager.h" />
     <ClInclude Include="RideCurve.h" />
     <ClInclude Include="RotateCommand.h" />
     <ClInclude Include="Scene.h" />

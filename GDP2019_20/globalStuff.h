@@ -9,6 +9,7 @@
 extern cShaderManager theShaderManager;
 extern cVAOManager* theVAOManager;
 extern std::string shader_name;
+extern GLuint g_programID;
 
 extern std::string scene_filename;
 
