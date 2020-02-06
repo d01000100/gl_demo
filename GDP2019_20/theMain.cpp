@@ -19,7 +19,6 @@
 #include "FollowCamera.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
-#include "SkyBox.h"
 #include "AABBGrid.h"
 #include "DollyCamera.h"
 #include "cLuaBrain.h"
@@ -60,44 +59,9 @@ bool init_fmod() {
 
 int main(void)
 {
-	//AABBHash(glm::vec3(-4580.1546, -0.1579, 126.12));
-	//std::vector<int> v1, v2;
-	//v1.push_back(1); v1.push_back(4); v1.push_back(5);
-	//v2.push_back(4); v2.push_back(5);
-	//stdVecConc(&v1, &v2);
-	//for (int i = 0; i < v1.size(); i++)
-	//	printf("%d, ", v1[i]);
-	//sNiceTriangle* tri = new sNiceTriangle();
-	//tri->a = glm::vec3(0);
-	//tri->b = glm::vec3(0,0,500);
-	//tri->c = glm::vec3(500);
-	//std::vector<unsigned long long> hashes = getTriangleHashes(tri);
-	
-	//glm::vec3 vector(1, 2, 2);-
-	//glm::quat orientation(glm::vec3(0,1.6,0));
-
-
-	//glm::vec3 v1(0, -1, 0), v2(-1, -1, -1);
-	//glm::quat rotation = RotationBetweenVectors(v1, v2);
-	//printf("Setting direction of test at: %s. quat: %s\nOriginally looking at %s\nNow looking at %s\n\n",
-	//	glm::to_string(v2).c_str(),
-	//	glm::to_string(rotation).c_str(),
-	//	glm::to_string(v1).c_str(),
-	//	glm::to_string(rotation * v1).c_str());
-
-	//float min = 5.0f, max = 15.0f;
-	//for (float val = min; val <= max; val += 0.1f) {
-	//	float step = glm::smoothstep(max, min, val);
-	//	printf("min %f, max %f, value %f, result %f\n",
-	//		min, max, val, step);
-	//}
-
-	//return 0;
-
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
-	SkyBox theSkyBox;
 	init_fmod();
 	glm::vec3 cameraOffset(0, 30 ,-50);
 
@@ -154,16 +118,6 @@ int main(void)
 	//if (player) {
 	//	theCamera->init(player, glm::vec3(0, 30, -50));
 	//}
-
-	theSkyBox.init(
-		"SpaceBox_right1_posX.bmp",
-		"SpaceBox_left2_negX.bmp",
-		"SpaceBox_top3_posY.bmp",
-		"SpaceBox_bottom4_negY.bmp",
-		"SpaceBox_front5_posZ.bmp",
-		"SpaceBox_back6_negZ.bmp",
-		"sphere_model");
-
 
 	sceneEditor->init(theScene);
 

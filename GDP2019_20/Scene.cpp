@@ -17,8 +17,14 @@
 
 Scene* Scene::theScene = new Scene();
 
-// does nothing. Need to "implement" it to make it private
-Scene::Scene() { } 
+Scene::Scene() :
+  pSkyBox(new SkyBox()) {}
+
+Scene::~Scene()
+{
+	delete pSkyBox;
+}
+
 
 Scene* Scene::getTheScene() {
 	return theScene;
@@ -112,9 +118,23 @@ void Scene::changeCamera() {
 }
 
 bool Scene::loadScene(std::string filename) {
+
+	
 	if (!loadMeshes(filename)) { return false; }
 
 	if (!reloadScene(filename)) { return false; }
+
+	if (pSkyBox)
+	{
+		pSkyBox->init(
+			"SpaceBox_right1_posX.bmp",
+			"SpaceBox_left2_negX.bmp",
+			"SpaceBox_top3_posY.bmp",
+			"SpaceBox_bottom4_negY.bmp",
+			"SpaceBox_front5_posZ.bmp",
+			"SpaceBox_back6_negZ.bmp",
+			"sphere_model");
+	}
 	return true;
 }
 
@@ -167,6 +187,8 @@ void Scene::drawItems() {
 }
 
 void Scene::drawScene() {
+	if (pSkyBox)
+		pSkyBox->draw();
 	drawItems();
 }
 

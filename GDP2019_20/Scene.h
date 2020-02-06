@@ -6,6 +6,7 @@
 #include "GameItemFactory/iGameItem.h"
 #include "cMesh.h"
 #include "CameraSettings.h"
+#include "SkyBox.h"
 
 class Scene
 {
@@ -25,7 +26,9 @@ private:
 
 public:
 	Scene();
+	~Scene();
 	static Scene* getTheScene();
+	SkyBox* pSkyBox;
 	std::vector<aGameItem*> getItems();
 	std::vector<cLight*> getLights();
 	std::map<std::string, cLight*> getLightsMap();
