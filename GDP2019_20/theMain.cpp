@@ -31,7 +31,7 @@
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
-std::string scene_filename = "assets/scene1.json";
+std::string config_filename = "assets/config.json";
 cVAOManager* theVAOManager = new cVAOManager();
 GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
@@ -101,14 +101,9 @@ int main(void)
 	*                               __/ |       | |                                      
 	*                              |___/        |_|                                      
 	*/
-	if(!loadScenes("assets/config.json"))
+	if(!loadScenes(::config_filename))
 	{
 		return 1;
-	}
-
-	if(mapContains(RenderManager::mScenes, std::string("Scene1")))
-	{
-		sceneEditor->init(RenderManager::mScenes["Scene1"]->pScene);
 	}
 
 	cLowPassFilter avgDeltaTimeThingy;
@@ -180,21 +175,15 @@ int main(void)
 
 		//theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
-		sceneEditor->addDebugMarkers();
 		
 		GLint passNumber_UniLoc = glGetUniformLocation(g_programID, "passNumber");
 		glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
-
 		
 		RenderManager::deferredDraw(
 			theCamera->getPosition(),
 			theCamera->getTarget(),
 			"Scene1"
 		);
-
-		if (sceneEditor->getDebugRenderer()) {
-			sceneEditor->getDebugRenderer()->RenderDebugObjects(::viewTransform, ::projTransform, 0.01f);
-		}
 
 		/*
 		 * SCENE 2: Full screen deferred quad
@@ -210,11 +199,14 @@ int main(void)
 		glUniform1f(screenWidth_UnitLoc, width);
 		glUniform1f(screenHeight_UnitLoc, height);
 
-		// Tie the texture to the texture unitd
-		glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
-		glBindTexture(GL_TEXTURE_2D, RenderManager::getFBO("Scene1")->colourTexture_0_ID);	// Texture now assoc with texture unit 40
-		GLint textSamp00_UL = glGetUniformLocation(g_programID, "secondPassColourTexture");
-		glUniform1i(textSamp00_UL, 40);	// Texture unit 40
+		if (RenderManager::getFBO("Scene1"))
+		{
+			// Tie the texture to the texture unitd
+			glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
+			glBindTexture(GL_TEXTURE_2D, RenderManager::getFBO("Scene1")->colourTexture_0_ID);	// Texture now assoc with texture unit 40
+			GLint textSamp00_UL = glGetUniformLocation(g_programID, "secondPassColourTexture");
+			glUniform1i(textSamp00_UL, 40);	// Texture unit 40
+		}
 
 		// 5. Draw a single object
 		RenderManager::deferredDraw(

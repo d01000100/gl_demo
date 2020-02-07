@@ -2,8 +2,10 @@
 #include "globalStuff.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <map>
+#include "SceneEditor.h"
 
 std::map<std::string, SceneDefs*> RenderManager::mScenes;
+SceneDefs* RenderManager::sceneOnEdition = nullptr;
 
 bool RenderManager::deferredDraw(
 	glm::vec3 eyePos, glm::vec3 cameraTarget, 
@@ -40,7 +42,14 @@ bool RenderManager::deferredDraw(
 		1, GL_FALSE, glm::value_ptr(::viewTransform)
 	);
 	// 5. Draw scene
-	scene->drawScene();	
+	scene->drawScene();
+
+	if (sceneOnEdition == sceneDefs)
+	{
+		SceneEditor::getTheEditor()->addDebugMarkers();
+		SceneEditor::getTheEditor()->getDebugRenderer()->RenderDebugObjects(::viewTransform, ::projTransform, 0.01f);
+	}
+	
 	return true;
 }
 

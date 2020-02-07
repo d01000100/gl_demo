@@ -9,7 +9,7 @@ struct SceneDefs
 {
 	Scene* pScene;
 	int width, height;
-	std::string name;
+	std::string name, pathfile;
 	cFBO* pFBO;
 	SceneDefs() :
 		pScene(nullptr),
@@ -21,6 +21,7 @@ struct SceneDefs
 struct RenderManager
 {
 	static std::map<std::string, SceneDefs*> mScenes;
+	static SceneDefs* sceneOnEdition;
 	/*
 	 * Draw a certain scene (collection of game items: objects, lights, skybox)
 	 * and output the result to a FBO or to the frame buffer if null.

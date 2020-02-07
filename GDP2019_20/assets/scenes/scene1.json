@@ -1,205 +1,99 @@
 {
-    "Cameras": null,
-    "Lights": [
-        {
-            "cutOffDist": 50.0,
-            "diffuseColor": [
-                255.0,
-                255.0,
-                255.0
-            ],
-            "direction": [
-                0.577350378036499,
-                -0.5773502588272095,
-                -0.5773501396179199
-            ],
-            "innerAngle": 30.0,
-            "isOn": true,
-            "linearAtten": 0.013123633340001106,
-            "name": "zzzzdaylight",
-            "outerAngle": 30.0,
-            "position": [
-                78.0,
-                90.0,
-                0.0
-            ],
-            "quadAtten": 1.974484985234337e-11,
-            "specularColor": [
-                1.0,
-                1.0,
-                1.0,
-                5000.0
-            ],
-            "type": "point"
-        },
-        {
-            "cutOffDist": 50.0,
-            "diffuseColor": [
-                255.0,
-                10.0,
-                10.0
-            ],
-            "direction": [
-                0.6080776453018188,
-                -0.2688112258911133,
-                -0.7469823360443115
-            ],
-            "innerAngle": 30.0,
-            "isOn": true,
-            "linearAtten": 1.561971385566352e-10,
-            "name": "zzzzspotlight",
-            "outerAngle": 30.0,
-            "position": [
-                -1.0,
-                17.0,
-                -17.0
-            ],
-            "quadAtten": 0.0015985950594767928,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                50.0
-            ],
-            "type": "spotlight"
-        }
-    ],
-    "Meshes": [
-        {
-            "filename": "assets/models/sky_ship.ply",
-            "name": "sky_ship_model"
-        },
-        {
-            "filename": "assets/models/sphere.ply",
-            "name": "sphere_model"
-        },
-        {
-            "filename": "assets/models/terrain.ply",
-            "name": "terrain_model"
-        },
-        {
-            "filename": "assets/models/quad.ply",
-            "name": "quad_model"
-        }
-    ],
-    "Objects": [
-        {
-            "alpha": 1.0,
-            "diffuseColor": [
-                204.0,
-                204.0,
-                204.0
-            ],
-            "isLit": true,
-            "isVisible": true,
-            "mesh": "terrain_model",
-            "name": "aaaaterrain_model_1000",
-            "position": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 1.0,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                50.0
-            ]
-        },
-        {
-            "alpha": 1.0,
-            "diffuseColor": [
-                204.0,
-                204.0,
-                204.0
-            ],
-            "isLit": true,
-            "isVisible": true,
-            "mesh": "sky_ship_model",
-            "name": "ship1",
-            "position": [
-                -20.0,
-                20.0,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                -0.0,
-                0.0
-            ],
-            "scale": 1.0,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                50.0
-            ]
-        },
-        {
-            "alpha": 1.0,
-            "diffuseColor": [
-                204.0,
-                204.0,
-                204.0
-            ],
-            "isLit": true,
-            "isVisible": true,
-            "mesh": "sky_ship_model",
-            "name": "ship2",
-            "position": [
-                0.0,
-                20.0,
-                0.0
-            ],
-            "rotation": [
-                -64.98185729980469,
-                50.89912796020508,
-                -12.530855178833008
-            ],
-            "scale": 1.0,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                50.0
-            ]
-        },
-        {
-            "alpha": 1.0,
-            "diffuseColor": [
-                204.0,
-                204.0,
-                204.0
-            ],
-            "isLit": true,
-            "isVisible": true,
-            "mesh": "sky_ship_model",
-            "name": "ship3",
-            "position": [
-                20.0,
-                20.0,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                -0.0,
-                0.0
-            ],
-            "scale": 1.0,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                50.0
-            ]
-        }
-    ],
-    "Sounds": null,
-    "Textures": [
-        "grass.bmp",
-        "pizza.bmp",
-        "submarine.bmp",
-        "drej.bmp"
-    ]
+  "Cameras": null,
+  "Lights": [
+    {
+      "cutOffDist": 50.0,
+      "diffuseColor": [255.0, 255.0, 255.0],
+      "direction": [
+        0.577350378036499,
+        -0.5773502588272095,
+        -0.5773501396179199
+      ],
+      "innerAngle": 30.0,
+      "isOn": true,
+      "linearAtten": 0.013123633340001106,
+      "name": "zzzzdaylight",
+      "outerAngle": 30.0,
+      "position": [78.0, 90.0, 0.0],
+      "quadAtten": 1.974484985234337e-11,
+      "specularColor": [1.0, 1.0, 1.0, 5000.0],
+      "type": "point"
+    },
+    {
+      "cutOffDist": 50.0,
+      "diffuseColor": [255.0, 10.0, 10.0],
+      "direction": [
+        0.6080774068832397,
+        -0.26881107687950134,
+        -0.7469823360443115
+      ],
+      "innerAngle": 30.0,
+      "isOn": true,
+      "linearAtten": 1.561971385566352e-10,
+      "name": "zzzzspotlight",
+      "outerAngle": 30.0,
+      "position": [-1.0, 17.0, -17.0],
+      "quadAtten": 0.0015985950594767928,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "type": "spotlight"
+    }
+  ],
+  "Meshes": [
+    { "filename": "assets/models/quad.ply", "name": "quad_model" },
+    { "filename": "assets/models/sky_ship.ply", "name": "sky_ship_model" },
+    { "filename": "assets/models/sphere.ply", "name": "sphere_model" },
+    { "filename": "assets/models/terrain.ply", "name": "terrain_model" }
+  ],
+  "Objects": [
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "terrain_model",
+      "name": "aaaaterrain_model_1000",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "sky_ship_model",
+      "name": "ship1",
+      "position": [-20.0, 20.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "sky_ship_model",
+      "name": "ship2",
+      "position": [0.0, 45.0, 0.0],
+      "rotation": [62.98924255371094, 13.867849349975586, -2.8209152221679688],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "sky_ship_model",
+      "name": "ship3",
+      "position": [20.0, 20.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    }
+  ],
+  "Sounds": null,
+  "Textures": null
 }

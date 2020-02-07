@@ -8,6 +8,7 @@
 #include "GameItemFactory/GameItemFactory.h"
 #include "RenderManager.h"
 #include <iostream>
+#include "SceneEditor.h"
 
 using json = nlohmann::json;
 
@@ -293,6 +294,8 @@ void saveScene(Scene* scene, std::string filename) {
 	file << jScene;
 
 	file.close();
+
+	std::cout << filename << " succesfully saved\n";
 }
 
 bool loadScenes(std::string filename)
@@ -340,6 +343,7 @@ bool loadScenes(std::string filename)
 		int width = jsonContains(jScene, "width") ? jScene["width"].get<int>() : 1600;
 		int height = jsonContains(jScene, "height") ? jScene["height"].get<int>() : 800;
 		bool isDeferred = jsonContains(jScene, "isDeferred") ? jScene["isDeferred"].get<bool>() : false;
+		bool isEdited = jsonContains(jScene, "isEdited") ? jScene["isEdited"].get<bool>() : false;
 
 		cFBO* pFBO = nullptr;
 		if (isDeferred)
@@ -355,16 +359,23 @@ bool loadScenes(std::string filename)
 			}
 		}
 		
-		auto pSceneDefs = new SceneDefs();
 		readTextures(scenePath);
 		auto pScene = new Scene();
-		pScene->loadScene(scenePath);
+		pScene->loadScene(scenePath);		
+		auto pSceneDefs = new SceneDefs();
 		pSceneDefs->pFBO = pFBO;
 		pSceneDefs->width = width;
 		pSceneDefs->height = height;
 		pSceneDefs->pScene = pScene;
 		pSceneDefs->name = sceneName;
+		pSceneDefs->pathfile = scenePath;
 
+		if (isEdited)
+		{
+			SceneEditor::getTheEditor()->init(pScene);
+			RenderManager::sceneOnEdition = pSceneDefs;
+		}
+		
 		RenderManager::mScenes[sceneName] = pSceneDefs;
 	}
 	return true;

@@ -3,15 +3,18 @@
 {
   "Scenes": [
     {
-      // nombre de la escena
       "name": "Scene1",
-      // path del json de la escena
+      // filepath of the json file that describes the scene
       "path": "scenes/scene1.json",
-      // bool, si renderizarlo o no
-      "isRendered": 1,
-      // Will it be deferred rendered?
-      // Creates an cFBO and renders there if true
-      "deferred": 1, 
+      // Flag to load this scene or not. (handy when editing a lot of scenes)
+      "isRendered": true,
+      // Will it be deferred rendered to another texture?
+      // Creates an cFBO and renders there if true.
+      // If not, renders to the actual screen frame buffer.
+      "isDeferred": false, 
+      // If set to true, a SceneEditor will be initialized with this scene.
+      // If more scenes are set to true, only the last scene will be set up to editing.
+      "isEdited": true, 
       // Width y height
       "width": 1600,
       "height": 800

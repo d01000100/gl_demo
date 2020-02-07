@@ -11,7 +11,7 @@ extern cVAOManager* theVAOManager;
 extern std::string shader_name;
 extern GLuint g_programID;
 
-extern std::string scene_filename;
+extern std::string config_filename;
 
 extern GLFWwindow* window;
 

@@ -14,6 +14,7 @@
 #include "JSON_IO.h"
 
 #include <stdio.h>		// for fprintf()
+#include "RenderManager.h"
 
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
@@ -220,12 +221,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 		if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
-			saveScene(theScene, ::scene_filename);
+			if (RenderManager::sceneOnEdition)
+			{
+				saveScene(
+					RenderManager::sceneOnEdition->pScene,
+					RenderManager::sceneOnEdition->pathfile
+				);
+			}
 		}
 
 		if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
-			theScene->reloadScene(::scene_filename);
-			theEditor->init(theScene);
+			loadScenes(::config_filename);
 		}
 
 		if (key == GLFW_KEY_F1 && action == GLFW_PRESS) {
