@@ -98,7 +98,8 @@
       <AdditionalDependencies>fmodL_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(ProjectDir)lib\$(Configuration)\$(PlatformShortName)\*.dll $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -113,7 +114,8 @@
       <AdditionalDependencies>fmodL_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(ProjectDir)lib\$(Configuration)\$(PlatformShortName)\*.dll $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -133,7 +135,8 @@
       <AdditionalDependencies>fmod_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(ProjectDir)lib\$(Configuration)\$(PlatformShortName)\*.dll $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,7 +153,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>lua5.3.5-static.lib;fmod_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>fmod_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -160,20 +163,16 @@
   <ItemGroup>
     <ClCompile Include="AABBGrid.cpp" />
     <ClCompile Include="aOrientable.cpp" />
-    <ClCompile Include="audio_item.cpp" />
-    <ClCompile Include="audio_listener.cpp" />
     <ClCompile Include="BroadCollision.cpp" />
     <ClCompile Include="C24BitBMPpixel.cpp" />
     <ClCompile Include="cAABB.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="cBasicTextureManager.cpp" />
     <ClCompile Include="cFBO.cpp" />
-    <ClCompile Include="cGameAudio.cpp" />
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="cGLColourHelper.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
-    <ClCompile Include="cLuaBrain.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
     <ClCompile Include="colors.cpp" />
     <ClCompile Include="cPhysics.cpp" />
@@ -191,13 +190,8 @@
     <ClCompile Include="GameItemFactory\GameItemFactory.cpp" />
     <ClCompile Include="GFLW_callbacks.cpp" />
     <ClCompile Include="glad.c" />
-    <ClCompile Include="globalStuff.cpp" />
-    <ClCompile Include="iCommand.cpp" />
     <ClCompile Include="JSON_IO.cpp" />
     <ClCompile Include="LightManager\cLightHelper.cpp" />
-    <ClCompile Include="LookAt.cpp" />
-    <ClCompile Include="MoveCommand.cpp" />
-    <ClCompile Include="ParallelCommand.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
@@ -205,8 +199,6 @@
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneEditor.cpp" />
-    <ClCompile Include="ScriptBuilder.cpp" />
-    <ClCompile Include="SerialCommand.cpp" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="UserInput.cpp" />
@@ -215,8 +207,6 @@
   <ItemGroup>
     <ClInclude Include="AABBGrid.h" />
     <ClInclude Include="aOrientable.h" />
-    <ClInclude Include="audio_item.h" />
-    <ClInclude Include="audio_listener.h" />
     <ClInclude Include="BroadCollision.h" />
     <ClInclude Include="C24BitBMPpixel.h" />
     <ClInclude Include="cAABB.h" />
@@ -224,12 +214,10 @@
     <ClInclude Include="CameraSettings.h" />
     <ClInclude Include="cBasicTextureManager.h" />
     <ClInclude Include="cFBO.h" />
-    <ClInclude Include="cGameAudio.h" />
     <ClInclude Include="cGameObject.h" />
     <ClInclude Include="cGLColourHelper.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cLowPassFilter.h" />
-    <ClInclude Include="cLuaBrain.h" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cModelLoader.h" />
     <ClInclude Include="colors.h" />
@@ -243,34 +231,23 @@
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
     <ClInclude Include="DollyCamera.h" />
-    <ClInclude Include="FollowCommand.h" />
     <ClInclude Include="GameItemFactory\GameItemFactory.h" />
     <ClInclude Include="GameItemFactory\iGameItem.h" />
     <ClInclude Include="GFLW_callbacks.h" />
     <ClInclude Include="GLCommon.h" />
     <ClInclude Include="globalStuff.h" />
-    <ClInclude Include="iCommand.h" />
     <ClInclude Include="JSON_IO.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
-    <ClInclude Include="LookAt.h" />
-    <ClInclude Include="LookToward.h" />
     <ClInclude Include="Messages\iMessagable.h" />
     <ClInclude Include="Messages\Message.h" />
-    <ClInclude Include="MoveCommand.h" />
-    <ClInclude Include="ParallelCommand.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="quaternions_utils.h" />
     <ClInclude Include="RenderManager.h" />
-    <ClInclude Include="RideCurve.h" />
-    <ClInclude Include="RotateCommand.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEditor.h" />
-    <ClInclude Include="ScriptBuilder.h" />
-    <ClInclude Include="SerialCommand.h" />
     <ClInclude Include="SkyBox.h" />
-    <ClInclude Include="TriggerCommand.h" />
     <ClInclude Include="UserInput.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>

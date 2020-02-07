@@ -34,9 +34,6 @@
     <Filter Include="Particles">
       <UniqueIdentifier>{9b1ce896-5c95-4821-8ad2-339fe1fb5d4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AudioItems">
-      <UniqueIdentifier>{9f51edd6-465d-495e-8cb0-8ba3c9f49b4e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Textures">
       <UniqueIdentifier>{3fb7f4e8-9598-4934-8ef5-6371375f7b36}</UniqueIdentifier>
     </Filter>
@@ -48,9 +45,6 @@
     </Filter>
     <Filter Include="Cameras">
       <UniqueIdentifier>{4b4b13de-8d19-427f-b491-982abb6bd707}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Commands">
-      <UniqueIdentifier>{9d2b0555-a1bf-49ba-851f-f36f5c1a68c3}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameItem">
       <UniqueIdentifier>{8a4cd80a-c9f7-4d5c-9aec-d834e1d28014}</UniqueIdentifier>
@@ -132,15 +126,6 @@
     <ClCompile Include="ParticleEmitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="audio_item.cpp">
-      <Filter>AudioItems</Filter>
-    </ClCompile>
-    <ClCompile Include="audio_listener.cpp">
-      <Filter>AudioItems</Filter>
-    </ClCompile>
-    <ClCompile Include="globalStuff.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -183,38 +168,14 @@
     <ClCompile Include="quaternions_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScriptBuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="iCommand.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveCommand.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="ParallelCommand.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="SerialCommand.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
     <ClCompile Include="cLight.cpp">
       <Filter>GameItem</Filter>
     </ClCompile>
     <ClCompile Include="aOrientable.cpp">
       <Filter>GameItem</Filter>
     </ClCompile>
-    <ClCompile Include="cGameAudio.cpp">
-      <Filter>GameItem</Filter>
-    </ClCompile>
     <ClCompile Include="DollyCamera.cpp">
       <Filter>Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="cLuaBrain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LookAt.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cFBO.cpp">
       <Filter>FBO</Filter>
@@ -299,12 +260,6 @@
     <ClInclude Include="ParticleEmitter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="audio_item.h">
-      <Filter>AudioItems</Filter>
-    </ClInclude>
-    <ClInclude Include="audio_listener.h">
-      <Filter>AudioItems</Filter>
-    </ClInclude>
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -350,31 +305,7 @@
     <ClInclude Include="quaternions_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="iCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="ScriptBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="FollowCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="ParallelCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="RotateCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="LookToward.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
     <ClInclude Include="aOrientable.h">
-      <Filter>GameItem</Filter>
-    </ClInclude>
-    <ClInclude Include="cGameAudio.h">
       <Filter>GameItem</Filter>
     </ClInclude>
     <ClInclude Include="cLight.h">
@@ -382,21 +313,6 @@
     </ClInclude>
     <ClInclude Include="DollyCamera.h">
       <Filter>Cameras</Filter>
-    </ClInclude>
-    <ClInclude Include="RideCurve.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="SerialCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="TriggerCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cLuaBrain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LookAt.h">
-      <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="cFBO.h">
       <Filter>FBO</Filter>
