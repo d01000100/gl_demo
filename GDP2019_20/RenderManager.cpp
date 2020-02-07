@@ -3,14 +3,18 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <map>
 
+std::map<std::string, SceneDefs*> RenderManager::mScenes;
+
 bool RenderManager::deferredDraw(
 	glm::vec3 eyePos, glm::vec3 cameraTarget, 
-	cFBO* pFBO, 
-	Scene *scene,
+	SceneDefs *sceneDefs,
 	const std::map<std::string, glm::vec4> &shaderProps)
 {
 	// TODO: Normalize shader variables to vec4 to be able to set
 	// them generically
+
+	cFBO *pFBO = sceneDefs->pFBO;
+	Scene* scene = sceneDefs->pScene;
 	if (pFBO)
 	{
 		// 1. Enable the FBO
@@ -20,10 +24,6 @@ bool RenderManager::deferredDraw(
 	}
 	else
 	{
-		// ===========================
-		// ====== Second pass ========
-		// ===========================
-
 		// 1. Disable de FBO
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		// 2. Clear the ACTUAL frame buffer
@@ -42,4 +42,10 @@ bool RenderManager::deferredDraw(
 	// 5. Draw scene
 	scene->drawScene();	
 	return true;
+}
+
+cFBO* RenderManager::getFBO(std::string sceneName)
+{
+	if (!mapContains(mScenes, sceneName)) { return nullptr; }
+	return mScenes[sceneName]->pFBO;
 }

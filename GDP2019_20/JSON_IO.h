@@ -20,4 +20,6 @@ std::map<std::string, aGameItem*>* readItems(std::string filename);
 
 void saveScene(Scene* scene, std::string filename);
 
+bool loadScenes(std::string filename);
+
 //nlohmann::json serializeObjects(std::vector<cGameObject*> objs);

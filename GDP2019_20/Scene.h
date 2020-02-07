@@ -7,6 +7,7 @@
 #include "cMesh.h"
 #include "CameraSettings.h"
 #include "SkyBox.h"
+#include "cFBO.h"
 
 class Scene
 {

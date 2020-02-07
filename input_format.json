@@ -1,3 +1,28 @@
+// Config
+
+{
+  "Scenes": [
+    {
+      // nombre de la escena
+      "name": "Scene1",
+      // path del json de la escena
+      "path": "scenes/scene1.json",
+      // bool, si renderizarlo o no
+      "isRendered": 1,
+      // Will it be deferred rendered?
+      // Creates an cFBO and renders there if true
+      "deferred": 1, 
+      // Width y height
+      "width": 1600,
+      "height": 800
+    }
+  ]
+  // Efectos (variables de shader) (O cosas pre definidas en el engine)
+  // TODO
+}
+
+// Scenes
+
 {
   "Skybox": {
     "basePath": "assets/textures/cubemesh/",

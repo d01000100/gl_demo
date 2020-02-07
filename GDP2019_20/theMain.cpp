@@ -7,7 +7,7 @@
 
 #include <stdlib.h>		// c libs
 #include <stdio.h>		// c libs
-#include <iostream>		// C++ IO standard stuff
+#include <iostream>		// C++ IO standard stuff-
 #include "cShaderManager.h"
 
 // The Physics function
@@ -89,35 +89,33 @@ int main(void)
 	}
 
 	::g_programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
+
 	
-	if (!readTextures(::scene_filename)) { return -1; }
-	if (!theScene->loadScene(scene_filename)) { return -1; }
+	/*
+	*   _____      _   _   _                              _____                          
+	*  / ____|    | | | | (_)                            / ____|                         
+	* | (___   ___| |_| |_ _ _ __   __ _   _   _ _ __   | (___   ___ ___ _ __   ___  ___ 
+	*  \___ \ / _ \ __| __| | '_ \ / _` | | | | | '_ \   \___ \ / __/ _ \ '_ \ / _ \/ __|
+	*  ____) |  __/ |_| |_| | | | | (_| | | |_| | |_) |  ____) | (_|  __/ | | |  __/\__ \
+	* |_____/ \___|\__|\__|_|_| |_|\__, |  \__,_| .__/  |_____/ \___\___|_| |_|\___||___/
+	*                               __/ |       | |                                      
+	*                              |___/        |_|                                      
+	*/
+	if(!loadScenes("assets/config.json"))
+	{
+		return 1;
+	}
 
-	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
-	//if (cruiseship) {
-	//	pAABBgrid->filterTriangles(cruiseship);
-	//}
-
-	//iGameItem* player = theScene->findItem("player");
-	//if (player) {
-	//	theCamera->init(player, glm::vec3(0, 30, -50));
-	//}
-
-	sceneEditor->init(theScene);
-
-	glEnable(GL_DEPTH);			// Write to the depth buffer
-	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
-	
-	cPhysics* pPhysics = new cPhysics();
-	pPhysics->debugRenderer = pDebugRenderer;
+	if(mapContains(RenderManager::mScenes, std::string("Scene1")))
+	{
+		sceneEditor->init(RenderManager::mScenes["Scene1"]->pScene);
+	}
 
 	cLowPassFilter avgDeltaTimeThingy;
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
 	double flickerTimer = 0;
-
-	theCamera->setPosition(glm::vec3(0, 100, -150));
 
 	cFBO *pTheFBO = new cFBO();
 	std::string FBOError;
@@ -132,8 +130,6 @@ int main(void)
 		// Doesn't work if all the texture units aren't asigned
 		glUniform1i(glGetUniformLocation(g_programID, "skyBox"), 26);	// Texture unit 26
 	
-		GLint passNumber_UniLoc = glGetUniformLocation(g_programID, "passNumber");
-		glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
 
 		// Get the initial time
 		double currentTime = glfwGetTime();
@@ -149,6 +145,7 @@ int main(void)
 		}
 
 		avgDeltaTimeThingy.addValue(deltaTime);
+		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 
 		glUseProgram(g_programID);
 
@@ -166,79 +163,45 @@ int main(void)
 		GLint matProj_UL = glGetUniformLocation(g_programID, "matProj");
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(::projTransform));
 
+		//    _____                _           _                _____                           
+		//   |  __ \              | |         (_)              / ____|                          
+		//   | |__) |___ _ __   __| | ___ _ __ _ _ __   __ _  | (___   ___ ___ _ __   ___  ___  
+		//   |  _  // _ \ '_ \ / _` |/ _ \ '__| | '_ \ / _` |  \___ \ / __/ _ \ '_ \ / _ \/ __| 
+		//   | | \ \  __/ | | | (_| |  __/ |  | | | | | (_| |  ____) | (_|  __/ | | |  __/\__ \ 
+		//   |_|  \_\___|_| |_|\__,_|\___|_|  |_|_| |_|\__, | |_____/ \___\___|_| |_|\___||___/ 
+		//                                              __/ |                                   
+		//                                             |___/                                    
+
+		/*
+		 * Scene 1 (Terrain and airships)
+		 */
+		
 		glViewport(0, 0, width, height);
 
-		//v = theCamera->lookAt();
-		GLint matView_UL = glGetUniformLocation(g_programID, "matView");
-		//glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
-
-		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		//theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
 		sceneEditor->addDebugMarkers();
 		
-		//theScene->drawScene();
+		GLint passNumber_UniLoc = glGetUniformLocation(g_programID, "passNumber");
+		glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
+
+		
 		RenderManager::deferredDraw(
 			theCamera->getPosition(),
 			theCamera->getTarget(),
-			pTheFBO,
-			theScene
+			"Scene1"
 		);
 
-		// TODO: A Scene has a debug that is called to draw with the Scene.
 		if (sceneEditor->getDebugRenderer()) {
 			sceneEditor->getDebugRenderer()->RenderDebugObjects(::viewTransform, ::projTransform, 0.01f);
 		}
-		//::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
-		//if (::isDebug) {
-		//	pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
-		//}
-		
 
-		// ===========================
-		// ====== Second pass ========
-		// ===========================
-
-		// 1. Disable de FBO
-		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		// 2. Clear the ACTUAL frame buffer
-		// Clear both the colour buffer (what we see) and the 
-		//  depth (or z) buffer. 
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		/*
+		 * SCENE 2: Full screen deferred quad
+		 */
 
 		// 3. Use the FBO colour texture as the texture on that quad
 		glUniform1i(passNumber_UniLoc, 1);  //"passNumber"
-
-		// Tie the texture to the texture unitd
-		glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
-		glBindTexture(GL_TEXTURE_2D, pTheFBO->colourTexture_0_ID);	// Texture now assoc with texture unit 40
-		GLint textSamp00_UL = glGetUniformLocation(g_programID, "secondPassColourTexture");
-		glUniform1i(textSamp00_UL, 40);	// Texture unit 40
-
-		// 4. Move the camera
-		//v = glm::lookAt(glm::vec3(0,0,-100), glm::vec3(0,0,0), glm::vec3(0,1,0));
-		//glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
-		//glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
-
-		// 5. Draw a single object
-		cGameObject* sceneObj = new cGameObject();
-		sceneObj->isVisible = true;
-		sceneObj->isLit = false;
-		sceneObj->meshName = "quad_model";
-		sceneObj->setPos(glm::vec3(0));
-		sceneObj->scale = 100.0f;
-		Scene* pFinalScene = new Scene();
-		pFinalScene->addItem(sceneObj);
-		pFinalScene->pSkyBox = nullptr;
-
-		RenderManager::deferredDraw(
-			glm::vec3(0, 0, -100),
-			glm::vec3(0, 0, 0),
-			nullptr,
-			pFinalScene
-		);
-
 		// 6. Get the screen size and send it to the shader
 		// Get the "screen" framebuffer size 
 		glfwGetFramebufferSize(window, &width, &height);
@@ -247,7 +210,20 @@ int main(void)
 		glUniform1f(screenWidth_UnitLoc, width);
 		glUniform1f(screenHeight_UnitLoc, height);
 
-		// ============= End of second pass ================
+		// Tie the texture to the texture unitd
+		glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
+		glBindTexture(GL_TEXTURE_2D, RenderManager::getFBO("Scene1")->colourTexture_0_ID);	// Texture now assoc with texture unit 40
+		GLint textSamp00_UL = glGetUniformLocation(g_programID, "secondPassColourTexture");
+		glUniform1i(textSamp00_UL, 40);	// Texture unit 40
+
+		// 5. Draw a single object
+		RenderManager::deferredDraw(
+			glm::vec3(0, 0, -100),
+			glm::vec3(0, 0, 0),
+			"LastPass"
+		);
+		
+		// ============= End of rendering scenes ================
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

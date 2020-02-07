@@ -1,0 +1,37 @@
+{
+    "Cameras": null,
+    "Meshes": [
+        {
+            "filename": "assets/models/quad.ply",
+            "name": "quad_model"
+        }
+    ],
+    "Objects": [
+        {
+            "alpha": 1.0,
+            "diffuseColor": [
+                204.0,
+                204.0,
+                204.0
+            ],
+            "isLit": false,
+            "isVisible": true,
+            "mesh": "quad_model",
+            "name": "screen",
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 100.0,
+            "specularColor": [
+                255.0,
+                255.0,
+                255.0,
+                50.0
+            ]
+        }
+    ],
+    "Sounds": null,
+    "Textures": null
+}
