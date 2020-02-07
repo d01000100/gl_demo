@@ -21,14 +21,12 @@
 #include "JSON_IO.h"
 #include "AABBGrid.h"
 #include "DollyCamera.h"
-#include "cLuaBrain.h"
 #include "cFBO.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
 
 // audio things
-#include "audio_item.h"
 #include "RenderManager.h"
 
 cShaderManager theShaderManager;
@@ -44,26 +42,11 @@ bool ::isDebug = false, ::isRunning = false;
 GLuint g_programID = 0;
 glm::mat4 viewTransform = glm::mat4(1), projTransform = glm::mat4(1);
 
-// audio globals
-FMOD::System *::fmod_system = 0;
-
-bool init_fmod() {
-	//Create system
-	error_check(FMOD::System_Create(&::fmod_system));
-	//Init system
-	error_check(::fmod_system->init(32, FMOD_INIT_NORMAL, 0));
-
-	error_check(::fmod_system->set3DSettings(1.0f, 1.0f, 1.0f));
-
-	return true;
-}
-
 int main(void)
 {
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
-	init_fmod();
 	glm::vec3 cameraOffset(0, 30 ,-50);
 
 	glfwSetErrorCallback(error_callback);
@@ -266,7 +249,6 @@ int main(void)
 
 		// ============= End of second pass ================
 
-		error_check(::fmod_system->update());
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

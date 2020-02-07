@@ -4,7 +4,6 @@
 #include "iGameItem.h"
 #include "../cGameObject.h"
 #include "../cLight.h"
-#include "../cGameAudio.h"
 
 using namespace nlohmann;
 
@@ -307,52 +306,9 @@ aGameItem* createGameItem(std::string type, json info) {
 
 		return light;
 	}
-	else if (type == "sound") {
-
-		cGameAudio* gameAudio = new cGameAudio();
-
-		if (info.find("name") != info.end()) {
-			gameAudio->name = info["name"].get<std::string>();
-		}
-
-		if (info.find("volume") != info.end()) {
-			gameAudio->volume = info["volume"].get<float>();
-		}
-		else {
-			gameAudio->volume = 1.0f;
-		}
-
-		::fmod_system->createChannelGroup(gameAudio->name.c_str(), &gameAudio->channel_group);
-
-		if (info.find("position") != info.end()) {
-			float x = info["position"][0].get<float>();
-			float y = info["position"][1].get<float>();
-			float z = info["position"][2].get<float>();
-			gameAudio->position = glm::vec3(x, y, z);
-		}
-
-		if (info.find("audios") != info.end()) {
-
-			for (json::iterator audio = info.find("audios")->begin();
-				audio != info.find("audios")->end(); audio++)
-			{
-				AudioItem* ai = new AudioItem(::fmod_system);
-				ai->path = audio->get<std::string>();
-				ai->channel_group = gameAudio->channel_group;
-				ai->create_and_play_3d_sound(false, glm_2_fmod_vec(gameAudio->position));
-				gameAudio->audios.push_back(ai);
-			}
-		}
-
-		error_check(gameAudio->channel_group->setVolume(gameAudio->volume));
-
-		gameAudio->applyDSPs();
-
-		return gameAudio;
-	}
 	else {
 		printf("Unrecognized GameItem %s\n", type.c_str());
-		return NULL;
+		return nullptr;
 	}
 }
 
