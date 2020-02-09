@@ -57,9 +57,8 @@ struct sModelDrawInfo
 };
 
 
-class cVAOManager
+struct cVAOManager
 {
-public:
 
 	// Takes a cMesh object and copies it into the GPU (as a VOA)
 	bool LoadModelIntoVAO(std::string fileName, 
@@ -72,8 +71,6 @@ public:
 								 sModelDrawInfo &drawInfo);
 
 	std::string getLastError(bool bAndClear = true);
-
-private:
 
 	std::map< std::string /*model name*/,
 		      sModelDrawInfo /* info needed to draw*/ >

@@ -14,6 +14,7 @@
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <glm/gtx/string_cast.hpp>
+#include "util.h"
 
 Scene* Scene::theScene = new Scene();
 
@@ -65,6 +66,10 @@ bool Scene::loadMeshes(std::string filename) {
 
 	for (int i = 0; i < vMeshes->size(); i++) {
 		meshSettings settings = vMeshes->at(i);
+
+		if (mapContains(::theVAOManager->m_map_ModelName_to_VAOID, settings.name))
+			continue;
+		
 		cMesh* data = new cMesh();
 
 		data->filename = settings.filename;
