@@ -33,8 +33,8 @@
     "back": "city_back.bmp",
     "right": "city_right.bmp",
     "left": "city_left.bmp",
-    "up": "city_up.bmp",
-    "down": "city_down.bmp"
+    "top": "city_up.bmp",
+    "bottom": "city_down.bmp"
   },
   // The meshes that the scene will need
   "Meshes": [

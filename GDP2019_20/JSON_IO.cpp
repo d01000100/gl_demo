@@ -381,149 +381,38 @@ bool loadScenes(std::string filename)
 	return true;
 }
 
-//nlohmann::json serializeObjects(std::vector<cGameObject*> objs) {
+bool readSkybox(std::string filename, SkyBox* &skybox)
+{
+	std::ifstream i;
+	i.open(filename);
 
-//	json jObjs_v;
-//	
-//	for (int i = 0; i < objs.size(); i++) {
-//		json jObj;
-//		cGameObject* gameObj = objs[i];
-//
-//		jObj["mesh"] = gameObj->meshName;
-//
-//		jObj["name"] = gameObj->friendlyName;
-//
-//		jObj["position"][0] = gameObj->position.x; 
-//		jObj["position"][1] = gameObj->position.y; 
-//		jObj["position"][2] = gameObj->position.z;
-//
-//		jObj["rotation"][0] = glm::degrees(gameObj->rotationXYZ.x); 
-//		jObj["rotation"][1] = glm::degrees(gameObj->rotationXYZ.y); 
-//		jObj["rotation"][2] = glm::degrees(gameObj->rotationXYZ.z);
-//
-//		std::cout << "Object: " << gameObj->friendlyName << " rotation: "
-//			<< jObj["rotation"] << "\n";
-//
-//		jObj["scale"] = gameObj->scale;
-//
-//		jObj["diffuseColor"][0] = gameObj->diffuseColor.x; 
-//		jObj["diffuseColor"][1] = gameObj->diffuseColor.y; 
-//		jObj["diffuseColor"][2] = gameObj->diffuseColor.z;
-//
-//		jObj["specularColor"][0] = gameObj->specularColor.x; 
-//		jObj["specularColor"][1] = gameObj->specularColor.y; 
-//		jObj["specularColor"][2] = gameObj->specularColor.z;
-//		jObj["specularColor"][3] = gameObj->specularColor.a;
-//
-//		jObj["isVisible"] = gameObj->isVisible;
-//
-//		jObj["front"][0] = gameObj->front.x; 
-//		jObj["front"][1] = gameObj->front.y; 
-//		jObj["front"][2] = gameObj->front.z;
-//
-//		if (gameObj->physics) 
-//		{
-//			json jPhysics;
-//			sPhysicsObject *physics = gameObj->physics;
-//			
-//			jPhysics["gravity"] = physics->gravity;
-//
-//			jPhysics["acceleration"][0] = physics->acceleration.x; 
-//			jPhysics["acceleration"][1] = physics->acceleration.y; 
-//			jPhysics["acceleration"][2] = physics->acceleration.z;
-//
-//			jPhysics["velocity"][0] = physics->velocity.x; 
-//			jPhysics["velocity"][1] = physics->velocity.y; 
-//			jPhysics["velocity"][2] = physics->velocity.z;
-//
-//			eShapeTypes shape = physics->shape;
-//			if (shape == SPHERE) {
-//				jPhysics["shape"] = "sphere";
-//			}
-//			else if (shape == MESH) {
-//				jPhysics["shape"] = "mesh";
-//			}
-//			else if (shape == AABB) {
-//				jPhysics["shape"] = "aabb";
-//			}
-//			else if (shape == CAPSULE) {
-//				jPhysics["shape"] = "capsule";
-//			}
-//			else if (shape == PLANE) {
-//				jPhysics["shape"] = "plane";
-//			}
-//			else {
-//				jPhysics["shape"] = "???";
-//			}
-//
-//			jPhysics["radius"] = physics->radius;
-//
-//			jObj["Physics"] = jPhysics;
-//		}
-//
-//		jObjs_v[i] = jObj;
-//	}
-//
-//	return jObjs_v;
-//}
+	if (!i.is_open())
+	{
+		printf("\"loadSkybox\" Didn't found %s file \n", filename.c_str());
+		return false;
+	}
 
-//json serializeLights(std::map<std::string,cLight*> lights) {
+	json jFile;
+	i >> jFile;
 
-//	json jvLights;
-//	int i;
-//	std::map<std::string,cLight*>::iterator iLight;
-//	for (iLight = lights.begin(), i = 0;
-//		iLight != lights.end(); iLight++, i++) {
-//
-//		cLight* light = iLight->second;
-//		json jLight;
-//
-//		jLight["name"] = iLight->first;
-//
-//		
-//		jLight["position"][0] = light->pos.x; 
-//		jLight["position"][1] = light->pos.y; 
-//		jLight["position"][2] = light->pos.z; 
-//
-//		jLight["diffuseColor"][0] = light->diffuseColor.x;
-//		jLight["diffuseColor"][1] = light->diffuseColor.y;
-//		jLight["diffuseColor"][2] = light->diffuseColor.z;
-//
-//		jLight["specularColor"][0] = light->specularColor.x;
-//		jLight["specularColor"][1] = light->specularColor.y;
-//		jLight["specularColor"][2] = light->specularColor.z;
-//		jLight["specularColor"][3] = light->specularColor.w;
-//
-//		jLight["linearAtten"] = light->linearAtten;
-//
-//		jLight["quadAtten"] = light->quadAtten;
-//
-//		jLight["cutOffDist"] = light->cutOffDist;
-//
-//		switch (light->type) {
-//			case POINT:
-//				jLight["type"] = "point";
-//				break;
-//			case SPOT:
-//				jLight["type"] = "spot";
-//				break;
-//			case DIRECTIONAL:
-//				jLight["type"] = "directional";
-//				break;
-//		}
-//
-//		jLight["isOn"] = light->isOn;
-//
-//		jLight["direction"][0] = light->direction.x;
-//		jLight["direction"][1] = light->direction.y;
-//		jLight["direction"][2] = light->direction.z;
-//
-//		jLight["innerAngle"] = light->innerAngle;
-//
-//		jLight["outerAngle"] = light->outerAngle;
-//
-//		jvLights[i] = jLight;
-//	}
-//	return jvLights;
-//}
+	if (!jsonContains(jFile, "Skybox"))
+	{
+		printf("No Skybox settings found.\n");
+		skybox = nullptr;
+		return true;
+	}
 
+	json jSkybox = jFile["Skybox"];
+	if (skybox != nullptr)
+		delete skybox;
+	skybox = new SkyBox();
+	return skybox->init(
+		jSkybox["right"].get<std::string>(),
+		jSkybox["left"].get<std::string>(),
+		jSkybox["top"].get<std::string>(),
+		jSkybox["bottom"].get<std::string>(),
+		jSkybox["front"].get<std::string>(),
+		jSkybox["back"].get<std::string>(),
+		"sphere_model"
+	);
+}

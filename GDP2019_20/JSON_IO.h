@@ -22,4 +22,6 @@ void saveScene(Scene* scene, std::string filename);
 
 bool loadScenes(std::string filename);
 
+bool readSkybox(std::string filename, SkyBox* &skybox);
+
 //nlohmann::json serializeObjects(std::vector<cGameObject*> objs);

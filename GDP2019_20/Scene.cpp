@@ -17,8 +17,7 @@
 
 Scene* Scene::theScene = new Scene();
 
-Scene::Scene() :
-  pSkyBox(new SkyBox()) {}
+Scene::Scene() : pSkyBox(nullptr) {}
 
 Scene::~Scene()
 {
@@ -124,17 +123,8 @@ bool Scene::loadScene(std::string filename) {
 
 	if (!reloadScene(filename)) { return false; }
 
-	if (pSkyBox)
-	{
-		pSkyBox->init(
-			"SpaceBox_right1_posX.bmp",
-			"SpaceBox_left2_negX.bmp",
-			"SpaceBox_top3_posY.bmp",
-			"SpaceBox_bottom4_negY.bmp",
-			"SpaceBox_front5_posZ.bmp",
-			"SpaceBox_back6_negZ.bmp",
-			"sphere_model");
-	}
+	if (!readSkybox(filename, pSkyBox)) { return false; }
+	
 	return true;
 }
 

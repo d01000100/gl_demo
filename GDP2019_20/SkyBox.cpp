@@ -32,6 +32,12 @@ bool SkyBox::init(std::string posX_fileName, std::string negX_fileName,
 	textureID = ::g_pTextureManager->getTextureIDFromName("skybox");
 
 	this->mesh_name = mesh_name;
+	defs.back = negZ_fileName;
+	defs.front = posZ_fileName;
+	defs.left = negX_fileName;
+	defs.right = posX_fileName;
+	defs.top = posY_fileName;
+	defs.bottom = negY_fileName;
 
 	return true;
 }

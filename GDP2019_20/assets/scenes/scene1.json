@@ -1,4 +1,12 @@
 {
+  "Skybox": {
+    "front": "SpaceBox_front5_posZ.bmp",
+    "back": "SpaceBox_back6_negZ.bmp",
+    "right": "SpaceBox_right1_posX.bmp",
+    "left": "SpaceBox_left2_negX.bmp",
+    "top": "SpaceBox_top3_posY.bmp",
+    "bottom": "SpaceBox_bottom4_negY.bmp"
+  },
   "Cameras": null,
   "Lights": [
     {
