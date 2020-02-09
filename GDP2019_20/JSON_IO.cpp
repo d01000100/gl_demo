@@ -289,6 +289,16 @@ void saveScene(Scene* scene, std::string filename) {
 	jScene["Cameras"] = serializeCameras(scene->getCamerasMap());
 	jScene["Textures"] = loaded_textures;
 
+	if (scene->pSkyBox)
+	{
+		jScene["SkyBox"]["front"] = scene->pSkyBox->defs.front;
+		jScene["SkyBox"]["back"] = scene->pSkyBox->defs.back;
+		jScene["SkyBox"]["left"] = scene->pSkyBox->defs.left;
+		jScene["SkyBox"]["right"] = scene->pSkyBox->defs.right;
+		jScene["SkyBox"]["top"] = scene->pSkyBox->defs.top;
+		jScene["SkyBox"]["bottom"] = scene->pSkyBox->defs.bottom;
+	}
+
 	std::ofstream file(filename);
 
 	file << jScene;
@@ -395,14 +405,14 @@ bool readSkybox(std::string filename, SkyBox* &skybox)
 	json jFile;
 	i >> jFile;
 
-	if (!jsonContains(jFile, "Skybox"))
+	if (!jsonContains(jFile, "SkyBox"))
 	{
 		printf("No Skybox settings found.\n");
 		skybox = nullptr;
 		return true;
 	}
 
-	json jSkybox = jFile["Skybox"];
+	json jSkybox = jFile["SkyBox"];
 	if (skybox != nullptr)
 		delete skybox;
 	skybox = new SkyBox();

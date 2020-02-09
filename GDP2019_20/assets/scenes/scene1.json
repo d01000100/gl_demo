@@ -1,12 +1,4 @@
 {
-  "Skybox": {
-    "front": "SpaceBox_front5_posZ.bmp",
-    "back": "SpaceBox_back6_negZ.bmp",
-    "right": "SpaceBox_right1_posX.bmp",
-    "left": "SpaceBox_left2_negX.bmp",
-    "top": "SpaceBox_top3_posY.bmp",
-    "bottom": "SpaceBox_bottom4_negY.bmp"
-  },
   "Cameras": null,
   "Lights": [
     {
@@ -32,8 +24,8 @@
       "diffuseColor": [255.0, 10.0, 10.0],
       "direction": [
         0.6080774068832397,
-        -0.26881107687950134,
-        -0.7469823360443115
+        -0.26881104707717896,
+        -0.7469828128814697
       ],
       "innerAngle": 30.0,
       "isOn": true,
@@ -102,6 +94,14 @@
       "specularColor": [255.0, 255.0, 255.0, 50.0]
     }
   ],
+  "SkyBox": {
+    "back": "SpaceBox_back6_negZ.bmp",
+    "bottom": "SpaceBox_bottom4_negY.bmp",
+    "front": "SpaceBox_front5_posZ.bmp",
+    "left": "SpaceBox_left2_negX.bmp",
+    "right": "SpaceBox_right1_posX.bmp",
+    "top": "SpaceBox_top3_posY.bmp"
+  },
   "Sounds": null,
   "Textures": null
 }
