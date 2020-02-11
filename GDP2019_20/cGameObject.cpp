@@ -364,6 +364,9 @@ json cGameObject::toJSON() {
 	jObj["isVisible"] = isVisible;
 	jObj["isLit"] = isLit;
 
+	if (deferredTexture != "")
+		jObj["deferredTexture"] = deferredTexture;
+
 	if (physics)
 	{
 		json jPhysics;
