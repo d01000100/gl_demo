@@ -12,8 +12,10 @@
 #include <algorithm>
 
 #include "colors.h"
+#include "RenderManager.h"
 
-cGameObject::cGameObject()
+cGameObject::cGameObject() :
+	deferredTexture("")
 {
 	this->scale = 1.0f;
 	this->isVisible = true;
@@ -192,6 +194,20 @@ void cGameObject::draw()
 
 			}
 
+			glUniform1i(glGetUniformLocation(g_programID, "isDeferredTexture"),
+				deferredTexture != "");
+			if(deferredTexture != "")
+			{
+				if (RenderManager::getFBO(deferredTexture))
+				{
+					// Tie the texture to the texture unitd
+					glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
+					glBindTexture(GL_TEXTURE_2D, RenderManager::getFBO(deferredTexture)->colourTexture_0_ID);	// Texture now assoc with texture unit 40
+					GLint textSamp00_UL = glGetUniformLocation(g_programID, "secondPassColourTexture");
+					glUniform1i(textSamp00_UL, 40);	// Texture unit 40
+				}
+			}
+			
 			// Super hack for doing holes in the ship
 			bool hasHoles = false; //  (friendlyName.find("cruiseship") != std::string::npos);
 

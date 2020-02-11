@@ -182,8 +182,6 @@ void Scene::drawItems() {
 }
 
 void Scene::drawScene() {
-	if (pSkyBox)
-		pSkyBox->draw();
 	drawItems();
 }
 

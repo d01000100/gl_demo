@@ -14,7 +14,7 @@ struct SkyBox
 	GLuint textureID = 0;
 	std::string mesh_name = "sphere_model";
 	SkyBoxDef defs;
-	void draw();
+	void draw(glm::vec3 pos);
 	bool init(std::string posX_fileName, std::string negX_fileName,
 		std::string posY_fileName, std::string negY_fileName,
 		std::string posZ_fileName, std::string negZ_fileName,

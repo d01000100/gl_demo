@@ -31,6 +31,18 @@ bool RenderManager::deferredDraw(
 		// 2. Clear the ACTUAL frame buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
+	// Projection with custom height and width
+	float ratio = (float)sceneDefs->width / (float)sceneDefs->height;
+	::projTransform = glm::perspective(
+		0.6f,		// FOV
+	ratio,			// Aspect ratio
+		0.1f,			// Near clipping plane
+		10000.0f);		// Far clipping plane
+	
+	glUniformMatrix4fv(
+		glGetUniformLocation(g_programID, "matProj")
+		, 1, GL_FALSE, 
+		glm::value_ptr(::projTransform));
 	// 3. Move the camera
 	::viewTransform = glm::lookAt(eyePos, cameraTarget, glm::vec3(0, 1, 0));
 	glUniform4f(
@@ -41,6 +53,9 @@ bool RenderManager::deferredDraw(
 		glGetUniformLocation(g_programID, "matView"), 
 		1, GL_FALSE, glm::value_ptr(::viewTransform)
 	);
+	glViewport(0, 0, sceneDefs->width, sceneDefs->height);
+	if (scene->pSkyBox)
+		scene->pSkyBox->draw(eyePos);
 	// 5. Draw scene
 	scene->drawScene();
 

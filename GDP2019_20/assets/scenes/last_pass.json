@@ -1,37 +1,57 @@
 {
-    "Cameras": null,
-    "Meshes": [
-        {
-            "filename": "assets/models/quad.ply",
-            "name": "quad_model"
-        }
-    ],
-    "Objects": [
-        {
-            "alpha": 1.0,
-            "diffuseColor": [
-                204.0,
-                204.0,
-                204.0
-            ],
-            "isLit": false,
-            "isVisible": true,
-            "mesh": "quad_model",
-            "name": "screen",
-            "position": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 100.0,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                50.0
-            ]
-        }
-    ],
-    "Sounds": null,
-    "Textures": null
+  "Cameras": null,
+  "Lights": [
+    {
+      "cutOffDist": 50.0,
+      "diffuseColor": [255.0, 255.0, 255.0],
+      "direction": [
+        0.577350378036499,
+        -0.5773502588272095,
+        -0.5773501396179199
+      ],
+      "innerAngle": 30.0,
+      "isOn": true,
+      "linearAtten": 0.013123633340001106,
+      "name": "zzzzdaylight",
+      "outerAngle": 30.0,
+      "position": [78.0, 90.0, 0.0],
+      "quadAtten": 1.974484985234337e-11,
+      "specularColor": [1.0, 1.0, 1.0, 5000.0],
+      "type": "directional"
+    }
+  ],
+  "Meshes": [
+    { "filename": "assets/models/quad.ply", "name": "quad_model" },
+    { "filename": "assets/models/tv_body.ply", "name": "tv_body" },
+    { "filename": "assets/models/tv_screen.ply", "name": "tv_screen" }
+  ],
+  "Objects": [
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "tv_screen",
+      "name": "screen",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [-90, 0, 0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "deferredTexture": "Scene1"
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "tv_body",
+      "name": "tv_body_1001",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [-90, 0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    }
+  ],
+  "Sounds": null,
+  "Textures": null
 }

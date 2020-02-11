@@ -44,7 +44,6 @@ glm::mat4 viewTransform = glm::mat4(1), projTransform = glm::mat4(1);
 
 int main(void)
 {
-	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	glm::vec3 cameraOffset(0, 30 ,-50);
@@ -112,13 +111,13 @@ int main(void)
 	double lastTime = glfwGetTime();
 	double flickerTimer = 0;
 
-	cFBO *pTheFBO = new cFBO();
-	std::string FBOError;
-	if (!pTheFBO->init(init_width, init_height, FBOError))
-	{
-		printf("FBOError: %s\n", FBOError.c_str());
-		return 1;
-	}
+	//cFBO *pTheFBO = new cFBO();
+	//std::string FBOError;
+	//if (!pTheFBO->init(init_width, init_height, FBOError))
+	//{
+	//	printf("FBOError: %s\n", FBOError.c_str());
+	//	return 1;
+	//}
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -144,20 +143,6 @@ int main(void)
 
 		glUseProgram(g_programID);
 
-		float ratio;
-		int width, height;
-
-		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / (float)height;
-
-		// Projection matrix
-		::projTransform = glm::perspective(0.6f,		// FOV
-			ratio,			// Aspect ratio
-			0.1f,			// Near clipping plane
-			10000.0f);		// Far clipping plane
-		GLint matProj_UL = glGetUniformLocation(g_programID, "matProj");
-		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(::projTransform));
-
 		//    _____                _           _                _____                           
 		//   |  __ \              | |         (_)              / ____|                          
 		//   | |__) |___ _ __   __| | ___ _ __ _ _ __   __ _  | (___   ___ ___ _ __   ___  ___  
@@ -170,18 +155,11 @@ int main(void)
 		/*
 		 * Scene 1 (Terrain and airships)
 		 */
-		
-		glViewport(0, 0, width, height);
 
-		//theScene->IntegrationStep(averageDeltaTime);
-		//theCamera->reposition();
-		
-		GLint passNumber_UniLoc = glGetUniformLocation(g_programID, "passNumber");
-		glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
-		
+		Camera tv_camera;
 		RenderManager::deferredDraw(
-			theCamera->getPosition(),
-			theCamera->getTarget(),
+			tv_camera.getPosition(),
+			tv_camera.getTarget(),
 			"Scene1"
 		);
 
@@ -189,29 +167,12 @@ int main(void)
 		 * SCENE 2: Full screen deferred quad
 		 */
 
-		// 3. Use the FBO colour texture as the texture on that quad
-		glUniform1i(passNumber_UniLoc, 1);  //"passNumber"
-		// 6. Get the screen size and send it to the shader
-		// Get the "screen" framebuffer size 
-		glfwGetFramebufferSize(window, &width, &height);
-		GLint screenWidth_UnitLoc = glGetUniformLocation(g_programID, "screenWidth");
-		GLint screenHeight_UnitLoc = glGetUniformLocation(g_programID, "screenHeight");
-		glUniform1f(screenWidth_UnitLoc, width);
-		glUniform1f(screenHeight_UnitLoc, height);
-
-		if (RenderManager::getFBO("Scene1"))
-		{
-			// Tie the texture to the texture unitd
-			glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
-			glBindTexture(GL_TEXTURE_2D, RenderManager::getFBO("Scene1")->colourTexture_0_ID);	// Texture now assoc with texture unit 40
-			GLint textSamp00_UL = glGetUniformLocation(g_programID, "secondPassColourTexture");
-			glUniform1i(textSamp00_UL, 40);	// Texture unit 40
-		}
-
 		// 5. Draw a single object
 		RenderManager::deferredDraw(
-			glm::vec3(0, 0, -100),
-			glm::vec3(0, 0, 0),
+			theCamera->getPosition(),
+			//glm::vec3(0, 0, -100),
+			theCamera->getTarget(),
+			//glm::vec3(0, 0, 0),
 			"LastPass"
 		);
 		

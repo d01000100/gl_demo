@@ -190,6 +190,11 @@ aGameItem* createGameItem(std::string type, json info) {
 			}
 		}
 
+		if (info.find("deferredTexture") != info.end())
+		{
+			gameObj->deferredTexture = info["deferredTexture"].get<std::string>();
+		}
+
 		if (info.find("collision_points") != info.end()) {
 			for (json::iterator itPoints = info["collision_points"].begin();
 				itPoints != info["collision_points"].end(); itPoints++)

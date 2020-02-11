@@ -50,6 +50,7 @@ public:
 	cMesh* mesh;
 	std::string friendlyName;
 	std::vector<sTextureSpec> textures;
+	std::string deferredTexture;
 	std::vector<glm::vec3> collision_points;
 
 	glm::vec3  position;

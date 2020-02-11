@@ -36,7 +36,7 @@ uniform bool isHoled;
 uniform float screenWidth;
 uniform float screenHeight;
 uniform sampler2D secondPassColourTexture;
-uniform int passNumber; 
+uniform bool isDeferredTexture; 
 
 // Fragment shader
 struct sLight
@@ -74,21 +74,24 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	 
 void main()  
 {
+
+	if ( bIsSkyBox )
+	{
+		// I sample the skybox using the normal from the surface
+		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
+		pixelColour.rgb = skyColour.rgb;
+		pixelColour.a = 1.0f;	// NOT transparent
+		return;
+	}
 	// What pass is this? 
 	// Is it the 2nd pass? (deferred rendering)
-	if ( passNumber == 1 )
+	if ( isDeferredTexture )
 	{
 		// It's the 2nd pass
-		// This will calculate the screen texture coordinates based 
-		// on what's actually being rendered on the screen. 
-		// So you just need to FILL the ENTIRE screen with something.
-		vec2 textCoords = vec2( gl_FragCoord.x / screenWidth, 
-		                         gl_FragCoord.y / screenHeight );
-
-		vec3 texRGB = texture( secondPassColourTexture, textCoords.st ).rgb;
+		vec3 texRGB = texture( secondPassColourTexture, fUVx2.st ).rgb;
 
 		// this is for getting the depth buffer texture
-		float depthValue = texture( secondPassColourTexture, textCoords.st ).r;
+		float depthValue = texture( secondPassColourTexture, fUVx2.st ).r;
 		// the depth buffer values are from 0 to 1
 		depthValue *= 10.0f; 
 
@@ -103,15 +106,6 @@ void main()
 		if (dotsColor.r < 0.7f) {
 			discard;
 		}
-	}
-
-	if ( bIsSkyBox )
-	{
-		// I sample the skybox using the normal from the surface
-		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
-		pixelColour.rgb = skyColour.rgb;
-		pixelColour.a = 1.0f;	// NOT transparent
-		return;
 	}
 
 	if ( bDoNotLight )

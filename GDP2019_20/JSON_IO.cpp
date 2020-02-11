@@ -334,7 +334,7 @@ bool loadScenes(std::string filename)
 	{
 		bool isRendered = jsonContains(jScene, "isRendered") ? jScene["isRendered"].get<bool>() : true;
 
-		if (!isRendered) { return true; }
+		if (!isRendered) { continue; }
 		
 		if (!jsonContains(jScene,"name"))
 		{
