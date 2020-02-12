@@ -71,19 +71,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)MathIncludes;$(SolutionDir)MyPhysicsWrapper;$(SolutionDir)PhysicsInterfaces;$(ProjectDir)include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)BulletPhysicsWrapper;$(SolutionDir)MathIncludes;$(SolutionDir)MyPhysicsWrapper;$(SolutionDir)PhysicsInterfaces;$(ProjectDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)lib\$(Configuration)\$(PlatformShortName);$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)MathIncludes;$(SolutionDir)MyPhysicsWrapper;$(SolutionDir)PhysicsInterfaces;$(ProjectDir)include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)BulletPhysicsWrapper;$(SolutionDir)MathIncludes;$(SolutionDir)MyPhysicsWrapper;$(SolutionDir)PhysicsInterfaces;$(ProjectDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)lib\$(Configuration)\$(PlatformShortName);$(LibraryPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)MathIncludes;$(SolutionDir)MyPhysicsWrapper;$(SolutionDir)PhysicsInterfaces;$(ProjectDir)include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)BulletPhysicsWrapper;$(SolutionDir)MathIncludes;$(SolutionDir)MyPhysicsWrapper;$(SolutionDir)PhysicsInterfaces;$(ProjectDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)lib\$(Configuration)\$(PlatformShortName);$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)MathIncludes;$(SolutionDir)MyPhysicsWrapper;$(SolutionDir)PhysicsInterfaces;$(ProjectDir)include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)BulletPhysicsWrapper;$(SolutionDir)MathIncludes;$(SolutionDir)MyPhysicsWrapper;$(SolutionDir)PhysicsInterfaces;$(ProjectDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)lib\$(Configuration)\$(PlatformShortName);$(LibraryPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

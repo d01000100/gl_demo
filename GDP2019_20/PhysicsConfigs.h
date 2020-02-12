@@ -1,7 +1,7 @@
 #pragma once
 /* Macro to interchange the libraries */
-#define MY_PHYSICS 
-// #define BULLET_PHYSICS
+//#define MY_PHYSICS 
+#define BULLET_PHYSICS
 
 #include "physics/interfaces/iPhysicsFactory.h"
 
@@ -10,7 +10,11 @@
 #pragma comment (lib, "MyPhysicsWrapper.lib")
 #pragma comment (lib, "MyPhysicsLibrary.lib")
 #endif
-// TODO: Bullet includes
+
+#ifdef BULLET_PHYSICS
+#include <wrapper/bullet/cPhysicsFactory.h>
+#pragma comment (lib, "BulletPhysicsWrapper.lib")
+#endif
 
 using namespace nPhysics;
 
