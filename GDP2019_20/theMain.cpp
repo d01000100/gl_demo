@@ -23,6 +23,7 @@
 #include "DollyCamera.h"
 #include "PhysicsConfigs.h"
 #include "GameItemFactory/iGameItem.h"
+#include "UserInput.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -41,7 +42,7 @@ bool ::isDebug = false, ::isRunning = false;
 int main(void)
 {
 	Scene* theScene = Scene::getTheScene();
-	FollowCamera* theCamera = FollowCamera::getPhysicsCamera();
+	FollowCamera* theCamera = FollowCamera::getFollowCamera();
 	//SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
@@ -175,6 +176,7 @@ int main(void)
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		physicsControls();
 		::g_PhysicsWorld->Update(averageDeltaTime);
 		//theScene->IntegrationStep(averageDeltaTime);
 		theCamera->update();

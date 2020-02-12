@@ -52,7 +52,7 @@ void SkyBox::draw()
 	// Tie the texture units to the samplers in the shader
 	glUniform1i(glGetUniformLocation(shaderProgID, "skyBox"), 26);	// Texture unit 26
 
-	//Camera* theCamera = FollowCamera::getPhysicsCamera();
+	//Camera* theCamera = FollowCamera::getFollowCamera();
 	glm::mat4x4 transformMatrix = glm::mat4(1.0f); 
 	//transformMatrix = glm::translate(transformMatrix,
 	//	theCamera->getPosition());

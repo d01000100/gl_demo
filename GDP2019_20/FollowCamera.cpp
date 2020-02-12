@@ -24,7 +24,7 @@ glm::vec3 FollowCamera::getTargetPos()
 	}
 }
 
-FollowCamera* FollowCamera::getPhysicsCamera() {
+FollowCamera* FollowCamera::getFollowCamera() {
 	return FollowCamera::theCamera;
 }
 
@@ -60,6 +60,7 @@ void FollowCamera::init(glm::vec3 offset)
 		return;
 	}
 	mCurrentObject = mPhysicsObjects.begin();
+	(*mCurrentObject)->diffuseColor = Colors::red;
 	setTarget(getTargetPos());
 	update();
 }
@@ -115,9 +116,11 @@ void FollowCamera::next()
 {
 	if (mPhysicsObjects.size() > 1)
 	{
+		(*mCurrentObject)->diffuseColor = Colors::grey;
 		// If we have at least two objects
 		mCurrentObject++;
 		if (mCurrentObject == mPhysicsObjects.end())
 			mCurrentObject = mPhysicsObjects.begin();
+		(*mCurrentObject)->diffuseColor = Colors::red;
 	}
 }

@@ -109,7 +109,7 @@ aGameItem* createGameItem(std::string type, json info) {
 			gameObj->diffuseColor = glm::vec4(x, y, z, 1.0f);
 		}
 		else {
-			gameObj->diffuseColor = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
+			gameObj->diffuseColor = Colors::grey;
 		}
 
 		if (info.find("specularColor") != info.end()) {

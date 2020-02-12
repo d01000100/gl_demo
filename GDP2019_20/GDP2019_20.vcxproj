@@ -169,6 +169,7 @@
     <ClCompile Include="C24BitBMPpixel.cpp" />
     <ClCompile Include="cAABB.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraPusher.cpp" />
     <ClCompile Include="cBasicTextureManager.cpp" />
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="cGLColourHelper.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="C24BitBMPpixel.h" />
     <ClInclude Include="cAABB.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraPusher.h" />
     <ClInclude Include="CameraSettings.h" />
     <ClInclude Include="cBasicTextureManager.h" />
     <ClInclude Include="cGameObject.h" />
@@ -242,6 +244,7 @@
     <ClInclude Include="GFLW_callbacks.h" />
     <ClInclude Include="GLCommon.h" />
     <ClInclude Include="globalStuff.h" />
+    <ClInclude Include="UserInput.h" />
     <ClInclude Include="iCommand.h" />
     <ClInclude Include="JSON_IO.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
@@ -263,7 +266,6 @@
     <ClInclude Include="SerialCommand.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="TriggerCommand.h" />
-    <ClInclude Include="UserInput.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>

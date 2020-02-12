@@ -1,10 +1,6 @@
-#include "GLCommon.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
-#include <iostream>
-#include <fstream>
-
+#include "UserInput.h"
 #include "GFLW_callbacks.h"
 #include "globalStuff.h"			// for find object
 #include "Camera.h"
@@ -12,6 +8,7 @@
 #include "Scene.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
+#include "CameraPusher.h"
 
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
@@ -22,9 +19,10 @@ const float CAMERAZOOMSPEED = 10.0f;
 const float TRANSLATION_STEP = 0.5f;
 const float ROTATION_STEP = glm::radians(0.5f);
 
-FollowCamera* theCamera = FollowCamera::getPhysicsCamera();
+FollowCamera* theCamera = FollowCamera::getFollowCamera();
 Scene* theScene = Scene::getTheScene();
 SceneEditor* theEditor = SceneEditor::getTheEditor();
+CameraPusher cameraPusher;
 
 void camera_translate(int key, int action, int mods) {
 	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods)) {
@@ -74,7 +72,7 @@ void camera_orbit(int key, int action, int mods) {
 		{
 			theCamera->moveDown(CAMERAROTATIONSPEED);
 		}
-		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 			theCamera->next();
 	}
 }
@@ -117,6 +115,18 @@ void thrusterControls(int key, int action, int mods)
 			break;
 		}
 	}
+}
+
+void physicsControls()
+{
+	if (glfwGetKey(::window, GLFW_KEY_I) == GLFW_PRESS)
+		cameraPusher.pushForward();
+	if (glfwGetKey(::window, GLFW_KEY_K) == GLFW_PRESS)
+		cameraPusher.pushBackwards();
+	if (glfwGetKey(::window, GLFW_KEY_L) == GLFW_PRESS)
+		cameraPusher.pushRight();
+	if (glfwGetKey(::window, GLFW_KEY_J) == GLFW_PRESS)
+		cameraPusher.pushLeft();
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)

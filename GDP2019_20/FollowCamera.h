@@ -15,15 +15,15 @@ private:
 	glm::vec3 mOffset;
 	// Collection of possible targets
 	std::vector<cGameObject*> mPhysicsObjects;
-	// Current target
-	std::vector<cGameObject*>::iterator mCurrentObject;
 	// The constructor is private to enforce the use of Singleton
 	FollowCamera();
 	// Get the world position from the current target's "iPhysicsComponent"
 	glm::vec3 getTargetPos();
 public:
+	// Current target
+	std::vector<cGameObject*>::iterator mCurrentObject;
 	// Static getter of the Singleton instance
-	static FollowCamera* getPhysicsCamera();
+	static FollowCamera* getFollowCamera();
 	// Intialization of the Singleton instance.
 	// Expects "theScene" Singleton to be already loaded.
 	// offset : initial position of the camera relative to the target

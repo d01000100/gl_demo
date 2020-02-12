@@ -195,6 +195,9 @@
     <ClCompile Include="PhysicsConfigs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CameraPusher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -249,9 +252,6 @@
       <Filter>LowPassFilter</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UserInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneEditor.h">
@@ -357,6 +357,12 @@
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsConfigs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraPusher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
