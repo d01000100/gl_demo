@@ -11,11 +11,9 @@ Camera::Camera() {
 	pos = glm::vec3(1.0f) * 180.0f;
 	target = glm::vec3(0.0f, 0.0, 0.0f);
 	upVector = glm::vec3(0.0f, 1.0f, 0.0f);
-	audioListener = NULL;
 }
 
 void Camera::init() {
-	audioListener = new AudioListener(::fmod_system);
 }
 
 glm::vec3 Camera::direction() {
@@ -36,9 +34,6 @@ void Camera::setTarget(glm::vec3 p_target) {
 
 void Camera::setPosition(glm::vec3 position) {
 	pos = position;
-	if (audioListener) {
-		audioListener->setPosition(glm_2_fmod_vec(position));
-	}
 }
 
 glm::vec3 Camera::getPosition() {

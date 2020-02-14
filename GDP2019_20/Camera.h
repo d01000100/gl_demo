@@ -1,7 +1,6 @@
 #pragma once
 #include <glm/vec3.hpp> // glm::vec3
 #include <glm/mat4x4.hpp> // glm::mat4
-#include "audio_listener.h"
 
 class Camera
 {
@@ -12,7 +11,6 @@ protected:
 	Camera();
 	glm::vec3 target;
 	glm::vec3 upVector;
-	AudioListener* audioListener;
 	glm::vec3 direction();
 	glm::vec3 right();
 	void updateListener();
