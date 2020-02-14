@@ -33,6 +33,25 @@
   ],
   "Objects": [
     {
+      "Physics": {
+        "acceleration": [0.0, 0.0, 0.0],
+        "gravity": false,
+        "radius": 0.0,
+        "shape": "???",
+        "velocity": [0.0, 0.0, 0.0]
+      },
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": false,
+      "mesh": "sphere_model",
+      "name": "bullet_template",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 0.5,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
       "alpha": 1.0,
       "diffuseColor": [204.0, 204.0, 204.0],
       "isLit": true,
@@ -46,19 +65,13 @@
       "textures": [{ "textureName": "tile_floor.bmp", "weight": 1.0 }]
     },
     {
-      "alpha": 1.0,
-      "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
-      "isVisible": false,
-      "mesh": "ship_model",
-      "name": "ship_template",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [0.0, -0.0, 0.0],
-      "scale": 0.3304840326309204,
-      "specularColor": [255.0, 255.0, 255.0, 50.0],
-      "Physics": {}
-    },
-    {
+      "Physics": {
+        "acceleration": [0.0, 0.0, 0.0],
+        "gravity": false,
+        "radius": 0.0,
+        "shape": "???",
+        "velocity": [0.0, 0.0, 0.0]
+      },
       "alpha": 1.0,
       "diffuseColor": [204.0, 204.0, 204.0],
       "isLit": true,
@@ -69,30 +82,92 @@
       "rotation": [0.0, -0.0, 0.0],
       "scale": 0.3304840326309204,
       "specularColor": [255.0, 255.0, 255.0, 50.0],
-      "Physics": {},
-      "textures": [
-          {
-              "textureName": "low-poly-ship.bmp"
-          }
-      ]
+      "textures": [{ "textureName": "low-poly-ship.bmp", "weight": 1.0 }]
+    },
+    {
+      "Physics": {
+        "acceleration": [0.0, 0.0, 0.0],
+        "gravity": false,
+        "radius": 0.0,
+        "shape": "???",
+        "velocity": [0.0, 0.0, 0.0]
+      },
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": false,
+      "mesh": "ship_model",
+      "name": "ship_template",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 0.3304840326309204,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
     },
     {
       "alpha": 1.0,
       "diffuseColor": [204.0, 204.0, 204.0],
       "isLit": true,
-      "isVisible": false,
+      "isVisible": true,
       "mesh": "sphere_model",
-      "name": "bullet_template",
-      "position": [0.0, 0.0, 0.0],
+      "name": "sphere_model_1001",
+      "position": [25.600025177001953, 0.0, -24.000019073486328],
       "rotation": [0.0, -0.0, 0.0],
-      "scale": 0.5,
-      "specularColor": [255.0, 255.0, 255.0, 50.0],
-      "Physics": {}
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "sphere_model",
+      "name": "sphere_model_1002",
+      "position": [-24.80002212524414, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "sphere_model",
+      "name": "sphere_model_1003",
+      "position": [9.199995994567871, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "sphere_model",
+      "name": "sphere_model_1004",
+      "position": [-14.999990463256836, 0.0, 16.599990844726563],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "sphere_model",
+      "name": "sphere_model_1005",
+      "position": [
+        27.800033569335938,
+        2.9802322387695313e-8,
+        28.800037384033203
+      ],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
     }
   ],
   "Sounds": null,
-  "Textures": [
-      "tile_floor.bmp",
-      "low-poly-ship.bmp"
-    ]
+  "Textures": ["tile_floor.bmp", "low-poly-ship.bmp"]
 }

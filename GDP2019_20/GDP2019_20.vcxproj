@@ -200,6 +200,7 @@
     <ClCompile Include="ParallelCommand.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
+    <ClCompile Include="PathFollowing.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="quaternions_utils.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="ParallelCommand.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="FollowCamera.h" />
+    <ClInclude Include="PathFollowing.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="quaternions_utils.h" />
     <ClInclude Include="RideCurve.h" />

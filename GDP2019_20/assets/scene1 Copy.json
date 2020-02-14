@@ -1,0 +1,98 @@
+{
+  "Cameras": [
+    {
+      "name": "top-down",
+      "position": [0.0, 110.0, -0.10000000149011612],
+      "target": [0.0, 0.0, 0.0]
+    }
+  ],
+  "Lights": [
+    {
+      "cutOffDist": 50.0,
+      "diffuseColor": [255.0, 255.0, 255.0],
+      "direction": [
+        0.577350378036499,
+        -0.5773502588272095,
+        -0.5773501396179199
+      ],
+      "innerAngle": 30.0,
+      "isOn": true,
+      "linearAtten": 0.013123633340001106,
+      "name": "zzzzdaylight",
+      "outerAngle": 30.0,
+      "position": [78.0, 90.0, 0.0],
+      "quadAtten": 1.974484985234337e-11,
+      "specularColor": [1.0, 1.0, 1.0, 5000.0],
+      "type": "directional"
+    }
+  ],
+  "Meshes": [
+    { "filename": "assets/models/quad.ply", "name": "quad_model" },
+    { "filename": "assets/models/low_poly_ship.ply", "name": "ship_model" },
+    { "filename": "assets/models/sphere.ply", "name": "sphere_model" }
+  ],
+  "Objects": [
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "quad_model",
+      "name": "floor",
+      "position": [0.0, -20.0, 0.0],
+      "rotation": [-90.0, 0.0, 0.0],
+      "scale": 84.76687622070313,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "textures": [{ "textureName": "tile_floor.bmp", "weight": 1.0 }]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": false,
+      "mesh": "ship_model",
+      "name": "ship_template",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 0.3304840326309204,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "Physics": {}
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "ship_model",
+      "name": "player",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 0.3304840326309204,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "Physics": {},
+      "textures": [
+          {
+              "textureName": "low-poly-ship.bmp"
+          }
+      ]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": false,
+      "mesh": "sphere_model",
+      "name": "bullet_template",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 0.5,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "Physics": {}
+    }
+  ],
+  "Sounds": null,
+  "Textures": [
+      "tile_floor.bmp",
+      "low-poly-ship.bmp"
+    ]
+}

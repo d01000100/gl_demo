@@ -1,10 +1,14 @@
 #pragma once
 #include "Coordinator.h"
+#include "PathFollowing.h"
 
 struct FlockingManager
 {
 	Coordinator* formationCoordinator = nullptr;
-	std::string state = "Formation";
+	PathFollowing pathManager;
+	cGameObject* leader = nullptr;
+	std::string state = "Path";
+	bool is9Pressed = false;
 	
 	~FlockingManager();
 
@@ -13,5 +17,7 @@ struct FlockingManager
 	void update(float deltaTime);
 
 	void userInput();
+
+	void thorusGeometry(cGameObject* vehicle);
 };
 
