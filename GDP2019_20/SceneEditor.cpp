@@ -52,7 +52,7 @@ void SceneEditor::setEditMode(eEditMode m) {
 void SceneEditor::changeObject() {
 	Camera* theCamera = Camera::getTheCamera();
 	glm::vec3 objPos = (*selectedObj)->getPos();
-	theCamera->setTarget(objPos);
+	//theCamera->setTarget(objPos);
 }
 
 void SceneEditor::nextObject() {

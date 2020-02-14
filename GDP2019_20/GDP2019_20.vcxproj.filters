@@ -34,9 +34,6 @@
     <Filter Include="Particles">
       <UniqueIdentifier>{9b1ce896-5c95-4821-8ad2-339fe1fb5d4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AudioItems">
-      <UniqueIdentifier>{9f51edd6-465d-495e-8cb0-8ba3c9f49b4e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Textures">
       <UniqueIdentifier>{3fb7f4e8-9598-4934-8ef5-6371375f7b36}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="AI_ShooterGame">
       <UniqueIdentifier>{0e96a5e4-4217-4ec6-8810-98297fc0d077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Formations">
+      <UniqueIdentifier>{dcc3b3c6-4848-4b4a-a182-b744d2de4084}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -132,15 +132,6 @@
     <ClCompile Include="ParticleEmitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="audio_item.cpp">
-      <Filter>AudioItems</Filter>
-    </ClCompile>
-    <ClCompile Include="audio_listener.cpp">
-      <Filter>AudioItems</Filter>
-    </ClCompile>
-    <ClCompile Include="globalStuff.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -201,9 +192,6 @@
     <ClCompile Include="aOrientable.cpp">
       <Filter>GameItem</Filter>
     </ClCompile>
-    <ClCompile Include="cGameAudio.cpp">
-      <Filter>GameItem</Filter>
-    </ClCompile>
     <ClCompile Include="DollyCamera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
@@ -221,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="Gameplay.cpp">
       <Filter>AI_ShooterGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Coordinator.cpp">
+      <Filter>Formations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,12 +287,6 @@
     <ClInclude Include="ParticleEmitter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="audio_item.h">
-      <Filter>AudioItems</Filter>
-    </ClInclude>
-    <ClInclude Include="audio_listener.h">
-      <Filter>AudioItems</Filter>
-    </ClInclude>
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -368,9 +353,6 @@
     <ClInclude Include="aOrientable.h">
       <Filter>GameItem</Filter>
     </ClInclude>
-    <ClInclude Include="cGameAudio.h">
-      <Filter>GameItem</Filter>
-    </ClInclude>
     <ClInclude Include="cLight.h">
       <Filter>GameItem</Filter>
     </ClInclude>
@@ -403,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="Gameplay.h">
       <Filter>AI_ShooterGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Coordinator.h">
+      <Filter>Formations</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

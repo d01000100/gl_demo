@@ -11,9 +11,11 @@ Simple 2D shooter game with AI with different behaviours.
 **Wander and Idle**: The enemy will change between two modes: random *wandering* and not moving. When it's wandering it turns *grey* and when it's idle it turns *black*.
 **Approach and Shoot**: The enemy will approach the enemy (with a slowdown when it's at a certain distance) and turn *green*. When it's close enough it will stop, fire a bullet toward the player and turn yellow.
 
+There are videos showing each of the behaivours individually and the complete game.
+
 ## Build instructions
 
-Open `j_casadoaguilar_Graphics_midterm.sln` with Visual Studio. Select `Release` and `x64` and then `Build Solution` (Ctrl + Shift + B)
+Open `j_casadoaguilar_AI_P1.sln` with Visual Studio. Select `Release` and `x64` and then `Build Solution` (Ctrl + Shift + B)
 
 ## Run instructions
 
@@ -21,13 +23,9 @@ Within Visual Studio, click on `Local Windows Debugger` (F5)
 
 ### Use instructions
 
-When the programs starts the scene will show the pirate island at night.
-To change the scene, rename the `GDP2019_20\assets\daylight_scene.json` to `scene1.json`.
-Same thing with the `night_scene.json` for coming back to the night scene.
-
-In the daylight scene, you can rotate the camera with the A and D buttons.
-
-Additionally in the night scene, you can change between the different cameras in **Question 4** for the buttons 1,2 or 3.
+The player will start at the center of the screen.
+An enemy will spawn randomly every 6 seconds.
+To steer the player, press the A and D keys. To move it, press the W or D keys.
 
 ## Scene file
 

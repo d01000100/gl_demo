@@ -1,24 +1,15 @@
-#include "GLCommon.h"
 #include "globalStuff.h"
 #include <glm/glm.hpp>
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <glm/gtx/string_cast.hpp>
 
 #include <stdlib.h>		// c libs
-#include <stdio.h>		// c libs
 #include <iostream>		// C++ IO standard stuff
-#include <map>			// Map aka "dictonary" 
 #include "cShaderManager.h"
-#include <sstream>
-#include "util.h"
 
 // The Physics function
-#include "PhysicsStuff.h"
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
 #include "DebugRenderer/cDebugRenderer.h"
@@ -27,24 +18,15 @@
 #include "FollowCamera.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
-#include "cLight.h"
 #include "SkyBox.h"
-#include "AABBGrid.h"
-#include "colors.h"
-#include "BroadCollision.h"
-#include "quaternions_utils.h"
 #include "ScriptBuilder.h"
 #include "DollyCamera.h"
-//#include "cLuaBrain.h"
-#include "UserInput.h"
 #include "Gameplay.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
-
-// audio things
-#include "audio_item.h"
-#include "audio_listener.h"
+#include "Coordinator.h"
+#include "UserInput.h"
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
@@ -57,64 +39,14 @@ cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false;
 
-// audio globals
-FMOD::System *::fmod_system = 0;
-
-bool init_fmod() {
-	//Create system
-	error_check(FMOD::System_Create(&::fmod_system));
-	//Init system
-	error_check(::fmod_system->init(32, FMOD_INIT_NORMAL, 0));
-
-	error_check(::fmod_system->set3DSettings(1.0f, 1.0f, 1.0f));
-
-	return true;
-}
-
 int main(void)
 {
-	//AABBHash(glm::vec3(-4580.1546, -0.1579, 126.12));
-	//std::vector<int> v1, v2;
-	//v1.push_back(1); v1.push_back(4); v1.push_back(5);
-	//v2.push_back(4); v2.push_back(5);
-	//stdVecConc(&v1, &v2);
-	//for (int i = 0; i < v1.size(); i++)
-	//	printf("%d, ", v1[i]);
-	//sNiceTriangle* tri = new sNiceTriangle();
-	//tri->a = glm::vec3(0);
-	//tri->b = glm::vec3(0,0,500);
-	//tri->c = glm::vec3(500);
-	//std::vector<unsigned long long> hashes = getTriangleHashes(tri);
-	
-	//glm::vec3 vector(1, 2, 2);-
-	//glm::quat orientation(glm::vec3(0,1.6,0));
-
-
-	//glm::vec3 v1(0, -1, 0), v2(-1, -1, -1);
-	//glm::quat rotation = RotationBetweenVectors(v1, v2);
-	//printf("Setting direction of test at: %s. quat: %s\nOriginally looking at %s\nNow looking at %s\n\n",
-	//	glm::to_string(v2).c_str(),
-	//	glm::to_string(rotation).c_str(),
-	//	glm::to_string(v1).c_str(),
-	//	glm::to_string(rotation * v1).c_str());
-
-	//float min = 5.0f, max = 15.0f;
-	//for (float val = min; val <= max; val += 0.1f) {
-	//	float step = glm::smoothstep(max, min, val);
-	//	printf("min %f, max %f, value %f, result %f\n",
-	//		min, max, val, step);
-	//}
-
-	//return 0;
-
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
-	init_fmod();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
-	//cLuaBrain lua;
-	Gameplay gameplay;
+	//Gameplay gameplay;
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -159,20 +91,18 @@ int main(void)
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
-	//lua.RunFile("assets/cutscene_script.lua");
-	//iCommand* cutscene = ScriptBuilder::getFinalScript();
 
-	gameplay.init(window);
-
-	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
-	//if (cruiseship) {
-	//	pAABBgrid->filterTriangles(cruiseship);
-	//}
-
-	//iGameItem* player = theScene->findItem("player");
-	//if (player) {
-	//	theCamera->init(player, glm::vec3(0, 30, -50));
-	//}
+	//gameplay.init(window);
+	cGameObject* player = (cGameObject*)theScene->findItem("player");
+	cGameObject* vehicleTemplate = (cGameObject*)theScene->findItem("ship_template");
+	Coordinator coordinator(player);
+	for (int i = 0; i < 11; i++)
+	{
+		cGameObject* vehicle = new cGameObject(vehicleTemplate);
+		vehicle->isVisible = true;
+		coordinator.batallion.push_back(vehicle);
+		theScene->addItem(vehicle);
+	}
 
 	theSkyBox.init(
 		"SpaceBox_right1_posX.bmp",
@@ -248,26 +178,12 @@ int main(void)
 
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		theScene->IntegrationStep(averageDeltaTime);
-		//theCamera->reposition();
-
-		aGameItem* player = theScene->findItem("player");
-		if (player) {
-			//BroadCollision::collisionsReact(
-			//	BroadCollision::detectCollisions(pAABBgrid, (cGameObject*)player),
-			//	(cGameObject*)player);
-			//pAABBgrid->Draw(player->getPos());
-		}
-		//pAABBgrid->Draw();
 
 		v = theCamera->lookAt();
-
-		if (::isRunning)
-		{
-			//cutscene->update(averageDeltaTime);
-			theCamera->setTarget(theScene->findItem("player")->getPos());
-			v = dollyCamera->lookAt();
-		}
-		gameplay.update(averageDeltaTime);
+		
+		//gameplay.update(averageDeltaTime);
+		velocityControls("player", ::window);
+		coordinator.update(averageDeltaTime);
 
 		theSkyBox.draw();
 		theScene->drawScene();
@@ -281,7 +197,6 @@ int main(void)
 			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		}
 
-		error_check(::fmod_system->update());
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

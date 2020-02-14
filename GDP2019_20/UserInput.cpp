@@ -272,77 +272,80 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// Edit mode
 	if (isShiftKeyDownByAlone(mods))
 	{
-		if (key == GLFW_KEY_A)
+		if (action != GLFW_RELEASE)
 		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "a";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_D)
-		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "d";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_Q)
-		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "q";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_E)
-		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "e";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_W)
-		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "w";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_S)
-		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "s";
-			theEditor->recieveMessage(message);
-		}
+			if (key == GLFW_KEY_A)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "a";
+				theEditor->recieveMessage(message);
+			}
+			if (key == GLFW_KEY_D)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "d";
+				theEditor->recieveMessage(message);
+			}
+			if (key == GLFW_KEY_Q)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "q";
+				theEditor->recieveMessage(message);
+			}
+			if (key == GLFW_KEY_E)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "e";
+				theEditor->recieveMessage(message);
+			}
+			if (key == GLFW_KEY_W)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "w";
+				theEditor->recieveMessage(message);
+			}
+			if (key == GLFW_KEY_S)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "s";
+				theEditor->recieveMessage(message);
+			}
 
-		// audio controls
-		if (key == GLFW_KEY_LEFT)
-		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "left";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_UP)
-		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "up";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_RIGHT)
-		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "right";
-			theEditor->recieveMessage(message);
-		}
-		if (key == GLFW_KEY_DOWN)
-		{
-			sMessage message;
-			message.name = "press with shift";
-			message.sValue = "down";
-			theEditor->recieveMessage(message);
+			// audio controls
+			if (key == GLFW_KEY_LEFT)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "left";
+				theEditor->recieveMessage(message);
+			}
+			if (key == GLFW_KEY_UP)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "up";
+				theEditor->recieveMessage(message);
+			}
+			if (key == GLFW_KEY_RIGHT)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "right";
+				theEditor->recieveMessage(message);
+			}
+			if (key == GLFW_KEY_DOWN)
+			{
+				sMessage message;
+				message.name = "press with shift";
+				message.sValue = "down";
+				theEditor->recieveMessage(message);
+			}
 		}
 	}//if (isShiftKeyDownByAlone(mods))
 

@@ -271,7 +271,7 @@ void cGameObject::draw()
 
 void cGameObject::recieveMessage(sMessage message) {
 
-	float translationStep = 1.0f;
+	float translationStep = 0.2f;
 	float rotationStep = 1;
 	float scaleStep = 0.05f;
 
