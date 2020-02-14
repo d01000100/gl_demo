@@ -213,6 +213,9 @@
     <ClCompile Include="Coordinator.cpp">
       <Filter>Formations</Filter>
     </ClCompile>
+    <ClCompile Include="FlockingManager.cpp">
+      <Filter>Formations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -387,6 +390,9 @@
       <Filter>AI_ShooterGame</Filter>
     </ClInclude>
     <ClInclude Include="Coordinator.h">
+      <Filter>Formations</Filter>
+    </ClInclude>
+    <ClInclude Include="FlockingManager.h">
       <Filter>Formations</Filter>
     </ClInclude>
   </ItemGroup>

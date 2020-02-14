@@ -449,7 +449,4 @@ void SceneEditor::recieveMessage(sMessage message)
 			return;
 		}
 	}
-	else {
-		printf("Unrecognized Message by SceneEditor: %s\n", message.name.c_str());
-	}
 }

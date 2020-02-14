@@ -25,7 +25,7 @@
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
-#include "Coordinator.h"
+#include "FlockingManager.h"
 #include "UserInput.h"
 
 cShaderManager theShaderManager;
@@ -45,6 +45,7 @@ int main(void)
 	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	SkyBox theSkyBox;
+	FlockingManager flockingManager;
 	glm::vec3 cameraOffset(0, 30 ,-50);
 	//Gameplay gameplay;
 
@@ -93,16 +94,7 @@ int main(void)
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
 	//gameplay.init(window);
-	cGameObject* player = (cGameObject*)theScene->findItem("player");
-	cGameObject* vehicleTemplate = (cGameObject*)theScene->findItem("ship_template");
-	Coordinator coordinator(player);
-	for (int i = 0; i < 11; i++)
-	{
-		cGameObject* vehicle = new cGameObject(vehicleTemplate);
-		vehicle->isVisible = true;
-		coordinator.batallion.push_back(vehicle);
-		theScene->addItem(vehicle);
-	}
+	flockingManager.init();
 
 	theSkyBox.init(
 		"SpaceBox_right1_posX.bmp",
@@ -182,8 +174,7 @@ int main(void)
 		v = theCamera->lookAt();
 		
 		//gameplay.update(averageDeltaTime);
-		velocityControls("player", ::window);
-		coordinator.update(averageDeltaTime);
+		flockingManager.update(averageDeltaTime);
 
 		theSkyBox.draw();
 		theScene->drawScene();
