@@ -219,6 +219,9 @@
     <ClCompile Include="PathFollowing.cpp">
       <Filter>Formations</Filter>
     </ClCompile>
+    <ClCompile Include="Flocking.cpp">
+      <Filter>Formations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -399,6 +402,9 @@
       <Filter>Formations</Filter>
     </ClInclude>
     <ClInclude Include="PathFollowing.h">
+      <Filter>Formations</Filter>
+    </ClInclude>
+    <ClInclude Include="Flocking.h">
       <Filter>Formations</Filter>
     </ClInclude>
   </ItemGroup>

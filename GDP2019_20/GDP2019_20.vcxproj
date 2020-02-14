@@ -186,6 +186,7 @@
     <ClCompile Include="DebugRenderer\cGLRenderStateHelper.cpp" />
     <ClCompile Include="DebugRenderer\COpenGLError.cpp" />
     <ClCompile Include="DollyCamera.cpp" />
+    <ClCompile Include="Flocking.cpp" />
     <ClCompile Include="FlockingManager.cpp" />
     <ClCompile Include="GameItemFactory\GameItemFactory.cpp" />
     <ClCompile Include="Gameplay.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
     <ClInclude Include="DollyCamera.h" />
+    <ClInclude Include="Flocking.h" />
     <ClInclude Include="FlockingManager.h" />
     <ClInclude Include="FollowCommand.h" />
     <ClInclude Include="GameItemFactory\GameItemFactory.h" />

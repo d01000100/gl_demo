@@ -21,6 +21,8 @@ void FlockingManager::init()
 		formationCoordinator->batallion.push_back(vehicle);
 		theScene->addItem(vehicle);
 	}
+	flock.birbs = formationCoordinator->batallion;
+	flock.birbs.push_back(leader);
 }
 
 void FlockingManager::update(float deltaTime)
@@ -33,7 +35,12 @@ void FlockingManager::update(float deltaTime)
 		formationCoordinator->update(deltaTime);
 		pathManager.followPath(leader, deltaTime);
 	}
-	thorusGeometry(leader);
+	if (state == "Flock")
+	{
+		flock.update(deltaTime);
+		for (auto birb : flock.birbs)
+			thorusGeometry(birb);
+	}
 }
 
 void FlockingManager::userInput()
@@ -61,6 +68,14 @@ void FlockingManager::userInput()
 	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
 	{
 		formationCoordinator->changeFormation(Coordinator::twoLines);
+		state = "Formation";
+	}
+	if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
+	{
+		state = "Flock";
+	}
+	if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS)
+	{
 		state = "Formation";
 	}
 	if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
