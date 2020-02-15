@@ -86,7 +86,7 @@ void SceneEditor::objectDebug() {
 			break;
 		}
 
-		glfwSetWindowTitle(::window, (*selectedObj)->getInfo().c_str());
+		//glfwSetWindowTitle(::window, (*selectedObj)->getInfo().c_str());
 	}
 }
 

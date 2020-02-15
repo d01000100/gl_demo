@@ -2,6 +2,7 @@
 #include "globalStuff.h"
 #include "Scene.h"
 #include "UserInput.h"
+#include <sstream>
 
 FlockingManager::~FlockingManager()
 {
@@ -41,6 +42,12 @@ void FlockingManager::update(float deltaTime)
 		for (auto birb : flock.birbs)
 			thorusGeometry(birb);
 	}
+
+	std::stringstream info;
+	info << "Alignment: " << flock.alignmentPower <<
+		" Separation: " << flock.separationPower <<
+		" Cohesion: " << flock.cohesionPower;
+	glfwSetWindowTitle(::window, info.str().c_str());
 }
 
 void FlockingManager::userInput()
@@ -95,6 +102,61 @@ void FlockingManager::userInput()
 	{
 		is9Pressed = false;
 	}
+
+	// Flocking controls
+	if (state == "Flock")
+	{
+		float min = 0, max = 5, step = 0.01;
+		if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+		{
+			if (flock.separationPower < max)
+			{
+				flock.separationPower += step;
+				flock.separationPower = glm::min(flock.separationPower, max);
+			}
+		}
+		if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+		{
+			if (flock.separationPower > min)
+			{
+				flock.separationPower -= step;
+				flock.separationPower = glm::max(flock.separationPower, min);
+			}
+		}
+		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+		{
+			if (flock.cohesionPower < max)
+			{
+				flock.cohesionPower += step;
+				flock.cohesionPower = glm::min(flock.cohesionPower, max);
+			}
+		}
+		if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+		{
+			if (flock.cohesionPower > min)
+			{
+				flock.cohesionPower -= step;
+				flock.cohesionPower = glm::max(flock.cohesionPower, min);
+			}
+		}
+		if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+		{
+			if (flock.alignmentPower < max)
+			{
+				flock.alignmentPower += step;
+				flock.alignmentPower = glm::min(flock.alignmentPower, max);
+			}
+		}
+		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+		{
+			if (flock.alignmentPower > min)
+			{
+				flock.alignmentPower -= step;
+				flock.alignmentPower = glm::max(flock.alignmentPower, min);
+			}
+		}
+	}
+	
 	if (state == "Formation")
 	{
 		velocityControls("player", ::window);
@@ -104,7 +166,7 @@ void FlockingManager::userInput()
 void FlockingManager::thorusGeometry(cGameObject* vehicle)
 {
 	// Size of the stage is 84.7 units across in both sides
-	float stageLength = 84.7f;
+	float stageLength = 70.f;
 	float minX = -stageLength / 2,
 		maxX = stageLength / 2,
 		minz = -stageLength / 2,

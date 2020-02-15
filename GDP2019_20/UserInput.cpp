@@ -233,13 +233,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			sMessage message;
 			message.name = "simple press";
 			message.sValue = "o";
-			theEditor->recieveMessage(message);
+			//theEditor->recieveMessage(message);
 		}
 		if (key == GLFW_KEY_L && action == GLFW_PRESS) {
 			sMessage message;
 			message.name = "simple press";
 			message.sValue = "l";
-			theEditor->recieveMessage(message);
+			//theEditor->recieveMessage(message);
 		}
 
 		if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
