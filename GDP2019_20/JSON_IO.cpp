@@ -3,8 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
+#include "globalStuff.h"
 
 #include "cMesh.h"
 #include "GameItemFactory/GameItemFactory.h"
@@ -216,6 +215,16 @@ std::map<std::string, aGameItem*>* readItems(std::string filename) {
 				(*mItems)[gameItem->getName()] = gameItem;
 			}
 		}
+	}
+
+	// activate collisions
+	if (jFile.find("collisions?") != jFile.end())
+	{
+		::withCollisions = jFile["collisions?"].get<bool>();
+	}
+	else
+	{
+		::withCollisions = false;
 	}
 
 	return mItems;

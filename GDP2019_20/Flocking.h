@@ -9,7 +9,7 @@ struct Flocking
 	float neighborDistance = 18.0f;
 	float maxVel = 10.0f;
 	float cohesionPower = 1,
-		separationPower = 1.27,
+		separationPower = 1.37,
 		alignmentPower = 1.1;
 	
 	bool isNeighbor(cGameObject* vehicle, cGameObject* other, float radius);

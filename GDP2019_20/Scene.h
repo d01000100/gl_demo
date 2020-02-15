@@ -6,6 +6,7 @@
 #include "GameItemFactory/iGameItem.h"
 #include "cMesh.h"
 #include "CameraSettings.h"
+#include "cGameObject.h"
 
 class Scene
 {
@@ -38,6 +39,7 @@ public:
 	void drawScene();
 	void IntegrationStep(float deltaTime);
 	std::vector<aGameItem*> getItemsByType(std::string type);
+	std::vector<cGameObject*> getGameObjects();
 	void storeCurrentCamera();
 	void setCamera(std::string);
 	aGameItem* findItem(std::string);

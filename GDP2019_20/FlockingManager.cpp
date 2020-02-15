@@ -19,6 +19,7 @@ void FlockingManager::init()
 	{
 		cGameObject* vehicle = new cGameObject(vehicleTemplate);
 		vehicle->isVisible = true;
+		vehicle->physics->shape = SPHERE;
 		formationCoordinator->batallion.push_back(vehicle);
 		theScene->addItem(vehicle);
 	}

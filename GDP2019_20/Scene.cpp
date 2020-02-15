@@ -45,6 +45,19 @@ std::vector<cLight*> Scene::getLights() {
 	return vs;
 }
 
+std::vector<cGameObject*> Scene::getGameObjects()
+{
+	vGameObjects res;
+	for (auto item : gameItems)
+	{
+		if (item.second->getType() == "Object")
+		{
+			res.push_back((cGameObject*)item.second);
+		}
+	}
+	return res;
+}
+
 std::map<std::string, cLight*> Scene::getLightsMap() { return lights;  }
 std::map<std::string, cMesh*> Scene::getMeshesMap() { return meshes; }
 std::map<std::string, sCameraSettings*> Scene::getCamerasMap() { return cameras; }
@@ -177,10 +190,10 @@ void Scene::saveScene(std::string filename) {
 void Scene::IntegrationStep(float deltaTime) {
 	for (std::map<std::string, aGameItem*>::iterator itItem = gameItems.begin();
 		itItem != gameItems.end();) {
-		sMessage m; m.name = "integration step"; m.fValue = deltaTime;
-		aGameItem* currentItem = itItem->second;
-		currentItem->recieveMessage(m);
+		//sMessage m; m.name = "integration step"; m.fValue = deltaTime;
+		//currentItem->recieveMessage(m);
 
+		aGameItem* currentItem = itItem->second;
 		if (currentItem->getType() == "Object")
 		{
 			cGameObject* currentObject = (cGameObject*)currentItem;

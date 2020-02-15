@@ -1,4 +1,5 @@
 {
+    "collisions?": true,
   "Cameras": [
     {
       "name": "top-down",
@@ -68,8 +69,8 @@
       "Physics": {
         "acceleration": [0.0, 0.0, 0.0],
         "gravity": false,
-        "radius": 0.0,
-        "shape": "???",
+        "radius": 2.0,
+        "shape": "sphere",
         "velocity": [0.0, 0.0, 0.0]
       },
       "alpha": 1.0,
@@ -88,9 +89,7 @@
       "Physics": {
         "acceleration": [0.0, 0.0, 0.0],
         "gravity": false,
-        "radius": 0.0,
-        "shape": "???",
-        "velocity": [0.0, 0.0, 0.0]
+        "radius": 2.0
       },
       "alpha": 1.0,
       "diffuseColor": [204.0, 204.0, 204.0],

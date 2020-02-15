@@ -2,7 +2,7 @@
 #include "Steerings.h"
 #include "Scene.h"
 
-float Coordinator::formationDistance = 12.0f;
+float Coordinator::formationDistance = 15.0f;
 
 std::vector<glm::vec3> Coordinator::line = {
 	// 5 left

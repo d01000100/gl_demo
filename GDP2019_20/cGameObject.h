@@ -110,6 +110,7 @@ private:
 	void IntegrationStep(float deltaTime);
 };
 
+typedef std::vector<cGameObject*> vGameObjects;
+typedef std::map<std::string, cGameObject*> mapGameObjects;
+
 #endif
-
-

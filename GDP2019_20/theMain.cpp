@@ -37,7 +37,7 @@ cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 //AABBGrid* pAABBgrid = new AABBGrid();
 DollyCamera* dollyCamera = DollyCamera::getTheCamera();
-bool ::isDebug = false, ::isRunning = false;
+bool ::isDebug = false, ::isRunning = false, ::withCollisions = true;
 
 int main(void)
 {
@@ -175,6 +175,7 @@ int main(void)
 		
 		//gameplay.update(averageDeltaTime);
 		flockingManager.update(averageDeltaTime);
+		pPhysics->IntegrationStep(theScene->getGameObjects(), averageDeltaTime);
 
 		theSkyBox.draw();
 		theScene->drawScene();
