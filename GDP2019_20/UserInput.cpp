@@ -150,7 +150,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{		
 		// save camera
 		if (key == GLFW_KEY_C && action == GLFW_PRESS) {
-			theScene->storeCurrentCamera();
+			::withCollisions = !::withCollisions;
 		}
 
 		//if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {

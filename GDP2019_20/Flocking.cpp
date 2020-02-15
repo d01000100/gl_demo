@@ -22,18 +22,18 @@ std::vector<cGameObject*> Flocking::getNeighbors(cGameObject* vehicle, float rad
 void Flocking::update(float deltaTime)
 {
 	float totalPower = separationPower + cohesionPower + alignmentPower;
-	float separationC = separationPower / totalPower;
-	float alignmentC = alignmentPower / totalPower;
-	float cohesionC = cohesionPower / totalPower;
+	separationPower = separationPower / totalPower;
+	alignmentPower = alignmentPower / totalPower;
+	cohesionPower = cohesionPower / totalPower;
 	for (auto birb : birbs)
 	{
 		vObjs neighbors = getNeighbors(birb, neighborDistance);
 		vObjs separationNeighbors = getNeighbors(birb, neighborDistance * 0.7);
 		if (neighbors.size() > 0)
 		{
-			glm::vec3 separationVel = separationC * separationForce(separationNeighbors, birb);
-			glm::vec3 cohesionVel = cohesionC * cohesionForce(neighbors, birb);
-			glm::vec3 alignmentVel = alignmentC * alignmentForce(neighbors, birb);
+			glm::vec3 separationVel = separationPower * separationForce(separationNeighbors, birb);
+			glm::vec3 cohesionVel = cohesionPower * cohesionForce(neighbors, birb);
+			glm::vec3 alignmentVel = alignmentPower * alignmentForce(neighbors, birb);
 
 			birb->physics->velocity += (separationVel + cohesionVel + alignmentVel) * deltaTime;
 

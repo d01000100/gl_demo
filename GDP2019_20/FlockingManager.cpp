@@ -46,9 +46,10 @@ void FlockingManager::update(float deltaTime)
 	}
 
 	std::stringstream info;
-	info << "Alignment: " << flock.alignmentPower <<
+	info <<
 		" Separation: " << flock.separationPower <<
-		" Cohesion: " << flock.cohesionPower;
+		" Cohesion: " << flock.cohesionPower <<
+		" Alignment: " << flock.alignmentPower;
 	glfwSetWindowTitle(::window, info.str().c_str());
 }
 
@@ -109,7 +110,7 @@ void FlockingManager::userInput()
 	// Flocking controls
 	if (state == "Flock")
 	{
-		float min = 0, max = 5, step = 0.01;
+		float min = 0, max = 0.99, step = 0.05;
 		if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
 		{
 			if (flock.separationPower < max)
