@@ -227,6 +227,23 @@ std::vector<aGameItem*> Scene::getItemsByType(std::string type) {
 	return vs;
 }
 
+vGameObjects Scene::getObjsWithTag(std::string tag)
+{
+	vGameObjects res;
+	for (auto item : gameItems)
+	{
+		if (item.second->getType() == "Object")
+		{
+			cGameObject* obj = (cGameObject*)item.second;
+			if (obj->tags.count(tag))
+			{
+				res.push_back(obj);
+			}
+		}
+	}
+	return res;
+}
+
 void Scene::storeCurrentCamera() {
 
 	Camera* theCamera = Camera::getTheCamera();

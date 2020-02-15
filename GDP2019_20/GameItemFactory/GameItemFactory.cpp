@@ -199,6 +199,15 @@ aGameItem* createGameItem(std::string type, json info) {
 			}
 		}
 
+		if (info.find("tags") != info.end())
+		{
+			for (json::iterator itJTag = info["tags"].begin();
+				itJTag != info["tags"].end(); itJTag++)
+			{
+				gameObj->tags.insert((*itJTag).get<std::string>());
+			}
+		}
+		
 		return gameObj;
 	}
 	else if (type == "Light") {

@@ -39,6 +39,7 @@ public:
 	void drawScene();
 	void IntegrationStep(float deltaTime);
 	std::vector<aGameItem*> getItemsByType(std::string type);
+	vGameObjects getObjsWithTag(std::string tag);
 	std::vector<cGameObject*> getGameObjects();
 	void storeCurrentCamera();
 	void setCamera(std::string);

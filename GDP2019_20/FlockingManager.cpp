@@ -23,6 +23,7 @@ void FlockingManager::init()
 		formationCoordinator->batallion.push_back(vehicle);
 		theScene->addItem(vehicle);
 	}
+	pathManager.init();
 	flock.birbs = formationCoordinator->batallion;
 	flock.birbs.push_back(leader);
 }
@@ -82,7 +83,8 @@ void FlockingManager::userInput()
 	{
 		state = "Flock";
 	}
-	if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS ||
+		glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
 	{
 		state = "Formation";
 	}
