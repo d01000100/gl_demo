@@ -63,9 +63,11 @@ bool Scene::loadMeshes(std::string filename) {
 		cMesh* data = new cMesh();
 
 		data->filename = settings.filename;
-
-		if (!model_loader.LoadPlyModel(settings.filename, *data)) {
-			printf("Couldn't load %s model file\n", settings.filename.c_str());
+		std::string loaderrors;
+		if (!model_loader.LoadModel_Assimp(settings.filename, *data, loaderrors)) {
+			printf("Couldn't load %s model file: %s\n", 
+				settings.filename.c_str(),
+				loaderrors.c_str());
 			return false;
 		}
 

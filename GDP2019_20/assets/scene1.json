@@ -30,7 +30,7 @@
                 1.0,
                 5000.0
             ],
-            "type": "point"
+            "type": "directional"
         },
         {
             "cutOffDist": 50.0,
