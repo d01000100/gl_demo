@@ -112,8 +112,7 @@
             ],
             "isLit": true,
             "isVisible": true,
-            "mesh": "sky_ship_model",
-            "name": "ship1",
+            "name": "player",
             "position": [
                 -20.0,
                 20.0,
@@ -130,7 +129,17 @@
                 255.0,
                 255.0,
                 50.0
-            ]
+            ],
+            "skinMesh": {
+                "name": "rpgCharacter_skinmesh",
+                "path": "assets/fbx/models/rpg_player.fbx",
+                "animations": [
+                    {
+                        "name": "run",
+                        "path": "assets/fbx/animations/Running Crawl rpg.fbx"
+                    }
+                ]
+            }
         },
         {
             "alpha": 1.0,

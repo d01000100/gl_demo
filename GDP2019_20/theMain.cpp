@@ -41,6 +41,7 @@
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
+GLuint shaderProgID = 0;
 std::string scene_filename = "assets/scene1.json";
 cVAOManager* theVAOManager = new cVAOManager();
 GLFWwindow* ::window = 0;
@@ -95,30 +96,29 @@ int main(void)
 		return -1;
 	}
 
-
-	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
+	::shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 	
 	if (!readTextures(::scene_filename)) { return -1; }
 	/*
 	 * Skin Mesh test
 	 */
-	cGameObject* rpgPlayer = new cGameObject();
-	rpgPlayer->skinnedMesh = new cSimpleAssimpSkinnedMesh();
-	auto pSM = rpgPlayer->skinnedMesh;
-	if (!pSM->LoadMeshFromFile("RPG Player bind pose", "assets/fbx/models/rpg_player.fbx"))
-	{
-		std::cout << "Skinned mesh model not found!!\n";
-		return 1;
-	};
-	if (!pSM->LoadMeshAnimation("kickL1", "assets/fbx/animation/kick-L1.fbx"))
-	{
-		std::cout << "Animation not Found!!\n";
-		return 1;
-	}
-	sModelDrawInfo* pDI = pSM->CreateModelDrawInfoObjectFromCurrentModel();
-	::theVAOManager->LoadModelDrawInfoIntoVAO(*pDI, shaderProgID);
-	rpgPlayer->meshName = "RPG Player bind pose";
-	rpgPlayer->friendlyName = "rpgPlayer";
+	//cGameObject* rpgPlayer = new cGameObject();
+	//rpgPlayer->skinnedMesh = new cSimpleAssimpSkinnedMesh();
+	//auto pSM = rpgPlayer->skinnedMesh;
+	//if (!pSM->LoadMeshFromFile("RPG Player bind pose", "assets/fbx/models/rpg_player.fbx"))
+	//{
+	//	std::cout << "Skinned mesh model not found!!\n";
+	//	return 1;
+	//};
+	//if (!pSM->LoadMeshAnimation("kickL1", "assets/fbx/animation/kick-L1.fbx"))
+	//{
+	//	std::cout << "Animation not Found!!\n";
+	//	return 1;
+	//}
+	//sModelDrawInfo* pDI = pSM->CreateModelDrawInfoObjectFromCurrentModel();
+	//::theVAOManager->LoadModelDrawInfoIntoVAO(*pDI, shaderProgID);
+	//rpgPlayer->meshName = "RPG Player bind pose";
+	//rpgPlayer->friendlyName = "rpgPlayer";
 	//rpgPlayer->pitch(-90);
 	
 	if (!theScene->loadScene(scene_filename)) { return -1; }
@@ -132,7 +132,7 @@ int main(void)
 		"SpaceBox_back6_negZ.bmp",
 		"sphere_model");
 
-	theScene->addItem(rpgPlayer);
+	//theScene->addItem(rpgPlayer);
 
 
 	sceneEditor->init(theScene);

@@ -6,6 +6,7 @@
 #include "DebugRenderer/cDebugRenderer.h"
 
 extern cShaderManager theShaderManager;
+extern GLuint shaderProgID;
 extern cVAOManager* theVAOManager;
 extern std::string shader_name;
 

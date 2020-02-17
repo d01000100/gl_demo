@@ -4,6 +4,7 @@
 #include "iGameItem.h"
 #include "../cGameObject.h"
 #include "../cLight.h"
+#include <iostream>
 
 using namespace nlohmann;
 
@@ -81,11 +82,7 @@ aGameItem* createGameItem(std::string type, json info) {
 	if (type == "Object") {
 		cGameObject* gameObj = new cGameObject();
 
-		if (info.find("mesh") == info.end()) {
-			printf("Object without mesh!!\n");
-			return NULL;
-		}
-		else {
+		if (info.find("mesh") != info.end()) {
 			gameObj->meshName = info["mesh"].get<std::string>();
 		}
 
@@ -197,6 +194,36 @@ aGameItem* createGameItem(std::string type, json info) {
 				glm::vec3 point((*itPoints)[0], (*itPoints)[1], (*itPoints)[2]);
 				gameObj->collision_points.push_back(point);
 			}
+		}
+
+		if (info.find("skinMesh") != info.end())
+		{
+			json jSkinMesh = info["skinMesh"];
+			auto pSM = new cSimpleAssimpSkinnedMesh();
+			if (!pSM->LoadMeshFromFile(
+				jSkinMesh["name"],
+				jSkinMesh["path"]))
+			{
+				std::cout << "Skinned mesh model not found in " << jSkinMesh["path"] << "!!\n";
+			};
+			sModelDrawInfo* pDI = pSM->CreateModelDrawInfoObjectFromCurrentModel();
+			::theVAOManager->LoadModelDrawInfoIntoVAO(*pDI, ::shaderProgID);
+			delete pDI;
+
+			if (jSkinMesh.find("animations") != jSkinMesh.end())
+			{
+				for (auto jAnimations : jSkinMesh["animations"])
+				{
+					if (!pSM->LoadMeshAnimation(
+						jAnimations["name"],
+						jAnimations["path"]))
+					{
+						std::cout << "Animation " << jAnimations["name"] << " not Found!!\n";
+					}
+				}
+			}
+			gameObj->meshName = jSkinMesh["name"].get<std::string>();
+			gameObj->skinnedMesh = pSM;
 		}
 
 		return gameObj;

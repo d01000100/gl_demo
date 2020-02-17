@@ -61,7 +61,24 @@
       "collision_points": [
           [8, 0, 16],
           [-8, 0, 16]
-      ]
+      ],
+      // For objects with a skin mesh
+      // It will overwrite the `mesh`
+      "skinMesh": 
+      {
+        "name": "blah",
+        "path": "assets/fbx/models/blah.fbx",
+        "animations": [
+          {
+            "name": "running",
+            "path": "assets/fbx/animations/running.fbx"
+          },
+          {
+            "name": "idle",
+            "path": "assets/fbx/animations/running.fbx"
+          }
+        ]
+      }
     }
   ],
   // Lights in the scene

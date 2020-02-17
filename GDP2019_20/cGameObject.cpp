@@ -225,17 +225,10 @@ void cGameObject::draw()
 
 			if (skinnedMesh)
 			{
-
 				glUniform1f(isSkinnedMesh_UniLoc, (float)GL_TRUE);
-				// Set to all identity
-				const int NUMBEROFBONES = 100;
-				//glm::mat4 matBones[NUMBEROFBONES];
-
-				//for (int index = 0; index != NUMBEROFBONES; index++)
-				//{
-				//	matBones[index] = glm::mat4(1.0f);	// Identity
-				//}
-
+				if (skinnedMesh->mapAnimationFriendlyNameTo_pScene.size() > 0)
+				{
+					
 				// Taken from "Skinned Mesh 2 - todo.docx"
 				std::vector< glm::mat4x4 > vecFinalTransformation;
 				std::vector< glm::mat4x4 > vecOffsets;
@@ -243,7 +236,7 @@ void cGameObject::draw()
 
 				// This loads the bone transforms from the animation model
 				skinnedMesh->BoneTransform(HACK_animation_time,	// 0.0f // Frame time
-					"kickL1",
+					skinnedMesh->mapAnimationFriendlyNameTo_pScene.begin()->first,
 					vecFinalTransformation,
 					vecObjectBoneTransformation,
 					vecOffsets);
@@ -260,6 +253,7 @@ void cGameObject::draw()
 				glUniformMatrix4fv(matBonesArray_UniLoc, numBonesUsed,
 					GL_FALSE,
 					glm::value_ptr(vecFinalTransformation[0]));
+				}
 			}
 			else
 			{
