@@ -8,6 +8,8 @@
 #include <glad/glad.h>
 
 #include <sstream>
+#include "util.h"
+#include <iostream>
 
 
 //#define OUTPUT_STUFF 1
@@ -216,27 +218,37 @@ void cSimpleAssimpSkinnedMesh::BoneTransform( float TimeInSeconds,
 								              std::vector<glm::mat4> &Globals, 
 								              std::vector<glm::mat4> &Offsets)
 {
-	glm::mat4 Identity(1.0f);
-
-	float TicksPerSecond = static_cast<float>( this->pScene->mAnimations[0]->mTicksPerSecond != 0 ?
-	                                           this->pScene->mAnimations[0]->mTicksPerSecond : 25.0 );
-
-	float TimeInTicks = TimeInSeconds * TicksPerSecond;
-	float AnimationTime = fmod(TimeInTicks, (float)this->pScene->mAnimations[0]->mDuration);
-	
-	// use the "animation" file to look up these nodes
-	// (need the matOffset information from the animation file)
-	this->ReadNodeHeirarchy(AnimationTime, animationName, this->pScene->mRootNode, Identity);
-
-	FinalTransformation.resize(this->mNumBones);
-	Globals.resize(this->mNumBones);
-	Offsets.resize(this->mNumBones);
-
-	for ( unsigned int BoneIndex = 0; BoneIndex < this->mNumBones; BoneIndex++ )
+	if (mapContains(mapAnimationFriendlyNameTo_pScene, animationName))
 	{
-		FinalTransformation[BoneIndex] = this->mBoneInfo[BoneIndex].FinalTransformation;
-		Globals[BoneIndex] = this->mBoneInfo[BoneIndex].ObjectBoneTransformation;
-		Offsets[BoneIndex] = this->mBoneInfo[BoneIndex].BoneOffset;
+		glm::mat4 Identity(1.0f);
+
+		auto assimpAnim = mapAnimationFriendlyNameTo_pScene[animationName].pAIScene->mAnimations[0];
+
+		float TicksPerSecond = static_cast<float>(
+			assimpAnim->mTicksPerSecond != 0 ?
+			assimpAnim->mTicksPerSecond : 25.0);
+
+		float TimeInTicks = TimeInSeconds * TicksPerSecond;
+		float AnimationTime = fmod(TimeInTicks, (float)assimpAnim->mDuration);
+
+		// use the "animation" file to look up these nodes
+		// (need the matOffset information from the animation file)
+		this->ReadNodeHeirarchy(AnimationTime, animationName, this->pScene->mRootNode, Identity);
+
+		FinalTransformation.resize(this->mNumBones);
+		Globals.resize(this->mNumBones);
+		Offsets.resize(this->mNumBones);
+
+		for (unsigned int BoneIndex = 0; BoneIndex < this->mNumBones; BoneIndex++)
+		{
+			FinalTransformation[BoneIndex] = this->mBoneInfo[BoneIndex].FinalTransformation;
+			Globals[BoneIndex] = this->mBoneInfo[BoneIndex].ObjectBoneTransformation;
+			Offsets[BoneIndex] = this->mBoneInfo[BoneIndex].BoneOffset;
+		}
+	}
+	else
+	{
+		std::cout << "Animation \"" << animationName << "\" not loaded.\n";
 	}
 }
 

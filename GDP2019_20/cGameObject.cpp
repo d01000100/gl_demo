@@ -39,15 +39,15 @@ cGameObject::cGameObject()
 	diffuseColor = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
 	specularColor = glm::vec4(1.0f, 1.0f, 1.0f, 50.0f);
 
-	skinnedMesh = nullptr;
+	animManager = nullptr;
 	
 	return;
 }
 
 cGameObject::~cGameObject()
 {
-	if (skinnedMesh)
-		delete skinnedMesh;
+	if (animManager)
+		delete animManager;
 	if (physics)
 		delete physics;
 	delete m_pDebugRenderer;
@@ -223,11 +223,9 @@ void cGameObject::draw()
 			GLint isSkinnedMesh_UniLoc = glad_glGetUniformLocation(programID, "isSkinnedMesh");
 
 
-			if (skinnedMesh)
+			if (animManager)
 			{
 				glUniform1f(isSkinnedMesh_UniLoc, (float)GL_TRUE);
-				if (skinnedMesh->mapAnimationFriendlyNameTo_pScene.size() > 0)
-				{
 					
 				// Taken from "Skinned Mesh 2 - todo.docx"
 				std::vector< glm::mat4x4 > vecFinalTransformation;
@@ -235,13 +233,10 @@ void cGameObject::draw()
 				std::vector< glm::mat4x4 > vecObjectBoneTransformation;
 
 				// This loads the bone transforms from the animation model
-				skinnedMesh->BoneTransform(HACK_animation_time,	// 0.0f // Frame time
-					skinnedMesh->mapAnimationFriendlyNameTo_pScene.begin()->first,
+				animManager->update(
 					vecFinalTransformation,
 					vecObjectBoneTransformation,
 					vecOffsets);
-
-				HACK_animation_time += 1.f / 120.f;
 
 				// Copy all 100 bones to the shader
 				GLint matBonesArray_UniLoc = glGetUniformLocation(programID, "matBonesArray");
@@ -253,7 +248,6 @@ void cGameObject::draw()
 				glUniformMatrix4fv(matBonesArray_UniLoc, numBonesUsed,
 					GL_FALSE,
 					glm::value_ptr(vecFinalTransformation[0]));
-				}
 			}
 			else
 			{

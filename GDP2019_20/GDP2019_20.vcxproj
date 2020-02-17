@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABBGrid.cpp" />
+    <ClCompile Include="AnimationManager.cpp" />
     <ClCompile Include="aOrientable.cpp" />
     <ClCompile Include="BroadCollision.cpp" />
     <ClCompile Include="C24BitBMPpixel.cpp" />
@@ -210,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABBGrid.h" />
+    <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="aOrientable.h" />
     <ClInclude Include="BroadCollision.h" />
     <ClInclude Include="C24BitBMPpixel.h" />

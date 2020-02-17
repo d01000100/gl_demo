@@ -13,6 +13,7 @@
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
 #include "cSimpleAssimpSkinnedMeshLoader_OneMesh.h"
+#include "AnimationManager.h"
 
 enum eShapeTypes
 {
@@ -53,8 +54,7 @@ public:
 	std::string friendlyName;
 	std::vector<sTextureSpec> textures;
 	std::vector<glm::vec3> collision_points;
-	cSimpleAssimpSkinnedMesh *skinnedMesh;
-	float HACK_animation_time = 0.0f;
+	AnimationManager *animManager;
 
 	glm::vec3  position;
 	float scale, alpha, lifeTime;

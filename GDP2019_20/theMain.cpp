@@ -50,6 +50,7 @@ cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 AABBGrid* pAABBgrid = new AABBGrid();
 DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false;
+float ::deltaTime = 0.0f;
 
 int main(void)
 {	Scene* theScene = Scene::getTheScene();
@@ -197,7 +198,7 @@ int main(void)
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
-		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		::deltaTime = avgDeltaTimeThingy.getAverage();
 		//theScene->IntegrationStep(averageDeltaTime);
 		//theCamera->reposition();
 
@@ -225,9 +226,9 @@ int main(void)
 		if (sceneEditor->getDebugRenderer()) {
 			sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
 		}
-		::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
+		::g_pDebugRenderer->RenderDebugObjects(v, p, ::deltaTime);
 		if (::isDebug) {
-			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
+			pDebugRenderer->RenderDebugObjects(v, p, ::deltaTime);
 		}
 
 		glfwSwapBuffers(window);

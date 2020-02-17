@@ -135,8 +135,12 @@
                 "path": "assets/fbx/models/rpg_player.fbx",
                 "animations": [
                     {
-                        "name": "run",
-                        "path": "assets/fbx/animations/Running Crawl rpg.fbx"
+                        "name": "idle",
+                        "path": "assets/fbx/animations/idle.fbx"
+                    },
+                    {
+                        "name": "dance",
+                        "path": "assets/fbx/animations/dance.fbx"
                     }
                 ]
             }
