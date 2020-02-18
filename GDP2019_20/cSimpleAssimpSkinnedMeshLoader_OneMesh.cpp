@@ -102,19 +102,21 @@ bool cSimpleAssimpSkinnedMesh::LoadMeshFromFile( const std::string &friendlyName
 													// Looks in the animation map and returns the total time
 float cSimpleAssimpSkinnedMesh::FindAnimationTotalTime(std::string animationName)
 {
-	//std::map< std::string /*animationfile*/,
-	//	const aiScene* >::iterator itAnimation = this->mapAnimationNameTo_pScene.find(animationName);
-	std::map< std::string /*animation FRIENDLY name*/,
-		        sAnimationInfo >::iterator itAnimation = this->mapAnimationFriendlyNameTo_pScene.find(animationName);
-	
-	// Found it? 
-	if ( itAnimation == this->mapAnimationFriendlyNameTo_pScene.end() )
-	{	// Nope.
-		return 0.0f;
-	}
+	if (mapContains(mapAnimationFriendlyNameTo_pScene, animationName))
+	{
+		auto assimpAnim = mapAnimationFriendlyNameTo_pScene[animationName].pAIScene->mAnimations[0];
 
-	// This is scaling the animation from 0 to 1
-	return (float)itAnimation->second.pAIScene->mAnimations[0]->mDuration;	
+		float TicksPerSecond = static_cast<float>(
+			assimpAnim->mTicksPerSecond != 0 ?
+			assimpAnim->mTicksPerSecond : 25.0);
+
+		// This is scaling the animation from 0 to 1
+		return (float)assimpAnim->mDuration / TicksPerSecond;
+	}
+	else
+	{
+		return 0.f;
+	}
 }
 
 
@@ -205,6 +207,8 @@ void cSimpleAssimpSkinnedMesh::sVertexBoneData::AddBoneData(unsigned int BoneID,
 		}
 	}
 }
+
+
 
 // In the original code, these vectors are being passed out into the "character" object.
 // It's unclear what the Globals matrices are actually for...

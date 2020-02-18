@@ -5,6 +5,7 @@
 #include "../cGameObject.h"
 #include "../cLight.h"
 #include <iostream>
+#include "../AnimatedCharactersControls.h"
 
 using namespace nlohmann;
 
@@ -224,6 +225,8 @@ aGameItem* createGameItem(std::string type, json info) {
 				}
 				gameObj->meshName = jSkinMesh["name"].get<std::string>();
 				gameObj->animManager = new AnimationManager(pSM);
+
+				AnimatedCharactersControls::characters.push_back(gameObj);
 			}
 			else
 			{

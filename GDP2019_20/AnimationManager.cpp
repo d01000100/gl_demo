@@ -18,7 +18,7 @@ bool AnimationManager::isCurrentDone()
 {
 	if (mapContains(assimpAnim->mapAnimationFriendlyNameTo_pScene, currentAnimation))
 	{
-		return timer > assimpAnim->mapAnimationFriendlyNameTo_pScene[currentAnimation].pAIScene->mAnimations[0]->mDuration;
+		return timer > assimpAnim->FindAnimationTotalTime(currentAnimation);
 	}
 	else
 	{

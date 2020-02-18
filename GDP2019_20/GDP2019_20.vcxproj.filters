@@ -204,6 +204,9 @@
     <ClCompile Include="AnimationManager.cpp">
       <Filter>SkinMesh</Filter>
     </ClCompile>
+    <ClCompile Include="AnimatedCharactersControls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="AnimationManager.h">
       <Filter>SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedCharactersControls.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

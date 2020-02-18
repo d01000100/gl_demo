@@ -123,7 +123,7 @@
                 -0.0,
                 0.0
             ],
-            "scale": 1.0,
+            "scale": 0.2,
             "specularColor": [
                 255.0,
                 255.0,
@@ -139,8 +139,12 @@
                         "path": "assets/fbx/animations/idle.fbx"
                     },
                     {
-                        "name": "dance",
-                        "path": "assets/fbx/animations/dance.fbx"
+                        "name": "action",
+                        "path": "assets/fbx/animations/kick-L1.fbx"
+                    },
+                    {
+                        "name": "walk",
+                        "path": "assets/fbx/animations/Walking.fbx"
                     }
                 ]
             }

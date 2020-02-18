@@ -34,6 +34,7 @@
 #include "BroadCollision.h"
 #include "quaternions_utils.h"
 #include "DollyCamera.h"
+#include "AnimatedCharactersControls.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
@@ -218,6 +219,8 @@ int main(void)
 			theCamera->setTarget(theScene->findItem("player")->getPos());
 			v = dollyCamera->lookAt();
 		}
+
+		AnimatedCharactersControls::inputListener();
 
 		theSkyBox.draw();
 		theScene->drawScene();

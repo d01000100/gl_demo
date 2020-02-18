@@ -14,6 +14,7 @@
 #include "JSON_IO.h"
 
 #include <stdio.h>		// for fprintf()
+#include "AnimatedCharactersControls.h"
 
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
@@ -119,10 +120,29 @@ void thrusterControls(int key, int action, int mods)
 	}
 }
 
+void animationCallback(int key, int action, int mods)
+{
+	if ((key == GLFW_KEY_LEFT_CONTROL || key == GLFW_KEY_RIGHT_CONTROL)
+		&& action == GLFW_PRESS)
+	{
+		AnimatedCharactersControls::action();
+	}
+	if (key == GLFW_KEY_I && action != GLFW_RELEASE)
+	{
+		AnimatedCharactersControls::selectedAnimManager()->changeAnimation("walk");
+	}
+	if (key == GLFW_KEY_I && action == GLFW_RELEASE)
+	{
+		AnimatedCharactersControls::selectedAnimManager()->changeAnimation("idle");
+	}
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+	//animationCallback(key, action, mods);
 	camera_orbit(key, action, mods);
 	//thrusterControls(key, action, mods);
+	
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{		
 		// save camera
