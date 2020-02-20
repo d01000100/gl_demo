@@ -248,3 +248,21 @@ void Scene::addItem(aGameItem* newItem)
 {
 	gameItems[newItem->getName()] = newItem;
 }
+
+std::vector<cGameObject*> Scene::getPhysicsObjects()
+{
+	std::vector<cGameObject*> res;
+	for (auto i : gameItems)
+	{
+		auto gameItem = i.second;
+		if (gameItem->getType() == "Object")
+		{
+			auto gameObj = (cGameObject*)gameItem;
+			if (gameObj->physics)
+			{
+				res.push_back(gameObj);
+			}
+		}
+	}
+	return res;
+}

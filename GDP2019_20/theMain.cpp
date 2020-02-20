@@ -56,7 +56,7 @@ float ::deltaTime = 0.0f;
 int main(void)
 {	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();
-	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
+	//SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
 
@@ -114,7 +114,7 @@ int main(void)
 		"negz.bmp",
 		"sphere_model");
 	
-	sceneEditor->init(theScene);
+	//sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -179,7 +179,7 @@ int main(void)
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		::deltaTime = avgDeltaTimeThingy.getAverage();
-		theScene->IntegrationStep(::deltaTime);
+		//theScene->IntegrationStep(::deltaTime);
 		//theCamera->reposition();
 
 		aGameItem* player = theScene->findItem("player");
@@ -190,6 +190,7 @@ int main(void)
 			//pAABBgrid->Draw(player->getPos());
 		}
 		//pAABBgrid->Draw();
+		pPhysics->IntegrationStep(theScene->getPhysicsObjects(), ::deltaTime);
 
 		v = theCamera->lookAt();
 
@@ -204,10 +205,10 @@ int main(void)
 		theSkyBox.draw();
 		theScene->drawScene();
 
-		sceneEditor->drawDebug();
-		if (sceneEditor->getDebugRenderer()) {
-			sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
-		}
+		//sceneEditor->drawDebug();
+		//if (sceneEditor->getDebugRenderer()) {
+		//	sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
+		//}
 		::g_pDebugRenderer->RenderDebugObjects(v, p, ::deltaTime);
 		if (::isDebug) {
 			pDebugRenderer->RenderDebugObjects(v, p, ::deltaTime);

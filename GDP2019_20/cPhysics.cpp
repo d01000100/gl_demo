@@ -20,6 +20,8 @@ glm::vec3 cPhysics::getGravity(void)
 
 void cPhysics::IntegrationStep(std::vector<cGameObject*> vec_pGameObjects, float deltaTime)
 {
+	TestForCollisions(vec_pGameObjects);
+	
 	for (unsigned int index = 0;
 		 index != vec_pGameObjects.size(); index++)
 	{
@@ -39,8 +41,27 @@ void cPhysics::IntegrationStep(std::vector<cGameObject*> vec_pGameObjects, float
 			phObj->velocity += phObj->acceleration * deltaTime;
 			pCurObj->position += phObj->velocity * deltaTime;
 		}
+
+		float towerWidth = 260.f;
+		if (pCurObj->position.x > towerWidth)
+		{
+			pCurObj->position.x = towerWidth;
+		}
+		if (pCurObj->position.z > towerWidth)
+		{
+			pCurObj->position.z = towerWidth;
+		}
+		if (pCurObj->position.x < -towerWidth)
+		{
+			pCurObj->position.x = -towerWidth;
+		}
+		if (pCurObj->position.z < -towerWidth)
+		{
+			pCurObj->position.z = -towerWidth;
+		}
 	}//for (unsigned int index = 0;
 
+	
 	return;
 }
 
@@ -181,19 +202,21 @@ bool cPhysics::DoSphereSphereCollision(cGameObject* pA, cGameObject* pB,
 
 		glm::vec3 normDist = glm::normalize(distance);
 
-		pA->position += clippingDist * normDist;
+		pA->position += clippingDist * 1.2f * normDist;
 
 		// reflect ball A according to the vector between the balls
-		glm::vec3 vel_reflected = glm::reflect(pA->physics->velocity, normDist);
-		vel_reflected = glm::normalize(vel_reflected);
+		//glm::vec3 vel_reflected = glm::reflect(pA->physics->velocity, normDist);
+		//vel_reflected = glm::normalize(vel_reflected);
 
-		pA->physics->velocity = vel_reflected * glm::length(pA->physics->velocity);
+		//pA->physics->velocity = vel_reflected * glm::length(pA->physics->velocity);
+		pA->physics->velocity = glm::vec3(0);
 
 		// reflect ball B according to the inverseo of the vector between the balls
-		vel_reflected = glm::reflect(pB->physics->velocity, -normDist);
-		vel_reflected = glm::normalize(vel_reflected);
+		//vel_reflected = glm::reflect(pB->physics->velocity, -normDist);
+		//vel_reflected = glm::normalize(vel_reflected);
 
-		pB->physics->velocity = vel_reflected * glm::length(pB->physics->velocity);
+		//pB->physics->velocity = vel_reflected * glm::length(pB->physics->velocity);
+		pB->physics->velocity = glm::vec3(0);
 
 		//pB->physics->acceleration = glm::vec3(0.0f);
 		//pB->physics->velocity = glm::vec3(0.0f);

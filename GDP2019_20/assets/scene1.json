@@ -100,7 +100,10 @@
             ]
         },
         {
-            "Physics": {},
+            "Physics": {
+                "shape": "sphere",
+                "radius": 15.0
+            },
             "alpha": 1.0,
             "diffuseColor": [
                 204.0,
@@ -157,7 +160,10 @@
             }
         },
         {
-            "Physics": {},
+            "Physics": {
+                "shape": "sphere",
+                "radius": 15.0
+            },
             "alpha": 1.0,
             "diffuseColor": [
                 204.0,

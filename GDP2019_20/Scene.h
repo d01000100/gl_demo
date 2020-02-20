@@ -6,6 +6,7 @@
 #include "GameItemFactory/iGameItem.h"
 #include "cMesh.h"
 #include "CameraSettings.h"
+#include "cGameObject.h"
 
 class Scene
 {
@@ -42,4 +43,5 @@ public:
 	void setCamera(std::string);
 	aGameItem* findItem(std::string);
 	void addItem(aGameItem* newItem);
+	std::vector<cGameObject*> getPhysicsObjects();
 };

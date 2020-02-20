@@ -53,27 +53,27 @@ void camera_translate(int key, int action, int mods) {
 void camera_orbit(int key, int action, int mods) {
 	if (!isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods))
 	{
-		if (key == GLFW_KEY_A)
+		if (key == GLFW_KEY_J)
 		{
 			theCamera->moveLeft(CAMERAROTATIONSPEED);
 		}
-		if (key == GLFW_KEY_D)
+		if (key == GLFW_KEY_L)
 		{
 			theCamera->moveRight(CAMERAROTATIONSPEED);
 		}
-		if (key == GLFW_KEY_Q)
+		if (key == GLFW_KEY_U)
 		{
 			theCamera->zoom(CAMERAZOOMSPEED);
 		}
-		if (key == GLFW_KEY_E)
+		if (key == GLFW_KEY_O)
 		{
 			theCamera->zoom(-CAMERAZOOMSPEED);
 		}
-		if (key == GLFW_KEY_W)
+		if (key == GLFW_KEY_I)
 		{
 			theCamera->moveUp(CAMERAROTATIONSPEED);
 		}
-		if (key == GLFW_KEY_S)
+		if (key == GLFW_KEY_K)
 		{
 			theCamera->moveDown(CAMERAROTATIONSPEED);
 		}

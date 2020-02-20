@@ -72,7 +72,7 @@ bool AnimatedCharactersControls::gotReleased(int key)
 void AnimatedCharactersControls::tankControls()
 {
 	float walkVelocity = 70.0f, runSpeed = 120.0f;
-	if (glfwGetKey(::window, GLFW_KEY_I) == GLFW_PRESS)
+	if (glfwGetKey(::window, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		glm::vec3 direction = selectedGameObject()->getDirection();
 		if (glfwGetKey(::window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE &&
@@ -85,7 +85,7 @@ void AnimatedCharactersControls::tankControls()
 			selectedGameObject()->physics->velocity = direction * runSpeed;
 		}
 	}
-	else if (glfwGetKey(::window, GLFW_KEY_K) == GLFW_PRESS)
+	else if (glfwGetKey(::window, GLFW_KEY_S) == GLFW_PRESS)
 	{
 		glm::vec3 direction = selectedGameObject()->getDirection();
 		if (glfwGetKey(::window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE &&
@@ -104,11 +104,11 @@ void AnimatedCharactersControls::tankControls()
 	}
 
 	float rotSpeed = 1.f;
-	if (glfwGetKey(::window, GLFW_KEY_J) == GLFW_PRESS)
+	if (glfwGetKey(::window, GLFW_KEY_A) == GLFW_PRESS)
 	{
 		selectedGameObject()->yaw(rotSpeed);
 	}
-	if (glfwGetKey(::window, GLFW_KEY_L) == GLFW_PRESS)
+	if (glfwGetKey(::window, GLFW_KEY_D) == GLFW_PRESS)
 	{
 		selectedGameObject()->yaw(-rotSpeed);
 	}
@@ -124,7 +124,7 @@ void AnimatedCharactersControls::inputListener()
 		next();
 	}
 	
-	if (glfwGetKey(::window, GLFW_KEY_I) == GLFW_PRESS)
+	if (glfwGetKey(::window, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		if (glfwGetKey(::window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE &&
 			glfwGetKey(::window, GLFW_KEY_RIGHT_SHIFT) == GLFW_RELEASE)
@@ -136,7 +136,7 @@ void AnimatedCharactersControls::inputListener()
 			selectedAnimManager()->changeAnimation("crawl", 1.0);
 		}
 	}
-	else if (glfwGetKey(::window, GLFW_KEY_K) == GLFW_PRESS)
+	else if (glfwGetKey(::window, GLFW_KEY_S) == GLFW_PRESS)
 	{
 		if (glfwGetKey(::window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE &&
 			glfwGetKey(::window, GLFW_KEY_RIGHT_SHIFT) == GLFW_RELEASE)
@@ -148,8 +148,8 @@ void AnimatedCharactersControls::inputListener()
 		}
 	}
 	
-	if (gotReleased(GLFW_KEY_I) || 
-		gotReleased(GLFW_KEY_K))
+	if (gotReleased(GLFW_KEY_W) || 
+		gotReleased(GLFW_KEY_S))
 	{
 		selectedAnimManager()->changeAnimation("idle", 1.0);
 	}
@@ -173,7 +173,7 @@ void AnimatedCharactersControls::inputListener()
 	updateKeyState(GLFW_KEY_LEFT_CONTROL);
 	updateKeyState(GLFW_KEY_RIGHT_CONTROL);
 	updateKeyState(GLFW_KEY_SPACE);
-	updateKeyState(GLFW_KEY_I);
-	updateKeyState(GLFW_KEY_K);
+	updateKeyState(GLFW_KEY_W);
+	updateKeyState(GLFW_KEY_S);
 	updateKeyState(GLFW_KEY_TAB);
 }
