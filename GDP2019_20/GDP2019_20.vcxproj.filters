@@ -205,7 +205,7 @@
       <Filter>SkinMesh</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedCharactersControls.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>SkinMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -378,7 +378,7 @@
       <Filter>SkinMesh</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedCharactersControls.h">
-      <Filter>Header Files</Filter>
+      <Filter>SkinMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

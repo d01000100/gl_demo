@@ -89,13 +89,13 @@
             "isLit": true,
             "isVisible": true,
             "mesh": "terrain_model",
-            "name": "aaaaterrain_model_1000",
+            "name": "zzzterrain_model_1000",
             "position": [
-                0.0,
-                0.0,
-                0.0
+                10.0,
+                -100.0,
+                458.0
             ],
-            "scale": 1.0,
+            "scale": 10.0,
             "specularColor": [
                 255.0,
                 255.0,
@@ -104,6 +104,7 @@
             ]
         },
         {
+            "Physics": {},
             "alpha": 1.0,
             "diffuseColor": [
                 204.0,
@@ -140,16 +141,27 @@
                     },
                     {
                         "name": "action",
-                        "path": "assets/fbx/animations/kick-L1.fbx"
+                        "path": "assets/fbx/animations/kick-L1.fbx",
+                        "isBlocking": true
                     },
                     {
                         "name": "walk",
                         "path": "assets/fbx/animations/Walking.fbx"
+                    },
+                    {
+                        "name": "crawl",
+                        "path": "assets/fbx/animations/crawl.fbx"
+                    },
+                    {
+                        "name": "jump",
+                        "path": "assets/fbx/animations/Jumping.fbx",
+                        "isBlocking": true
                     }
                 ]
             }
         },
         {
+            "Physics": {},
             "alpha": 1.0,
             "diffuseColor": [
                 204.0,
@@ -158,25 +170,47 @@
             ],
             "isLit": true,
             "isVisible": true,
-            "mesh": "sky_ship_model",
-            "name": "ship2",
+            "name": "player2",
             "position": [
                 0.0,
                 20.0,
                 0.0
             ],
-            "rotation": [
-                -64.98185729980469,
-                50.89912796020508,
-                -12.530855178833008
-            ],
-            "scale": 1.0,
+            "scale": 0.2,
             "specularColor": [
                 255.0,
                 255.0,
                 255.0,
                 50.0
-            ]
+            ],
+            "skinMesh": {
+                "name": "rpgCharacter_skinmesh",
+                "path": "assets/fbx/models/rpg_player.fbx",
+                "animations": [
+                    {
+                        "name": "idle",
+                        "path": "assets/fbx/animations/idle.fbx"
+                    },
+                    {
+                        "name": "action",
+                        "path": "assets/fbx/animations/kick-L1.fbx",
+                        "isBlocking": true
+                    },
+                    {
+                        "name": "walk",
+                        "path": "assets/fbx/animations/Walking.fbx"
+                    },
+                    {
+                        "name": "crawl",
+                        "path": "assets/fbx/animations/crawl.fbx"
+                    },
+                    {
+                        "name": "jump",
+                        "path": "assets/fbx/animations/Jumping.fbx",
+                        "isBlocking": true
+                    }
+                ]
+            }
         },
         {
             "alpha": 1.0,

@@ -129,11 +129,11 @@ void animationCallback(int key, int action, int mods)
 	}
 	if (key == GLFW_KEY_I && action != GLFW_RELEASE)
 	{
-		AnimatedCharactersControls::selectedAnimManager()->changeAnimation("walk");
+		AnimatedCharactersControls::selectedAnimManager()->changeAnimation("walk", 1.0);
 	}
 	if (key == GLFW_KEY_I && action == GLFW_RELEASE)
 	{
-		AnimatedCharactersControls::selectedAnimManager()->changeAnimation("idle");
+		AnimatedCharactersControls::selectedAnimManager()->changeAnimation("idle", 1.0);
 	}
 }
 

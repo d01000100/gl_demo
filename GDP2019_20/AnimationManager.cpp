@@ -11,8 +11,14 @@
 AnimationManager::AnimationManager(cSimpleAssimpSkinnedMesh* anim) :
 	assimpAnim(anim),
 	idleAnimation("idle"),
-	currentAnimation("idle")
+	currentAnimation("idle"),
+	timer(0.0f)
 {}
+
+AnimationManager::~AnimationManager()
+{
+	delete assimpAnim;
+}
 
 bool AnimationManager::isCurrentDone()
 {
@@ -26,13 +32,17 @@ bool AnimationManager::isCurrentDone()
 	}
 }
 
-void AnimationManager::changeAnimation(std::string animation)
+void AnimationManager::changeAnimation(std::string animation, float scale)
 {
 	// Don't reset if we're actually not changing
-	if (currentAnimation != animation)
+	if (!animInfo[currentAnimation].isBlocking)
 	{
-		currentAnimation = animation;
-		timer = 0.0f;
+		timeScale = scale;
+		if (currentAnimation != animation)
+		{
+			currentAnimation = animation;
+			timer = 0.0f;
+		}
 	}
 }
 
@@ -41,7 +51,11 @@ void AnimationManager::update(
 	std::vector<glm::mat4>& Globals,
 	std::vector<glm::mat4>& Offsets)
 {
-	timer += ::deltaTime;
+	timer += ::deltaTime * timeScale;
+	if (timer < 0)
+	{
+		timer = assimpAnim->FindAnimationTotalTime(currentAnimation);
+	}
 	// If we're in the idle state or not
 	if (currentAnimation == idleAnimation)
 	{

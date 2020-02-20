@@ -16,4 +16,5 @@ struct AnimatedCharactersControls
 	static void updateKeyState(int key);
 	static bool gotPressed(int key);
 	static bool gotReleased(int key);
+	static void tankControls();
 };

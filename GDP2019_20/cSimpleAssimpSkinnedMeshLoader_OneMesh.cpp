@@ -93,7 +93,11 @@ bool cSimpleAssimpSkinnedMesh::LoadMeshFromFile( const std::string &friendlyName
 			return false;
 		}
 		return true;
-	}//if ( this->pScene )
+	}
+	else
+	{
+		std::cout << "SkinMesh Error: " << mImporter.GetErrorString() << std::endl;
+	}
 
 	return false;
 }

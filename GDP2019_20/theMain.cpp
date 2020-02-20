@@ -100,29 +100,7 @@ int main(void)
 
 	::shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 	
-	if (!readTextures(::scene_filename)) { return -1; }
-	/*
-	 * Skin Mesh test
-	 */
-	//cGameObject* rpgPlayer = new cGameObject();
-	//rpgPlayer->skinnedMesh = new cSimpleAssimpSkinnedMesh();
-	//auto pSM = rpgPlayer->skinnedMesh;
-	//if (!pSM->LoadMeshFromFile("RPG Player bind pose", "assets/fbx/models/rpg_player.fbx"))
-	//{
-	//	std::cout << "Skinned mesh model not found!!\n";
-	//	return 1;
-	//};
-	//if (!pSM->LoadMeshAnimation("kickL1", "assets/fbx/animation/kick-L1.fbx"))
-	//{
-	//	std::cout << "Animation not Found!!\n";
-	//	return 1;
-	//}
-	//sModelDrawInfo* pDI = pSM->CreateModelDrawInfoObjectFromCurrentModel();
-	//::theVAOManager->LoadModelDrawInfoIntoVAO(*pDI, shaderProgID);
-	//rpgPlayer->meshName = "RPG Player bind pose";
-	//rpgPlayer->friendlyName = "rpgPlayer";
-	//rpgPlayer->pitch(-90);
-	
+	if (!readTextures(::scene_filename)) { return -1; }	
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
 	theSkyBox.init(
@@ -133,10 +111,7 @@ int main(void)
 		"SpaceBox_front5_posZ.bmp",
 		"SpaceBox_back6_negZ.bmp",
 		"sphere_model");
-
-	//theScene->addItem(rpgPlayer);
-
-
+	
 	sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
@@ -152,6 +127,8 @@ int main(void)
 	double flickerTimer = 0;
 
 	theCamera->setPosition(glm::vec3(0, 100, -150));
+
+	AnimatedCharactersControls::next();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -200,7 +177,7 @@ int main(void)
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
 		::deltaTime = avgDeltaTimeThingy.getAverage();
-		//theScene->IntegrationStep(averageDeltaTime);
+		theScene->IntegrationStep(::deltaTime);
 		//theCamera->reposition();
 
 		aGameItem* player = theScene->findItem("player");

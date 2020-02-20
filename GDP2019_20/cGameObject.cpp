@@ -346,7 +346,7 @@ void cGameObject::IntegrationStep(float deltaTime) {
 			physics->acceleration += glm::vec3(0.0f, -1.0f, 0.0f) * deltaTime;
 		}
 
-		printf("deltaTime: %f\n", deltaTime);
+		//printf("deltaTime: %f\n", deltaTime);
 		// Forward Explicit Euler Inetegration
 		//NewVelocty += Velocity + ( Ax * DeltaTime )
 		physics->velocity += physics->acceleration * deltaTime;
