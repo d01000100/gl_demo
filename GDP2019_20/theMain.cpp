@@ -103,13 +103,15 @@ int main(void)
 	if (!readTextures(::scene_filename)) { return -1; }	
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
+
+	::g_pTextureManager->SetBasePath("assets/textures/cubemaps/field");
 	theSkyBox.init(
-		"SpaceBox_right1_posX.bmp",
-		"SpaceBox_left2_negX.bmp",
-		"SpaceBox_top3_posY.bmp",
-		"SpaceBox_bottom4_negY.bmp",
-		"SpaceBox_front5_posZ.bmp",
-		"SpaceBox_back6_negZ.bmp",
+		"posx.bmp",
+		"negx.bmp",
+		"posy.bmp",
+		"negy.bmp",
+		"posz.bmp",
+		"negz.bmp",
 		"sphere_model");
 	
 	sceneEditor->init(theScene);

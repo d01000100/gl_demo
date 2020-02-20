@@ -68,10 +68,14 @@
       {
         "name": "blah",
         "path": "assets/fbx/models/blah.fbx",
+        // All skin Meshes must have at least one "idle" animation
         "animations": [
           {
             "name": "running",
-            "path": "assets/fbx/animations/running.fbx"
+            "path": "assets/fbx/animations/running.fbx",
+            // if the animation blocks other animations from being
+            // started while this one is running. Default to false
+            "isBlocking": true
           },
           {
             "name": "idle",

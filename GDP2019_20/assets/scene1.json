@@ -66,15 +66,11 @@
     ],
     "Meshes": [
         {
-            "filename": "assets/models/sky_ship.ply",
-            "name": "sky_ship_model"
-        },
-        {
             "filename": "assets/models/sphere.ply",
             "name": "sphere_model"
         },
         {
-            "filename": "assets/models/terrain.ply",
+            "filename": "assets/models/tower_x50.ply",
             "name": "terrain_model"
         }
     ],
@@ -89,18 +85,18 @@
             "isLit": true,
             "isVisible": true,
             "mesh": "terrain_model",
-            "name": "zzzterrain_model_1000",
-            "position": [
-                10.0,
-                -100.0,
-                458.0
-            ],
-            "scale": 10.0,
+            "name": "tower",
+            "scale": 1.0,
             "specularColor": [
                 255.0,
                 255.0,
                 255.0,
                 50.0
+            ],
+            "textures": [
+                {
+                    "textureName": "tower.bmp"
+                }
             ]
         },
         {
@@ -115,8 +111,8 @@
             "isVisible": true,
             "name": "player",
             "position": [
-                -20.0,
-                20.0,
+                -30.0,
+                0.0,
                 0.0
             ],
             "rotation": [
@@ -173,7 +169,7 @@
             "name": "player2",
             "position": [
                 0.0,
-                20.0,
+                0.0,
                 0.0
             ],
             "scale": 0.2,
@@ -211,41 +207,10 @@
                     }
                 ]
             }
-        },
-        {
-            "alpha": 1.0,
-            "diffuseColor": [
-                204.0,
-                204.0,
-                204.0
-            ],
-            "isLit": true,
-            "isVisible": true,
-            "mesh": "sky_ship_model",
-            "name": "ship3",
-            "position": [
-                20.0,
-                20.0,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                -0.0,
-                0.0
-            ],
-            "scale": 1.0,
-            "specularColor": [
-                255.0,
-                255.0,
-                255.0,
-                50.0
-            ]
         }
     ],
     "Sounds": null,
     "Textures": [
-        "grass.bmp",
-        "pizza.bmp",
-        "submarine.bmp"
+        "tower.bmp"
     ]
 }

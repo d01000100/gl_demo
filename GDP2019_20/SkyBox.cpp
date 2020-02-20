@@ -13,7 +13,6 @@ bool SkyBox::init(std::string posX_fileName, std::string negX_fileName,
 				std::string posZ_fileName, std::string negZ_fileName,
 				std::string mesh_name) 
 {
-	::g_pTextureManager->SetBasePath("assets/textures/cubemaps/");
 	std::string errorString;
 	if (!::g_pTextureManager->CreateCubeTextureFromBMPFiles(
 		"skybox",
@@ -51,10 +50,8 @@ void SkyBox::draw()
 	// Tie the texture units to the samplers in the shader
 	glUniform1i(glGetUniformLocation(shaderProgID, "skyBox"), 26);	// Texture unit 26
 
-	Camera* theCamera = Camera::getTheCamera();
-	glm::mat4x4 transformMatrix = glm::mat4(1.0f); 
-	transformMatrix = glm::translate(transformMatrix,
-		theCamera->getPosition());
+	glm::mat4x4 transformMatrix = glm::mat4(1.0f);
+	transformMatrix = glm::scale(transformMatrix, glm::vec3(5000));
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgID, "matModel"),
 		1, GL_FALSE, glm::value_ptr(transformMatrix));
