@@ -1,0 +1,19 @@
+{
+  "Meshes": [
+    { "filename": "assets/models/tv_screen.ply", "name": "tv_screen" }
+  ],
+  "Objects": [
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "tv_screen",
+      "name": "screen",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [-90.0, 0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    }
+  ]
+}

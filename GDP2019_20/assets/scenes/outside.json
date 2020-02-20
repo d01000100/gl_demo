@@ -22,23 +22,9 @@
   ],
   "Meshes": [
     { "filename": "assets/models/quad.ply", "name": "quad_model" },
-    { "filename": "assets/models/tv_body.ply", "name": "tv_body" },
-    { "filename": "assets/models/tv_screen.ply", "name": "tv_screen" }
+    { "filename": "assets/models/tv_body.ply", "name": "tv_body" }
   ],
   "Objects": [
-    {
-      "alpha": 1.0,
-      "deferredTexture": "Scene1",
-      "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
-      "isVisible": true,
-      "mesh": "tv_screen",
-      "name": "screen",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [-90.0, 0.0, 0.0],
-      "scale": 1.0,
-      "specularColor": [255.0, 255.0, 255.0, 50.0]
-    },
     {
       "alpha": 1.0,
       "diffuseColor": [204.0, 204.0, 204.0],

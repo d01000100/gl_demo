@@ -1,17 +1,26 @@
 {
   "Scenes": [
     {
-      "name": "Scene1",
+      "name": "Inside",
       "path": "assets/scenes/scene1.json",
       "isRendered": true,
-      "isDeferred": true,
+      "isDeferred": false,
       "isEdited": true,
-      "width": 1200,
-      "height": 1200
+      "width": 1600,
+      "height": 800
     },
     {
-      "name": "LastPass",
-      "path": "assets/scenes/last_pass.json",
+      "name": "Outside",
+      "path": "assets/scenes/outside.json",
+      "isRendered": true,
+      "isDeferred": false,
+      "isEdited": true,
+      "width": 1600,
+      "height": 800
+    },
+    {
+      "name": "Portal",
+      "path": "assets/scenes/portal.json",
       "isRendered": true,
       "isDeferred": false,
       "isEdited": true,

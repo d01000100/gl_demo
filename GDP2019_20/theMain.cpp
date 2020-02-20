@@ -119,6 +119,8 @@ int main(void)
 	//	return 1;
 	//}
 
+	theCamera->setTarget(glm::vec3(0, 30, 0));
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Doesn't work if all the texture units aren't asigned
@@ -155,29 +157,30 @@ int main(void)
 		/*
 		 * Scene 1 (Terrain and airships)
 		 */
-
-		Camera tv_camera;
-		RenderManager::deferredDraw(
-			tv_camera.getPosition(),
-			tv_camera.getTarget(),
-			"Scene1"
-		);
+		//Camera tv_camera;
+		//RenderManager::deferredDraw(
+		//	theCamera,
+		//	"Scene1"
+		//);
 
 		/*
-		 * SCENE 2: Full screen deferred quad
+		 * Outside screen 
 		 */
-
-		// 5. Draw a single object
-		RenderManager::deferredDraw(
-			theCamera->getPosition(),
-			//glm::vec3(0, 0, -100),
-			theCamera->getTarget(),
-			//glm::vec3(0, 0, 0),
-			"LastPass"
+		//RenderManager::deferredDraw(
+		//	theCamera->getPosition(),
+		//	//glm::vec3(0, 0, -100),
+		//	theCamera->getTarget(),
+		//	//glm::vec3(0, 0, 0),
+		//	"LastPass"
+		//);
+		
+		RenderManager::renderStencilPortal(
+			theCamera,
+			"Outside",
+			"Portal",
+			"Inside"
 		);
 		
-		// ============= End of rendering scenes ================
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
