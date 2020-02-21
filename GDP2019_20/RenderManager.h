@@ -26,6 +26,7 @@ struct RenderManager
 	static void setUpCamera(Camera* camera);
 	static void setUpCamera(glm::vec3, glm::vec3);
 	static void setUpProjection(SceneDefs* sceneData);
+	static void drawEditor(SceneDefs* sceneData);
 	/*
 	 * Draw a scene stored in the map of scenes by name.
 	 * and output the result to a FBO or to the frame buffer if null.

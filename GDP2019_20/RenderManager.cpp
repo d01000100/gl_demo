@@ -40,6 +40,24 @@ void RenderManager::setUpProjection(SceneDefs* sceneData)
 		, 1, GL_FALSE,
 		glm::value_ptr(::projTransform));
 	glViewport(0, 0, sceneData->width, sceneData->height);
+
+	glUniform1f(
+		glGetUniformLocation(::g_programID, "screenWidth"),
+		sceneData->width
+	);
+	glUniform1f(
+		glGetUniformLocation(::g_programID, "screenHeight"),
+		sceneData->height
+	);
+}
+
+void RenderManager::drawEditor(SceneDefs* sceneData)
+{
+	if (sceneOnEdition == sceneData)
+	{
+		SceneEditor::getTheEditor()->addDebugMarkers();
+		SceneEditor::getTheEditor()->getDebugRenderer()->RenderDebugObjects(::viewTransform, ::projTransform, 0.01f);
+	}
 }
 
 bool RenderManager::deferredDraw(
@@ -74,11 +92,7 @@ bool RenderManager::deferredDraw(
 	// 5. Draw scene
 	scene->drawScene();
 
-	if (sceneOnEdition == sceneData)
-	{
-		SceneEditor::getTheEditor()->addDebugMarkers();
-		SceneEditor::getTheEditor()->getDebugRenderer()->RenderDebugObjects(::viewTransform, ::projTransform, 0.01f);
-	}
+	drawEditor(sceneData);
 	
 	return true;
 }
@@ -147,6 +161,7 @@ bool RenderManager::renderStencilPortal(
 	if (outerData->pScene->pSkyBox)
 		outerData->pScene->pSkyBox->draw(camera->getPosition());
 	outerData->pScene->drawScene();
+	drawEditor(outerData);
 
 	/*
 	 * Write 1's on the stencil where the portals are
@@ -170,6 +185,7 @@ bool RenderManager::renderStencilPortal(
 	glDepthMask(GL_FALSE);
 
 	portalData->pScene->drawScene();
+	drawEditor(portalData);
 
 	/*
 	 * Draw the scene inside of the stencil
@@ -191,6 +207,7 @@ bool RenderManager::renderStencilPortal(
 	if (innerData->pScene->pSkyBox)
 		innerData->pScene->pSkyBox->draw(camera->getPosition());
 	innerData->pScene->drawScene();
+	drawEditor(innerData);
 
 	// Reset everything to draw a scene normally
 	glDisable(GL_STENCIL_TEST);

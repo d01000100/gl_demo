@@ -201,7 +201,7 @@ void cGameObject::draw()
 				if (RenderManager::getFBO(deferredTexture))
 				{
 					// Tie the texture to the texture unitd
-					glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
+					glActiveTexture(GL_TEXTURE0 + 40); // Texture Unit 40!!
 					glBindTexture(GL_TEXTURE_2D, RenderManager::getFBO(deferredTexture)->colourTexture_0_ID);	// Texture now assoc with texture unit 40
 					GLint textSamp00_UL = glGetUniformLocation(g_programID, "secondPassColourTexture");
 					glUniform1i(textSamp00_UL, 40);	// Texture unit 40

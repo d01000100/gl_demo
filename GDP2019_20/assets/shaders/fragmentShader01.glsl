@@ -88,10 +88,13 @@ void main()
 	if ( isDeferredTexture )
 	{
 		// It's the 2nd pass
-		vec3 texRGB = texture( secondPassColourTexture, fUVx2.st ).rgb;
+		vec2 uvs;
+		uvs.s = gl_FragCoord.x / float(screenWidth);		// "u" or "x"
+		uvs.t = gl_FragCoord.y / float(screenHeight);		// "v" or "y"
+		vec3 texRGB = texture( secondPassColourTexture, uvs).rgb;
 
 		// this is for getting the depth buffer texture
-		float depthValue = texture( secondPassColourTexture, fUVx2.st ).r;
+		float depthValue = texture( secondPassColourTexture, uvs ).r;
 		// the depth buffer values are from 0 to 1
 		depthValue *= 10.0f; 
 

@@ -157,12 +157,12 @@ int main(void)
 		/*
 		 * Scene 1 (Terrain and airships)
 		 */
-		//Camera tv_camera;
 		//RenderManager::deferredDraw(
 		//	theCamera,
-		//	"Scene1"
+		//	"Inside"
 		//);
-
+		
+		//Camera tv_camera;
 		/*
 		 * Outside screen 
 		 */
@@ -179,6 +179,12 @@ int main(void)
 			"Outside",
 			"Portal",
 			"Inside"
+		);
+		
+		RenderManager::deferredDraw(
+			glm::vec3(0, 0, -10),
+			glm::vec3(0,0,0),
+			"LastPass"
 		);
 		
 		glfwSwapBuffers(window);
