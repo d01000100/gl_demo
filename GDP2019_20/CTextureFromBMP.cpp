@@ -189,6 +189,7 @@ bool CTextureFromBMP::CreateNewCubeTextureFromBMPFiles( std::string cubeMapName,
 
 	// Pick a texture number...
 	//GLuint textureNum = 0;
+	glGetError(); glGetError(); glGetError(); glGetError();
 	glGenTextures( 1, &(this->m_textureNumber) );
 	// Worked?
 	if ( ( glGetError() & GL_INVALID_VALUE ) == GL_INVALID_VALUE )

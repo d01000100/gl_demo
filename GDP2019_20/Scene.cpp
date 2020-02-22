@@ -66,26 +66,26 @@ bool Scene::loadMeshes(std::string filename) {
 
 	for (int i = 0; i < vMeshes->size(); i++) {
 		meshSettings settings = vMeshes->at(i);
-
-		if (mapContains(::theVAOManager->m_map_ModelName_to_VAOID, settings.name))
-			continue;
 		
 		cMesh* data = new cMesh();
 
 		data->filename = settings.filename;
-
-		if (!model_loader.LoadPlyModel(settings.filename, *data)) {
-			printf("Couldn't load %s model file\n", settings.filename.c_str());
-			return false;
-		}
-
-		sModelDrawInfo drawInfo;
-		::theVAOManager->LoadModelIntoVAO(settings.name,
-			*data,
-			drawInfo,
-			programID);
-
 		meshes[settings.name] = data;
+
+		if (!mapContains(::theVAOManager->m_map_ModelName_to_VAOID, settings.name))
+		{
+			if (!model_loader.LoadPlyModel(settings.filename, *data))
+			{
+				printf("Couldn't load %s model file\n", settings.filename.c_str());
+				return false;
+			}
+
+			sModelDrawInfo drawInfo;
+			::theVAOManager->LoadModelIntoVAO(settings.name,
+				*data,
+				drawInfo,
+				programID);
+		}
 	}
 
 	return true;

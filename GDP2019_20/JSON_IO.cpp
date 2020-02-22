@@ -60,7 +60,7 @@ std::vector<meshSettings>* readMeshes(std::string filename) {
 	return vMeshes;
 }
 
-bool readTextures(std::string filename) {
+bool readTextures(std::string filename, Scene* pScene) {
 	std::ifstream i;
 	i.open(filename);
 
@@ -91,6 +91,7 @@ bool readTextures(std::string filename) {
 			i.close();
 			return false;
 		}
+		pScene->textures.push_back(*itTexture);
 	}
 
 	i.close();
@@ -287,16 +288,21 @@ void saveScene(Scene* scene, std::string filename) {
 	jScene["Lights"] = jLights; jScene["Objects"] = jObjs; jScene["Sounds"] = jSounds;
 	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
 	jScene["Cameras"] = serializeCameras(scene->getCamerasMap());
-	jScene["Textures"] = loaded_textures;
+
+	for (auto text : scene->textures)
+	{
+		jScene["Textures"].push_back(text);
+	}
 
 	if (scene->pSkyBox)
 	{
-		jScene["SkyBox"]["front"] = scene->pSkyBox->defs.front;
-		jScene["SkyBox"]["back"] = scene->pSkyBox->defs.back;
-		jScene["SkyBox"]["left"] = scene->pSkyBox->defs.left;
-		jScene["SkyBox"]["right"] = scene->pSkyBox->defs.right;
-		jScene["SkyBox"]["top"] = scene->pSkyBox->defs.top;
-		jScene["SkyBox"]["bottom"] = scene->pSkyBox->defs.bottom;
+		jScene["Skybox"]["front"] = scene->pSkyBox->defs.front;
+		jScene["Skybox"]["back"] = scene->pSkyBox->defs.back;
+		jScene["Skybox"]["left"] = scene->pSkyBox->defs.left;
+		jScene["Skybox"]["right"] = scene->pSkyBox->defs.right;
+		jScene["Skybox"]["top"] = scene->pSkyBox->defs.top;
+		jScene["Skybox"]["bottom"] = scene->pSkyBox->defs.bottom;
+		jScene["Skybox"]["basepath"] = scene->pSkyBox->defs.basepath;
 	}
 
 	std::ofstream file(filename);
@@ -369,8 +375,8 @@ bool loadScenes(std::string filename)
 			}
 		}
 		
-		readTextures(scenePath);
 		auto pScene = new Scene();
+		readTextures(scenePath, pScene);
 		pScene->loadScene(scenePath);		
 		auto pSceneDefs = new SceneDefs();
 		pSceneDefs->pFBO = pFBO;
@@ -405,14 +411,14 @@ bool readSkybox(std::string filename, SkyBox* &skybox)
 	json jFile;
 	i >> jFile;
 
-	if (!jsonContains(jFile, "SkyBox"))
+	if (!jsonContains(jFile, "Skybox"))
 	{
 		printf("No Skybox settings found.\n");
 		skybox = nullptr;
 		return true;
 	}
 
-	json jSkybox = jFile["SkyBox"];
+	json jSkybox = jFile["Skybox"];
 	if (skybox != nullptr)
 		delete skybox;
 	skybox = new SkyBox();
@@ -423,6 +429,6 @@ bool readSkybox(std::string filename, SkyBox* &skybox)
 		jSkybox["bottom"].get<std::string>(),
 		jSkybox["front"].get<std::string>(),
 		jSkybox["back"].get<std::string>(),
-		"sphere_model"
+		"sphere_model", jSkybox["basepath"]
 	);
 }

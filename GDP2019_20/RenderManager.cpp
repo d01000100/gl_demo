@@ -57,6 +57,8 @@ void RenderManager::drawEditor(SceneDefs* sceneData)
 	{
 		SceneEditor::getTheEditor()->addDebugMarkers();
 		SceneEditor::getTheEditor()->getDebugRenderer()->RenderDebugObjects(::viewTransform, ::projTransform, 0.01f);
+
+		::g_pDebugRenderer->RenderDebugObjects(::viewTransform, ::projTransform, 0.01f);
 	}
 }
 

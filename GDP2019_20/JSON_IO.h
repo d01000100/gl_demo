@@ -12,7 +12,7 @@ struct meshSettings {
 
 std::vector<meshSettings>* readMeshes(std::string f);
 
-bool readTextures(std::string f);
+bool readTextures(std::string f, Scene* pScene);
 
 std::map<std::string, sCameraSettings*>* readCameras(std::string filename);
 

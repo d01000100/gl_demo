@@ -111,14 +111,6 @@ int main(void)
 	double lastTime = glfwGetTime();
 	double flickerTimer = 0;
 
-	//cFBO *pTheFBO = new cFBO();
-	//std::string FBOError;
-	//if (!pTheFBO->init(init_width, init_height, FBOError))
-	//{
-	//	printf("FBOError: %s\n", FBOError.c_str());
-	//	return 1;
-	//}
-
 	theCamera->setTarget(glm::vec3(0, 30, 0));
 
 	while (!glfwWindowShouldClose(window))
@@ -154,25 +146,16 @@ int main(void)
 		//                                              __/ |                                   
 		//                                             |___/                                    
 
-		/*
-		 * Scene 1 (Terrain and airships)
-		 */
-		//RenderManager::deferredDraw(
-		//	theCamera,
-		//	"Inside"
-		//);
-		
-		//Camera tv_camera;
-		/*
-		 * Outside screen 
-		 */
-		//RenderManager::deferredDraw(
-		//	theCamera->getPosition(),
-		//	//glm::vec3(0, 0, -100),
-		//	theCamera->getTarget(),
-		//	//glm::vec3(0, 0, 0),
-		//	"LastPass"
-		//);
+		auto cctvCamera = (cGameObject*)RenderManager::mScenes["Outside"]->pScene->findItem("cctv_camera");
+		auto screen = (cGameObject*)RenderManager::mScenes["Outside"]->pScene->findItem("aatv_screen");
+		auto daylight = RenderManager::mScenes["Outside"]->pScene->findItem("aaaaadaylight");
+		RenderManager::deferredDraw(
+			daylight->getPos(),
+			screen->getPos(),
+			//cctvCamera->getPos() + 5.f * cctvCamera->getDirection(),
+			//cctvCamera->getPos() + 10.f * cctvCamera->getDirection(),
+			"CCTV"
+		);
 		
 		RenderManager::renderStencilPortal(
 			theCamera,
@@ -186,7 +169,7 @@ int main(void)
 			glm::vec3(0,0,0),
 			"LastPass"
 		);
-		
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

@@ -196,6 +196,8 @@ void cGameObject::draw()
 
 			glUniform1i(glGetUniformLocation(g_programID, "isDeferredTexture"),
 				deferredTexture != "");
+			glUniform1i(glGetUniformLocation(g_programID, "usesScreenUVs"),
+				friendlyName == "final_pass_quad");
 			if(deferredTexture != "")
 			{
 				if (RenderManager::getFBO(deferredTexture))

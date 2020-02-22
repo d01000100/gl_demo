@@ -5,14 +5,14 @@
       "cutOffDist": 50.0,
       "diffuseColor": [255.0, 255.0, 255.0],
       "direction": [
-        0.6363452672958374,
-        0.6527979373931885,
-        -0.4109609127044678
+        -0.3550669550895691,
+        -0.8251796364784241,
+        -0.4393244981765747
       ],
       "innerAngle": 30.0,
       "isOn": true,
       "linearAtten": 0.013123633340001106,
-      "name": "zzzzdaylight",
+      "name": "aaaaadaylight",
       "outerAngle": 30.0,
       "position": [52.0, 73.0, 0.0],
       "quadAtten": 1.974484985234337e-11,
@@ -21,8 +21,13 @@
     }
   ],
   "Meshes": [
-    { "filename": "assets/models/quad.ply", "name": "quad_model" },
-    { "filename": "assets/models/tv_body.ply", "name": "tv_body" }
+    { "filename": "assets/models/cctv_camera.ply", "name": "camera_model" },
+    { "filename": "assets/models/drej.ply", "name": "drej_model" },
+    { "filename": "assets/models/gate.ply", "name": "gate_model" },
+    { "filename": "assets/models/sphere.ply", "name": "sphere_model" },
+    { "filename": "assets/models/tower_x50.ply", "name": "tower_model" },
+    { "filename": "assets/models/tv_body.ply", "name": "tv_body" },
+    { "filename": "assets/models/tv_screen.ply", "name": "tv_screen" }
   ],
   "Objects": [
     {
@@ -30,14 +35,87 @@
       "diffuseColor": [204.0, 204.0, 204.0],
       "isLit": true,
       "isVisible": true,
+      "mesh": "camera_model",
+      "name": "cctv_camera",
+      "position": [-275.0, 154.0, -270.0],
+      "rotation": [16.0000057220459, 59.999839782714844, -8.537693929611123e-7],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "textures": [{ "textureName": "cctv_camera.bmp", "weight": 1.0 }]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "drej_model",
+      "name": "player",
+      "position": [0.0, 39.0, -177.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 2.9252610206604004,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "textures": [{ "textureName": "drej.bmp", "weight": 1.0 }]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 100.0, 2.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "gate_model",
+      "name": "gate_model_1012",
+      "position": [0.0, 0.0, 123.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 7.391988754272461,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 50.0, 2.0],
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "tower_model",
+      "name": "tower",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 1.0,
+      "specularColor": [255.0, 255.0, 255.0, 50.0],
+      "textures": [{ "textureName": "tower.bmp", "weight": 1.0 }]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "isLit": true,
+      "isVisible": true,
       "mesh": "tv_body",
       "name": "tv",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [-90.0, 0.0, 0.0],
-      "scale": 1.0,
+      "position": [-238.0, 18.0, 0.0],
+      "rotation": [108.635498046875, 86.8655014038086, -163.3905792236328],
+      "scale": 1.0860655307769775,
+      "specularColor": [255.0, 255.0, 255.0, 50.0]
+    },
+    {
+      "alpha": 1.0,
+      "diffuseColor": [204.0, 204.0, 204.0],
+      "deferredTexture": "CCTV",
+      "isLit": true,
+      "isVisible": true,
+      "mesh": "tv_screen",
+      "name": "aatv_screen",
+      "position": [-209.0, 55.0, 13.0],
+      "rotation": [-171.225341796875, 86.97981262207031, -173.1774139404297],
+      "scale": 1.167786955833435,
       "specularColor": [255.0, 255.0, 255.0, 50.0]
     }
   ],
+  "Skybox": {
+    "back": "negz.bmp",
+    "basepath": "assets/textures/cubemaps/field/",
+    "bottom": "negy.bmp",
+    "front": "posz.bmp",
+    "left": "negx.bmp",
+    "right": "posx.bmp",
+    "top": "posy.bmp"
+  },
   "Sounds": null,
-  "Textures": null
+  "Textures": ["tower.bmp", "drej.bmp", "cctv_camera.bmp"]
 }

@@ -11,9 +11,9 @@
 bool SkyBox::init(std::string posX_fileName, std::string negX_fileName,
 				std::string posY_fileName, std::string negY_fileName,
 				std::string posZ_fileName, std::string negZ_fileName,
-				std::string mesh_name) 
+				std::string mesh_name, std::string basepath) 
 {
-	::g_pTextureManager->SetBasePath("assets/textures/cubemaps/");
+	::g_pTextureManager->SetBasePath(basepath);
 	std::string errorString;
 	if (!::g_pTextureManager->CreateCubeTextureFromBMPFiles(
 		"skybox",
@@ -38,6 +38,7 @@ bool SkyBox::init(std::string posX_fileName, std::string negX_fileName,
 	defs.right = posX_fileName;
 	defs.top = posY_fileName;
 	defs.bottom = negY_fileName;
+	defs.basepath = basepath;
 
 	return true;
 }

@@ -6,7 +6,7 @@
 
 struct SkyBoxDef
 {
-	std::string front, back, top, bottom, left, right;
+	std::string front, back, top, bottom, left, right, basepath;
 };
 
 struct SkyBox
@@ -16,7 +16,7 @@ struct SkyBox
 	SkyBoxDef defs;
 	void draw(glm::vec3 pos);
 	bool init(std::string posX_fileName, std::string negX_fileName,
-		std::string posY_fileName, std::string negY_fileName,
-		std::string posZ_fileName, std::string negZ_fileName,
-		std::string mesh_name);
+	          std::string posY_fileName, std::string negY_fileName,
+	          std::string posZ_fileName, std::string negZ_fileName,
+	          std::string mesh_name, std::string basepath);
 };

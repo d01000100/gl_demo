@@ -1,18 +1,18 @@
 {
   "Meshes": [
-    { "filename": "assets/models/tv_screen.ply", "name": "tv_screen" }
+    { "filename": "assets/models/quad.ply", "name": "quad" }
   ],
   "Objects": [
     {
       "alpha": 1.0,
       "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
+      "isLit": false,
       "isVisible": true,
-      "mesh": "tv_screen",
-      "name": "screen",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [-90.0, 0.0, 0.0],
-      "scale": 1.0,
+      "mesh": "quad",
+      "name": "portal",
+      "position": [0.0, 35.0, 124.0],
+      "rotation": [0.0, -0.0, 0.0],
+      "scale": 77.36708068847656,
       "specularColor": [255.0, 255.0, 255.0, 50.0]
     }
   ]

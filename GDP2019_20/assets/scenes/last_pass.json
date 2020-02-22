@@ -1,7 +1,9 @@
 {
   "Cameras": null,
   "Lights": null,
-  "Meshes": null,
+  "Meshes": [
+    { "filename": "assets/models/quad.ply", "name": "quad" }
+  ],
   "Objects": [
     {
       "alpha": 1.0,
@@ -9,8 +11,8 @@
       "deferredTexture": "Outside",
       "isLit": false,
       "isVisible": true,
-      "mesh": "quad_model",
-      "name": "quad",
+      "mesh": "quad",
+      "name": "final_pass_quad",
       "position": [0.0, 0.0, 0.0],
       "rotation": [0.0, -0.0, 0.0],
       "scale": 265.3297119140625,

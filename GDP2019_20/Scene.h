@@ -9,14 +9,14 @@
 #include "SkyBox.h"
 #include "cFBO.h"
 
-class Scene
+struct Scene
 {
-private:
 	std::map<std::string, cMesh*> meshes;
 	std::map<std::string, cLight*> lights;
 	std::map<std::string, aGameItem*> gameItems;
 	std::map<std::string, sCameraSettings*> cameras;
 	std::map<std::string, sCameraSettings*>::iterator activeCamera;
+	std::vector<std::string> textures;
 	static Scene* theScene;
 	bool loadMeshes(std::string filename);
 	bool loadCameras(std::string filename);
@@ -24,8 +24,6 @@ private:
 	void drawLights();
 	void drawItems();
 	void lookAtActiveCamera();
-
-public:
 	Scene();
 	~Scene();
 	static Scene* getTheScene();
