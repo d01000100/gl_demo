@@ -19,6 +19,6 @@ extern cBasicTextureManager* g_pTextureManager;
 
 extern cDebugRenderer* g_pDebugRenderer;
 
-extern bool isDebug, isRunning;
+extern bool isDebug, isRunning, isNightvision;
 
 extern glm::mat4 viewTransform, projTransform;

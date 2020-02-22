@@ -124,6 +124,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	camera_orbit(key, action, mods);
 	//thrusterControls(key, action, mods);
+
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	{
+		::isNightvision = !::isNightvision;
+	}
+	
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{		
 		// save camera
@@ -195,14 +201,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			sMessage message;
 			message.name = "simple press";
 			message.sValue = "v";
-			theEditor->recieveMessage(message);
-		}
-
-		if (key == GLFW_KEY_SPACE && 
-			action == GLFW_PRESS) {
-			sMessage message;
-			message.name = "simple press";
-			message.sValue = "space";
 			theEditor->recieveMessage(message);
 		}
 

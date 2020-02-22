@@ -38,7 +38,8 @@ cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
 AABBGrid* pAABBgrid = new AABBGrid();
 DollyCamera* dollyCamera = DollyCamera::getTheCamera();
-bool ::isDebug = false, ::isRunning = false;
+bool ::isDebug = false, ::isRunning = false,
+	::isNightvision = false;
 GLuint g_programID = 0;
 glm::mat4 viewTransform = glm::mat4(1), projTransform = glm::mat4(1);
 
@@ -150,10 +151,10 @@ int main(void)
 		auto screen = (cGameObject*)RenderManager::mScenes["Outside"]->pScene->findItem("aatv_screen");
 		auto daylight = RenderManager::mScenes["Outside"]->pScene->findItem("aaaaadaylight");
 		RenderManager::deferredDraw(
-			daylight->getPos(),
-			screen->getPos(),
-			//cctvCamera->getPos() + 5.f * cctvCamera->getDirection(),
-			//cctvCamera->getPos() + 10.f * cctvCamera->getDirection(),
+			//daylight->getPos(),
+			//screen->getPos(),
+			cctvCamera->getPos() + 5.f * cctvCamera->getDirection(),
+			cctvCamera->getPos() + 10.f * cctvCamera->getDirection(),
 			"CCTV"
 		);
 		
@@ -162,6 +163,11 @@ int main(void)
 			"Outside",
 			"Portal",
 			"Inside"
+		);
+
+		glUniform1i(
+			glGetUniformLocation(::g_programID, "isNightVision"),
+			::isNightvision
 		);
 		
 		RenderManager::deferredDraw(

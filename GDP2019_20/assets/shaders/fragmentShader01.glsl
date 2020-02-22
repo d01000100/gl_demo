@@ -38,6 +38,7 @@ uniform float screenHeight;
 uniform sampler2D secondPassColourTexture;
 uniform bool isDeferredTexture;
 uniform bool usesScreenUVs;
+uniform bool isNightVision;
 
 // Fragment shader
 struct sLight
@@ -90,24 +91,43 @@ void main()
 	{
 		// It's the 2nd pass
 		vec2 uvs;
+		vec3 RGB;
 
 		if ( usesScreenUVs )
 		{
 			uvs.s = gl_FragCoord.x / float(screenWidth);		// "u" or "x"
 			uvs.t = gl_FragCoord.y / float(screenHeight);		// "v" or "y"
+			RGB = texture( secondPassColourTexture, uvs).rgb;
+			if (isNightVision)
+			{
+				float gray = dot(RGB, vec3(0.299, 0.587, 0.114));
+				RGB = vec3(0,gray,0);
+			}
 		}
 		else
 		{
 			uvs = fUVx2.st;
+			float bo = 0.02f;		// For "blurr offset"
+			vec3 texRGB1 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t + 0.0f) ).rgb;
+		
+			vec3 texRGB2 = texture( secondPassColourTexture, vec2(uvs.s - bo, uvs.t + 0.0f) ).rgb;
+			vec3 texRGB3 = texture( secondPassColourTexture, vec2(uvs.s + bo, uvs.t + 0.0f) ).rgb;
+			vec3 texRGB4 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t - bo) ).rgb;
+			vec3 texRGB5 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t + bo) ).rgb;
+		
+			RGB = 0.5f * texRGB1 +
+					   0.125f * texRGB2 +
+					   0.125f * texRGB3 +
+					   0.125f * texRGB4 +
+					   0.125f * texRGB5;
 		}
-		vec3 texRGB = texture( secondPassColourTexture, uvs).rgb;
 
 		// this is for getting the depth buffer texture
 		float depthValue = texture( secondPassColourTexture, uvs ).r;
 		// the depth buffer values are from 0 to 1
 		depthValue *= 10.0f; 
 
-		pixelColour.rgb = texRGB;
+		pixelColour.rgb = RGB;
 		pixelColour.a = 1.0f;
 
 		return;
