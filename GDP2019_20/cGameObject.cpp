@@ -198,6 +198,10 @@ void cGameObject::draw()
 				deferredTexture != "");
 			glUniform1i(glGetUniformLocation(g_programID, "usesScreenUVs"),
 				friendlyName == "final_pass_quad");
+			glUniform1i(glGetUniformLocation(g_programID, "isReflection"),
+				friendlyName == "reflection");
+			glUniform1i(glGetUniformLocation(g_programID, "isRefraction"),
+				friendlyName == "refraction");
 			if(deferredTexture != "")
 			{
 				if (RenderManager::getFBO(deferredTexture))

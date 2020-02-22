@@ -39,6 +39,8 @@ uniform sampler2D secondPassColourTexture;
 uniform bool isDeferredTexture;
 uniform bool usesScreenUVs;
 uniform bool isNightVision;
+uniform bool isReflection;
+uniform bool isRefraction;
 
 // Fragment shader
 struct sLight
@@ -85,8 +87,31 @@ void main()
 		pixelColour.a = 1.0f;	// NOT transparent
 		return;
 	}
-	// What pass is this? 
-	// Is it the 2nd pass? (deferred rendering)
+
+	if ( isReflection)
+	{
+		// Get eye or view vector
+		// The location of the vertex in the world to your eye
+		vec3 eyeVector = normalize(eyeLocation.xyz - fVertWorldLocation.xyz);
+		vec3 reflectVector = reflect( -eyeVector, normalize(fNormal.xyz) );
+		vec3 skyColour = texture( skyBox, reflectVector).rgb;
+		pixelColour.rgb = skyColour.rgb;
+		pixelColour.a = 1.0f;	// NOT transparent
+		return;
+	}
+
+	if ( isRefraction)
+	{
+		// Get eye or view vector
+		// The location of the vertex in the world to your eye
+		vec3 eyeVector = normalize(eyeLocation.xyz - fVertWorldLocation.xyz);
+		vec3 refractVector = refract( -eyeVector, normalize(fNormal.xyz), 1.05);
+		vec3 skyColour = texture( skyBox, refractVector).rgb;
+		pixelColour.rgb = skyColour.rgb;
+		pixelColour.a = 1.0f;	// NOT transparent
+		return;
+	}
+	
 	if ( isDeferredTexture )
 	{
 		// It's the 2nd pass
