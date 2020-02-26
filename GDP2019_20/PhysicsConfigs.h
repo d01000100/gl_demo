@@ -1,7 +1,7 @@
 #pragma once
 /* Macro to interchange the libraries */
-//#define MY_PHYSICS 
-#define BULLET_PHYSICS
+#define MY_PHYSICS 
+//#define BULLET_PHYSICS
 
 #include "physics/interfaces/iPhysicsFactory.h"
 
