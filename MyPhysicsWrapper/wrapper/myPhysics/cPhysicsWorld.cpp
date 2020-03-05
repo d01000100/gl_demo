@@ -23,7 +23,7 @@ bool nPhysics::cPhysicsWorld::AddComponent(iPhysicsComponent* component)
 			pPlaneComponent = dynamic_cast<cPlaneComponent*>(component);
 			return mWorld.AddRigidBody(pPlaneComponent->mRigidBody);
 		default:
-			printf("cPhysicsWorld doesn't recognize the component type\n");
+			printf("cPhysicsWorld::AddComponent doesn't recognize the component type\n");
 			return false;
 		}
 	}
@@ -46,7 +46,7 @@ bool nPhysics::cPhysicsWorld::RemoveComponent(iPhysicsComponent* component)
 		pPlaneComponent = dynamic_cast<cPlaneComponent*>(component);
 		return mWorld.RemoveRigidBody(pPlaneComponent->mRigidBody);
 	default:
-		printf("cPhysicsWorld doesn't recognize the component type\n");
+		printf("cPhysicsWorld::RemoveComponent doesn't recognize the component type\n");
 		return false;
 	}
 }

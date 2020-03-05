@@ -8,3 +8,4 @@
 #include "cBallComponent.h"
 #include "cPlaneComponent.h"
 #include "cPhysicsFactory.h"
+#include "cClothComponent.h"

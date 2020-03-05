@@ -30,6 +30,9 @@
     <ClCompile Include="wrapper\myPhysics\cPhysicsFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="wrapper\myPhysics\cClothComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wrapper\myPhysics\cBallComponent.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wrapper\myPhysics\cPhysicsFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wrapper\myPhysics\cClothComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

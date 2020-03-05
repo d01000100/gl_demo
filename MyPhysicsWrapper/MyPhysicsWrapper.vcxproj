@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="wrapper\myPhysics\cClothComponent.cpp" />
     <ClCompile Include="wrapper\myPhysics\cPhysicsFactory.cpp" />
     <ClCompile Include="wrapper\myPhysics\cPhysicsWorld.cpp" />
     <ClCompile Include="wrapper\myPhysics\cPlaneComponent.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="wrapper\myPhysics\cBallComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="wrapper\myPhysics\cClothComponent.h" />
     <ClInclude Include="wrapper\myPhysics\cPhysicsFactory.h" />
     <ClInclude Include="wrapper\myPhysics\includes.h" />
     <ClInclude Include="wrapper\myPhysics\cPhysicsWorld.h" />

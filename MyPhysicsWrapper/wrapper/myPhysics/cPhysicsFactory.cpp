@@ -15,3 +15,8 @@ nPhysics::iPlaneComponent* nPhysics::cPhysicsFactory::CreatePlane(const sPlaneDe
 {
 	return new cPlaneComponent(def);
 }
+
+nPhysics::iClothComponent* nPhysics::cPhysicsFactory::CreateCloth(const sClothDef& def)
+{
+	return new cClothComponent(def);
+}

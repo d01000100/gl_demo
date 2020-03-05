@@ -14,9 +14,10 @@ namespace nPhysics
 		cPhysicsFactory() = default;
 		// No properties to clean up
 		virtual ~cPhysicsFactory() = default;
-		virtual iPhysicsWorld* CreateWorld() override;
-		virtual iBallComponent* CreateBall(const sBallDef& def) override;
-		virtual iPlaneComponent* CreatePlane(const sPlaneDef& def) override;
+		iPhysicsWorld* CreateWorld() override;
+		iBallComponent* CreateBall(const sBallDef& def) override;
+		iPlaneComponent* CreatePlane(const sPlaneDef& def) override;
+		iClothComponent* CreateCloth(const sClothDef& def) override;
 	private:
 		// Not desired constructors
 		cPhysicsFactory(const cPhysicsFactory& other) = delete;

@@ -23,6 +23,9 @@
 // Each "cRigidBody" contains a position in world space, a velocity, acceleration and mass
 // in order to simulate a realistic result. They also have a "eShape" in order to test for
 // collisions. The library currently supports spheres and planes.
+//
+// Version 0.2: Added soft bodies: networks of "rigid bodies" connected to each other
+// by a spring
 // 
 // All the files required to make full use of this library:
 #include "eShapeType.h"  // enum class for all supported shape types
@@ -30,3 +33,4 @@
 #include "cRigidBody.h"  // cRigidBody is this library's rigid body representation
 #include "shapes.h"      // Concrete classes for all supported shape types
 #include "cWorld.h"      // cWorld is the primary container and operator of a simulation
+#include "cSoftBody.h"

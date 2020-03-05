@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="phys\cSoftBody.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="phys\cIntegrator.cpp" />
     <ClCompile Include="phys\cRigidBody.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="phys\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="phys\cSoftBody.h" />
     <ClInclude Include="phys\cIntegrator.h" />
     <ClInclude Include="phys\cRigidBody.h" />
     <ClInclude Include="phys\cWorld.h" />
