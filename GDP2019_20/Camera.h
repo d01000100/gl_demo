@@ -26,7 +26,7 @@ public:
 	virtual void moveRight(float angle);
 	virtual void moveLeft(float angle);
 	void translate(glm::vec3);
-	virtual void zoom(float distance);
+	virtual void zoom(float ratio);
 	glm::mat4 lookAt();
 };
 

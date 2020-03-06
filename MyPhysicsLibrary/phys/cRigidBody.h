@@ -1,6 +1,7 @@
 #pragma once
 #include <game_math.h>  // single include header for all glm math stuffs
 #include "iShape.h"     // iShape base class for all shapes
+#include "iCollisionBody.h" // Base class for all things that collide in the world
 
 namespace phys
 {
@@ -39,7 +40,7 @@ namespace phys
 	// Shapes may be shared between rigid bodies.
 	// Does not own the iShape* used to create it.
 	// Will not delete the iShape* it contains when it is deleted.
-	class cRigidBody
+	class cRigidBody : public iCollisionBody
 	{
 		// cWorld will be operating on cRigidBody values quite a bit
 		// We will trust it to do everything correctly.
@@ -52,7 +53,7 @@ namespace phys
 
 		// Destructor
 		// Will not delete the contained iShape.
-		~cRigidBody();
+		virtual ~cRigidBody();
 
 		// GetTransform
 		// Retrieve a rendering-friendly form of position
@@ -88,6 +89,11 @@ namespace phys
 
 		// Get the current instantaneous velocity of the rigid body.
 		inline glm::vec3 GetVelocity() const { return mVelocity; }
+
+		/*
+		 * Set the accelerations in all three axis to 0
+		 */
+		virtual void ClearAccelerations();
 
 	private:
 		// During a timestep, the previous position is stored for collision related purposes.

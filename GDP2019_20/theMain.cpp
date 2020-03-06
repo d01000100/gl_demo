@@ -40,10 +40,11 @@ DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false;
 
 int main(void)
-{
+{	
 	Scene* theScene = Scene::getTheScene();
-	FollowCamera* theCamera = FollowCamera::getFollowCamera();
-	//SceneEditor *sceneEditor = SceneEditor::getTheEditor();
+	Camera* theCamera = Camera::getTheCamera();
+	FollowCamera* followCamera = FollowCamera::getFollowCamera();
+	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	SkyBox theSkyBox;
 	glm::vec3 cameraOffset(0, 30 ,-50);
 	::g_initPhysics();
@@ -100,7 +101,7 @@ int main(void)
 	aGameItem* player = theScene->findItem("player");
 	if (player) {
 		std::cout << "Setting player to camera...\n";
-		theCamera->init(glm::vec3(0, 30, -50));
+		followCamera->init(glm::vec3(0, 30, -50));
 	}
 
 	theSkyBox.init(
@@ -113,7 +114,7 @@ int main(void)
 		"sphere_model");
 
 
-	//sceneEditor->init(theScene);
+	sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -179,7 +180,7 @@ int main(void)
 		physicsControls();
 		::g_PhysicsWorld->Update(averageDeltaTime);
 		//theScene->IntegrationStep(averageDeltaTime);
-		theCamera->update();
+		followCamera->update();
 
 		aGameItem* player = theScene->findItem("player");
 		if (player) {
@@ -201,6 +202,11 @@ int main(void)
 		theSkyBox.draw();
 		theScene->drawScene();
 
+		sceneEditor->drawDebug();
+		if(sceneEditor->getDebugRenderer())
+		{
+			sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, averageDeltaTime);
+		}
 		::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		if (::isDebug) {
 			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);

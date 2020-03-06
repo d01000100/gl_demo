@@ -46,6 +46,7 @@ class cGameObject : public aGameItem
 {
 public:
 	cGameObject();
+	cGameObject(cGameObject* obj);
 	// Used to draw this mesh
 	std::string meshName;
 	cMesh* mesh;
@@ -95,6 +96,7 @@ private:
 
 	iDebugRenderer* m_pDebugRenderer;
 
+	void drawCloth();
 	void IntegrationStep(float deltaTime);
 };
 

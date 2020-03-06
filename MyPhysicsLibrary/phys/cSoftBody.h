@@ -1,6 +1,7 @@
 #pragma once
 #include <game_math.h>  // single include header for all glm math stuffs
 #include <vector>
+#include "iCollisionBody.h"
 
 namespace phys
 {
@@ -40,7 +41,7 @@ namespace phys
 	 * depending on the distance of the ends in relation to the length
 	 * at rest of the spring and some "stiffness" constant.
 	 */
-    class cSoftBody
+    class cSoftBody : public iCollisionBody
     {
     private:
         class cSpring;
@@ -121,6 +122,10 @@ namespace phys
         cSoftBody(sSoftBodyDef& def);
     	virtual ~cSoftBody();
     	/*
+    	 * Generates a string detailing info about the soft body
+    	 */
+        std::string toString();
+    	/*
     	 * Get the opposite ends of the axis aligned bounding box
     	 * containing all of the nodes in the mesh
          * `mins`: will contain the corner with the lowest coordinates
@@ -148,6 +153,10 @@ namespace phys
         size_t numNodes();
         void Integrate(float deltaTime);
         void updateInternal(float dt, const glm::vec3& gravity, const glm::vec3& wind);
+    	/*
+    	 * Sets the accelerations of all of the nodes to 0 in all axis
+    	 */
+        virtual void ClearAccelerations();
     };
 }
 

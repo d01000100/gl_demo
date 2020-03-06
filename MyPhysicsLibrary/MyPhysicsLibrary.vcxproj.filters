@@ -68,5 +68,11 @@
     <ClInclude Include="phys\cSoftBody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="phys\eBodyType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="phys\iCollisionBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

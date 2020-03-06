@@ -7,8 +7,8 @@ namespace nPhysics
     struct sClothDef
     {
 	    glm::vec3 CornerA, CornerB, DownDirection;
-        size_t NumNodesAcross, NumNodesDown;
-        float NodeMass;
+        size_t NumNodesAcross = 0, NumNodesDown = 0;
+        float NodeMass = 0, SpringConstant = 0;
     };
 
     class iClothComponent : public iPhysicsComponent

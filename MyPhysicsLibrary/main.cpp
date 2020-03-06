@@ -25,9 +25,9 @@ int main()
 	phys::cRigidBody planeBody(planeBodyDef,&planeShape);
 
 	phys::cWorld physWorld;
-	physWorld.AddRigidBody(&sphereBody);
-	//physWorld.AddRigidBody(&sphere2Body);
-	physWorld.AddRigidBody(&planeBody);
+	physWorld.AddBody(&sphereBody);
+	//physWorld.AddBody(&sphere2Body);
+	physWorld.AddBody(&planeBody);
 	physWorld.SetGravity(glm::vec3(0,-1,0));
 
 	float deltaTime = 0.1f;

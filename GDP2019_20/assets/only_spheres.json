@@ -92,21 +92,106 @@
     },
     {
       "mesh": "sphere_model",
-      "name": "sphere_template",
-      "isVisible": false
+      "name": "player",
+      "scale": 5.0,
+      "Physics": {
+        "shape": "sphere",
+        "position": [20, 40, 20],
+        "mass": 5,
+        "radius": 5
+      }
     },
     {
-          "name": "Claude",
-          "Physics": {
-            "shape": "cloth",
-            "mass": 1.0,
-            "CornerA": [-15, 40, 0],
-            "CornerB": [15, 40, 0],
-            "DownDirection": [0, -1, 0],
-            "NumNodesAcross": 4,
-            "NumNodesDown": 3
-          }
+      "mesh": "sphere_model",
+      "scale": 3.0,
+      "Physics": {
+        "shape": "sphere",
+        "position": [0, 30, 0],
+        "mass": 3,
+        "radius": 3
       }
+    },
+    {
+      "mesh": "sphere_model",
+      "scale": 2.0,
+      "Physics": {
+        "shape": "sphere",
+        "position": [-20, 50, 0],
+        "mass": 2,
+        "radius": 2
+      }
+    },
+    {
+      "mesh": "sphere_model",
+      "scale": 1.0,
+      "Physics": {
+        "shape": "sphere",
+        "position": [20, 40, 0],
+        "mass": 1,
+        "radius": 1
+      }
+    },
+    {
+      "mesh": "sphere_model",
+      "scale": 4.0,
+      "Physics": {
+        "shape": "sphere",
+        "position": [-20, 30, 20],
+        "mass": 4,
+        "radius": 4
+      }
+    },
+    {
+      "mesh": "sphere_model",
+      "name": "player",
+      "scale": 4.5,
+      "Physics": {
+        "shape": "sphere",
+        "position": [-20, 40, -20],
+        "mass": 4.5,
+        "radius": 4.5
+      }
+    },
+    {
+      "mesh": "sphere_model",
+      "scale": 2.5,
+      "Physics": {
+        "shape": "sphere",
+        "position": [0, 50, 20],
+        "mass": 2.5,
+        "radius": 2.5
+      }
+    },
+    {
+      "mesh": "sphere_model",
+      "scale": 1.5,
+      "Physics": {
+        "shape": "sphere",
+        "position": [0, 40, -20],
+        "mass": 1.5,
+        "radius": 1.5
+      }
+    },
+    {
+      "mesh": "sphere_model",
+      "scale": 0.5,
+      "Physics": {
+        "shape": "sphere",
+        "position": [10, 30, 10],
+        "mass": 0.5,
+        "radius": 0.5
+      }
+    },
+    {
+      "mesh": "sphere_model",
+      "scale": 3.5,
+      "Physics": {
+        "shape": "sphere",
+        "position": [10, 40, 0],
+        "mass": 3.5,
+        "radius": 3.5
+      }
+    }
   ],
   "Sounds": null,
   "Textures": ["pebbles.bmp", "pizza.bmp", "submarine.bmp"]

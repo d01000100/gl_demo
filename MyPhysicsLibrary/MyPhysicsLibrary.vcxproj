@@ -151,6 +151,8 @@
     <ClCompile Include="phys\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="phys\iCollisionBody.h" />
+    <ClInclude Include="phys\eBodyType.h" />
     <ClInclude Include="phys\cSoftBody.h" />
     <ClInclude Include="phys\cIntegrator.h" />
     <ClInclude Include="phys\cRigidBody.h" />

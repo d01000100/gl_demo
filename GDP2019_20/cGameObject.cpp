@@ -13,6 +13,8 @@
 
 #include "colors.h"
 #include <iostream>
+#include "physics/interfaces/iClothComponent.h"
+#include "Scene.h"
 
 cGameObject::cGameObject()
 {
@@ -44,6 +46,39 @@ cGameObject::cGameObject()
 	return;
 }
 
+cGameObject::cGameObject(cGameObject* obj)
+{
+	this->scale = obj->scale;
+	this->isVisible = obj->isVisible;
+
+	this->isWireframe = obj->isWireframe;
+
+	physics = nullptr;
+	mPhysicsCompoment = nullptr;
+
+	// Set the unique ID
+	// Take the value of the static int, 
+	//  set this to the instance variable
+	this->m_uniqueID = cGameObject::next_uniqueID;
+	// Then increment the static variable
+	cGameObject::next_uniqueID++;
+
+	this->m_pDebugRenderer = NULL;
+	position = obj->position;
+
+	alpha = obj->alpha;
+	isLit = obj->isLit;
+	lifeTime = obj->lifeTime;
+
+	diffuseColor = obj->diffuseColor;
+	specularColor = obj->specularColor;
+	meshName = obj->meshName;
+	friendlyName = meshName + "_" + std::to_string(m_uniqueID);
+	mesh = obj->mesh;
+	textures = obj->textures;
+	collision_points = obj->collision_points;
+	matWorld = obj->matWorld;
+}
 
 unsigned int cGameObject::getUniqueID(void)
 {
@@ -60,7 +95,19 @@ std::string cGameObject::getName() {
 	return friendlyName;
 }
 
-glm::vec3 cGameObject::getPos() { return position; }
+glm::vec3 cGameObject::getPos()
+{
+	if (mPhysicsCompoment == nullptr)
+	{
+		return position;
+	}
+	else
+	{
+		glm::mat4 transformMatrix;
+		mPhysicsCompoment->GetTransform(transformMatrix);
+		return glm::vec3(transformMatrix[3]);
+	}
+}
 
 void cGameObject::setPos(glm::vec3 pos) { position = pos; }
 
@@ -137,6 +184,14 @@ void drawPoint(glm::vec3 point)
 void cGameObject::draw() 
 {
 	if (isVisible) {
+
+		if (mPhysicsCompoment &&
+			mPhysicsCompoment->GetComponentType() == nPhysics::eComponentType::cloth)
+		{
+			drawCloth();
+			return;
+		}
+		
 		GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 
 		sModelDrawInfo drawInfo;
@@ -300,6 +355,28 @@ std::string cGameObject::getInfo() {
 		" alpha: " << alpha;
 	return ss.str();
 };
+
+void cGameObject::drawCloth()
+{
+	if (mPhysicsCompoment &&
+		mPhysicsCompoment->GetComponentType() == nPhysics::eComponentType::cloth)
+	{
+		auto cloth = (nPhysics::iClothComponent*)mPhysicsCompoment;
+		auto theScene = Scene::getTheScene();
+		// This has to be loaded as an object in the scene
+		// It assumes that the model is a sphere of unit size
+		auto sphereTemplate = (cGameObject*)theScene->findItem("sphere_template");
+
+		for (size_t idxNode = 0;idxNode < cloth->NumNodes(); idxNode++)
+		{
+			cGameObject tempSphere(sphereTemplate);
+			tempSphere.isVisible = true;
+			cloth->GetNodeRadius(idxNode, tempSphere.scale);
+			cloth->GetNodePosition(idxNode, tempSphere.position);
+			tempSphere.draw();
+		}
+	}
+}
 
 void cGameObject::IntegrationStep(float deltaTime) {
 	if (physics)

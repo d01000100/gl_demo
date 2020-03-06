@@ -19,7 +19,8 @@ const float CAMERAZOOMSPEED = 10.0f;
 const float TRANSLATION_STEP = 0.5f;
 const float ROTATION_STEP = glm::radians(0.5f);
 
-FollowCamera* theCamera = FollowCamera::getFollowCamera();
+FollowCamera* followCamera = FollowCamera::getFollowCamera();
+Camera* theCamera = Camera::getTheCamera();
 Scene* theScene = Scene::getTheScene();
 SceneEditor* theEditor = SceneEditor::getTheEditor();
 CameraPusher cameraPusher;
@@ -73,7 +74,7 @@ void camera_orbit(int key, int action, int mods) {
 			theCamera->moveDown(CAMERAROTATIONSPEED);
 		}
 		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-			theCamera->next();
+			followCamera->next();
 	}
 }
 

@@ -44,36 +44,45 @@ namespace phys
 		// detection and reaction, and have their internal values updated.
 		void Update(float dt);
 
-		// AddRigidBody
-		// Add a rigid body to the world. 
+		// AddBody
+		// Add a body to the world. 
 		// Returns true if:
 		//    There was an addition to the world.
-		//    This particular rigid body was added to the world.
+		//    This particular body was added to the world.
 		//    (It must not have already been contained in the world)
 		// Returns false if:
 		//    There was no addition to the world.
 		//    A null pointer is passed in.
-		//    This particular rigid body is already in the world, hense not added again.
-		bool AddRigidBody(cRigidBody* rigidBody);
+		//    This particular body is already in the world, hense not added again.
+		bool AddBody(iCollisionBody* rigidBody);
 
-		// RemoveRigidBody
-		// Remove a rigid body from the world.
+		// RemoveBody
+		// Remove a body from the world.
 		// Returns true if:
 		//    There was a removal from the world.
-		//    This particular rigid body existed in the world and was removed.
+		//    This particular body existed in the world and was removed.
 		// Returns false if:
 		//    There was no removal from the world.
 		//    A null pointer was passed in.
-		//    This particular rigid body was not in the world, hense not removed.
-		bool RemoveRigidBody(cRigidBody* rigidBody);
+		//    This particular body was not in the world, hense not removed.
+		bool RemoveBody(iCollisionBody* rigidBody);
 
 	protected:
-
+		/*
+		 * Entry point for a single step of integration
+		 */
+		void IntegrateBody(iCollisionBody* body, float dt);
+		
 		// IntegrateRigidBody
 		// Performs a single numerical integration step.
 		// Safe for null pointers.
 		// Safe for static rigid bodies.
 		void IntegrateRigidBody(cRigidBody* body, float dt);
+
+		// Collide
+		// Entry point for collision detection.
+		// Returns the result of specific methods for collision bodies.
+		bool Collide(iCollisionBody* bodyA, iCollisionBody* bodyB);
 
 		// Collide
 		// Entry point for collision detection.
@@ -105,7 +114,7 @@ namespace phys
 		glm::vec3 mGravity;
 		// All the rigid bodies currently in the world.
 		// Not owned by cWorld, will not be deleted in the destructor.
-		std::vector<cRigidBody*> mBodies;
+		std::vector<iCollisionBody*> mBodies;
 
 		// Constructors not to be used.
 		cWorld(const cWorld& other) = delete;

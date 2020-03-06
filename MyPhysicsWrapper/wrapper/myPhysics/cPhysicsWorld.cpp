@@ -14,14 +14,18 @@ bool nPhysics::cPhysicsWorld::AddComponent(iPhysicsComponent* component)
 	{
 		cBallComponent* pBallComponent = nullptr;
 		cPlaneComponent* pPlaneComponent = nullptr;
+		cClothComponent* pClothComponent = nullptr;
 		switch (component->GetComponentType())
 		{
 		case eComponentType::ball:
 			pBallComponent = dynamic_cast<cBallComponent*>(component);
-			return mWorld.AddRigidBody(pBallComponent->mRigidBody);
+			return mWorld.AddBody(pBallComponent->mRigidBody);
 		case eComponentType::plane:
 			pPlaneComponent = dynamic_cast<cPlaneComponent*>(component);
-			return mWorld.AddRigidBody(pPlaneComponent->mRigidBody);
+			return mWorld.AddBody(pPlaneComponent->mRigidBody);
+		case eComponentType::cloth:
+			pClothComponent = dynamic_cast<cClothComponent*>(component);
+			return mWorld.AddBody(pClothComponent->mSoftBody);
 		default:
 			printf("cPhysicsWorld::AddComponent doesn't recognize the component type\n");
 			return false;
@@ -37,14 +41,18 @@ bool nPhysics::cPhysicsWorld::RemoveComponent(iPhysicsComponent* component)
 {
 	cBallComponent* pBallComponent = nullptr;
 	cPlaneComponent* pPlaneComponent = nullptr;
+	cClothComponent* pClothComponent = nullptr;
 	switch (component->GetComponentType())
 	{
 	case eComponentType::ball:
 		pBallComponent = dynamic_cast<cBallComponent*>(component);
-		return mWorld.RemoveRigidBody(pBallComponent->mRigidBody);
+		return mWorld.RemoveBody(pBallComponent->mRigidBody);
 	case eComponentType::plane:
 		pPlaneComponent = dynamic_cast<cPlaneComponent*>(component);
-		return mWorld.RemoveRigidBody(pPlaneComponent->mRigidBody);
+		return mWorld.RemoveBody(pPlaneComponent->mRigidBody);
+	case eComponentType::cloth:
+		pClothComponent = dynamic_cast<cClothComponent*>(component);
+		return mWorld.RemoveBody(pClothComponent->mSoftBody);
 	default:
 		printf("cPhysicsWorld::RemoveComponent doesn't recognize the component type\n");
 		return false;

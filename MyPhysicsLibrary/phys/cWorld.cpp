@@ -9,8 +9,7 @@ namespace phys
 	cWorld::cWorld() :
 		mDt(1.f / 60.f), // assume 60 fps simulation
 		mIntegrator(cIntegrator()),
-		mGravity(glm::vec3(0,-10,0)), // "downward" gravity
-		mBodies(std::vector<cRigidBody*>()) // empty vector of rigid bodies
+		mGravity(glm::vec3(0,-10,0)) // "downward" gravity
 	{
 	}
 
@@ -40,26 +39,27 @@ namespace phys
 		auto itBodies = mBodies.begin();
 		for (;itBodies != mBodies.end();++itBodies)
 		{
-			IntegrateRigidBody(*itBodies,dt);
+            IntegrateBody(*itBodies, dt);
 		}
 		// 3) Perform collision handling on each unique pair of bodies.
 		for (int body1 = 0; body1 < mBodies.size() - 1; body1++) {
             for (int body2 = body1 + 1; body2 < mBodies.size(); body2++) {
-                Collide(mBodies[body1], mBodies[body2]);
+                Collide(mBodies[body1], 
+					    mBodies[body2]);
             }
         }
 		// 4) Clear the acceleration of each rigid body.
 		for (itBodies = mBodies.begin();itBodies != mBodies.end();++itBodies)
-		{
-			(*itBodies)->mAcceleration = glm::vec3(0);
+        {
+            (*itBodies)->ClearAccelerations();
 		}
 	}
 
-	bool cWorld::AddRigidBody(cRigidBody* rigidBody)
+	bool cWorld::AddBody(iCollisionBody* rigidBody)
 	{
 		// 1) Null check
 		if (rigidBody == nullptr)  {return false;}
-		// 2) Check if we currently have this rigid body.
+		// 2) Check if we currently have this body.
 		if (std::find(mBodies.begin(), mBodies.end(), rigidBody) != mBodies.end())
 		{
 		//    If yes: Return false to indicate nothing was not added.
@@ -70,11 +70,11 @@ namespace phys
 		return true; 
 	}
 
-	bool cWorld::RemoveRigidBody(cRigidBody* rigidBody)
+	bool cWorld::RemoveBody(iCollisionBody* rigidBody)
 	{
 		// 1) Null check
 		if (rigidBody == nullptr) { return false; }
-		// 2) Check if we currently have this rigid body.
+		// 2) Check if we currently have this body.
 		auto itToDelete = std::find(mBodies.begin(), mBodies.end(), rigidBody);
 		if (itToDelete != mBodies.end())
 		{
@@ -89,6 +89,18 @@ namespace phys
 		}
 	}
 
+	void cWorld::IntegrateBody(iCollisionBody* body, float dt)
+	{
+        if (body->GetBodyType() == eBodyType::rigid)
+        {
+            IntegrateRigidBody((cRigidBody*)body, dt);
+        }
+        else if (body->GetBodyType() == eBodyType::soft)
+        {
+	        // TODO: Integrate soft body
+        }
+	}
+
 	void cWorld::IntegrateRigidBody(cRigidBody* body, float dt)
 	{
 		// 1) Static bodies are not to be integrated!
@@ -100,6 +112,32 @@ namespace phys
 		// 4) Apply some linear damping ???
 		body->mVelocity *= glm::pow(0.95f, dt);
 	}
+
+	bool cWorld::Collide(iCollisionBody* bodyA, iCollisionBody* bodyB)
+	{
+        if (bodyA->GetBodyType() == eBodyType::rigid &&
+            bodyB->GetBodyType() == eBodyType::rigid)
+        {
+            return Collide((cRigidBody*)bodyA,(cRigidBody*)bodyB);
+        }
+        else if (bodyA->GetBodyType() == eBodyType::rigid &&
+			bodyB->GetBodyType() == eBodyType::soft)
+        {
+	        // TODO: Soft and rigid collisions
+            return false;
+        }
+		else if (bodyA->GetBodyType() == eBodyType::soft &&
+            bodyB->GetBodyType() == eBodyType::rigid)
+        {
+            return Collide(bodyB, bodyA);
+        }
+        else
+        {
+	        // No soft/soft collisions... yet
+            return false;
+        }
+	}
+
 	bool cWorld::Collide(cRigidBody* bodyA, cRigidBody* bodyB)
 	{
 		eShapeType shapeTypeA = bodyA->GetShapeType();

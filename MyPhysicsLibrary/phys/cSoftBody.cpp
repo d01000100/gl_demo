@@ -1,4 +1,6 @@
 #include "cSoftBody.h"
+#include <sstream>
+#include <iostream>
 
 namespace phys
 {
@@ -70,7 +72,7 @@ namespace phys
 		// F = k x (difference to position of rest)
 		glm::vec3 sep = NodeB->Position - NodeA->Position;
 		float dist = glm::length(sep);
-		float x = glm::abs(dist - RestingLength);
+		float x = dist - RestingLength;
 		CurrentForceAtoB = glm::normalize(sep) * x * StiffnessConstant;
 	}
 
@@ -93,7 +95,8 @@ namespace phys
 		// 2. Calculate spring forces??
 	}
 
-	cSoftBody::cSoftBody(sSoftBodyDef& def)
+	cSoftBody::cSoftBody(sSoftBodyDef& def) :
+		iCollisionBody(eBodyType::soft)
 	{
 		size_t numNodes = def.Nodes.size();
 		mNodes.resize(numNodes);
@@ -112,7 +115,14 @@ namespace phys
 				mNodes[def.Springs[i].first],
 				mNodes[def.Springs[i].second],
 				def.SpringConstant);
+			mNodes[def.Springs[i].first]->AttachedSprings.push_back(mSprings[i]);
+			mNodes[def.Springs[i].second]->AttachedSprings.push_back(mSprings[i]);
 			i++;
+		}
+		std::cout << toString() << std::endl;
+		for (auto node : mNodes)
+		{
+			node->CalculateRadius();
 		}
 	}
 
@@ -126,6 +136,19 @@ namespace phys
 		{
 			delete node;
 		}
+	}
+
+	std::string cSoftBody::toString()
+	{
+		std::stringstream ss;
+		ss << "NumNodes: " << numNodes() << std::endl;
+		int i = 1;
+		for (auto node : mNodes)
+		{
+			ss << "Node" << i << ": " << glm::to_string(node->Position) << std::endl;
+			i++;
+		}
+		return ss.str();
 	}
 
 	bool cSoftBody::GetAABB(glm::vec3& mins, glm::vec3& maxs)
@@ -171,5 +194,13 @@ namespace phys
 
 	void cSoftBody::updateInternal(float dt, const glm::vec3& gravity, const glm::vec3& wind)
 	{
+	}
+
+	void cSoftBody::ClearAccelerations()
+	{
+		for (auto node : mNodes)
+		{
+			node->Acceleration = glm::vec3(0);
+		}
 	}
 }

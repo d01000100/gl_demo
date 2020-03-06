@@ -60,8 +60,8 @@ void Camera::moveLeft(float angle) {
 	setPosition(glm::rotate(direction(), -angle, upVector) + target);
 }
 
-void Camera::zoom(float distance) {
-	glm::vec3 newDirection = direction() + distance * glm::normalize(direction());
+void Camera::zoom(float ratio) {
+	glm::vec3 newDirection = direction() * ratio;
 	setPosition(target + newDirection);
 }
 

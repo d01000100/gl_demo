@@ -49,6 +49,48 @@ iPhysicsComponent* buildPhysicsObject(json jPhysics) {
 		}
 		return ::g_PhysicsFactory->CreatePlane(planeDefs);
 	}
+	else if (jPhysics["shape"] == "cloth")
+	{
+		sClothDef clothDefs;
+		if (jPhysics.find("CornerA") != jPhysics.end())
+		{
+			float x = jPhysics["CornerA"][0].get<float>();
+			float y = jPhysics["CornerA"][1].get<float>();
+			float z = jPhysics["CornerA"][2].get<float>();
+			clothDefs.CornerA = glm::vec3(x, y, z);
+		}
+		if (jPhysics.find("CornerB") != jPhysics.end())
+		{
+			float x = jPhysics["CornerB"][0].get<float>();
+			float y = jPhysics["CornerB"][1].get<float>();
+			float z = jPhysics["CornerB"][2].get<float>();
+			clothDefs.CornerB = glm::vec3(x, y, z);
+		}
+		if (jPhysics.find("DownDirection") != jPhysics.end())
+		{
+			float x = jPhysics["DownDirection"][0].get<float>();
+			float y = jPhysics["DownDirection"][1].get<float>();
+			float z = jPhysics["DownDirection"][2].get<float>();
+			clothDefs.DownDirection = glm::vec3(x, y, z);
+		}
+		if (jPhysics.find("NumNodesAcross") != jPhysics.end())
+		{
+			clothDefs.NumNodesAcross = jPhysics["NumNodesAcross"];
+		}
+		if (jPhysics.find("NumNodesDown") != jPhysics.end())
+		{
+			clothDefs.NumNodesDown = jPhysics["NumNodesDown"];
+		}
+		if (jPhysics.find("mass") != jPhysics.end())
+		{
+			clothDefs.NodeMass = jPhysics["mass"];
+		}
+		if (jPhysics.find("SpringConstant") != jPhysics.end())
+		{
+			clothDefs.SpringConstant = jPhysics["SpringConstant"];
+		}
+		return ::g_PhysicsFactory->CreateCloth(clothDefs);
+	}
 	else
 	{
 		std::cout << "Unsopported physics shape while building physics component.\n";
@@ -62,7 +104,6 @@ aGameItem* createGameItem(std::string type, json info) {
 
 		if (info.find("mesh") == info.end()) {
 			printf("Object without mesh!!\n");
-			return NULL;
 		}
 		else {
 			gameObj->meshName = info["mesh"].get<std::string>();
@@ -143,6 +184,7 @@ aGameItem* createGameItem(std::string type, json info) {
 
 		if (info.find("Physics") != info.end()) {
 			gameObj->mPhysicsCompoment = buildPhysicsObject(info["Physics"]);
+			::g_PhysicsWorld->AddComponent(gameObj->mPhysicsCompoment);
 		}
 
 		if (info.find("textures") != info.end()) {

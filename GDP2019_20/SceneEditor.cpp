@@ -73,7 +73,7 @@ void SceneEditor::previousObject() {
 
 void SceneEditor::objectDebug() {
 	if (debugRenderer) {
-		glm::vec3 pos = (**selectedObj).getPos();
+		glm::vec3 pos = (*selectedObj)->getPos();
 		switch (objectMode) {
 		case TRANS:
 			debugTranslation(pos);

@@ -173,8 +173,6 @@ std::map<std::string, aGameItem*>* readItems(std::string filename) {
 			jObj != jObjects->end(); jObj++) {
 
 			cGameObject* gameItem = static_cast<cGameObject*>(createGameItem("Object", *jObj));
-			if (gameItem->mPhysicsCompoment)
-				::g_PhysicsWorld->AddComponent(gameItem->mPhysicsCompoment);
 			(*mItems)[gameItem->getName()] = gameItem;
 		}
 	}

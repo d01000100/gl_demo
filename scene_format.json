@@ -1,0 +1,66 @@
+{
+    // The meshes that the scene will need
+  "Meshes": [
+    // filepath relative to GDP2019_20 folder
+    {"pretty_mesh": "filepath"},
+    { "name2": "filepath2" }
+  ],
+  // Objects in the scene
+  "Objects": [
+    {
+      // optional identifier to explicitly use in the program
+      "name": "cool_object",
+      // Name of the mesh the object uses. 
+      // Must match exactly to the ones defined in "Meshes".
+      "mesh": "pretty_mesh",
+      // Scale in which the mesh will be rendered on screen
+      "scale": 1.0,
+      // RGB
+      "diffuseColor": [ 1.0, 0.0, 1.0 ],
+      // RGB and intensity
+      "specularColor": [ 1.0, 1.0, 0.0, 50.0 ],
+      // If the object should have an "iPhysicsComponent"
+      "Physics": {
+        // Physics shape. One of "sphere", "plane", "cloth"
+        // Every physics configuration must have one
+        "shape": "sphere", // or mesh
+        // Initial position of the object in xyz coordinates
+        "position": [10, 100, -20],
+        // Mass to consider when applying forces to the body.
+        // It it's 0, it doesn't move.
+        "mass": 1.0,
+        // (For spheres) radius of the sphere
+        // Unrelated to the graphic scale
+        "radius": 4.0,
+        // (For planes) direction in 3D space that the plane is facing.
+        "normal": [0,1,0],
+
+        /*
+            All of the following applies only for cloths.
+        */
+        // "upper" corners of the cloth. These will be static
+        "CornerA": [10, 100, -20],
+        "CornerB": [110, 100, -20],
+        // direction of the cloth
+        "Down": [0, -1, 0] ,
+        "NodesAcross": 5,
+        "NodesDown": 4
+      }
+    }
+  ],
+  // Lights in the scene
+  "Lights": [
+    {
+      // unique name
+      "name": "shiny_light",
+      "position": [ 10.0, 5.0, 10.0 ],
+      "type": "point", // spotlight, directional
+      "linearAtten": 0.003,
+      "quadAtten": 0.5,
+      // for spotlights
+      "direction": [ 1.0, 1.0, 1.0 ], // will be normalized
+      "innerRad": 2.0,
+      "outerRad": 3.0
+    }
+  ]
+}
