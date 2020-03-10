@@ -100,10 +100,10 @@ aGameItem* createGameItem(std::string type, json info) {
 			float x = info["position"][0].get<float>();
 			float y = info["position"][1].get<float>();
 			float z = info["position"][2].get<float>();
-			gameObj->position = glm::vec3(x, y, z);
+			gameObj->setPos(glm::vec3(x, y, z));
 		}
 		else {
-			gameObj->position = glm::vec3(0.0f, 0.0f, 0.0f);
+			gameObj->setPos(glm::vec3(0.0f, 0.0f, 0.0f));
 		}
 
 		if (info.find("rotation") != info.end()) {

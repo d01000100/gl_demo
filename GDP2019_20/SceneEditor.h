@@ -28,7 +28,6 @@ private:
 
 	std::vector<aGameItem*>::iterator selectedObj;
 	std::vector<aGameItem*> objects;
-	void changeObject();
 	void nextObject();
 	void previousObject();
 	std::vector<cLight*>::iterator selectedLight;
@@ -43,8 +42,10 @@ private:
 	void debugScale(glm::vec3 pos);
 	void objectDebug();
 public:
+	void changeObject();
 	static SceneEditor* getTheEditor();
 	void init(Scene* scene);
+	void init(vGameObjects objs);
 
 	cDebugRenderer* getDebugRenderer();
 	void drawDebug();

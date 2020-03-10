@@ -187,5 +187,5 @@ void FlockingManager::thorusGeometry(cGameObject* vehicle)
 	if (pos.z > maxz)
 		pos.z = minz;
 
-	vehicle->position = pos;
+	vehicle->setPos(pos);
 }

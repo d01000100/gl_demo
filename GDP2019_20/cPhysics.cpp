@@ -37,7 +37,7 @@ void cPhysics::IntegrationStep(std::vector<cGameObject*> vec_pGameObjects, float
 			// Forward Explicit Euler Inetegration
 			//NewVelocty += Velocity + ( Ax * DeltaTime )
 			phObj->velocity += phObj->acceleration * deltaTime;
-			pCurObj->position += phObj->velocity * deltaTime;
+			pCurObj->setPos( pCurObj->getPos() + phObj->velocity * deltaTime);
 		}
 	}//for (unsigned int index = 0;
 
@@ -177,13 +177,13 @@ bool cPhysics::DoSphereSphereCollision(cGameObject* pA, cGameObject* pB,
 								 sCollisionInfo& collisionInfo)
 {
 	// B -> A (en origen)
-	glm::vec3 distance = pA->position - pB->position;
+	glm::vec3 distance = pA->getPos() - pB->getPos();
 	float clippingDist = pA->physics->radius + pB->physics->radius - glm::length(distance);
 	if (clippingDist > 0) {
 
 		glm::vec3 normDist = glm::normalize(distance);
 
-		pA->position += clippingDist * 2 * normDist;
+		pA->setPos(pA->getPos() + clippingDist * 2 * normDist);
 
 		// reflect ball A according to the vector between the balls
 		glm::vec3 vel_reflected = glm::reflect(pA->physics->velocity, normDist);
@@ -223,9 +223,9 @@ bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 		*mesh->physics->mesh, 
 		mesh->calculateTransformationMatrix());
 
-	GetClosestTriangleToPoint(sphere->position, transformed_mesh, closestPoint, closestTriangle);
+	GetClosestTriangleToPoint(sphere->getPos(), transformed_mesh, closestPoint, closestTriangle);
 
-	float distance = glm::length(sphere->position - closestPoint);
+	float distance = glm::length(sphere->getPos() - closestPoint);
 
 	// Are we hitting the triangle? 
 	if (distance <= sphere->physics->radius)
@@ -234,7 +234,7 @@ bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 		// So that it will collide exactly where it's supposed to. 
 
 		// 1. Calculate vector from centre of sphere to closest point
-		glm::vec3 vecSphereToClosestPoint = closestPoint - sphere->position;
+		glm::vec3 vecSphereToClosestPoint = closestPoint - sphere->getPos();
 
 		// 2. Get the length of this vector
 		float centreToContractDistance = glm::length(vecSphereToClosestPoint);
@@ -249,7 +249,7 @@ bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 		glm::vec3 vecPositionAdjust = (-vecDirection) * lengthPositionAdjustment;
 
 		// 5. Reposition sphere 
-		sphere->position += (vecPositionAdjust);
+		sphere->setPos(sphere->getPos() + (vecPositionAdjust));
 
 		// Is in contact with the triangle... 
 		

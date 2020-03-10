@@ -15,18 +15,15 @@
 #include "DebugRenderer/cDebugRenderer.h"
 #include "Scene.h"
 #include "Camera.h"
-#include "FollowCamera.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
 #include "SkyBox.h"
-#include "ScriptBuilder.h"
-#include "DollyCamera.h"
-#include "Gameplay.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
-#include "FlockingManager.h"
 #include "UserInput.h"
+#include "MazeDraw.h"
+#include "DalekBrain.h"
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
@@ -35,17 +32,19 @@ cVAOManager* theVAOManager = new cVAOManager();
 GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
+cLowPassFilter avgDeltaTimeThingy;
 //AABBGrid* pAABBgrid = new AABBGrid();
-DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false, ::withCollisions = true;
+cMazeMaker mazeMaker;
 
 int main(void)
 {
 	Scene* theScene = Scene::getTheScene();
-	Camera* theCamera = FollowCamera::getTheCamera();
+	Camera* theCamera = Camera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
+	mazeMaker.GenerateMaze(30, 30);
+	mazeMaker.PrintMaze();
 	SkyBox theSkyBox;
-	FlockingManager flockingManager;
 	glm::vec3 cameraOffset(0, 30 ,-50);
 	//Gameplay gameplay;
 
@@ -58,7 +57,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	::window = glfwCreateWindow(900, 900, "SimpleGame", NULL, NULL);
+	::window = glfwCreateWindow(1600, 900, "SimpleGame", NULL, NULL);
 	if (!::window)
 	{
 		glfwTerminate();
@@ -93,9 +92,6 @@ int main(void)
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
-	//gameplay.init(window);
-	flockingManager.init();
-
 	theSkyBox.init(
 		"SpaceBox_right1_posX.bmp",
 		"SpaceBox_left2_negX.bmp",
@@ -106,21 +102,32 @@ int main(void)
 		"sphere_model");
 
 
-	sceneEditor->init(theScene);
-
+	auto cube = (cGameObject*)theScene->findItem("cube_template");
+	MazeDraw::addToScene(cube);
+	DalekBrain::generateDaleks(10);
+	sceneEditor->init(DalekBrain::getDaleksObjs());
+	
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
 	
 	cPhysics* pPhysics = new cPhysics();
 	pPhysics->debugRenderer = pDebugRenderer;
 
-	cLowPassFilter avgDeltaTimeThingy;
-
 	// Get the initial time
 	double lastTime = glfwGetTime();
 	double flickerTimer = 0;
 
-	//theCamera->setPosition(glm::vec3(0, 100, -150));
+	auto dalekThreads = new std::thread[DalekBrain::daleks.size()];
+
+	for (int i = 0; i < DalekBrain::daleks.size(); i++)
+	{
+		auto dalek = DalekBrain::daleks[i];
+		dalekThreads[i] = std::thread(
+			DalekBrain::threadMoveDalek,
+			dalek
+		);
+		dalekThreads[i].detach();
+	}
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -137,7 +144,7 @@ int main(void)
 			deltaTime = SOME_HUGE_TIME;
 		}
 
-		avgDeltaTimeThingy.addValue(deltaTime);
+		::avgDeltaTimeThingy.addValue(deltaTime);
 
 		glUseProgram(shaderProgID);
 
@@ -168,22 +175,21 @@ int main(void)
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
-		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		theScene->IntegrationStep(averageDeltaTime);
+		double averageDeltaTime = ::avgDeltaTimeThingy.getAverage();
+		//theScene->IntegrationStep(averageDeltaTime);
 
+		sceneEditor->changeObject();
 		v = theCamera->lookAt();
 		
-		//gameplay.update(averageDeltaTime);
-		flockingManager.update(averageDeltaTime);
-		pPhysics->IntegrationStep(theScene->getGameObjects(), averageDeltaTime);
+		//pPhysics->IntegrationStep(theScene->getGameObjects(), averageDeltaTime);
 
-		theSkyBox.draw();
+		theSkyBox.draw(theCamera->getPosition());
 		theScene->drawScene();
 
-		sceneEditor->drawDebug();
-		if (sceneEditor->getDebugRenderer()) {
-			sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
-		}
+		//sceneEditor->drawDebug();
+		//if (sceneEditor->getDebugRenderer()) {
+		//	sceneEditor->getDebugRenderer()->RenderDebugObjects(v, p, 0.01f);
+		//}
 		::g_pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);
 		if (::isDebug) {
 			pDebugRenderer->RenderDebugObjects(v, p, averageDeltaTime);

@@ -13,6 +13,7 @@
 
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
+#include <mutex>
 
 enum eShapeTypes
 {
@@ -65,7 +66,6 @@ public:
 	std::vector<sTextureSpec> textures;
 	std::vector<glm::vec3> collision_points;
 
-	glm::vec3  position;
 	float scale, alpha, lifeTime;
 
 	glm::mat4 matWorld;
@@ -104,6 +104,8 @@ private:
 	//	the next unique ID is incremented
 	static unsigned int next_uniqueID;
 	unsigned int m_uniqueID;
+	glm::vec3 position;
+	std::mutex positionMutex;
 
 	iDebugRenderer* m_pDebugRenderer;
 

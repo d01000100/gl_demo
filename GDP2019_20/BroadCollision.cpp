@@ -47,7 +47,7 @@ std::vector<sCollisionInfo> BroadCollision::detectCollisions(AABBGrid* grid, cGa
 					explosion->alpha = 0.7f;
 					explosion->scale = 5.0f;
 					explosion->lifeTime = 3.0f;
-					explosion->position = pointInTriangle;
+					explosion->setPos(pointInTriangle);
 
 					Scene::getTheScene()->addItem(explosion);
 
@@ -82,7 +82,7 @@ void BroadCollision::collisionsReact(std::vector<sCollisionInfo> collisions, cGa
 		glm::vec3 reflection(0);
 		for (int c = 0; c < collisions.size(); c++)
 		{
-			mobile->position += collisions[c].adjustmentVector;
+			mobile->setPos(mobile->getPos() + collisions[c].adjustmentVector);
 			//mobile->physics->velocity = glm::proj(mobile->physics->velocity, collisions[c].normal);
 		}
 

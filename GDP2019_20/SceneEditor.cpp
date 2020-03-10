@@ -26,6 +26,21 @@ void SceneEditor::init(Scene* scene) {
 	changeObject();
 }
 
+void SceneEditor::init(vGameObjects objs)
+{
+	objects.clear();
+	for (auto obj : objs)
+	{
+		objects.push_back(obj);
+	}
+	selectedObj = objects.begin();
+	objectMode = TRANS;
+	editMode = OBJS;
+	debugRenderer = new cDebugRenderer();
+	debugRenderer->initialize();
+	changeObject();
+}
+
 cDebugRenderer* SceneEditor::getDebugRenderer() {
 	return debugRenderer;
 }
@@ -52,7 +67,7 @@ void SceneEditor::setEditMode(eEditMode m) {
 void SceneEditor::changeObject() {
 	Camera* theCamera = Camera::getTheCamera();
 	glm::vec3 objPos = (*selectedObj)->getPos();
-	//theCamera->setTarget(objPos);
+	theCamera->setTarget(objPos);
 }
 
 void SceneEditor::nextObject() {
@@ -86,7 +101,7 @@ void SceneEditor::objectDebug() {
 			break;
 		}
 
-		//glfwSetWindowTitle(::window, (*selectedObj)->getInfo().c_str());
+		glfwSetWindowTitle(::window, (*selectedObj)->getInfo().c_str());
 	}
 }
 

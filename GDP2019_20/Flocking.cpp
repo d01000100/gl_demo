@@ -4,7 +4,7 @@
 bool Flocking::isNeighbor(cGameObject* vehicle, cGameObject* other, float radius)
 {
 	return vehicle != other && 
-		glm::distance(vehicle->position, other->position) < radius;
+		glm::distance(vehicle->getPos(), other->getPos()) < radius;
 }
 
 std::vector<cGameObject*> Flocking::getNeighbors(cGameObject* vehicle, float radius)
@@ -84,11 +84,11 @@ glm::vec3 Flocking::cohesionForce(vObjs neighbors, cGameObject* vehicle)
 	glm::vec3 centerOfMass = glm::vec3(0);
 	for (auto n : neighbors)
 	{
-		centerOfMass += n->position;
+		centerOfMass += n->getPos();
 	}
 	centerOfMass /= neighbors.size();
 	return Steerings::seek(
-		vehicle->position, 
+		vehicle->getPos(), 
 		vehicle->physics->velocity,
 		centerOfMass,
 		maxVel

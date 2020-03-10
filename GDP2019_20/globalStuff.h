@@ -4,10 +4,14 @@
 #include "cVAOManager.h"
 #include "cBasicTextureManager.h"
 #include "DebugRenderer/cDebugRenderer.h"
+#include "cMazeMaker.h"
+#include "cLowPassFilter.h"
 
 extern cShaderManager theShaderManager;
 extern cVAOManager* theVAOManager;
 extern std::string shader_name;
+extern cMazeMaker mazeMaker;
+extern cLowPassFilter avgDeltaTimeThingy;
 
 extern std::string scene_filename;
 

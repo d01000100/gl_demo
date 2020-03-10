@@ -10,7 +10,7 @@ private:
 	GLuint textureID;
 	std::string mesh_name;
 public:
-	void draw();
+	void draw(glm::vec3 pos);
 	bool init(std::string posX_fileName, std::string negX_fileName,
 		std::string posY_fileName, std::string negY_fileName,
 		std::string posZ_fileName, std::string negZ_fileName,

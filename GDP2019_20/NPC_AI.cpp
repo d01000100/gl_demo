@@ -52,7 +52,7 @@ void NPC_AI::UpdateBooEnemy(sEnemy* boo, float deltaTime)
 	cSteerable* enemySteer = boo->pSteerable;
 	cGameObject* enemyGO = boo->pSteerable->gameObject;
 	glm::vec3 playerDir = player->getDirection();
-	glm::vec3 playerToEnemy = enemyGO->position - player->position;
+	glm::vec3 playerToEnemy = enemyGO->getPos() - player->getPos();
 	float dotProduct = glm::dot(glm::normalize(playerDir), glm::normalize(playerToEnemy));
 	// The dot product will from 1 to 0 if the player is facing the enemy
 	if (dotProduct > 0) {
@@ -123,14 +123,14 @@ void NPC_AI::UpdateShooter(sEnemy* shooter, float deltaTime)
 		shooterSteer->Approach(player, deltaTime);
 		shooterGO->diffuseColor = Colors::green;
 		float shootDistance = (shooterSteer->stopDistance + shooterSteer->approachDistance) / 2;
-		if (glm::distance(shooterGO->position, player->position) < shootDistance)
+		if (glm::distance(shooterGO->getPos(), player->getPos()) < shootDistance)
 		{
 			cGameObject* plantilla = (cGameObject*)theScene->findItem("bullet_template");
 			if (plantilla)
 			{
 				cGameObject* bullet = new cGameObject(plantilla);
-				bullet->position = shooterGO->position;
-				glm::vec3 bulletDir = glm::normalize(player->position - shooterGO->position);
+				bullet->setPos(shooterGO->getPos());
+				glm::vec3 bulletDir = glm::normalize(player->getPos() - shooterGO->getPos());
 				bullet->physics->velocity = bulletDir * 20.0f;
 				bullet->tags.insert("enemy");
 				bullet->tags.insert("bullet");
@@ -171,7 +171,7 @@ void NPC_AI::createBoo()
 	if (plantilla)
 	{
 		cGameObject* enemyGO = new cGameObject(plantilla);
-		enemyGO->position = getSpawnLocation();
+		enemyGO->setPos(getSpawnLocation());
 		enemyGO->isVisible = true;
 		enemyGO->tags.insert("enemy");
 		cSteerable *pSteerable = new cSteerable(enemyGO);
@@ -195,7 +195,7 @@ void NPC_AI::createDodger()
 		std::cout << "Creating shooter..." << std::endl;
 		cGameObject* enemyGO = new cGameObject(plantilla);
 		std::cout << "New gameObject..." << std::endl;
-		enemyGO->position = getSpawnLocation();
+		enemyGO->setPos(getSpawnLocation());
 		enemyGO->isVisible = true;
 		enemyGO->tags.insert("enemy");
 		cSteerable *pSteerable = new cSteerable(enemyGO);
@@ -222,7 +222,7 @@ void NPC_AI::createWanderer()
 	if (plantilla)
 	{
 		cGameObject* enemyGO = new cGameObject(plantilla);
-		enemyGO->position = getSpawnLocation();
+		enemyGO->setPos(getSpawnLocation());
 		enemyGO->isVisible = true;
 		enemyGO->tags.insert("enemy");
 		cSteerable *pSteerable = new cSteerable(enemyGO);
@@ -247,7 +247,7 @@ void NPC_AI::createShooter()
 		std::cout << "Creating shooter..." << std::endl;
 		cGameObject* enemyGO = new cGameObject(plantilla);
 		std::cout << "New gameObject..." << std::endl;
-		enemyGO->position = getSpawnLocation();
+		enemyGO->setPos(getSpawnLocation());
 		enemyGO->isVisible = true;
 		enemyGO->tags.insert("enemy");
 		cSteerable *pSteerable = new cSteerable(enemyGO);

@@ -56,7 +56,7 @@ void Gameplay::Shoot()
 			playerBullet->friendlyName = "player_bullet";
 			glm::vec3 velocity = player->getDirection() * 30.0f;
 			playerBullet->physics->velocity = velocity;
-			playerBullet->position = player->position;
+			playerBullet->setPos(player->getPos());
 			playerBullet->tags.insert("player");
 			playerBullet->tags.insert("bullet");
 			playerBullet->diffuseColor = Colors::white;
@@ -84,19 +84,19 @@ void Gameplay::Collisions()
 		sEnemy* enemy = *iterEnemies;
 		cGameObject* enemyGO = enemy->pSteerable->gameObject;
 
-		if (glm::distance(enemyGO->position, player->position) < playerRadius + enemyRadius)
+		if (glm::distance(enemyGO->getPos(), player->getPos()) < playerRadius + enemyRadius)
 		{
 			// A player has bumped into an enemy
-			player->position = glm::vec3(0);
+			player->setPos(glm::vec3(0));
 			player->setDirection(glm::vec3(0, 0, 1));
 			player->physics->velocity = glm::vec3(0);
 		}
 
 		if (enemy->bullet &&
-			glm::distance(player->position, enemy->bullet->position) < playerRadius + bulletRadius)
+			glm::distance(player->getPos(), enemy->bullet->getPos()) < playerRadius + bulletRadius)
 		{
 			// The player bumped into a bullet
-			player->position = glm::vec3(0);
+			player->setPos(glm::vec3(0));
 			player->setDirection(glm::vec3(0, 0, 1));
 			player->physics->velocity = glm::vec3(0);
 
@@ -105,7 +105,7 @@ void Gameplay::Collisions()
 		}
 
 		if (playerBullet && 
-			glm::distance(playerBullet->position, enemyGO->position) < enemyRadius + bulletRadius)
+			glm::distance(playerBullet->getPos(), enemyGO->getPos()) < enemyRadius + bulletRadius)
 		{
 			// We've hit an enemy
 			theScene->removeItem(playerBullet->friendlyName);

@@ -61,6 +61,9 @@
     <Filter Include="Formations">
       <UniqueIdentifier>{dcc3b3c6-4848-4b4a-a182-b744d2de4084}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MazeStuff">
+      <UniqueIdentifier>{9cb86053-dc2b-4633-90da-63411808ca7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -221,6 +224,15 @@
     </ClCompile>
     <ClCompile Include="Flocking.cpp">
       <Filter>Formations</Filter>
+    </ClCompile>
+    <ClCompile Include="cMazeMaker.cpp">
+      <Filter>MazeStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="MazeDraw.cpp">
+      <Filter>MazeStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="DalekBrain.cpp">
+      <Filter>MazeStuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +418,15 @@
     </ClInclude>
     <ClInclude Include="Flocking.h">
       <Filter>Formations</Filter>
+    </ClInclude>
+    <ClInclude Include="cMazeMaker.h">
+      <Filter>MazeStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="MazeDraw.h">
+      <Filter>MazeStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="DalekBrain.h">
+      <Filter>MazeStuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

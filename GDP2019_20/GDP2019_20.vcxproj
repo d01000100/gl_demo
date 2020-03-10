@@ -170,6 +170,7 @@
     <ClCompile Include="cGLColourHelper.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
+    <ClCompile Include="cMazeMaker.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
     <ClCompile Include="colors.cpp" />
     <ClCompile Include="Coordinator.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="cSteerable.cpp" />
     <ClCompile Include="CTextureFromBMP.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
+    <ClCompile Include="DalekBrain.cpp" />
     <ClCompile Include="DebugRenderer\cDebugRenderer.cpp" />
     <ClCompile Include="DebugRenderer\cDebugRenderer_BuiltInShapes.cpp" />
     <ClCompile Include="DebugRenderer\CErrorLog.cpp" />
@@ -196,6 +198,7 @@
     <ClCompile Include="JSON_IO.cpp" />
     <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="LookAt.cpp" />
+    <ClCompile Include="MazeDraw.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="NPC_AI.cpp" />
     <ClCompile Include="ParallelCommand.cpp" />
@@ -226,6 +229,7 @@
     <ClInclude Include="cGLColourHelper.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cLowPassFilter.h" />
+    <ClInclude Include="cMazeMaker.h" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cModelLoader.h" />
     <ClInclude Include="colors.h" />
@@ -235,6 +239,7 @@
     <ClInclude Include="cSteerable.h" />
     <ClInclude Include="CTextureFromBMP.h" />
     <ClInclude Include="cVAOManager.h" />
+    <ClInclude Include="DalekBrain.h" />
     <ClInclude Include="DebugRenderer\cDebugRenderer.h" />
     <ClInclude Include="DebugRenderer\CErrorLog.h" />
     <ClInclude Include="DebugRenderer\cGLRenderStateHelper.h" />
@@ -255,6 +260,7 @@
     <ClInclude Include="LightManager\cLightHelper.h" />
     <ClInclude Include="LookAt.h" />
     <ClInclude Include="LookToward.h" />
+    <ClInclude Include="MazeDraw.h" />
     <ClInclude Include="Messages\iMessagable.h" />
     <ClInclude Include="Messages\Message.h" />
     <ClInclude Include="MoveCommand.h" />

@@ -49,7 +49,14 @@ cGameObject::cGameObject(cGameObject* obj)
 
 	this->isWireframe = obj->isWireframe;
 
-	physics = new sPhysicsObject(obj->physics);
+	if (obj->physics)
+	{
+		physics = new sPhysicsObject(obj->physics);
+	}
+	else
+	{
+		physics = nullptr;
+	}
 
 	// Set the unique ID
 	// Take the value of the static int, 
@@ -92,20 +99,33 @@ std::string cGameObject::getName() {
 	return friendlyName;
 }
 
-glm::vec3 cGameObject::getPos() { return position; }
+glm::vec3 cGameObject::getPos()
+{
+	positionMutex.lock();
+	glm::vec3 res = position;
+	positionMutex.unlock();
+	return res;
+}
 
-void cGameObject::setPos(glm::vec3 pos) { position = pos; }
+void cGameObject::setPos(glm::vec3 pos)
+{
+	positionMutex.lock();
+	position = pos;
+	positionMutex.unlock();
+}
 
 glm::mat4 cGameObject::calculateTransformationMatrix() {
 
 	glm::mat4 m = glm::mat4(1.0f);
 
 	// ******* TRANSLATION TRANSFORM *********
+	positionMutex.lock();
 	glm::mat4 matTrans
 		= glm::translate(glm::mat4(1.0f),
 			glm::vec3(position.x,
 				position.y,
 				position.z));
+	positionMutex.unlock();
 	m = m * matTrans;
 
 	//// ******* ROTATION TRANSFORM *********
@@ -323,8 +343,7 @@ std::string cGameObject::getInfo() {
 	ss << getType() << " - " << getName() <<
 		" pos: " << glm::to_string(getPos()) <<
 		" orientation: " << glm::to_string(getOrientationEuler()) <<
-		" color: " << glm::to_string(diffuseColor) <<
-		" alpha: " << alpha;
+		" scale: " << scale;
 	return ss.str();
 };
 

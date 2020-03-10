@@ -36,7 +36,7 @@ bool SkyBox::init(std::string posX_fileName, std::string negX_fileName,
 	return true;
 }
 
-void SkyBox::draw()
+void SkyBox::draw(glm::vec3 pos)
 {
 	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 	glCullFace(GL_FRONT_AND_BACK);
@@ -51,10 +51,8 @@ void SkyBox::draw()
 	// Tie the texture units to the samplers in the shader
 	glUniform1i(glGetUniformLocation(shaderProgID, "skyBox"), 26);	// Texture unit 26
 
-	Camera* theCamera = Camera::getTheCamera();
 	glm::mat4x4 transformMatrix = glm::mat4(1.0f); 
-	transformMatrix = glm::translate(transformMatrix,
-		theCamera->getPosition());
+	transformMatrix = glm::scale(transformMatrix,glm::vec3(1000));
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgID, "matModel"),
 		1, GL_FALSE, glm::value_ptr(transformMatrix));
