@@ -3,6 +3,7 @@
 #include <vector>         // std::vector to contain cRigidBody pointers
 #include "shapes.h"       // all specific shape classes
 #include "cIntegrator.h"  // cIntegrator class for timesteps
+#include "cSoftBody.h"
 
 namespace phys
 {
@@ -88,6 +89,20 @@ namespace phys
 		// Entry point for collision detection.
 		// Returns the result of specific Collide[shapeA][ShapeB] methods.
 		bool Collide(cRigidBody* bodyA, cRigidBody* bodyB);
+
+		/*
+		 * Detects and responds to collision between a rigid body (sphere)
+		 * and the nodes of a soft body.
+		 * Returns `true` if a collision was detected
+		 */
+		bool Collide(cRigidBody* rigid, cSoftBody* soft);
+
+		/*
+		 * Detects and responds to collision between a rigid body (sphere)
+		 * and a single node of the soft body
+		 * Returns `true` if a collision was detected
+		 */
+		bool Collide(cRigidBody* sphere, cSoftBody::cNode* node);
 
 		// CollideSpherePlane
 		// Handles collision detection and reaction between a sphere and a plane.

@@ -24,23 +24,12 @@ namespace nPhysics
 		size_t NumNodes() override;
 		bool GetNodeRadius(size_t index, float& radiusOut) override;
 		bool GetNodePosition(size_t index, glm::vec3& posOut) override;
+		/*
+		 * Gets the positions on the physics world of the ends of the
+		 * springs of the mesh as a collection of pairs of 3D vectors
+		 */
+		bool GetSpringsPositions(std::vector<std::pair<glm::vec3, glm::vec3>>& springsOut) override;
 	private:
 		phys::cSoftBody *mSoftBody;
-		/*
-		 * Calculates the linear index of the node to the "right" of the
-		 * `idxNode`th node; considering the grid specified in `def`
-		 *
-		 * Returns false if the `idxNode` is at the right-most column
-		 * of the grid
-		 */
-		bool GetIndexOfRightNode(size_t idxNode, const sClothDef& def, size_t& idxRight);
-		/*
-		 * Calculates the linear index of the node "below" of the
-		 * `idxNode`th node; considering the grid specified in `def`
-		 *
-		 * Returns false if the `idxNode` is at the bottom-most column
-		 * of the grid
-		 */
-		bool GetIndexOfBelowNode(size_t idxNode, const sClothDef& def, size_t& idxBelow);
 	};
 }

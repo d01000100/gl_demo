@@ -1,6 +1,7 @@
 #pragma once
 #include <game_math.h>  // single include header for all glm math stuffs
 #include "iPhysicsComponent.h"
+#include <vector>
 
 namespace nPhysics
 {
@@ -21,10 +22,12 @@ namespace nPhysics
         - Amount of nodes
         - Position of nodes
         - Radius of nodes
+        - Positions of ends of nodes
         */
         virtual size_t NumNodes() = 0;
         virtual bool GetNodeRadius(size_t index, float& radiusOut) = 0;
         virtual bool GetNodePosition(size_t index, glm::vec3& posOut) = 0;
+        virtual bool GetSpringsPositions(std::vector<std::pair<glm::vec3, glm::vec3>>& springsOut) = 0;
 	protected:
         iClothComponent() : iPhysicsComponent(eComponentType::cloth){}
     private:

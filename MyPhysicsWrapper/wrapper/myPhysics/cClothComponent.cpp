@@ -24,7 +24,6 @@ void nPhysics::cClothComponent::ApplyImpulse(glm::vec3 impulse)
 
 std::string nPhysics::cClothComponent::ToString()
 {
-	// TODO: ClothComponent ToString
 	return "TODO Cloth toString";
 }
 
@@ -43,21 +42,14 @@ bool nPhysics::cClothComponent::GetNodePosition(size_t index, glm::vec3& posOut)
 	return mSoftBody->GetNodePosition(index, posOut);
 }
 
-bool nPhysics::cClothComponent::GetIndexOfRightNode(
-	size_t idxNode, 
-	const sClothDef& def,
-    size_t& idxRight)
+bool nPhysics::cClothComponent::GetSpringsPositions(std::vector<std::pair<glm::vec3, glm::vec3>>& springsOut)
 {
-	// TODO: Actually see if I need them
-	return false;
-}
-
-bool nPhysics::cClothComponent::GetIndexOfBelowNode(
-	size_t idxNode, 
-	const sClothDef& def,
-    size_t& idxBelow)
-{
-	return false;
+	springsOut.clear();
+	for (auto spring : mSoftBody->mSprings)
+	{
+		springsOut.push_back(std::pair<glm::vec3, glm::vec3>(spring->mNodeA->mPosition, spring->mNodeB->mPosition));
+	}
+	return true;
 }
 
 nPhysics::cClothComponent::cClothComponent(const sClothDef& def)
@@ -71,7 +63,7 @@ nPhysics::cClothComponent::cClothComponent(const sClothDef& def)
 	// vector in the direction from A to B
 	glm::vec3 sepAcross = def.CornerB - def.CornerA;
 	// that has the lenght of the separation between vectors
-	if (def.NumNodesDown > 1)
+	if (def.NumNodesAcross > 1)
 	{
 		sepAcross /= def.NumNodesAcross - 1;
 	}

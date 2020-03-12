@@ -93,11 +93,6 @@ int main(void)
 	if (!readTextures(::scene_filename)) { return -1; }
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
-	//cMesh* cruiseship = theScene->getMeshesMap()["galactica_model"];
-	//if (cruiseship) {
-	//	pAABBgrid->filterTriangles(cruiseship);
-	//}
-
 	aGameItem* player = theScene->findItem("player");
 	if (player) {
 		std::cout << "Setting player to camera...\n";
@@ -114,7 +109,7 @@ int main(void)
 		"sphere_model");
 
 
-	sceneEditor->init(theScene);
+	//sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
@@ -191,7 +186,7 @@ int main(void)
 		}
 		//pAABBgrid->Draw();
 
-		v = theCamera->lookAt();
+		v = followCamera->lookAt();
 
 		if (::isRunning)
 		{

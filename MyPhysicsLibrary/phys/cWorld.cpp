@@ -1,6 +1,7 @@
 #include "cWorld.h"    // My header
 #include "nCollide.h"  // collision detection functions from
 #include <iostream>
+#include "cSoftBody.h"
 
 // REAL-TIME COLLISION DETECTION, ERICSON
 
@@ -97,7 +98,7 @@ namespace phys
         }
         else if (body->GetBodyType() == eBodyType::soft)
         {
-	        // TODO: Integrate soft body
+            ((cSoftBody*)body)->Integrate(dt, mGravity);
         }
 	}
 
@@ -123,8 +124,7 @@ namespace phys
         else if (bodyA->GetBodyType() == eBodyType::rigid &&
 			bodyB->GetBodyType() == eBodyType::soft)
         {
-	        // TODO: Soft and rigid collisions
-            return false;
+	        return Collide((cRigidBody*)bodyA, (cSoftBody*)bodyB);
         }
 		else if (bodyA->GetBodyType() == eBodyType::soft &&
             bodyB->GetBodyType() == eBodyType::rigid)
@@ -133,7 +133,7 @@ namespace phys
         }
         else
         {
-	        // No soft/soft collisions... yet
+	        // ????
             return false;
         }
 	}
@@ -176,8 +176,89 @@ namespace phys
         else { return false; }
 	}
 
+	bool cWorld::Collide(cRigidBody* rigid, cSoftBody* soft)
+	{
+		if (rigid->GetShapeType() != eShapeType::sphere)
+		{
+            return false;
+		}
+
+        bool res = false;
+		for (auto node : soft->mNodes)
+		{
+            res |= Collide(rigid, node);
+		}
+        return res;
+	}
+
+	bool cWorld::Collide(cRigidBody* sphereBody, cSoftBody::cNode* node)
+	{
+        auto sphereShape = (cSphere*)sphereBody->GetShape();
+        glm::vec3 cA = sphereBody->mPreviousPosition;
+        glm::vec3 cB = node->mPreviousPosition;
+        glm::vec3 vA = sphereBody->mPosition - sphereBody->mPreviousPosition;
+        glm::vec3 vB = node->mPosition - node->mPreviousPosition;
+        float rA = sphereShape->GetRadius();
+        float rB = node->mRadius;
+        float t(0.f);
+
+        // Chapter 5.5 of Ericson's book
+        int result = nCollide::intersect_moving_sphere_sphere(
+            cA, rA, vA, cB, rB, vB, t
+        );
+        if (result == 0)
+        {
+            //Not colliding
+            return false;
+        }
+        // get the masses
+        float ma = sphereBody->mMass;
+        float mb = node->mMass;
+        float mt = ma + mb;
+        if (result == -1)
+        {
+            //std::cout << "Sphere clipping sphere " << std::endl;
+            // Already Colliding at the beggining of the timestep
+            // Calculate the impulse to set them apart
+            float initialDistance = glm::distance(sphereBody->mPreviousPosition, node->mPreviousPosition);
+            float targetDistance = rA + rB;
+            glm::vec3 impulseToNode = glm::normalize(node->mPreviousPosition - sphereBody->mPreviousPosition);
+            impulseToNode *= (targetDistance - initialDistance);
+            // rewind time
+            //sphereBody->mPosition = sphereBody->mPreviousPosition;
+            node->mPosition = node->mPreviousPosition;
+            // apply the impulse considering the mass of each sphere
+            //sphereBody->mVelocity += impulseToNode * (mb / mt);
+            node->mVelocity += impulseToNode * (ma / mt);
+            // re integrate
+            //IntegrateRigidBody(sphereBody, mDt);
+            node->Integrate(mDt);
+            return true;
+        }
+        // Collided during the timestep
+
+        //std::cout << "Sphere colliding sphere." << std::endl;
+        // rewind time to the point of collision
+        //sphereBody->mPosition = sphereBody->mPreviousPosition + vA * t;
+        node->mPosition = node->mPreviousPosition + vB * t;
+
+        vA = sphereBody->mVelocity;
+        vB = node->mVelocity;
+
+        float c = 1.0; // how much energy will they loose
+        // float c = sphereBody->elasticCoefficent * node->elasticCoefficient
+        // calculate collided velocities (wikipedia)
+        //sphereBody->mVelocity = (c * mb * (vB - vA) + ma * vA + mb * vB) / mt;
+        node->mVelocity = (c * ma * (vA - vB) + ma * vA + mb * vB) / mt;
+
+        // re integrate the rest of the timestep
+        //IntegrateRigidBody(sphereBody, mDt * (1.f - t));
+        node->Integrate(mDt * (1.f - t));
+        return true;
+	}
+
 	bool cWorld::CollideSpherePlane(cRigidBody* sphereBody, cSphere* sphereShape,
-		cRigidBody* planeBody, cPlane* planeShape)
+	                                cRigidBody* planeBody, cPlane* planeShape)
 	{
 	    glm::vec3 c = sphereBody->mPreviousPosition;
         float r = sphereShape->GetRadius();
@@ -287,7 +368,6 @@ namespace phys
         vB = bodyB->mVelocity;
 
         float c = 0.8; // how much energy will they loose
-        // TODO: Use the damping of each object
         // float c = bodyA->elasticCoefficent * bodyB->elasticCoefficient
         // calculate collided velocities (wikipedia)
         bodyA->mVelocity = (c*mb*(vB - vA) + ma*vA + mb*vB) / mt;

@@ -2,6 +2,7 @@
 #include <game_math.h>  // single include header for all glm math stuffs
 #include <vector>
 #include "iCollisionBody.h"
+#include "cIntegrator.h"
 
 namespace phys
 {
@@ -41,23 +42,20 @@ namespace phys
 	 * depending on the distance of the ends in relation to the length
 	 * at rest of the spring and some "stiffness" constant.
 	 */
-    class cSoftBody : public iCollisionBody
+    struct cSoftBody : public iCollisionBody
     {
-    private:
         class cSpring;
     	/*
     	 * A body of the network connected by springs to another nodes.
-    	 * TODO: Make them inherit from cRigidBody as a cSphere 
     	 */
-		class cNode 
+		struct cNode 
 		{
             friend cSpring;
 			friend cSoftBody;
-            glm::vec3 SpringForce; // the force applied this frame by its springs
-            glm::vec3 Position, Velocity, Acceleration;
-            std::vector<cSpring*> AttachedSprings; // Springs attached to this node
-            float Radius, Mass;
-		public:
+            glm::vec3 mSpringForce; // the force applied this frame by its springs
+            std::vector<cSpring*> mAttachedSprings; // Springs attached to this node
+            float mRadius, mMass;
+            glm::vec3 mPosition, mVelocity, mAcceleration, mPreviousPosition;
             virtual ~cNode() = default;
             cNode(const sSoftBodyNodeDef& def);
 			/*
@@ -71,6 +69,18 @@ namespace phys
 			 * at rest to its neighbors
 			 */
             void CalculateRadius();
+			/*
+			 * Applies a force to this node considering his mass
+			 */
+            void ApplyForce(const glm::vec3 &force);
+            /*
+             * Simulates the movement and acceleration of the node
+             * for a single "time step" of length `deltaTime`.
+             * Applies `externalForces` to the acceleration
+             */
+            void Integrate(
+                float deltaTime, 
+                const glm::vec3& externalForces = glm::vec3(0));
 		};
 
     	/*
@@ -80,15 +90,14 @@ namespace phys
     	 * to the distance of the nodes against the length of the
     	 * spring at rest and the stiffness constant.
     	 */
-    	class cSpring
+    	struct cSpring
     	{
             friend cNode;
             friend cSoftBody;
-            cNode* NodeA, * NodeB;
-            float RestingLength;
-            float StiffnessConstant;
-            glm::vec3 CurrentForceAtoB;
-    	public:
+            float mRestingLength;
+            float mStiffnessConstant;
+            glm::vec3 mCurrentForceAtoB;
+            cNode* mNodeA, * mNodeB;
             cSpring(cNode* nodeA, cNode* nodeB, float springConstant);
             virtual ~cSpring() = default;
     		/*
@@ -111,14 +120,8 @@ namespace phys
             void ApplyForceToNodes();
     	};
         std::vector<cNode*> mNodes;
+        cIntegrator mIntegrator;
         std::vector<cSpring*> mSprings;
-    protected:
-    	/*
-    	 * Calculate all of the forces of all the springs attached to
-    	 * `node` and apply them to the node
-    	 */
-        void IntegrateNode(cNode *node);
-    public:
         cSoftBody(sSoftBodyDef& def);
     	virtual ~cSoftBody();
     	/*
@@ -151,8 +154,14 @@ namespace phys
     	 * The amount of nodes the mesh has
     	 */
         size_t numNodes();
-        void Integrate(float deltaTime);
-        void updateInternal(float dt, const glm::vec3& gravity, const glm::vec3& wind);
+        void Integrate(
+            float deltaTime, 
+            const glm::vec3& gravity = glm::vec3(0), 
+            const glm::vec3& wind = glm::vec3(0));
+        void updateInternal(
+            float dt, 
+            const glm::vec3& gravity = glm::vec3(0),
+            const glm::vec3& wind = glm::vec3(0));
     	/*
     	 * Sets the accelerations of all of the nodes to 0 in all axis
     	 */

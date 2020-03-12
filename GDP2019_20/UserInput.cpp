@@ -20,7 +20,7 @@ const float TRANSLATION_STEP = 0.5f;
 const float ROTATION_STEP = glm::radians(0.5f);
 
 FollowCamera* followCamera = FollowCamera::getFollowCamera();
-Camera* theCamera = Camera::getTheCamera();
+Camera* theCamera = FollowCamera::getFollowCamera();
 Scene* theScene = Scene::getTheScene();
 SceneEditor* theEditor = SceneEditor::getTheEditor();
 CameraPusher cameraPusher;

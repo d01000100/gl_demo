@@ -363,18 +363,28 @@ void cGameObject::drawCloth()
 	{
 		auto cloth = (nPhysics::iClothComponent*)mPhysicsCompoment;
 		auto theScene = Scene::getTheScene();
-		// This has to be loaded as an object in the scene
-		// It assumes that the model is a sphere of unit size
-		auto sphereTemplate = (cGameObject*)theScene->findItem("sphere_template");
+		mPhysicsCompoment = nullptr;
 
 		for (size_t idxNode = 0;idxNode < cloth->NumNodes(); idxNode++)
 		{
-			cGameObject tempSphere(sphereTemplate);
-			tempSphere.isVisible = true;
-			cloth->GetNodeRadius(idxNode, tempSphere.scale);
-			cloth->GetNodePosition(idxNode, tempSphere.position);
-			tempSphere.draw();
+			cloth->GetNodeRadius(idxNode, scale);
+			cloth->GetNodePosition(idxNode, position);
+			draw();
 		}
+
+		std::vector<std::pair<glm::vec3, glm::vec3>> springPairs;
+		cloth->GetSpringsPositions(springPairs);
+		
+		for (auto springPair : springPairs)
+		{
+			::g_pDebugRenderer->addLine(
+				springPair.first,
+				springPair.second,
+				Colors::white
+			);
+		}
+
+		mPhysicsCompoment = cloth;
 	}
 }
 

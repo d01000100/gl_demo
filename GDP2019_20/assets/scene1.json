@@ -58,6 +58,17 @@
       }
     },
     {
+      "mesh": "sphere_model",
+      "name": "player",
+      "scale": 3.0,
+      "Physics": {
+        "shape": "sphere",
+        "position": [20, 40, 20],
+        "mass": 3,
+        "radius": 3
+      }
+    },
+    {
       "mesh": "plane_model",
       "isVisible": false,
       "scale": 1,
@@ -92,19 +103,16 @@
     },
     {
       "mesh": "sphere_model",
-      "name": "sphere_template",
-      "isVisible": false
-    },
-    {
           "name": "Claude",
           "Physics": {
             "shape": "cloth",
-            "mass": 1.0,
-            "CornerA": [-15, 40, 0],
-            "CornerB": [15, 40, 0],
+            "mass": 1,
+            "CornerA": [0, 30, 0],
+            "CornerB": [30, 30, 0],
             "DownDirection": [0, -1, 0],
-            "NumNodesAcross": 4,
-            "NumNodesDown": 3
+            "NumNodesAcross": 6,
+            "NumNodesDown": 5,
+            "SpringConstant": 100
           }
       }
   ],

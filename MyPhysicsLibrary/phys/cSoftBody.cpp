@@ -5,17 +5,18 @@
 namespace phys
 {
 	cSoftBody::cNode::cNode(const sSoftBodyNodeDef& def) :
-	SpringForce(glm::vec3(0)),
-		Position(def.Position),
-		Velocity(glm::vec3(0)),
-		Acceleration(glm::vec3(0)),
-		Radius(1), // this will be recalculated
-		Mass(def.Mass)
+	mSpringForce(glm::vec3(0)),
+		mPosition(def.Position),
+		mVelocity(glm::vec3(0)),
+		mAcceleration(glm::vec3(0)),
+		mPreviousPosition(def.Position),
+		mRadius(1), // this will be recalculated
+		mMass(def.Mass)
 	{}
 
 	bool cSoftBody::cNode::IsNeighbor(cNode* other)
 	{
-		for (auto spring : AttachedSprings)
+		for (auto spring : mAttachedSprings)
 		{
 			if (spring->getOther(this) == other)
 			{
@@ -28,37 +29,58 @@ namespace phys
 	void cSoftBody::cNode::CalculateRadius()
 	{
 		float smallestDistance = std::numeric_limits<float>::max();
-		for (auto spring : AttachedSprings)
+		for (auto spring : mAttachedSprings)
 		{
 			float dist = glm::distance(
-				spring->getOther(this)->Position, 
-				this->Position);
+				spring->getOther(this)->mPosition, 
+				this->mPosition);
 			if (dist < smallestDistance)
 			{
 				smallestDistance = dist;
 			}
 		}
 		// TODO: maybe tweak
-		Radius = smallestDistance * 0.5f;
+		mRadius = smallestDistance * 0.5f;
+	}
+
+	void cSoftBody::cNode::ApplyForce(const glm::vec3& force)
+	{
+		if (mMass != 0)
+		{
+			mAcceleration += force / mMass;
+		}
+	}
+
+	void cSoftBody::cNode::Integrate(float deltaTime, const glm::vec3& externalForces)
+	{
+		if (mMass == 0) { return; }
+		// 1. Integrate position and velocity
+		// 2) Update the body's previous position.
+		mPreviousPosition = mPosition;
+		// 3) Do some integrating!
+		mVelocity += (mAcceleration + externalForces) * deltaTime;
+		mVelocity *= glm::pow(0.80f, deltaTime);  // applying the dampening before we use the velocity
+		mPosition += mVelocity * deltaTime;
 	}
 
 	cSoftBody::cSpring::cSpring(cNode* nodeA, cNode* nodeB, float springConstant) :
-		NodeA(nodeA),
-		NodeB(nodeB),
-		RestingLength(glm::distance(nodeA->Position, nodeB->Position)),
-		StiffnessConstant(springConstant)
+		mNodeA(nodeA),
+		mNodeB(nodeB),
+		mRestingLength(glm::distance(nodeA->mPosition, nodeB->mPosition)),
+		mStiffnessConstant(springConstant),
+		mCurrentForceAtoB(glm::vec3(0))
 	{
 	}
 
 	cSoftBody::cNode* cSoftBody::cSpring::getOther(cNode* node)
 	{
-		if (NodeA == node)
+		if (mNodeA == node)
 		{
-			return NodeB;
+			return mNodeB;
 		}
-		else if (NodeB == node)
+		else if (mNodeB == node)
 		{
-			return NodeA;
+			return mNodeA;
 		}
 		else
 		{
@@ -70,29 +92,20 @@ namespace phys
 	{
 		// HOOKE'S LAW
 		// F = k x (difference to position of rest)
-		glm::vec3 sep = NodeB->Position - NodeA->Position;
+		glm::vec3 sep = mNodeB->mPosition - mNodeA->mPosition;
 		float dist = glm::length(sep);
-		float x = dist - RestingLength;
-		CurrentForceAtoB = glm::normalize(sep) * x * StiffnessConstant;
+		float x = dist - mRestingLength;
+		mCurrentForceAtoB = glm::normalize(sep) * x * mStiffnessConstant;
+		if (glm::length(mCurrentForceAtoB) < 0.001f)
+		{
+			mCurrentForceAtoB = glm::vec3(0);
+		}
 	}
 
 	void cSoftBody::cSpring::ApplyForceToNodes()
 	{
-		if (NodeB->Mass == 0)
-		{
-			NodeB->Acceleration += CurrentForceAtoB / NodeB->Mass;
-		}
-		if (NodeB->Mass == 0)
-		{
-			NodeB->Acceleration -= CurrentForceAtoB / NodeA->Mass;
-		}
-	}
-
-	void cSoftBody::IntegrateNode(cNode* node)
-	{
-		if (node->Mass == 0) { return; }
-		// 1. Integrate position and velocity
-		// 2. Calculate spring forces??
+		mNodeA->ApplyForce(mCurrentForceAtoB);
+		mNodeB->ApplyForce(-mCurrentForceAtoB);
 	}
 
 	cSoftBody::cSoftBody(sSoftBodyDef& def) :
@@ -115,8 +128,8 @@ namespace phys
 				mNodes[def.Springs[i].first],
 				mNodes[def.Springs[i].second],
 				def.SpringConstant);
-			mNodes[def.Springs[i].first]->AttachedSprings.push_back(mSprings[i]);
-			mNodes[def.Springs[i].second]->AttachedSprings.push_back(mSprings[i]);
+			mNodes[def.Springs[i].first]->mAttachedSprings.push_back(mSprings[i]);
+			mNodes[def.Springs[i].second]->mAttachedSprings.push_back(mSprings[i]);
 			i++;
 		}
 		std::cout << toString() << std::endl;
@@ -145,7 +158,7 @@ namespace phys
 		int i = 1;
 		for (auto node : mNodes)
 		{
-			ss << "Node" << i << ": " << glm::to_string(node->Position) << std::endl;
+			ss << "Node" << i << ": " << glm::to_string(node->mPosition) << std::endl;
 			i++;
 		}
 		return ss.str();
@@ -154,11 +167,12 @@ namespace phys
 	bool cSoftBody::GetAABB(glm::vec3& mins, glm::vec3& maxs)
 	{
 		if (mNodes.empty()) { return false; }
-		mins = mNodes[0]->Position;
-		maxs = mNodes[0]->Position;
+		mins = mNodes[0]->mPosition;
+		maxs = mNodes[0]->mPosition;
 		for (auto node : mNodes)
 		{
-			auto pos = node->Position;
+			// TODO: Add radius and a little extra to detect nearby objects
+			auto pos = node->mPosition;
 			if (pos.x < mins.x) mins.x = pos.x;
 			if (pos.y < mins.y) mins.y = pos.y;
 			if (pos.z < mins.z) mins.z = pos.z;
@@ -172,14 +186,14 @@ namespace phys
 	bool cSoftBody::GetNodePosition(size_t index, glm::vec3& positionOut)
 	{
 		if (index >= mNodes.size()) { return false; }
-		positionOut = mNodes[index]->Position;
+		positionOut = mNodes[index]->mPosition;
 		return true;
 	}
 
 	bool cSoftBody::GetNodeRadius(size_t index, float& radiusOut)
 	{
 		if (index >= mNodes.size()) { return false; }
-		radiusOut = mNodes[index]->Radius;
+		radiusOut = mNodes[index]->mRadius;
 		return true;
 	}
 
@@ -188,19 +202,49 @@ namespace phys
 		return mNodes.size();
 	}
 
-	void cSoftBody::Integrate(float deltaTime)
+	void cSoftBody::Integrate(float deltaTime, const glm::vec3& gravity, const glm::vec3& wind)
 	{
+		// 1. Apply gracity and wind
+		updateInternal(deltaTime, gravity, wind);
+		// 2. Apply forces from strings to nodes
+		for (auto spring : mSprings)
+		{
+			spring->UpdateSpringForce();
+			spring->ApplyForceToNodes();
+		}
+		// 3. Integrate nodes
+		for (auto node : mNodes)
+		{
+			node->Integrate(deltaTime, gravity);
+		}
+		// 4. Do intergral collisions
+		for (int i = 0; i < mNodes.size() - 1; i++)
+		{
+			auto nodeA = mNodes[i];
+			for (int j = i + 1; j < mNodes.size(); j++)
+			{
+				auto nodeB = mNodes[j];
+				if (!nodeA->IsNeighbor(nodeB))
+				{
+					// Collide
+				}
+			}
+		}
 	}
 
 	void cSoftBody::updateInternal(float dt, const glm::vec3& gravity, const glm::vec3& wind)
 	{
+		for (auto node : mNodes)
+		{
+			node->ApplyForce(wind);
+		}
 	}
 
 	void cSoftBody::ClearAccelerations()
 	{
 		for (auto node : mNodes)
 		{
-			node->Acceleration = glm::vec3(0);
+			node->mAcceleration = glm::vec3(0);
 		}
 	}
 }
