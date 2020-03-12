@@ -123,6 +123,7 @@ namespace phys
         cIntegrator mIntegrator;
         std::vector<cSpring*> mSprings;
         cSoftBody(sSoftBodyDef& def);
+        float mDt;
     	virtual ~cSoftBody();
     	/*
     	 * Generates a string detailing info about the soft body
@@ -154,18 +155,29 @@ namespace phys
     	 * The amount of nodes the mesh has
     	 */
         size_t numNodes();
+    	/*
+    	 * Simulates a timestep of length `deltaTime` of the internal
+    	 * movement of the nodes in the mesh.
+    	 * Applies the `gravity` force without considering mass and
+    	 * `wind` considering mass.
+    	 */
         void Integrate(
             float deltaTime, 
             const glm::vec3& gravity = glm::vec3(0), 
             const glm::vec3& wind = glm::vec3(0));
-        void updateInternal(
-            float dt, 
-            const glm::vec3& gravity = glm::vec3(0),
-            const glm::vec3& wind = glm::vec3(0));
+    	/*
+    	 * Helper function for `Integrate`.
+    	 * Applies the external forces (wind) to the nodes.
+    	 */
+        void updateInternal(const glm::vec3& wind = glm::vec3(0));
     	/*
     	 * Sets the accelerations of all of the nodes to 0 in all axis
     	 */
-        virtual void ClearAccelerations();
+        void ClearAccelerations() override;
+    	/*
+    	 * Detects and simulates the collision between two nodes.
+    	 */
+        bool Collide(cNode* nodeA, cNode* nodeB);
     };
 }
 

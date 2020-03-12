@@ -1,6 +1,7 @@
 #include "cSoftBody.h"
 #include <sstream>
 #include <iostream>
+#include "nCollide.h"
 
 namespace phys
 {
@@ -204,8 +205,9 @@ namespace phys
 
 	void cSoftBody::Integrate(float deltaTime, const glm::vec3& gravity, const glm::vec3& wind)
 	{
-		// 1. Apply gracity and wind
-		updateInternal(deltaTime, gravity, wind);
+		mDt = deltaTime;
+		// 1. Apply wind
+		updateInternal(wind);
 		// 2. Apply forces from strings to nodes
 		for (auto spring : mSprings)
 		{
@@ -226,13 +228,13 @@ namespace phys
 				auto nodeB = mNodes[j];
 				if (!nodeA->IsNeighbor(nodeB))
 				{
-					// Collide
+					Collide(nodeA, nodeB);
 				}
 			}
 		}
 	}
 
-	void cSoftBody::updateInternal(float dt, const glm::vec3& gravity, const glm::vec3& wind)
+	void cSoftBody::updateInternal(const glm::vec3& wind)
 	{
 		for (auto node : mNodes)
 		{
@@ -246,5 +248,70 @@ namespace phys
 		{
 			node->mAcceleration = glm::vec3(0);
 		}
+	}
+
+	bool cSoftBody::Collide(cNode* nodeA, cNode* nodeB)
+	{
+		glm::vec3 cA = nodeA->mPreviousPosition;
+		glm::vec3 cB = nodeB->mPreviousPosition;
+		glm::vec3 vA = nodeA->mPosition - nodeA->mPreviousPosition;
+		glm::vec3 vB = nodeB->mPosition - nodeB->mPreviousPosition;
+		float rA = nodeA->mRadius;
+		float rB = nodeB->mRadius;
+		float t(0.f);
+
+		// Chapter 5.5 of Ericson's book
+		int result = nCollide::intersect_moving_sphere_sphere(
+			cA, rA, vA, cB, rB, vB, t
+		);
+		if (result == 0)
+		{
+			//Not colliding
+			return false;
+		}
+		// get the masses
+		float ma = nodeA->mMass;
+		float mb = nodeB->mMass;
+		float mt = ma + mb;
+		if (result == -1)
+		{
+			//std::cout << "Sphere clipping sphere " << std::endl;
+			// Already Colliding at the beggining of the timestep
+			// Calculate the impulse to set them apart
+			float initialDistance = glm::distance(nodeA->mPreviousPosition, nodeB->mPreviousPosition);
+			float targetDistance = rA + rB;
+			glm::vec3 impulseToA = glm::normalize(nodeA->mPreviousPosition - nodeB->mPreviousPosition);
+			impulseToA *= (targetDistance - initialDistance);
+			// rewind time
+			nodeA->mPosition = nodeA->mPreviousPosition;
+			nodeB->mPosition = nodeB->mPreviousPosition;
+			// apply the impulse considering the mass of each sphere
+			nodeA->mVelocity += impulseToA * (mb / mt);
+			nodeB->mVelocity -= impulseToA * (ma / mt);
+			// re integrate
+			nodeA->Integrate(mDt);
+			nodeB->Integrate(mDt);
+			return true;
+		}
+		// Collided during the timestep
+
+		//std::cout << "Sphere colliding sphere." << std::endl;
+		// rewind time to the point of collision
+		nodeA->mPosition = nodeA->mPreviousPosition + vA * t;
+		nodeB->mPosition = nodeB->mPreviousPosition + vB * t;
+
+		vA = nodeA->mVelocity;
+		vB = nodeB->mVelocity;
+
+		float c = 0.8; // how much energy will they loose
+		// float c = nodeA->elasticCoefficent * nodeB->elasticCoefficient
+		// calculate collided velocities (wikipedia)
+		nodeA->mVelocity = (c * mb * (vB - vA) + ma * vA + mb * vB) / mt;
+		nodeB->mVelocity = (c * ma * (vA - vB) + ma * vA + mb * vB) / mt;
+
+		// re integrate the rest of the timestep
+		nodeA->Integrate(mDt * (1.f - t));
+		nodeB->Integrate(mDt * (1.f - t));
+		return true;
 	}
 }
