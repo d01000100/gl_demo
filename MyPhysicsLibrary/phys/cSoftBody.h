@@ -122,8 +122,9 @@ namespace phys
         std::vector<cNode*> mNodes;
         cIntegrator mIntegrator;
         std::vector<cSpring*> mSprings;
-        cSoftBody(sSoftBodyDef& def);
         float mDt;
+        glm::vec3 mWind;
+        cSoftBody(sSoftBodyDef& def);
     	virtual ~cSoftBody();
     	/*
     	 * Generates a string detailing info about the soft body
@@ -163,8 +164,7 @@ namespace phys
     	 */
         void Integrate(
             float deltaTime, 
-            const glm::vec3& gravity = glm::vec3(0), 
-            const glm::vec3& wind = glm::vec3(0));
+            const glm::vec3& gravity = glm::vec3(0));
     	/*
     	 * Helper function for `Integrate`.
     	 * Applies the external forces (wind) to the nodes.
@@ -178,6 +178,10 @@ namespace phys
     	 * Detects and simulates the collision between two nodes.
     	 */
         bool Collide(cNode* nodeA, cNode* nodeB);
+    	/*
+    	 * Rotates the wind smoothly along the y axis
+    	 */
+        void rotateWind();
     };
 }
 

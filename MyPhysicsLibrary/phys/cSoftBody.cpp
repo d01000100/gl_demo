@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 #include "nCollide.h"
+#include <game_math.h>
 
 namespace phys
 {
@@ -110,7 +111,8 @@ namespace phys
 	}
 
 	cSoftBody::cSoftBody(sSoftBodyDef& def) :
-		iCollisionBody(eBodyType::soft)
+		iCollisionBody(eBodyType::soft),
+		mWind(glm::vec3(0,0,4))
 	{
 		size_t numNodes = def.Nodes.size();
 		mNodes.resize(numNodes);
@@ -203,11 +205,12 @@ namespace phys
 		return mNodes.size();
 	}
 
-	void cSoftBody::Integrate(float deltaTime, const glm::vec3& gravity, const glm::vec3& wind)
+	void cSoftBody::Integrate(float deltaTime, const glm::vec3& gravity)
 	{
 		mDt = deltaTime;
 		// 1. Apply wind
-		updateInternal(wind);
+		rotateWind();
+		updateInternal(mWind);
 		// 2. Apply forces from strings to nodes
 		for (auto spring : mSprings)
 		{
@@ -313,5 +316,14 @@ namespace phys
 		nodeA->Integrate(mDt * (1.f - t));
 		nodeB->Integrate(mDt * (1.f - t));
 		return true;
+	}
+
+	void cSoftBody::rotateWind()
+	{
+		mWind = glm::rotate(
+			mWind, 
+			glm::radians(10.0f) * mDt, 
+			glm::vec3(0, 1, 0)
+		);
 	}
 }
