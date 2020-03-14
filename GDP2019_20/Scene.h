@@ -10,8 +10,6 @@
 
 class Scene
 {
-private:
-	std::map<std::string, cMesh*> meshes;
 	std::map<std::string, cLight*> lights;
 	std::map<std::string, aGameItem*> gameItems;
 	std::map<std::string, sCameraSettings*> cameras;
@@ -30,7 +28,6 @@ public:
 	std::vector<aGameItem*> getItems();
 	std::vector<cLight*> getLights();
 	std::map<std::string, cLight*> getLightsMap();
-	std::map<std::string, cMesh*> getMeshesMap();
 	std::map<std::string, sCameraSettings*> getCamerasMap();
 	void changeCamera();
 	bool loadScene(std::string filename);

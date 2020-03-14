@@ -1,4 +1,5 @@
 #include "cModelLoader.h"
+#include "cVAOManager.h"
 
 #include <iostream>			// cin cout
 #include <fstream>		    // ifstream ofstream
@@ -18,14 +19,16 @@ cModelLoader::~cModelLoader()			// destructor
 // Takes the filename to load
 // Returns by ref the mesh
 bool cModelLoader::LoadPlyModel(
-	std::string filename,
-	cMesh &theMesh)				// Note the "&"
+	std::string filename, std::string friendlyName)
 {
-
+	auto newMesh = new cMesh();
+	cVAOManager::mLoadedMeshes[friendlyName] = newMesh;
 	std::ifstream theFile( filename.c_str() );
 	if ( ! theFile.is_open() )
 	{	
-		// On no! Where's the file??? 
+		// On no! Where's the file???
+		std::cout << "Could not find the model file: " << filename << std::endl;
+		newMesh->setLoadState(cMesh::eLoadState::error);
 		return false;
 	}
 
@@ -85,7 +88,7 @@ bool cModelLoader::LoadPlyModel(
 
 		// Add this temp vertex to the vector of vertices
 		// (cMesh &theMesh)
-		theMesh.vecVertices.push_back( tempVertex );
+		newMesh->vecVertices.push_back( tempVertex );
 	}
 
 	for (unsigned int index = 0; index != numberOfTriangles; index++)
@@ -100,13 +103,13 @@ bool cModelLoader::LoadPlyModel(
 			>> tempTriangle.vert_index_3;
 
 		// Add this triangle
-		theMesh.vecTriangles.push_back(tempTriangle);
+		newMesh->vecTriangles.push_back(tempTriangle);
 
 		sNiceTriangle* niceTri = new sNiceTriangle();
 		sPlyVertex plyA, plyB, plyC;
-		plyA = theMesh.vecVertices[tempTriangle.vert_index_1];
-		plyB = theMesh.vecVertices[tempTriangle.vert_index_2];
-		plyC = theMesh.vecVertices[tempTriangle.vert_index_3];
+		plyA = newMesh->vecVertices[tempTriangle.vert_index_1];
+		plyB = newMesh->vecVertices[tempTriangle.vert_index_2];
+		plyC = newMesh->vecVertices[tempTriangle.vert_index_3];
 
 		niceTri->a.x = plyA.x;
 		niceTri->a.y = plyA.y;
@@ -127,9 +130,9 @@ bool cModelLoader::LoadPlyModel(
 		niceTri->normal /= 3.0f;
 		niceTri->normal = glm::normalize(niceTri->normal);
 
-		theMesh.niceTriangles.push_back(niceTri);
+		newMesh->niceTriangles.push_back(niceTri);
 	}
 
-
+	newMesh->setLoadState(cMesh::eLoadState::in_cpu);
 	return true;
 }

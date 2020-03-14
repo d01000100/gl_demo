@@ -271,9 +271,8 @@ void cGameObject::draw()
 
 void cGameObject::recieveMessage(sMessage message) {
 
-	float translationStep = 0.2f;
+	float translationStep = 1.f;
 	float rotationStep = 1;
-	float scaleStep = 0.05f;
 
 	//printf("recieved %s message with v3Value: %s\n",
 	//	message.name.c_str(),

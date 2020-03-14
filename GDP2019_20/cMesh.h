@@ -27,11 +27,16 @@ struct sNiceTriangle
 	glm::vec3 a, b, c, normal;
 };
 
-class cMesh
+struct cMesh
 {
-public:
-	cMesh() {};			// Empty c'tor
-	~cMesh() {};		// Empty d'tor
+	enum class eLoadState
+	{
+		not_loaded,
+		in_cpu,
+		in_gpu,
+		error
+	};
+	
 	std::string filename;
 	// Store the vertices
 	std::vector<sPlyVertex> vecVertices;
@@ -40,6 +45,20 @@ public:
 	std::vector<sPlyTriangle> vecTriangles;
 
 	std::vector<sNiceTriangle*> niceTriangles;
+	void setLoadState(eLoadState state)
+	{
+		// TODO: Thread safe
+		loadState = state;
+	}
+	eLoadState getLoadState()
+	{
+		// TODO: Thread safe
+		eLoadState res;
+		res = loadState;
+		return res;
+	}
+private:
+	eLoadState loadState = eLoadState::not_loaded;
 };
 
 #endif 

@@ -7,10 +7,6 @@
 #include "cGameObject.h"
 
 #include <glm/glm.hpp>
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
-#include <glm/gtc/matrix_transform.hpp>
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <glm/gtx/string_cast.hpp>
@@ -59,36 +55,28 @@ std::vector<cGameObject*> Scene::getGameObjects()
 }
 
 std::map<std::string, cLight*> Scene::getLightsMap() { return lights;  }
-std::map<std::string, cMesh*> Scene::getMeshesMap() { return meshes; }
 std::map<std::string, sCameraSettings*> Scene::getCamerasMap() { return cameras; }
 
 bool Scene::loadMeshes(std::string filename) {
 	std::vector<meshSettings>* vMeshes = readMeshes(filename);
 
 	if (!vMeshes) { return false; }
-	
-	cModelLoader model_loader;
 
 	GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
 
 	for (int i = 0; i < vMeshes->size(); i++) {
 		meshSettings settings = vMeshes->at(i);
-		cMesh* data = new cMesh();
 
-		data->filename = settings.filename;
-
-		if (!model_loader.LoadPlyModel(settings.filename, *data)) {
-			printf("Couldn't load %s model file\n", settings.filename.c_str());
+		if (!cModelLoader::LoadPlyModel(settings.filename, settings.name)) {
 			return false;
 		}
 
-		sModelDrawInfo drawInfo;
-		::theVAOManager->LoadModelIntoVAO(settings.name,
-			*data,
-			drawInfo,
-			programID);
-
-		meshes[settings.name] = data;
+		if (!::theVAOManager->LoadModelIntoVAO(
+			settings.name,
+			programID))
+		{
+			return false;
+		}
 	}
 
 	return true;

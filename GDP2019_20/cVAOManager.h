@@ -62,23 +62,24 @@ class cVAOManager
 public:
 
 	// Takes a cMesh object and copies it into the GPU (as a VOA)
-	bool LoadModelIntoVAO(std::string fileName, 
-						  cMesh &theMesh,				// NEW
-						  sModelDrawInfo &drawInfo, 
+	bool LoadModelIntoVAO(std::string meshName,
 						  unsigned int shaderProgramID);
 
 	// We don't want to return an int, likely
-	bool FindDrawInfoByModelName(std::string filename,
+	bool FindDrawInfoByModelName(std::string modelName,
 								 sModelDrawInfo &drawInfo);
 
 	std::string getLastError(bool bAndClear = true);
 
+	static std::map<std::string, cMesh*> mLoadedMeshes;
+	static const std::string defaultMeshName;
 private:
 
 	std::map< std::string /*model name*/,
 		      sModelDrawInfo /* info needed to draw*/ >
-		m_map_ModelName_to_VAOID;
-
+		mGraphicModelInfo;
 };
+
+typedef std::map<std::string, cMesh*> mapMeshes;
 
 #endif	// _cVAOManager_HG_

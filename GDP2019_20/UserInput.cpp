@@ -144,7 +144,7 @@ void velocityControls(std::string player_name, GLFWwindow* window)
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	//camera_orbit(key, action, mods);
+	camera_orbit(key, action, mods);
 	//thrusterControls(key, action, mods);
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{		

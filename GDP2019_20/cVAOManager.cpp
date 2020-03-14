@@ -6,6 +6,11 @@
 #include <vector>
 
 #include <sstream>
+#include "util.h"
+#include <iostream>
+
+mapMeshes cVAOManager::mLoadedMeshes;
+const std::string cVAOManager::defaultMeshName = "sphere_model";
 
 sModelDrawInfo::sModelDrawInfo()
 {
@@ -70,16 +75,22 @@ void sModelDrawInfo::CalcExtents(void)
 
 
 bool cVAOManager::LoadModelIntoVAO(
-		std::string fileName, 
-		cMesh& theMesh,					// NEW
-		sModelDrawInfo &drawInfo,
+		std::string meshName,
 	    unsigned int shaderProgramID)
 
 {
+	if (!mapContains(mLoadedMeshes, meshName))
+	{
+		std::cout << "Trying to load a not read model into the VAO\n";
+		return false;
+	}
 	// Write some code to copy the infomation from cMesh& theMesh
 	//  to the sModelDrawInfo& drawInfo...
+	auto theMesh = mLoadedMeshes[meshName];
 
-	drawInfo.numberOfVertices = (unsigned int)theMesh.vecVertices.size();
+	sModelDrawInfo drawInfo;
+
+	drawInfo.numberOfVertices = (unsigned int)theMesh->vecVertices.size();
 	// Allocate an array big enought
 	drawInfo.pVertices = new sVertex[drawInfo.numberOfVertices];
 
@@ -87,9 +98,9 @@ bool cVAOManager::LoadModelIntoVAO(
 	for (unsigned int index = 0; index != drawInfo.numberOfVertices; index++)
 	{
 
-		drawInfo.pVertices[index].x = theMesh.vecVertices[index].x;
-		drawInfo.pVertices[index].y = theMesh.vecVertices[index].y;
-		drawInfo.pVertices[index].z = theMesh.vecVertices[index].z;
+		drawInfo.pVertices[index].x = theMesh->vecVertices[index].x;
+		drawInfo.pVertices[index].y = theMesh->vecVertices[index].y;
+		drawInfo.pVertices[index].z = theMesh->vecVertices[index].z;
 		drawInfo.pVertices[index].w = 1.0f;		// Set to 1 if not sure
 
 		drawInfo.pVertices[index].r = 1.0f;
@@ -98,9 +109,9 @@ bool cVAOManager::LoadModelIntoVAO(
 		drawInfo.pVertices[index].a = 1.0f;		// Again, if not sure, set to 1.0f
 
 		glm::vec3 normal;
-		normal.x = theMesh.vecVertices[index].nx;
-		normal.y = theMesh.vecVertices[index].ny;
-		normal.z = theMesh.vecVertices[index].nz;
+		normal.x = theMesh->vecVertices[index].nx;
+		normal.y = theMesh->vecVertices[index].ny;
+		normal.z = theMesh->vecVertices[index].nz;
 
 		normal = glm::normalize(normal);
 
@@ -110,15 +121,15 @@ bool cVAOManager::LoadModelIntoVAO(
 		drawInfo.pVertices[index].nw = 1.0f;		// if unsure, set to 1.0f
 
 		// These are the "texture coordinates", and we aren't loading them, yet
-		drawInfo.pVertices[index].u0 = theMesh.vecVertices[index].u;
-		drawInfo.pVertices[index].v0 = theMesh.vecVertices[index].v;
+		drawInfo.pVertices[index].u0 = theMesh->vecVertices[index].u;
+		drawInfo.pVertices[index].v0 = theMesh->vecVertices[index].v;
 		drawInfo.pVertices[index].u1 = 1.0f;
 		drawInfo.pVertices[index].v1 = 1.0f;	
 	}
 
 	// Now copy the index information, too
-	drawInfo.numberOfTriangles = (unsigned int)theMesh.vecTriangles.size();
-	drawInfo.numberOfIndices = (unsigned int)theMesh.vecTriangles.size() * 3;
+	drawInfo.numberOfTriangles = (unsigned int)theMesh->vecTriangles.size();
+	drawInfo.numberOfIndices = (unsigned int)theMesh->vecTriangles.size() * 3;
 
 	// Allocate the index array
 	drawInfo.pIndices = new unsigned int[drawInfo.numberOfIndices];
@@ -127,13 +138,13 @@ bool cVAOManager::LoadModelIntoVAO(
 	unsigned int indexIndex = 0;
 	for ( ; indexTri != drawInfo.numberOfTriangles; indexTri++, indexIndex += 3 )
 	{
-		drawInfo.pIndices[indexIndex + 0] = (unsigned int)theMesh.vecTriangles[indexTri].vert_index_1;
-		drawInfo.pIndices[indexIndex + 1] = (unsigned int)theMesh.vecTriangles[indexTri].vert_index_2;
-		drawInfo.pIndices[indexIndex + 2] = (unsigned int)theMesh.vecTriangles[indexTri].vert_index_3;
+		drawInfo.pIndices[indexIndex + 0] = (unsigned int)theMesh->vecTriangles[indexTri].vert_index_1;
+		drawInfo.pIndices[indexIndex + 1] = (unsigned int)theMesh->vecTriangles[indexTri].vert_index_2;
+		drawInfo.pIndices[indexIndex + 2] = (unsigned int)theMesh->vecTriangles[indexTri].vert_index_3;
 	}
 
 
-	drawInfo.meshName = fileName;
+	drawInfo.meshName = meshName;
 
 	// 
 	// Model is loaded and the vertices and indices are in the drawInfo struct
@@ -226,32 +237,46 @@ bool cVAOManager::LoadModelIntoVAO(
 	glDisableVertexAttribArray(vcol_location);
 
 	// Store the draw information into the map
-	this->m_map_ModelName_to_VAOID[ drawInfo.meshName ] = drawInfo;
+	this->mGraphicModelInfo[ drawInfo.meshName ] = drawInfo;
 
-
+	theMesh->setLoadState(cMesh::eLoadState::in_gpu);
+	
 	return true;
 }
 
 
 // We don't want to return an int, likely
 bool cVAOManager::FindDrawInfoByModelName(
-		std::string filename,
+		std::string modelName,
 		sModelDrawInfo &drawInfo) 
 {
-	std::map< std::string /*model name*/,
-			sModelDrawInfo /* info needed to draw*/ >::iterator 
-		itDrawInfo = this->m_map_ModelName_to_VAOID.find( filename );
-
-	// Find it? 
-	if ( itDrawInfo == this->m_map_ModelName_to_VAOID.end() )
+	if(!mapContains(mLoadedMeshes, modelName))
 	{
-		// Nope
 		return false;
 	}
 
-	// Else we found the thing to draw
-	// ...so 'return' that information
-	drawInfo = itDrawInfo->second;
+	auto mesh = mLoadedMeshes[modelName];
+
+	if(mesh->getLoadState() != cMesh::eLoadState::in_gpu)
+	{
+		// If it's not loaded, return the default model
+		if (mapContains(mGraphicModelInfo, defaultMeshName))
+		{
+			drawInfo = mGraphicModelInfo[defaultMeshName];
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	if (!mapContains(mGraphicModelInfo, modelName))
+	{
+		return false;
+	}
+
+	drawInfo = mGraphicModelInfo[modelName];
 	return true;
 }
 

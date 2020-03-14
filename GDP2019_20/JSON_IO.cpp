@@ -296,7 +296,7 @@ void saveScene(Scene* scene, std::string filename) {
 	}
 
 	jScene["Lights"] = jLights; jScene["Objects"] = jObjs; jScene["Sounds"] = jSounds;
-	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
+	jScene["Meshes"] = serializeMeshes(cVAOManager::mLoadedMeshes);
 	jScene["Cameras"] = serializeCameras(scene->getCamerasMap());
 	jScene["Textures"] = loaded_textures;
 

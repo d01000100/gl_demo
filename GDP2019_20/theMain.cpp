@@ -10,7 +10,6 @@
 #include "cShaderManager.h"
 
 // The Physics function
-#include "cPhysics.h"
 #include "cLowPassFilter.h"
 #include "DebugRenderer/cDebugRenderer.h"
 #include "Scene.h"
@@ -19,14 +18,10 @@
 #include "SceneEditor.h"
 #include "JSON_IO.h"
 #include "SkyBox.h"
-#include "ScriptBuilder.h"
-#include "DollyCamera.h"
-#include "Gameplay.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
-#include "FlockingManager.h"
-#include "UserInput.h"
+#include "cModelLoader.h"
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
@@ -35,17 +30,14 @@ cVAOManager* theVAOManager = new cVAOManager();
 GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();
-//AABBGrid* pAABBgrid = new AABBGrid();
-DollyCamera* dollyCamera = DollyCamera::getTheCamera();
 bool ::isDebug = false, ::isRunning = false, ::withCollisions = true;
 
 int main(void)
 {
 	Scene* theScene = Scene::getTheScene();
-	Camera* theCamera = FollowCamera::getTheCamera();
+	Camera* theCamera = Camera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
 	SkyBox theSkyBox;
-	FlockingManager flockingManager;
 	glm::vec3 cameraOffset(0, 30 ,-50);
 	//Gameplay gameplay;
 
@@ -58,7 +50,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	::window = glfwCreateWindow(900, 900, "SimpleGame", NULL, NULL);
+	::window = glfwCreateWindow(1600, 900, "SimpleGame", NULL, NULL);
 	if (!::window)
 	{
 		glfwTerminate();
@@ -87,14 +79,14 @@ int main(void)
 		return -1;
 	}
 
-
 	GLuint shaderProgID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
-	
-	if (!readTextures(::scene_filename)) { return -1; }
-	if (!theScene->loadScene(scene_filename)) { return -1; }
 
-	//gameplay.init(window);
-	flockingManager.init();
+	// Load default model for objects (and skybox)
+	cModelLoader::LoadPlyModel("assets/models/sphere.ply", cVAOManager::defaultMeshName);
+	::theVAOManager->LoadModelIntoVAO(cVAOManager::defaultMeshName, shaderProgID);
+	
+	if (!readTextures(::scene_filename)) { return -1; }	
+	if (!theScene->loadScene(scene_filename)) { return -1; }
 
 	theSkyBox.init(
 		"SpaceBox_right1_posX.bmp",
@@ -103,16 +95,13 @@ int main(void)
 		"SpaceBox_bottom4_negY.bmp",
 		"SpaceBox_front5_posZ.bmp",
 		"SpaceBox_back6_negZ.bmp",
-		"sphere_model");
+		cVAOManager::defaultMeshName);
 
 
 	sceneEditor->init(theScene);
 
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
-	
-	cPhysics* pPhysics = new cPhysics();
-	pPhysics->debugRenderer = pDebugRenderer;
 
 	cLowPassFilter avgDeltaTimeThingy;
 
@@ -141,12 +130,11 @@ int main(void)
 
 		glUseProgram(shaderProgID);
 
-		float ratio;
 		int width, height;
 		glm::mat4 p, v;
 
 		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / (float)height;
+		float ratio = width / (float)height;
 
 		// Projection matrix
 		p = glm::perspective(0.6f,		// FOV
@@ -172,10 +160,6 @@ int main(void)
 		theScene->IntegrationStep(averageDeltaTime);
 
 		v = theCamera->lookAt();
-		
-		//gameplay.update(averageDeltaTime);
-		flockingManager.update(averageDeltaTime);
-		pPhysics->IntegrationStep(theScene->getGameObjects(), averageDeltaTime);
 
 		theSkyBox.draw();
 		theScene->drawScene();

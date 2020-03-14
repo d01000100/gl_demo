@@ -1,12 +1,5 @@
 {
-    "collisions?": true,
-  "Cameras": [
-    {
-      "name": "top-down",
-      "position": [0.0, 110.0, -0.10000000149011612],
-      "target": [0.0, 0.0, 0.0]
-    }
-  ],
+  "Cameras": null,
   "Lights": [
     {
       "cutOffDist": 50.0,
@@ -28,150 +21,37 @@
     }
   ],
   "Meshes": [
+    { "filename": "assets/models/bunny.ply", "name": "bunny_model" },
     { "filename": "assets/models/quad.ply", "name": "quad_model" },
-    { "filename": "assets/models/low_poly_ship.ply", "name": "ship_model" },
-    { "filename": "assets/models/sphere.ply", "name": "sphere_model" }
+    { "filename": "assets/models/sphere.ply", "name": "sphere_model" },
+    { "filename": "assets/models/teapot.ply", "name": "teapot_model" }
   ],
   "Objects": [
     {
-      "Physics": {
-        "acceleration": [0.0, 0.0, 0.0],
-        "gravity": false,
-        "radius": 0.0,
-        "shape": "???",
-        "velocity": [0.0, 0.0, 0.0]
-      },
-      "alpha": 1.0,
-      "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
-      "isVisible": false,
-      "mesh": "sphere_model",
-      "name": "bullet_template",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [0.0, -0.0, 0.0],
-      "scale": 0.5,
-      "specularColor": [255.0, 255.0, 255.0, 50.0]
-    },
-    {
       "alpha": 1.0,
       "diffuseColor": [204.0, 204.0, 204.0],
       "isLit": true,
       "isVisible": true,
-      "mesh": "quad_model",
-      "name": "floor",
-      "position": [0.0, -20.0, 0.0],
-      "rotation": [-90.0, 0.0, 0.0],
-      "scale": 84.76687622070313,
-      "specularColor": [255.0, 255.0, 255.0, 50.0],
-      "textures": [{ "textureName": "tile_floor.bmp", "weight": 1.0 }]
-    },
-    {
-      "Physics": {
-        "acceleration": [0.0, 0.0, 0.0],
-        "gravity": false,
-        "radius": 2.0,
-        "shape": "sphere",
-        "velocity": [0.0, 0.0, 0.0]
-      },
-      "alpha": 1.0,
-      "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
-      "isVisible": true,
-      "mesh": "ship_model",
-      "name": "player",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [0.0, -0.0, 0.0],
-      "scale": 0.3304840326309204,
-      "specularColor": [255.0, 255.0, 255.0, 50.0],
-      "textures": [{ "textureName": "low-poly-ship.bmp", "weight": 1.0 }]
-    },
-    {
-      "Physics": {
-        "acceleration": [0.0, 0.0, 0.0],
-        "gravity": false,
-        "radius": 2.0
-      },
-      "alpha": 1.0,
-      "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
-      "isVisible": false,
-      "mesh": "ship_model",
-      "name": "ship_template",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [0.0, -0.0, 0.0],
-      "scale": 0.3304840326309204,
-      "specularColor": [255.0, 255.0, 255.0, 50.0]
-    },
-    {
-      "alpha": 1.0,
-      "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
-      "isVisible": true,
-      "mesh": "sphere_model",
-      "name": "sphere_model_1001",
-      "tags": ["path_point"],
-      "position": [25.600025177001953, 0.0, -24.000019073486328],
+      "mesh": "bunny_model",
+      "name": "bunny_model_1000",
+      "position": [1.0, 1.0, -79.0],
       "rotation": [0.0, -0.0, 0.0],
       "scale": 1.0,
       "specularColor": [255.0, 255.0, 255.0, 50.0]
     },
     {
       "alpha": 1.0,
-      "diffuseColor": [204.0, 204.0, 204.0],
+      "diffuseColor": [255.0, 0, 0],
       "isLit": true,
       "isVisible": true,
-      "mesh": "sphere_model",
-      "name": "sphere_model_1002",
-      "tags": ["path_point"],
-      "position": [-24.80002212524414, 0.0, 0.0],
-      "rotation": [0.0, -0.0, 0.0],
-      "scale": 1.0,
-      "specularColor": [255.0, 255.0, 255.0, 50.0]
-    },
-    {
-      "alpha": 1.0,
-      "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
-      "isVisible": true,
-      "mesh": "sphere_model",
-      "name": "sphere_model_1003",
-      "tags": ["path_point"],
-      "position": [9.199995994567871, 0.0, 0.0],
-      "rotation": [0.0, -0.0, 0.0],
-      "scale": 1.0,
-      "specularColor": [255.0, 255.0, 255.0, 50.0]
-    },
-    {
-      "alpha": 1.0,
-      "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
-      "isVisible": true,
-      "mesh": "sphere_model",
-      "name": "sphere_model_1004",
-      "tags": ["path_point"],
-      "position": [-14.999990463256836, 0.0, 16.599990844726563],
-      "rotation": [0.0, -0.0, 0.0],
-      "scale": 1.0,
-      "specularColor": [255.0, 255.0, 255.0, 50.0]
-    },
-    {
-      "alpha": 1.0,
-      "diffuseColor": [204.0, 204.0, 204.0],
-      "isLit": true,
-      "isVisible": true,
-      "mesh": "sphere_model",
-      "name": "sphere_model_1005",
-      "tags": ["path_point"],
-      "position": [
-        27.800033569335938,
-        2.9802322387695313e-8,
-        28.800037384033203
-      ],
+      "mesh": "teapot_model",
+      "name": "teapot_model_1001",
+      "position": [0.0, 0.0, 50.0],
       "rotation": [0.0, -0.0, 0.0],
       "scale": 1.0,
       "specularColor": [255.0, 255.0, 255.0, 50.0]
     }
   ],
   "Sounds": null,
-  "Textures": ["tile_floor.bmp", "low-poly-ship.bmp"]
+  "Textures": null
 }
