@@ -23,7 +23,6 @@
   "Meshes": [
     { "filename": "assets/models/bunny.ply", "name": "bunny_model" },
     { "filename": "assets/models/quad.ply", "name": "quad_model" },
-    { "filename": "assets/models/sphere.ply", "name": "sphere_model" },
     { "filename": "assets/models/teapot.ply", "name": "teapot_model" }
   ],
   "Objects": [

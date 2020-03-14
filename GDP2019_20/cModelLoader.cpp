@@ -134,5 +134,15 @@ bool cModelLoader::LoadPlyModel(
 	}
 
 	newMesh->setLoadState(cMesh::eLoadState::in_cpu);
+	std::cout << "Loaded model " << friendlyName << " in cpu\n";
 	return true;
+}
+
+void cModelLoader::LoadAllModels(std::vector<meshSettings>* vMeshes)
+{
+	for (const auto meshInfo : *vMeshes)
+	{
+		LoadPlyModel(meshInfo.filename, meshInfo.name);
+	}
+	delete vMeshes;
 }

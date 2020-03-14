@@ -10,6 +10,7 @@
 #include <iostream>
 
 mapMeshes cVAOManager::mLoadedMeshes;
+mapDrawInfos cVAOManager::mGraphicModelInfo;
 const std::string cVAOManager::defaultMeshName = "sphere_model";
 
 sModelDrawInfo::sModelDrawInfo()
@@ -237,7 +238,7 @@ bool cVAOManager::LoadModelIntoVAO(
 	glDisableVertexAttribArray(vcol_location);
 
 	// Store the draw information into the map
-	this->mGraphicModelInfo[ drawInfo.meshName ] = drawInfo;
+	mGraphicModelInfo[ drawInfo.meshName ] = drawInfo;
 
 	theMesh->setLoadState(cMesh::eLoadState::in_gpu);
 	
@@ -278,5 +279,22 @@ bool cVAOManager::FindDrawInfoByModelName(
 
 	drawInfo = mGraphicModelInfo[modelName];
 	return true;
+}
+
+int cVAOManager::pushLoadedModelsToGPU(GLuint shaderProgramID)
+{
+	int count = 0;
+	for (auto model_pair : mLoadedMeshes)
+	{
+		auto model = model_pair.second;
+		if (model->getLoadState() == cMesh::eLoadState::in_cpu)
+		{
+			if (LoadModelIntoVAO(model_pair.first, shaderProgramID))
+			{
+				count++;
+			}
+		}
+	}
+	return count;
 }
 

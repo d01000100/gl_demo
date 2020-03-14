@@ -83,7 +83,7 @@ int main(void)
 
 	// Load default model for objects (and skybox)
 	cModelLoader::LoadPlyModel("assets/models/sphere.ply", cVAOManager::defaultMeshName);
-	::theVAOManager->LoadModelIntoVAO(cVAOManager::defaultMeshName, shaderProgID);
+	cVAOManager::LoadModelIntoVAO(cVAOManager::defaultMeshName, shaderProgID);
 	
 	if (!readTextures(::scene_filename)) { return -1; }	
 	if (!theScene->loadScene(scene_filename)) { return -1; }
@@ -129,6 +129,12 @@ int main(void)
 		avgDeltaTimeThingy.addValue(deltaTime);
 
 		glUseProgram(shaderProgID);
+
+		int nLoadedModels = cVAOManager::pushLoadedModelsToGPU(shaderProgID);
+		if (nLoadedModels > 0)
+		{
+			std::cout << nLoadedModels << " models loaded to gpu\n";
+		}
 
 		int width, height;
 		glm::mat4 p, v;

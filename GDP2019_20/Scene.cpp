@@ -10,6 +10,7 @@
 // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <glm/gtx/string_cast.hpp>
+#include <thread>
 
 Scene* Scene::theScene = new Scene();
 
@@ -62,22 +63,8 @@ bool Scene::loadMeshes(std::string filename) {
 
 	if (!vMeshes) { return false; }
 
-	GLuint programID = ::theShaderManager.getIDFromFriendlyName(::shader_name);
-
-	for (int i = 0; i < vMeshes->size(); i++) {
-		meshSettings settings = vMeshes->at(i);
-
-		if (!cModelLoader::LoadPlyModel(settings.filename, settings.name)) {
-			return false;
-		}
-
-		if (!::theVAOManager->LoadModelIntoVAO(
-			settings.name,
-			programID))
-		{
-			return false;
-		}
-	}
+	std::thread modelThread(cModelLoader::LoadAllModels, vMeshes);
+	modelThread.detach();
 
 	return true;
 }

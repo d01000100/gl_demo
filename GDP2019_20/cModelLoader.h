@@ -4,6 +4,7 @@
 #include <string>	
 
 #include "cMesh.h"
+#include "JSON_IO.h"
 
 class cModelLoader
 {
@@ -18,6 +19,7 @@ public:
 		std::string friendlyName
 	);
 
+	static void LoadAllModels(std::vector<meshSettings>* vMeshes);
 };
 
 #endif //_cModelLoader_HG_2019_09_09_
