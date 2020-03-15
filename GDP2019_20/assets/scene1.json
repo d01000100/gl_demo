@@ -1,4 +1,5 @@
 {
+  "parallel_models": true,
   "Cameras": null,
   "Lights": [
     {
@@ -23,6 +24,7 @@
   "Meshes": [
     { "filename": "assets/models/bunny.ply", "name": "bunny_model" },
     { "filename": "assets/models/quad.ply", "name": "quad_model" },
+    { "filename": "assets/models/sphere.ply", "name": "sphere_model" },
     { "filename": "assets/models/teapot.ply", "name": "teapot_model" }
   ],
   "Objects": [
@@ -40,7 +42,7 @@
     },
     {
       "alpha": 1.0,
-      "diffuseColor": [255.0, 0, 0],
+      "diffuseColor": [255.0, 0.0, 0.0],
       "isLit": true,
       "isVisible": true,
       "mesh": "teapot_model",

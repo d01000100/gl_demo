@@ -15,7 +15,7 @@ void stdVecConc(std::vector<T>* v1, std::vector<T>* v2)
 }
 
 template <typename T, typename K>
-bool mapContains(std::map<K, T> mapa, K llave)
+bool mapContains(const std::map<K, T> &mapa, const K &llave)
 {
 	return mapa.find(llave) != mapa.end();
 }

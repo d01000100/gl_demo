@@ -82,8 +82,9 @@ int main(void)
 	// Load default model for objects (and skybox)
 	cModelLoader::LoadPlyModel("assets/models/sphere.ply", cVAOManager::defaultMeshName);
 	cVAOManager::LoadModelIntoVAO(cVAOManager::defaultMeshName, shaderProgID);
-	
-	if (!readTextures(::scene_filename)) { return -1; }	
+
+	if (!readConfig(::scene_filename)) return -1;
+;	if (!readTextures(::scene_filename)) { return -1; }	
 	if (!theScene->loadScene(scene_filename)) { return -1; }
 
 	theSkyBox.init(

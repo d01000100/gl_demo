@@ -12,20 +12,32 @@ using json = nlohmann::json;
 
 json loaded_textures;
 
-std::vector<meshSettings>* readMeshes(std::string filename) {
+json Config::jConfig;
+
+bool jsonContains(const json &jObj, const std::string &key)
+{
+	return jObj.find(key) != jObj.end();
+}
+
+bool readConfig(std::string filename)
+{
 	std::ifstream i;
 	i.open(filename);
 
-	if (!i.is_open()) {
-		printf("Didn't found %s file \n", filename.c_str());
-		return NULL;
+	if (!i.is_open())
+	{
+		printf("Didn't found config file: %s\n", filename.c_str());
+		return false;
 	}
 
-	json jFile;
-	i >> jFile;
+	i >> Config::jConfig;
+	return true;
+}
 
-	json::iterator jMeshes = jFile.find("Meshes");
-	if (jMeshes == jFile.end()) {
+std::vector<meshSettings>* readMeshes(std::string filename) {
+
+	json::iterator jMeshes = Config::jConfig.find("Meshes");
+	if (jMeshes == Config::jConfig.end()) {
 		printf("No Meshes found!!\n");
 		return NULL;
 	}
@@ -47,8 +59,6 @@ std::vector<meshSettings>* readMeshes(std::string filename) {
 		mSettings.filename = (*mesh)["filename"].get<std::string>();
 		vMeshes->push_back(mSettings);
 	}
-
-	i.close();
 
 	return vMeshes;
 }
@@ -230,8 +240,10 @@ std::map<std::string, aGameItem*>* readItems(std::string filename) {
 	return mItems;
 }
 
-json serializeMeshes(std::map<std::string, cMesh*> meshes) {
+json serializeMeshes(std::map<std::string, cMesh*> meshes)
+{
 	json jvMeshes;
+	/*
 	int i;
 	std::map<std::string, cMesh*>::iterator iMesh;
 	for (iMesh = meshes.begin(), i = 0;
@@ -246,6 +258,15 @@ json serializeMeshes(std::map<std::string, cMesh*> meshes) {
 		jvMeshes[i] = jMesh;
 	}
 
+	return jvMeshes;
+	*/
+	if (jsonContains(Config::jConfig, "Meshes"))
+	{
+		if (Config::jConfig["Meshes"].size() > 0)
+		{
+			jvMeshes = Config::jConfig["Meshes"];
+		}
+	}
 	return jvMeshes;
 }
 

@@ -63,8 +63,16 @@ bool Scene::loadMeshes(std::string filename) {
 
 	if (!vMeshes) { return false; }
 
-	std::thread modelThread(cModelLoader::LoadAllModels, vMeshes);
-	modelThread.detach();
+	if (jsonContains(Config::jConfig, "parallel_models") &&
+		Config::jConfig["parallel_models"].get<bool>())
+	{
+		std::thread modelThread(cModelLoader::LoadAllModels, vMeshes);
+		modelThread.detach();		
+	}
+	else
+	{
+		cModelLoader::LoadAllModels(vMeshes);
+	}
 
 	return true;
 }
