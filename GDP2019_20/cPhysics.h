@@ -74,9 +74,6 @@ private:
 	bool DoSphereMeshCollision( cGameObject* pA, cGameObject* pB,
 									 sCollisionInfo &collisionInfo );
 
-	cMesh transformMesh(cMesh mesh, glm::mat4 tMat);
-
-
 	glm::vec3  m_Gravity;
 
 };

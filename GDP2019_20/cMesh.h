@@ -5,6 +5,7 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
+#include <mutex>
 
 // This structure matches the file, so that our life is
 //   simpler and happier, and we all get along.
@@ -45,20 +46,11 @@ struct cMesh
 	std::vector<sPlyTriangle> vecTriangles;
 
 	std::vector<sNiceTriangle*> niceTriangles;
-	void setLoadState(eLoadState state)
-	{
-		// TODO: Thread safe
-		loadState = state;
-	}
-	eLoadState getLoadState()
-	{
-		// TODO: Thread safe
-		eLoadState res;
-		res = loadState;
-		return res;
-	}
+	void setLoadState(eLoadState state);
+	eLoadState getLoadState();
 private:
 	eLoadState loadState = eLoadState::not_loaded;
+	std::mutex loadStateLock;
 };
 
 #endif 

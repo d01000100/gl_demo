@@ -1,10 +1,8 @@
 #include "cGameObject.h"
 #include "globalStuff.h"
+#include "cVAOManager.h"
 
 #include <glm/glm.hpp>
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <glm/gtx/string_cast.hpp>
@@ -168,7 +166,7 @@ void cGameObject::draw()
 
 		sModelDrawInfo drawInfo;
 		glm::mat4 m = calculateTransformationMatrix();
-		if (::theVAOManager->FindDrawInfoByModelName(meshName, drawInfo))
+		if (cVAOManager::FindDrawInfoByModelName(meshName, drawInfo))
 		{
 
 			GLint matModel_UL = glGetUniformLocation(programID, "matModel");

@@ -56,6 +56,8 @@ struct sModelDrawInfo
 	void CalcExtents(void);
 };
 
+typedef std::map<std::string, cMesh*> mapMeshes;
+typedef std::map<std::string, sModelDrawInfo> mapDrawInfos;
 
 class cVAOManager
 {
@@ -70,19 +72,14 @@ public:
 								 sModelDrawInfo &drawInfo);
 
 	static int pushLoadedModelsToGPU(GLuint shaderProgramID);
-
-	std::string getLastError(bool bAndClear = true);
-
-	static std::map<std::string, cMesh*> mLoadedMeshes;
+	static void addLoadedMesh(std::string friendlyName, cMesh* mesh);
+	static mapMeshes getLoadedMeshes();
 	static const std::string defaultMeshName;
 private:
 
-	static std::map< std::string /*model name*/,
-		      sModelDrawInfo /* info needed to draw*/ >
-		mGraphicModelInfo;
+	static mapMeshes mLoadedMeshes;
+	static mapDrawInfos mGraphicModelInfo;
+	static std::mutex loadedMeshesLock;
 };
-
-typedef std::map<std::string, cMesh*> mapMeshes;
-typedef std::map<std::string, sModelDrawInfo> mapDrawInfos;
 
 #endif	// _cVAOManager_HG_

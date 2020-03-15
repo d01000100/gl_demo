@@ -1,9 +1,9 @@
 #include "JSON_IO.h"
 #include "globalStuff.h"
+#include "cVAOManager.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
-#include "globalStuff.h"
 
 #include "cMesh.h"
 #include "GameItemFactory/GameItemFactory.h"
@@ -296,7 +296,7 @@ void saveScene(Scene* scene, std::string filename) {
 	}
 
 	jScene["Lights"] = jLights; jScene["Objects"] = jObjs; jScene["Sounds"] = jSounds;
-	jScene["Meshes"] = serializeMeshes(cVAOManager::mLoadedMeshes);
+	jScene["Meshes"] = serializeMeshes(cVAOManager::getLoadedMeshes());
 	jScene["Cameras"] = serializeCameras(scene->getCamerasMap());
 	jScene["Textures"] = loaded_textures;
 

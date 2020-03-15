@@ -12,6 +12,7 @@
 mapMeshes cVAOManager::mLoadedMeshes;
 mapDrawInfos cVAOManager::mGraphicModelInfo;
 const std::string cVAOManager::defaultMeshName = "sphere_model";
+std::mutex cVAOManager::loadedMeshesLock;
 
 sModelDrawInfo::sModelDrawInfo()
 {
@@ -284,7 +285,7 @@ bool cVAOManager::FindDrawInfoByModelName(
 int cVAOManager::pushLoadedModelsToGPU(GLuint shaderProgramID)
 {
 	int count = 0;
-	for (auto model_pair : mLoadedMeshes)
+	for (auto model_pair : getLoadedMeshes())
 	{
 		auto model = model_pair.second;
 		if (model->getLoadState() == cMesh::eLoadState::in_cpu)
@@ -296,5 +297,21 @@ int cVAOManager::pushLoadedModelsToGPU(GLuint shaderProgramID)
 		}
 	}
 	return count;
+}
+
+void cVAOManager::addLoadedMesh(std::string friendlyName, cMesh* mesh)
+{
+	loadedMeshesLock.lock();
+	mLoadedMeshes[friendlyName] = mesh;
+	loadedMeshesLock.unlock();
+}
+
+mapMeshes cVAOManager::getLoadedMeshes()
+{
+	// TODO: Make this per mesh??
+	loadedMeshesLock.lock();
+	mapMeshes res = mLoadedMeshes;
+	loadedMeshesLock.unlock();
+	return res;
 }
 

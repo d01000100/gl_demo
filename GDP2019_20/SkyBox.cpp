@@ -7,6 +7,7 @@
 #include "globalStuff.h"
 #include "cModelLoader.h"
 #include "Camera.h"
+#include "cVAOManager.h"
 
 bool SkyBox::init(std::string posX_fileName, std::string negX_fileName,
 				std::string posY_fileName, std::string negY_fileName,
@@ -62,7 +63,7 @@ void SkyBox::draw()
 		1, GL_FALSE, glm::value_ptr(glm::inverse(glm::transpose(transformMatrix))));
 
 	sModelDrawInfo drawInfo;
-	::theVAOManager->FindDrawInfoByModelName(mesh_name, drawInfo);
+	cVAOManager::FindDrawInfoByModelName(mesh_name, drawInfo);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
 	glBindVertexArray(drawInfo.VAO_ID);
 	glDrawElements(GL_TRIANGLES,

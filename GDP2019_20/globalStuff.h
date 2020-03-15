@@ -1,12 +1,10 @@
 #pragma once
 
 #include "cShaderManager.h"
-#include "cVAOManager.h"
 #include "cBasicTextureManager.h"
 #include "DebugRenderer/cDebugRenderer.h"
 
 extern cShaderManager theShaderManager;
-extern cVAOManager* theVAOManager;
 extern std::string shader_name;
 
 extern std::string scene_filename;

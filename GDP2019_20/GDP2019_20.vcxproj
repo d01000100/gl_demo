@@ -170,6 +170,7 @@
     <ClCompile Include="cGLColourHelper.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
+    <ClCompile Include="cMesh.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
     <ClCompile Include="colors.cpp" />
     <ClCompile Include="Coordinator.cpp" />

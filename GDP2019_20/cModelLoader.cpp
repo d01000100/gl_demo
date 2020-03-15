@@ -22,7 +22,7 @@ bool cModelLoader::LoadPlyModel(
 	std::string filename, std::string friendlyName)
 {
 	auto newMesh = new cMesh();
-	cVAOManager::mLoadedMeshes[friendlyName] = newMesh;
+	cVAOManager::addLoadedMesh(friendlyName,newMesh);
 	std::ifstream theFile( filename.c_str() );
 	if ( ! theFile.is_open() )
 	{	

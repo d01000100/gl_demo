@@ -14,7 +14,6 @@
 #include "DebugRenderer/cDebugRenderer.h"
 #include "Scene.h"
 #include "Camera.h"
-#include "FollowCamera.h"
 #include "SceneEditor.h"
 #include "JSON_IO.h"
 #include "SkyBox.h"
@@ -26,7 +25,6 @@
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
 std::string scene_filename = "assets/scene1.json";
-cVAOManager* theVAOManager = new cVAOManager();
 GLFWwindow* ::window = 0;
 cBasicTextureManager* ::g_pTextureManager = new cBasicTextureManager();
 cDebugRenderer* ::g_pDebugRenderer = new cDebugRenderer();

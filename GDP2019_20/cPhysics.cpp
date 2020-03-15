@@ -219,9 +219,7 @@ bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 	sPhysicsTriangle closestTriangle;
 
 	// Get a transformed mesh to match the object's position and rotation
-	cMesh transformed_mesh =  transformMesh(
-		*mesh->physics->mesh, 
-		mesh->calculateTransformationMatrix());
+	cMesh transformed_mesh;
 
 	GetClosestTriangleToPoint(sphere->position, transformed_mesh, closestPoint, closestTriangle);
 
@@ -279,37 +277,4 @@ bool cPhysics::DoSphereMeshCollision(cGameObject* sphere, cGameObject* mesh,
 		return true;
 	}
 	return false;
-}
-
-cMesh cPhysics::transformMesh(cMesh mesh, glm::mat4 tMat) {
-	// Using the same thing that happens in the shader, 
-	// we transform the vertices of the mesh by the world matrix
-
-	for (std::vector<sPlyVertex>::iterator itVert = mesh.vecVertices.begin();
-		itVert != mesh.vecVertices.end(); itVert++)
-	{
-		glm::vec4 vertex = glm::vec4(itVert->x, itVert->y, itVert->z, 1.0f);
-
-		glm::vec4 vertexWorldTransformed = tMat * vertex;
-
-		// Update 
-		// itVert is not a vec3, so we need to do this manyally
-		itVert->x = vertexWorldTransformed.x;
-		itVert->y = vertexWorldTransformed.y;
-		itVert->z = vertexWorldTransformed.z;
-
-
-		// CALCAULTE THE NORMALS for the this mesh, too (for the response)
-		// for the normal, do the inverse transpose of the world matrix
-		glm::mat4 matWorld_Inv_Transp = glm::inverse(glm::transpose(tMat));
-		glm::vec4 normal = glm::vec4(itVert->nx, itVert->ny, itVert->nz, 1.0f);
-		glm::vec4 normalWorldTransformed = matWorld_Inv_Transp * normal;
-
-		// Update 
-		itVert->nx = normalWorldTransformed.x;
-		itVert->ny = normalWorldTransformed.y;
-		itVert->nz = normalWorldTransformed.z;
-	}
-
-	return mesh;
 }
