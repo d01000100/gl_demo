@@ -61,6 +61,9 @@
     <Filter Include="Formations">
       <UniqueIdentifier>{dcc3b3c6-4848-4b4a-a182-b744d2de4084}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UserInput">
+      <UniqueIdentifier>{df3172b9-959d-4e00-a756-f244adc593f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -110,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="LightManager\cLightHelper.cpp">
       <Filter>LightManager</Filter>
-    </ClCompile>
-    <ClCompile Include="UserInput.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GFLW_callbacks.cpp">
       <Filter>Source Files</Filter>
@@ -224,6 +224,12 @@
     </ClCompile>
     <ClCompile Include="cMesh.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInput.cpp">
+      <Filter>UserInput</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseControls.cpp">
+      <Filter>UserInput</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -383,9 +389,6 @@
     <ClInclude Include="LookAt.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="UserInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Steerings.h">
       <Filter>AI_ShooterGame</Filter>
     </ClInclude>
@@ -409,6 +412,12 @@
     </ClInclude>
     <ClInclude Include="Flocking.h">
       <Filter>Formations</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInput.h">
+      <Filter>UserInput</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseControls.h">
+      <Filter>UserInput</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

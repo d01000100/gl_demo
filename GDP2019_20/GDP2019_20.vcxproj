@@ -197,6 +197,7 @@
     <ClCompile Include="JSON_IO.cpp" />
     <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="LookAt.cpp" />
+    <ClCompile Include="MouseControls.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="NPC_AI.cpp" />
     <ClCompile Include="ParallelCommand.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="LookToward.h" />
     <ClInclude Include="Messages\iMessagable.h" />
     <ClInclude Include="Messages\Message.h" />
+    <ClInclude Include="MouseControls.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="NPC_AI.h" />
     <ClInclude Include="ParallelCommand.h" />
