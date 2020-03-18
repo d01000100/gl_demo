@@ -27,6 +27,8 @@
 #include "GFLW_callbacks.h"
 #include "FlockingManager.h"
 #include "UserInput.h"
+#include "BMPMap.h"
+#include "GridGraph.h"
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
@@ -41,6 +43,14 @@ bool ::isDebug = false, ::isRunning = false, ::withCollisions = true;
 
 int main(void)
 {
+	BMPMap::readImage("assets/resourceMap.bmp");
+	BMPMap::printMap();
+	auto test = glm::vec2(6,8);
+	std::cout << "Neighbors of: " << glm::to_string(test) << std::endl;
+	GridGraph::printCoords(GridGraph::getNeighbors(test));
+
+	return 0;
+	
 	Scene* theScene = Scene::getTheScene();
 	Camera* theCamera = FollowCamera::getTheCamera();
 	SceneEditor *sceneEditor = SceneEditor::getTheEditor();
