@@ -56,15 +56,31 @@ vCoords GridGraph::getNeighbors(glm::vec2 coord)
 	return res;
 }
 
-float GridGraph::manhattanDistance(glm::vec2 a, glm::vec2 b)
+int GridGraph::manhattanDistance(glm::vec2 a, glm::vec2 b)
 {
 	return std::abs(a.x - b.x) + std::abs(a.y - b.y);
 }
 
-float GridGraph::getEdgeWeight(glm::vec2 origin, glm::vec2 destination)
+int GridGraph::getEdgeWeight(glm::vec2 origin, glm::vec2 destination)
 {
 	// We assume both coordinates are adjacent
-	return 0;
+	int distance = 10;
+	// Check if it's diagonal
+	if (origin.x != destination.x && origin.y != destination.y)
+	{
+		distance = 14;
+	}
+	// Check if destination is "difficult terrain"
+	if (BMPMap::getColor(destination) == 'y')
+	{
+		distance *= 2;
+	}
+	return distance;
+}
+
+void GridGraph::printCoord(glm::vec2 coord)
+{
+	std::cout << "(" << coord.x << "," << coord.y << ") ";
 }
 
 void GridGraph::printCoords(vCoords coords)
@@ -72,7 +88,7 @@ void GridGraph::printCoords(vCoords coords)
 	std::cout << "[";
 	for (auto coord : coords)
 	{
-		std::cout << "(" << coord.x << "," << coord.y << ") ";
+		printCoord(coord);
 	}
 	std::cout << "]\n";
 }

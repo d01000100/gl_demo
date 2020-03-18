@@ -11,7 +11,7 @@
    2. * Función que regresa los "vecinos" de una coordenada
       Sólo los válidos
    3. * Función que calcula la distancia manhattan de una coordenada a otra
-   4. Función que calcula el "peso" de una "arista"
+   4. * Función que calcula el "peso" de una "arista"
       Dadas dos pares de coordenadas "vecinas" considera:
       - Si son verticales, horizontales o en diagonal
       - El color de la coordenada "objetivo"
