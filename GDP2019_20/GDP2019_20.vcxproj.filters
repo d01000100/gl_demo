@@ -61,6 +61,12 @@
     <Filter Include="Formations">
       <UniqueIdentifier>{dcc3b3c6-4848-4b4a-a182-b744d2de4084}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pathfinding">
+      <UniqueIdentifier>{a12851f1-4597-46ea-ac33-ae71c884a081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pathfinding\ImageReader">
+      <UniqueIdentifier>{7990a86e-7a92-44b2-bdaf-657e65188048}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -221,6 +227,18 @@
     </ClCompile>
     <ClCompile Include="Flocking.cpp">
       <Filter>Formations</Filter>
+    </ClCompile>
+    <ClCompile Include="BMPImage.cpp">
+      <Filter>Pathfinding\ImageReader</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Pathfinding\ImageReader</Filter>
+    </ClCompile>
+    <ClCompile Include="BMPMap.cpp">
+      <Filter>Pathfinding\ImageReader</Filter>
+    </ClCompile>
+    <ClCompile Include="GridGraph.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +424,18 @@
     </ClInclude>
     <ClInclude Include="Flocking.h">
       <Filter>Formations</Filter>
+    </ClInclude>
+    <ClInclude Include="BMPImage.h">
+      <Filter>Pathfinding\ImageReader</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Pathfinding\ImageReader</Filter>
+    </ClInclude>
+    <ClInclude Include="BMPMap.h">
+      <Filter>Pathfinding\ImageReader</Filter>
+    </ClInclude>
+    <ClInclude Include="GridGraph.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
