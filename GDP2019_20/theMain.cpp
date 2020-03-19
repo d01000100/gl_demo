@@ -45,10 +45,28 @@ int main(void)
 {
 	BMPMap::readImage("assets/resourceMap.bmp");
 	BMPMap::printMap();
-	auto test = glm::vec2(6,8);
-	std::cout << "Neighbors of: " << glm::to_string(test) << std::endl;
-	GridGraph::printCoords(GridGraph::getNeighbors(test));
+	//auto test = glm::vec2(2,11),
+	//	target = glm::vec2(10, 0);
+	//auto testNeighbors = GridGraph::getNeighbors(test);
+	//for (auto neighbor : testNeighbors)
+	//{
+	//	std::cout << "Cost of going from: ";
+	//	GridGraph::printCoord(test);
+	//	std::cout << " to ";
+	//	GridGraph::printCoord(neighbor);
+	//	std::cout << " = " << GridGraph::getEdgeWeight(test, neighbor) << std::endl;
+	//}
+	//std::cout << "Neighbors of: " << glm::to_string(test) << std::endl;
+	//GridGraph::printCoords(GridGraph::getNeighbors(test));
+	//std::cout << "Manhattan distance of " << glm::to_string(test) <<
+	//	" and: " << glm::to_string(target) << " = " <<
+	//	GridGraph::manhattanDistance(test, target) << std::endl;
+	auto route = GridGraph::dijkstra();
+	GridGraph::printCoords(route);
+	route = GridGraph::aStar();
+	GridGraph::printCoords(route);
 
+	
 	return 0;
 	
 	Scene* theScene = Scene::getTheScene();

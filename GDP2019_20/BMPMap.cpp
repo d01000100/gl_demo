@@ -7,8 +7,9 @@
 /*
  * An array of the "rows" of the image
  */
-char** BMPMap::map;
-glm::vec2 BMPMap::dimensions, BMPMap::origin, BMPMap::resource, BMPMap::goal;
+sNodeInfo*** BMPMap::nodeMap;
+glm::vec2 BMPMap::dimensions;
+sNodeInfo *BMPMap::origin, *BMPMap::resource, *BMPMap::goal;
 
 ResourceManager gResourceManager;
 
@@ -29,11 +30,11 @@ bool BMPMap::readImage(std::string filename)
 	char* data = bmp.GetData();
 	dimensions.x = bmp.GetImageWidth();
 	dimensions.y = bmp.GetImageHeight();
-	map = new char*[dimensions.y];
+	nodeMap = new sNodeInfo**[dimensions.y];
 	size_t index = 0;
 	for (size_t posY = 0; posY < dimensions.y; posY++)
 	{
-		map[posY] = new char[dimensions.x];
+		nodeMap[posY] = new sNodeInfo*[dimensions.x];
 		for (size_t posX = 0; posX < dimensions.x; posX++)
 		{
 			unsigned char r = data[index++];
@@ -47,21 +48,24 @@ bool BMPMap::readImage(std::string filename)
 				g,
 				b
 			);
-			map[posY][posX] = color;
+			auto node = new sNodeInfo();
+			node->coord = glm::vec2(posX, posY);
+			node->color = color;
+			nodeMap[posY][posX] = node;
 
 			if (color == 'g')
 			{
-				origin.x = posX; origin.y = posY;
+				origin = node;
 			}
 
 			if (color == 'r')
 			{
-				resource.x = posX; resource.y = posY;
+				resource = node;
 			}
 
 			if (color == 'b')
 			{
-				goal.x = posX; goal.y = posY;
+				goal = node;
 			}
 		}
 		//std::cout << std::endl;
@@ -70,9 +74,23 @@ bool BMPMap::readImage(std::string filename)
 	return true;
 }
 
-char BMPMap::getColor(glm::vec2 coord)
+sNodeInfo* BMPMap::getNode(glm::vec2 coord)
 {
-	return map[(int)coord.y][(int)coord.x];
+	return nodeMap[(int)coord.y][(int)coord.x];
+}
+
+void BMPMap::resetGraph()
+{
+	for (int i = 0; i < dimensions.x; i++)
+	{
+		for (int j = 0; j < dimensions.y; j++)
+		{
+			auto node = nodeMap[i][j];
+			node->parent = nullptr;
+			node->distanceSoFar = std::numeric_limits<int>::max();
+			node->visited = false;
+		}
+	}
 }
 
 void BMPMap::printMap()
@@ -87,12 +105,12 @@ void BMPMap::printMap()
 		// go through them from right to left
 		for (int i = 0; i < dimensions.x; i++)
 		{
-			std::cout << map[j][i] << ",";
+			std::cout << nodeMap[j][i]->color << ",";
 		}
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-	std::cout << "goal: " << glm::to_string(goal) << std::endl <<
-		"origin: " << glm::to_string(origin) << std::endl <<
-		"resource: " << glm::to_string(resource) << std::endl;
+	std::cout << "goal: " << glm::to_string(goal->coord) << std::endl <<
+		"origin: " << glm::to_string(origin->coord) << std::endl <<
+		"resource: " << glm::to_string(resource->coord) << std::endl;
 }

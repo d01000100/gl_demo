@@ -1,6 +1,8 @@
 #pragma once
 #include <glm/vec2.hpp>
 #include <vector>
+#include "BMPMap.h"
+#include <map>
 
 typedef std::vector<glm::vec2> vCoords;
 
@@ -16,5 +18,8 @@ struct GridGraph
 	static int getEdgeWeight(glm::vec2 origin, glm::vec2 destination);
 	static void printCoord(glm::vec2 coord);
 	static void printCoords(vCoords coords);
+	
+	static vCoords dijkstra();
+	static vCoords aStar();
 };
 
