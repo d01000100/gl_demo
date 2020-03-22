@@ -98,8 +98,7 @@
       <AdditionalDependencies>fmodL_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy /Y "$(ProjectDir)lib\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -111,11 +110,10 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>fmodL_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc141-mtd.lib;fmodL_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy /Y "$(ProjectDir)lib\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -135,8 +133,7 @@
       <AdditionalDependencies>fmod_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy /Y "$(ProjectDir)lib\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,15 +150,16 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>fmod_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc141-mt.lib;fmod_vc.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy /Y "$(ProjectDir)lib\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABBGrid.cpp" />
+    <ClCompile Include="AnimatedCharactersControls.cpp" />
+    <ClCompile Include="AnimationManager.cpp" />
     <ClCompile Include="aOrientable.cpp" />
     <ClCompile Include="BroadCollision.cpp" />
     <ClCompile Include="C24BitBMPpixel.cpp" />
@@ -174,11 +172,13 @@
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
+    <ClCompile Include="cModelLoader_assimp.cpp" />
     <ClCompile Include="colors.cpp" />
     <ClCompile Include="cPhysics.cpp" />
     <ClCompile Include="cPhysics_Ericson.cpp" />
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
+    <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
     <ClCompile Include="CTextureFromBMP.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="DebugRenderer\cDebugRenderer.cpp" />
@@ -206,6 +206,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABBGrid.h" />
+    <ClInclude Include="AnimatedCharactersControls.h" />
+    <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="aOrientable.h" />
     <ClInclude Include="BroadCollision.h" />
     <ClInclude Include="C24BitBMPpixel.h" />
@@ -223,6 +225,7 @@
     <ClInclude Include="colors.h" />
     <ClInclude Include="cPhysics.h" />
     <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.h" />
     <ClInclude Include="CTextureFromBMP.h" />
     <ClInclude Include="cVAOManager.h" />
     <ClInclude Include="DebugRenderer\cDebugRenderer.h" />
@@ -248,6 +251,8 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEditor.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="sModelDrawInfo.h" />
+    <ClInclude Include="sVertexBones.h" />
     <ClInclude Include="UserInput.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>

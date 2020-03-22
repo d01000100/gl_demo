@@ -55,15 +55,18 @@
     <Filter Include="FBO">
       <UniqueIdentifier>{c4bc9bc7-c126-47f9-b896-123f33944d38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Animations">
+      <UniqueIdentifier>{e4ff1887-f1df-4430-9db7-90ef3707a444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{c2d63bf8-bba6-4786-b341-e4020738d478}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cModelLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cVAOManager.cpp">
@@ -183,11 +186,23 @@
     <ClCompile Include="RenderManager.cpp">
       <Filter>FBO</Filter>
     </ClCompile>
+    <ClCompile Include="cModelLoader.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="cModelLoader_assimp.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedCharactersControls.cpp">
+      <Filter>Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationManager.cpp">
+      <Filter>Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp">
+      <Filter>Animations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cModelLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -319,6 +334,24 @@
     </ClInclude>
     <ClInclude Include="RenderManager.h">
       <Filter>FBO</Filter>
+    </ClInclude>
+    <ClInclude Include="cModelLoader.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedCharactersControls.h">
+      <Filter>Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationManager.h">
+      <Filter>Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.h">
+      <Filter>Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="sVertexBones.h">
+      <Filter>Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="sModelDrawInfo.h">
+      <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

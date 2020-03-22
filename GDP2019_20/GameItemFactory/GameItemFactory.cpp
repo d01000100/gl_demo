@@ -4,6 +4,8 @@
 #include "iGameItem.h"
 #include "../cGameObject.h"
 #include "../cLight.h"
+#include <iostream>
+#include "../AnimatedCharactersControls.h"
 
 using namespace nlohmann;
 
@@ -204,6 +206,54 @@ aGameItem* createGameItem(std::string type, json info) {
 			}
 		}
 
+		if (info.find("skinMesh") != info.end())
+		{
+			json jSkinMesh = info["skinMesh"];
+			if (jSkinMesh.find("animations") != jSkinMesh.end() &&
+				jSkinMesh["animations"].size() > 0)
+			{
+				auto pSM = new cSimpleAssimpSkinnedMesh();
+				gameObj->animManager = new AnimationManager(pSM);
+				if (!pSM->LoadMeshFromFile(
+					jSkinMesh["name"],
+					jSkinMesh["path"]))
+				{
+					std::cout << "Error loading Skinned mesh model: " << jSkinMesh["path"] << "!!\n";
+				} else
+				{
+					sModelDrawInfo* pDI = pSM->CreateModelDrawInfoObjectFromCurrentModel();
+					::theVAOManager->LoadModelDrawInfoIntoVAO(*pDI, ::g_programID);
+					delete pDI;
+
+					for (auto jAnimations : jSkinMesh["animations"])
+					{
+						std::string name = jAnimations["name"];
+						if (pSM->LoadMeshAnimation(
+							name,
+							jAnimations["path"]))
+						{
+							sAnimationDef animDef;
+							animDef.name = name;
+							if (jAnimations.find("isBlocking") != jAnimations.end())
+							{
+								animDef.isBlocking = jAnimations["isBlocking"].get<bool>();
+							}
+							gameObj->animManager->animInfo[name] = animDef;
+						} else
+						{
+							std::cout << "Animation " << jAnimations["name"] << " not Found!!\n";
+						}
+					}
+					gameObj->meshName = jSkinMesh["name"].get<std::string>();
+
+					AnimatedCharactersControls::characters.push_back(gameObj);
+				}
+			} else
+			{
+				std::cout << "skin mesh " << jSkinMesh["name"] << " without animations\n";
+			}
+		}
+		
 		return gameObj;
 	}
 	else if (type == "Light") {

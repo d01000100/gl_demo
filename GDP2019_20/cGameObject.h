@@ -12,6 +12,7 @@
 
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
+#include "AnimationManager.h"
 
 enum eShapeTypes
 {
@@ -69,6 +70,8 @@ public:
 	sPhysicsObject* physics;
 
 	unsigned int getUniqueID(void);
+
+	AnimationManager* animManager = nullptr;
 
 	void setDebugRenderer(iDebugRenderer* pDebugRenderer);
 

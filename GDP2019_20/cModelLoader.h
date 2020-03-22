@@ -15,6 +15,9 @@ public:
 	// Returns by ref the mesh
 	bool LoadPlyModel(std::string filename,
 		              cMesh &theMesh);		// Note the & (by reference)
+	bool LoadModel_Assimp(std::string filename,
+		cMesh& theMesh,
+		std::string& errors);
 
 };
 

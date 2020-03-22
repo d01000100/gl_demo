@@ -231,6 +231,37 @@ void cGameObject::draw()
 			GLint isHoled_UL = glGetUniformLocation(programID, "isHoled");
 			glUniform1i(isHoled_UL, hasHoles);
 
+			GLint isSkinnedMesh_UniLoc = glad_glGetUniformLocation(programID, "isSkinnedMesh");
+			if (animManager)
+			{
+				glUniform1f(isSkinnedMesh_UniLoc, (float)GL_TRUE);
+
+				// Taken from "Skinned Mesh 2 - todo.docx"
+				std::vector< glm::mat4x4 > vecFinalTransformation;
+				std::vector< glm::mat4x4 > vecOffsets;
+				std::vector< glm::mat4x4 > vecObjectBoneTransformation;
+
+				// This loads the bone transforms from the animation model
+				animManager->update(
+					vecFinalTransformation,
+					vecObjectBoneTransformation,
+					vecOffsets);
+
+				// Copy all 100 bones to the shader
+				GLint matBonesArray_UniLoc = glGetUniformLocation(programID, "matBonesArray");
+				// The "100" is to pass 100 values, starting at the pointer location of matBones[0];
+				//glUniformMatrix4fv(matBonesArray_UniLoc, 100, GL_FALSE, glm::value_ptr(matBones[0]));
+
+				GLint numBonesUsed = (GLint)vecFinalTransformation.size();
+
+				glUniformMatrix4fv(matBonesArray_UniLoc, numBonesUsed,
+					GL_FALSE,
+					glm::value_ptr(vecFinalTransformation[0]));
+			} else
+			{
+				glUniform1f(isSkinnedMesh_UniLoc, (float)false);
+			}
+
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
 			glEnable(GL_DEPTH_TEST);						// Turn ON depth test
 			//glEnable(GL_DEPTH);								// Write to depth buffer

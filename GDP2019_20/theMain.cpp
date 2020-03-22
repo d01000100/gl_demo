@@ -28,6 +28,7 @@
 
 // audio things
 #include "RenderManager.h"
+#include "AnimatedCharactersControls.h"
 
 cShaderManager theShaderManager;
 std::string shader_name = "SimpleShader";
@@ -42,6 +43,7 @@ bool ::isDebug = false, ::isRunning = false,
 	::isNightvision = false;
 GLuint g_programID = 0;
 glm::mat4 viewTransform = glm::mat4(1), projTransform = glm::mat4(1);
+float deltaTime = 1 / 60.f;
 
 int main(void)
 {
@@ -134,7 +136,9 @@ int main(void)
 		}
 
 		avgDeltaTimeThingy.addValue(deltaTime);
-		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		::deltaTime = avgDeltaTimeThingy.getAverage();
+
+		AnimatedCharactersControls::inputListener();
 
 		glUseProgram(g_programID);
 

@@ -22,3 +22,5 @@ extern cDebugRenderer* g_pDebugRenderer;
 extern bool isDebug, isRunning, isNightvision;
 
 extern glm::mat4 viewTransform, projTransform;
+
+extern float deltaTime;
