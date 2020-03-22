@@ -18,6 +18,7 @@ struct Scene
 	std::map<std::string, sCameraSettings*>::iterator activeCamera;
 	std::vector<std::string> textures;
 	static Scene* theScene;
+	std::string name;
 	bool loadMeshes(std::string filename);
 	bool loadCameras(std::string filename);
 	bool loadLights(std::string filename);

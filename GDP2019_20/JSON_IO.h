@@ -10,6 +10,11 @@ struct meshSettings {
 	std::string filename;
 };
 
+struct JSONConfig
+{
+	static json jConfig, jScenes;
+};
+
 std::vector<meshSettings>* readMeshes(std::string f);
 
 bool readTextures(std::string f, Scene* pScene);

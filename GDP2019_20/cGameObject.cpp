@@ -373,10 +373,6 @@ unsigned int cGameObject::next_uniqueID = 1000;	// Starting at 1000, just becaus
 json cGameObject::toJSON() {
 	json jObj;
 
-	jObj["mesh"] = meshName;
-
-	jObj["name"] = friendlyName;
-
 	jObj["position"][0] = position.x;
 	jObj["position"][1] = position.y;
 	jObj["position"][2] = position.z;
@@ -387,80 +383,7 @@ json cGameObject::toJSON() {
 	jObj["rotation"][2] = rotationXYZ.z;
 
 	jObj["scale"] = scale;
-	jObj["alpha"] = alpha;
-
-	jObj["diffuseColor"][0] = diffuseColor.x * 255.f;
-	jObj["diffuseColor"][1] = diffuseColor.y * 255.f;
-	jObj["diffuseColor"][2] = diffuseColor.z * 255.f;
-
-	jObj["specularColor"][0] = specularColor.x * 255.f;
-	jObj["specularColor"][1] = specularColor.y * 255.f;
-	jObj["specularColor"][2] = specularColor.z * 255.f;
-	jObj["specularColor"][3] = specularColor.a;
-
 	jObj["isVisible"] = isVisible;
-	jObj["isLit"] = isLit;
-
-	if (deferredTexture != "")
-		jObj["deferredTexture"] = deferredTexture;
-
-	if (physics)
-	{
-		json jPhysics;
-
-		jPhysics["gravity"] = physics->gravity;
-
-		jPhysics["acceleration"][0] = physics->acceleration.x;
-		jPhysics["acceleration"][1] = physics->acceleration.y;
-		jPhysics["acceleration"][2] = physics->acceleration.z;
-
-		jPhysics["velocity"][0] = physics->velocity.x;
-		jPhysics["velocity"][1] = physics->velocity.y;
-		jPhysics["velocity"][2] = physics->velocity.z;
-
-		eShapeTypes shape = physics->shape;
-		if (shape == SPHERE) {
-			jPhysics["shape"] = "sphere";
-		}
-		else if (shape == MESH) {
-			jPhysics["shape"] = "mesh";
-		}
-		else if (shape == AABB) {
-			jPhysics["shape"] = "aabb";
-		}
-		else if (shape == CAPSULE) {
-			jPhysics["shape"] = "capsule";
-		}
-		else if (shape == PLANE) {
-			jPhysics["shape"] = "plane";
-		}
-		else {
-			jPhysics["shape"] = "???";
-		}
-
-		jPhysics["radius"] = physics->radius;
-
-		jObj["Physics"] = jPhysics;
-	}
-
-	if (!textures.empty()) {
-		json jvTextures;
-		for (int t = 0; t < textures.size(); t++) {
-			jvTextures[t]["textureName"] = textures[t].textureName;
-			jvTextures[t]["weight"] = textures[t].weight;
-		}
-		jObj["textures"] = jvTextures;
-	}
-
-	if (!collision_points.empty()) {
-		json jvPoints;
-		for (int t = 0; t < collision_points.size(); t++) {
-			jvPoints[t][0] = collision_points[t].x;
-			jvPoints[t][1] = collision_points[t].y;
-			jvPoints[t][2] = collision_points[t].z;
-		}
-		jObj["collision_points"] = jvPoints;
-	}
 
 	return jObj;
 }

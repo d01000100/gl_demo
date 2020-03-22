@@ -15,7 +15,8 @@
       "name": "final_pass_quad",
       "position": [0.0, 0.0, 0.0],
       "rotation": [0.0, -0.0, 0.0],
-      "scale": 265.3297119140625,
+      "scale": 269,
+      "comment": "nice",
       "specularColor": [255.0, 255.0, 255.0, 50.0]
     }
   ],

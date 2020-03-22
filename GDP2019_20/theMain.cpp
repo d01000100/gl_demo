@@ -11,7 +11,6 @@
 #include "cShaderManager.h"
 
 // The Physics function
-#include "cPhysics.h"
 #include "cLowPassFilter.h"
 #include "DebugRenderer/cDebugRenderer.h"
 #include "Scene.h"
@@ -21,7 +20,6 @@
 #include "JSON_IO.h"
 #include "AABBGrid.h"
 #include "DollyCamera.h"
-#include "cFBO.h"
 
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"

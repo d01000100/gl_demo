@@ -52,14 +52,14 @@
     <Filter Include="GameItem\GameObject">
       <UniqueIdentifier>{2323eb35-8f0b-4d86-ac10-d17295e1f1b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FBO">
-      <UniqueIdentifier>{c4bc9bc7-c126-47f9-b896-123f33944d38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Animations">
       <UniqueIdentifier>{e4ff1887-f1df-4430-9db7-90ef3707a444}</UniqueIdentifier>
     </Filter>
     <Filter Include="Models">
       <UniqueIdentifier>{c2d63bf8-bba6-4786-b341-e4020738d478}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScenesManager">
+      <UniqueIdentifier>{c4bc9bc7-c126-47f9-b896-123f33944d38}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -116,12 +116,6 @@
     </ClCompile>
     <ClCompile Include="cLowPassFilter.cpp">
       <Filter>LowPassFilter</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneEditor.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameItemFactory\GameItemFactory.cpp">
       <Filter>GameItem</Filter>
@@ -181,10 +175,10 @@
       <Filter>Cameras</Filter>
     </ClCompile>
     <ClCompile Include="cFBO.cpp">
-      <Filter>FBO</Filter>
+      <Filter>ScenesManager</Filter>
     </ClCompile>
     <ClCompile Include="RenderManager.cpp">
-      <Filter>FBO</Filter>
+      <Filter>ScenesManager</Filter>
     </ClCompile>
     <ClCompile Include="cModelLoader.cpp">
       <Filter>Models</Filter>
@@ -200,6 +194,12 @@
     </ClCompile>
     <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp">
       <Filter>Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>ScenesManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,9 +250,6 @@
     </ClInclude>
     <ClInclude Include="cLowPassFilter.h">
       <Filter>LowPassFilter</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UserInput.h">
       <Filter>Header Files</Filter>
@@ -330,10 +327,10 @@
       <Filter>Cameras</Filter>
     </ClInclude>
     <ClInclude Include="cFBO.h">
-      <Filter>FBO</Filter>
+      <Filter>ScenesManager</Filter>
     </ClInclude>
     <ClInclude Include="RenderManager.h">
-      <Filter>FBO</Filter>
+      <Filter>ScenesManager</Filter>
     </ClInclude>
     <ClInclude Include="cModelLoader.h">
       <Filter>Models</Filter>
@@ -352,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="sModelDrawInfo.h">
       <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>ScenesManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

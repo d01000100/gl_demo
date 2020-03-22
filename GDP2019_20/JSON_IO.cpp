@@ -14,6 +14,9 @@ using json = nlohmann::json;
 
 json loaded_textures;
 
+json JSONConfig::jConfig;
+json JSONConfig::jScenes;
+
 bool jsonContains(json j, std::string k)
 {
 	return j.find(k) != j.end();
@@ -263,10 +266,42 @@ json serializeCameras(std::map<std::string, sCameraSettings*> cameras) {
 	return jCameras;
 }
 
-void saveScene(Scene* scene, std::string filename) {
-	std::vector<aGameItem*> items = scene->getItems();
+int findObjIndex(json jObs, std::string name)
+{
+	for (int i = 0; jObs.size(); i++)
+	{
+		if (jObs[i]["name"] == name)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
 
-	json jObjs, jLights, jSounds, jScene;
+void saveScene(Scene* scene, std::string filename)
+{
+	json& jScene = JSONConfig::jScenes[scene->name];
+	for (auto pItem : scene->getItems())
+	{
+		if (pItem->getType() == "Object")
+		{
+			int jIndex = findObjIndex(jScene["Objects"], pItem->getName());
+			if (jIndex > 0)
+			{
+				jScene["Objects"][jIndex].merge_patch(pItem->toJSON());
+			}
+		}
+		if (pItem->getType() == "Light")
+		{
+			int jIndex = findObjIndex(jScene["Lights"], pItem->getName());
+			if (jIndex > 0)
+			{
+				jScene["Lights"][jIndex].merge_patch(pItem->toJSON());
+			}
+		}
+	}
+
+	/*json jObjs, jLights, jSounds, jScene;
 
 	for (int i = 0, light = 0, sound = 0, obj = 0; i < items.size(); i++) {
 		aGameItem* item = items[i];
@@ -285,7 +320,9 @@ void saveScene(Scene* scene, std::string filename) {
 		}
 	}
 
-	jScene["Lights"] = jLights; jScene["Objects"] = jObjs; jScene["Sounds"] = jSounds;
+	jScene["Lights"] = jLights;
+	jScene["Objects"] = jObjs;
+	jScene["Sounds"] = jSounds;
 	jScene["Meshes"] = serializeMeshes(scene->getMeshesMap());
 	jScene["Cameras"] = serializeCameras(scene->getCamerasMap());
 
@@ -303,7 +340,7 @@ void saveScene(Scene* scene, std::string filename) {
 		jScene["Skybox"]["top"] = scene->pSkyBox->defs.top;
 		jScene["Skybox"]["bottom"] = scene->pSkyBox->defs.bottom;
 		jScene["Skybox"]["basepath"] = scene->pSkyBox->defs.basepath;
-	}
+	}*/
 
 	std::ofstream file(filename);
 
@@ -325,23 +362,20 @@ bool loadScenes(std::string filename)
 		return false;
 	}
 
-	json jFile;
-	i >> jFile;
+	i >> JSONConfig::jConfig;
 
-	json::iterator jScenes = jFile.find("Scenes");
-	if (!jsonContains(jFile, "Scenes"))
+	i.close();
+
+	json::iterator jScenes = JSONConfig::jConfig.find("Scenes");
+	if (!jsonContains(JSONConfig::jConfig, "Scenes"))
 	{
 		printf("No Scenes found!!\n");
 		return false;
 	}
 
 	RenderManager::mScenes.clear();
-	for (const auto &jScene : jFile["Scenes"])
-	{
-		bool isRendered = jsonContains(jScene, "isRendered") ? jScene["isRendered"].get<bool>() : true;
-
-		if (!isRendered) { continue; }
-		
+	for (const auto &jScene : JSONConfig::jConfig["Scenes"])
+	{		
 		if (!jsonContains(jScene,"name"))
 		{
 			printf("Scene without name!!\n");
@@ -382,7 +416,9 @@ bool loadScenes(std::string filename)
 			std::cout << "Problem while loading " << scenePath << std::endl;
 			return false;
 		}
-		auto pSceneDefs = new SceneDefs();
+		pScene->name = sceneName;
+		auto pSceneDefs = new SceneDef();
+		pSceneDefs->isRendered = jsonContains(jScene, "isRendered") ? jScene["isRendered"].get<bool>() : true;
 		pSceneDefs->pFBO = pFBO;
 		pSceneDefs->width = width;
 		pSceneDefs->height = height;
@@ -397,6 +433,19 @@ bool loadScenes(std::string filename)
 		}
 		
 		RenderManager::mScenes[sceneName] = pSceneDefs;
+
+		// Read entire json of the scene to be able to save it
+		i.open(scenePath);
+
+		if (!i.is_open())
+		{
+			printf("\"loadScenes\" Didn't found %s file \n", filename.c_str());
+			return false;
+		}
+
+		i >> JSONConfig::jScenes[sceneName];
+
+		i.close();
 	}
 	return true;
 }

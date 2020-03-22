@@ -6,13 +6,14 @@
 #include "util.h"
 #include "Camera.h"
 
-struct SceneDefs
+struct SceneDef
 {
 	Scene* pScene;
 	int width, height;
 	std::string name, pathfile;
+	bool isRendered = true;
 	cFBO* pFBO;
-	SceneDefs() :
+	SceneDef() :
 		pScene(nullptr),
 		width(1600),
 		height(800),
@@ -21,12 +22,12 @@ struct SceneDefs
 
 struct RenderManager
 {
-	static std::map<std::string, SceneDefs*> mScenes;
-	static SceneDefs* sceneOnEdition;
+	static std::map<std::string, SceneDef*> mScenes;
+	static SceneDef* sceneOnEdition;
 	static void setUpCamera(Camera* camera);
 	static void setUpCamera(glm::vec3, glm::vec3);
-	static void setUpProjection(SceneDefs* sceneData);
-	static void drawEditor(SceneDefs* sceneData);
+	static void setUpProjection(SceneDef* sceneData);
+	static void drawEditor(SceneDef* sceneData);
 	/*
 	 * Draw a scene stored in the map of scenes by name.
 	 * and output the result to a FBO or to the frame buffer if null.

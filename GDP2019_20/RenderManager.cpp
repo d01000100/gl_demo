@@ -5,8 +5,8 @@
 #include "SceneEditor.h"
 #include <iostream>
 
-std::map<std::string, SceneDefs*> RenderManager::mScenes;
-SceneDefs* RenderManager::sceneOnEdition = nullptr;
+std::map<std::string, SceneDef*> RenderManager::mScenes;
+SceneDef* RenderManager::sceneOnEdition = nullptr;
 
 void RenderManager::setUpCamera(Camera* camera)
 {
@@ -26,7 +26,7 @@ void RenderManager::setUpCamera(glm::vec3 eyePos, glm::vec3 cameraTarget)
 	);
 }
 
-void RenderManager::setUpProjection(SceneDefs* sceneData)
+void RenderManager::setUpProjection(SceneDef* sceneData)
 {
 	float ratio = (float)sceneData->width / (float)sceneData->height;
 	::projTransform = glm::perspective(
@@ -51,7 +51,7 @@ void RenderManager::setUpProjection(SceneDefs* sceneData)
 	);
 }
 
-void RenderManager::drawEditor(SceneDefs* sceneData)
+void RenderManager::drawEditor(SceneDef* sceneData)
 {
 	if (sceneOnEdition == sceneData)
 	{
@@ -69,6 +69,7 @@ bool RenderManager::deferredDraw(
 {
 	if (!mapContains(mScenes, sceneName)) { return false; }
 	auto sceneData = mScenes[sceneName];
+	if (!sceneData->isRendered) return false;
 	cFBO *pFBO = sceneData->pFBO;
 	Scene* scene = sceneData->pScene;
 	if (pFBO)
@@ -155,15 +156,18 @@ bool RenderManager::renderStencilPortal(
 	// 3. Move the camera
 	setUpCamera(camera->getPosition(), camera->getTarget());
 
-	// Settings for the outer scene
-	glEnable(GL_DEPTH_TEST); // Enable depth testing
-	glDisable(GL_STENCIL_TEST);	// Disable stencil test
-	glDepthMask(GL_TRUE);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	if (outerData->pScene->pSkyBox)
-		outerData->pScene->pSkyBox->draw(camera->getPosition());
-	outerData->pScene->drawScene();
-	drawEditor(outerData);
+		// Settings for the outer scene
+		glEnable(GL_DEPTH_TEST); // Enable depth testing
+		glDisable(GL_STENCIL_TEST);	// Disable stencil test
+		glDepthMask(GL_TRUE);
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	if (outerData->isRendered)
+	{
+		if (outerData->pScene->pSkyBox)
+			outerData->pScene->pSkyBox->draw(camera->getPosition());
+		outerData->pScene->drawScene();
+		drawEditor(outerData);
+	}
 
 	/*
 	 * Write 1's on the stencil where the portals are
@@ -186,8 +190,11 @@ bool RenderManager::renderStencilPortal(
 	// but I don't write to the buffer; 
 	glDepthMask(GL_FALSE);
 
-	portalData->pScene->drawScene();
-	drawEditor(portalData);
+	if (portalData->isRendered)
+	{
+		portalData->pScene->drawScene();
+		drawEditor(portalData);
+	}
 
 	/*
 	 * Draw the scene inside of the stencil
@@ -206,10 +213,13 @@ bool RenderManager::renderStencilPortal(
 		1,			//
 		0xFF);
 
-	if (innerData->pScene->pSkyBox)
-		innerData->pScene->pSkyBox->draw(camera->getPosition());
-	innerData->pScene->drawScene();
-	drawEditor(innerData);
+	if (innerData->isRendered)
+	{
+		if (innerData->pScene->pSkyBox)
+			innerData->pScene->pSkyBox->draw(camera->getPosition());
+		innerData->pScene->drawScene();
+		drawEditor(innerData);
+	}
 
 	// Reset everything to draw a scene normally
 	glDisable(GL_STENCIL_TEST);
