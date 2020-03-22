@@ -377,7 +377,11 @@ bool loadScenes(std::string filename)
 		
 		auto pScene = new Scene();
 		readTextures(scenePath, pScene);
-		pScene->loadScene(scenePath);		
+		if(!pScene->loadScene(scenePath))
+		{
+			std::cout << "Problem while loading " << scenePath << std::endl;
+			return false;
+		}
 		auto pSceneDefs = new SceneDefs();
 		pSceneDefs->pFBO = pFBO;
 		pSceneDefs->width = width;
